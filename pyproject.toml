@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "duograph3d"
+version = "0.1.0"
+description = "DuoGraph3D research skeleton for dual-consistency object-centric 3D reconstruction"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "Xin"}]
+dependencies = []
+
+[project.urls]
+Repository = "ssh://git@github.com/Xin200203/duograph3D.git"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
