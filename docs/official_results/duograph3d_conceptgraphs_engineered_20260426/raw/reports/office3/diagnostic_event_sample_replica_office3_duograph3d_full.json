@@ -1,0 +1,4293 @@
+[
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-1",
+      "track_hint": "office3:gsa:item:9:1:7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-1",
+      "hypothesis_id": "hyp-1",
+      "track_hint": "office3:gsa:item:9:1:7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-2",
+      "track_hint": "office3:gsa:item:15:2:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-2",
+      "hypothesis_id": "hyp-2",
+      "track_hint": "office3:gsa:item:15:2:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-3",
+      "track_hint": "office3:gsa:item:4:8:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-3",
+      "hypothesis_id": "hyp-3",
+      "track_hint": "office3:gsa:item:4:8:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-4",
+      "track_hint": "office3:gsa:item:5:10:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-4",
+      "hypothesis_id": "hyp-4",
+      "track_hint": "office3:gsa:item:5:10:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-5",
+      "track_hint": "office3:gsa:item:8:-1:7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-5",
+      "hypothesis_id": "hyp-5",
+      "track_hint": "office3:gsa:item:8:-1:7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-6",
+      "track_hint": "office3:gsa:item:10:6:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-6",
+      "hypothesis_id": "hyp-6",
+      "track_hint": "office3:gsa:item:10:6:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-7",
+      "track_hint": "office3:gsa:item:15:3:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-7",
+      "hypothesis_id": "hyp-7",
+      "track_hint": "office3:gsa:item:15:3:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-8",
+      "track_hint": "office3:gsa:item:2:-12:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-8",
+      "hypothesis_id": "hyp-8",
+      "track_hint": "office3:gsa:item:2:-12:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-9",
+      "track_hint": "office3:gsa:item:5:-9:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-9",
+      "hypothesis_id": "hyp-9",
+      "track_hint": "office3:gsa:item:5:-9:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-10",
+      "track_hint": "office3:gsa:item:9:-5:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-10",
+      "hypothesis_id": "hyp-10",
+      "track_hint": "office3:gsa:item:9:-5:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-11",
+      "track_hint": "office3:gsa:item:6:10:2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-11",
+      "hypothesis_id": "hyp-11",
+      "track_hint": "office3:gsa:item:6:10:2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-12",
+      "track_hint": "office3:gsa:item:7:-10:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-12",
+      "hypothesis_id": "hyp-12",
+      "track_hint": "office3:gsa:item:7:-10:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-13",
+      "track_hint": "office3:gsa:item:7:9:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-13",
+      "hypothesis_id": "hyp-13",
+      "track_hint": "office3:gsa:item:7:9:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-14",
+      "track_hint": "office3:gsa:item:11:6:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-14",
+      "hypothesis_id": "hyp-14",
+      "track_hint": "office3:gsa:item:11:6:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-15",
+      "track_hint": "office3:gsa:item:5:-13:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-15",
+      "hypothesis_id": "hyp-15",
+      "track_hint": "office3:gsa:item:5:-13:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-16",
+      "track_hint": "office3:gsa:item:7:-6:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-16",
+      "hypothesis_id": "hyp-16",
+      "track_hint": "office3:gsa:item:7:-6:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-17",
+      "track_hint": "office3:gsa:item:8:9:4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-17",
+      "hypothesis_id": "hyp-17",
+      "track_hint": "office3:gsa:item:8:9:4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-18",
+      "track_hint": "office3:gsa:item:4:-10:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-18",
+      "hypothesis_id": "hyp-18",
+      "track_hint": "office3:gsa:item:4:-10:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-19",
+      "track_hint": "office3:gsa:item:4:7:7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-19",
+      "hypothesis_id": "hyp-19",
+      "track_hint": "office3:gsa:item:4:7:7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-20",
+      "track_hint": "office3:gsa:item:8:5:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-20",
+      "hypothesis_id": "hyp-20",
+      "track_hint": "office3:gsa:item:8:5:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-21",
+      "track_hint": "office3:gsa:item:0:-10:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-21",
+      "hypothesis_id": "hyp-21",
+      "track_hint": "office3:gsa:item:0:-10:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-22",
+      "track_hint": "office3:gsa:item:1:-2:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-22",
+      "hypothesis_id": "hyp-22",
+      "track_hint": "office3:gsa:item:1:-2:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-23",
+      "track_hint": "office3:gsa:item:1:-3:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-23",
+      "hypothesis_id": "hyp-23",
+      "track_hint": "office3:gsa:item:1:-3:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-24",
+      "track_hint": "office3:gsa:item:3:-14:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-24",
+      "hypothesis_id": "hyp-24",
+      "track_hint": "office3:gsa:item:3:-14:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-25",
+      "track_hint": "office3:gsa:item:4:0:-7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-25",
+      "hypothesis_id": "hyp-25",
+      "track_hint": "office3:gsa:item:4:0:-7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-26",
+      "track_hint": "office3:gsa:item:6:6:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-26",
+      "hypothesis_id": "hyp-26",
+      "track_hint": "office3:gsa:item:6:6:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-27",
+      "track_hint": "office3:gsa:item:10:-4:7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-27",
+      "hypothesis_id": "hyp-27",
+      "track_hint": "office3:gsa:item:10:-4:7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "memory_relation_update",
+    "owner_component": "memory",
+    "payload": {
+      "relation_edge_count": 351
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-1",
+      "track_hint": "office3:gsa:item:8:-2:7",
+      "candidate_count": 5,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-2",
+      "best_score": 1.0685,
+      "second_score": 1.0681,
+      "score_margin": 0.0004,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-2",
+          "score": 1.0685,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3185,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-5",
+          "score": 1.0681,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:8:-1:7",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:8:-1:7",
+          "node_appearance_key": "picture",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3181,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-28",
+      "hypothesis_id": "hyp-1",
+      "track_hint": "office3:gsa:item:8:-2:7",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-2",
+      "best_score": 1.0685,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-2",
+      "track_hint": "office3:gsa:item:15:2:5",
+      "candidate_count": 4,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-2",
+      "best_score": 2.3199,
+      "second_score": 1.0632,
+      "score_margin": 1.2567,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-2",
+          "score": 2.3199,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0.0,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.0,
+            "geometry_profile": 0.3199,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.45
+          }
+        },
+        {
+          "object_id": "obj-4",
+          "score": 1.0632,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:5:10:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:5:10:5",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0.0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3132,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-3",
+      "track_hint": "office3:gsa:item:15:3:0",
+      "candidate_count": 3,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-4",
+      "best_score": 1.1143,
+      "second_score": 1.1126,
+      "score_margin": 0.0017,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-4",
+          "score": 1.1143,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:5:10:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:5:10:5",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3143,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-1",
+          "score": 1.1126,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:9:1:7",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:9:1:7",
+          "node_appearance_key": "ceiling",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3126,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-29",
+      "hypothesis_id": "hyp-3",
+      "track_hint": "office3:gsa:item:15:3:0",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-4",
+      "best_score": 1.1143,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-4",
+      "track_hint": "office3:gsa:item:5:10:5",
+      "candidate_count": 2,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-1",
+      "best_score": 1.1169,
+      "second_score": 1.1148,
+      "score_margin": 0.0021,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-1",
+          "score": 1.1169,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:9:1:7",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:9:1:7",
+          "node_appearance_key": "ceiling",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3169,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-3",
+          "score": 1.1148,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:4:8:-1",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:4:8:-1",
+          "node_appearance_key": "monitor",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3148,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-30",
+      "hypothesis_id": "hyp-4",
+      "track_hint": "office3:gsa:item:5:10:5",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-1",
+      "best_score": 1.1169,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-5",
+      "track_hint": "office3:gsa:item:10:6:5",
+      "candidate_count": 1,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-1",
+      "best_score": 1.1124,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-1",
+          "score": 1.1124,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:9:1:7",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:9:1:7",
+          "node_appearance_key": "ceiling",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1978,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3146,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-31",
+      "hypothesis_id": "hyp-5",
+      "track_hint": "office3:gsa:item:10:6:5",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-1",
+      "best_score": 1.1124,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-6",
+      "track_hint": "office3:gsa:item:6:10:2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-32",
+      "hypothesis_id": "hyp-6",
+      "track_hint": "office3:gsa:item:6:10:2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-7",
+      "track_hint": "office3:gsa:item:5:-12:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-33",
+      "hypothesis_id": "hyp-7",
+      "track_hint": "office3:gsa:item:5:-12:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-8",
+      "track_hint": "office3:gsa:item:1:-4:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-34",
+      "hypothesis_id": "hyp-8",
+      "track_hint": "office3:gsa:item:1:-4:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-9",
+      "track_hint": "office3:gsa:item:7:-10:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-35",
+      "hypothesis_id": "hyp-9",
+      "track_hint": "office3:gsa:item:7:-10:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-10",
+      "track_hint": "office3:gsa:item:7:9:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-36",
+      "hypothesis_id": "hyp-10",
+      "track_hint": "office3:gsa:item:7:9:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-11",
+      "track_hint": "office3:gsa:item:9:-5:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-37",
+      "hypothesis_id": "hyp-11",
+      "track_hint": "office3:gsa:item:9:-5:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-12",
+      "track_hint": "office3:gsa:item:5:-9:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-38",
+      "hypothesis_id": "hyp-12",
+      "track_hint": "office3:gsa:item:5:-9:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-13",
+      "track_hint": "office3:gsa:item:8:9:4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-39",
+      "hypothesis_id": "hyp-13",
+      "track_hint": "office3:gsa:item:8:9:4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-14",
+      "track_hint": "office3:gsa:item:4:8:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-40",
+      "hypothesis_id": "hyp-14",
+      "track_hint": "office3:gsa:item:4:8:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-15",
+      "track_hint": "office3:gsa:item:8:1:7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-41",
+      "hypothesis_id": "hyp-15",
+      "track_hint": "office3:gsa:item:8:1:7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-16",
+      "track_hint": "office3:gsa:item:11:6:2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-42",
+      "hypothesis_id": "hyp-16",
+      "track_hint": "office3:gsa:item:11:6:2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-17",
+      "track_hint": "office3:gsa:item:3:-12:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-43",
+      "hypothesis_id": "hyp-17",
+      "track_hint": "office3:gsa:item:3:-12:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-18",
+      "track_hint": "office3:gsa:item:4:-14:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-44",
+      "hypothesis_id": "hyp-18",
+      "track_hint": "office3:gsa:item:4:-14:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-19",
+      "track_hint": "office3:gsa:item:4:-10:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-45",
+      "hypothesis_id": "hyp-19",
+      "track_hint": "office3:gsa:item:4:-10:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-20",
+      "track_hint": "office3:gsa:item:7:-5:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-46",
+      "hypothesis_id": "hyp-20",
+      "track_hint": "office3:gsa:item:7:-5:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-21",
+      "track_hint": "office3:gsa:item:8:5:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-47",
+      "hypothesis_id": "hyp-21",
+      "track_hint": "office3:gsa:item:8:5:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-22",
+      "track_hint": "office3:gsa:item:6:7:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-48",
+      "hypothesis_id": "hyp-22",
+      "track_hint": "office3:gsa:item:6:7:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-23",
+      "track_hint": "office3:gsa:item:0:4:-7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-49",
+      "hypothesis_id": "hyp-23",
+      "track_hint": "office3:gsa:item:0:4:-7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-24",
+      "track_hint": "office3:gsa:item:2:-9:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-50",
+      "hypothesis_id": "hyp-24",
+      "track_hint": "office3:gsa:item:2:-9:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-25",
+      "track_hint": "office3:gsa:item:4:7:7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-51",
+      "hypothesis_id": "hyp-25",
+      "track_hint": "office3:gsa:item:4:7:7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-26",
+      "track_hint": "office3:gsa:item:10:7:2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-52",
+      "hypothesis_id": "hyp-26",
+      "track_hint": "office3:gsa:item:10:7:2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-27",
+      "track_hint": "office3:gsa:item:1:-2:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-53",
+      "hypothesis_id": "hyp-27",
+      "track_hint": "office3:gsa:item:1:-2:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-28",
+      "track_hint": "office3:gsa:item:5:0:-7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-54",
+      "hypothesis_id": "hyp-28",
+      "track_hint": "office3:gsa:item:5:0:-7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-29",
+      "track_hint": "office3:gsa:item:2:-13:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-55",
+      "hypothesis_id": "hyp-29",
+      "track_hint": "office3:gsa:item:2:-13:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-30",
+      "track_hint": "office3:gsa:item:11:6:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-56",
+      "hypothesis_id": "hyp-30",
+      "track_hint": "office3:gsa:item:11:6:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "memory_relation_update",
+    "owner_component": "memory",
+    "payload": {
+      "relation_edge_count": 786
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-1",
+      "track_hint": "office3:gsa:item:7:0:7",
+      "candidate_count": 5,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-31",
+      "best_score": 1.3502,
+      "second_score": 1.0582,
+      "score_margin": 0.292,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-31",
+          "score": 1.3502,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:10:6:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:10:6:5",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.3,
+            "geometry_profile": 0.3002,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.3
+          }
+        },
+        {
+          "object_id": "obj-2",
+          "score": 1.0582,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3082,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-57",
+      "hypothesis_id": "hyp-1",
+      "track_hint": "office3:gsa:item:7:0:7",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-31",
+      "best_score": 1.3502,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-2",
+      "track_hint": "office3:gsa:item:7:-2:7",
+      "candidate_count": 4,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-2",
+      "best_score": 1.0847,
+      "second_score": 1.0687,
+      "score_margin": 0.016,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-2",
+          "score": 1.0847,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0.0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3347,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-29",
+          "score": 1.0687,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:3:0",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:3:0",
+          "node_appearance_key": "pillar",
+          "relation_bonus": 0.0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3187,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-58",
+      "hypothesis_id": "hyp-2",
+      "track_hint": "office3:gsa:item:7:-2:7",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-2",
+      "best_score": 1.0847,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-3",
+      "track_hint": "office3:gsa:item:15:3:0",
+      "candidate_count": 3,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-29",
+      "best_score": 2.3199,
+      "second_score": 1.0689,
+      "score_margin": 1.251,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-29",
+          "score": 2.3199,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:3:0",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:3:0",
+          "node_appearance_key": "pillar",
+          "relation_bonus": 0.0,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.0,
+            "geometry_profile": 0.3199,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.45
+          }
+        },
+        {
+          "object_id": "obj-2",
+          "score": 1.0689,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0.0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3189,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-4",
+      "track_hint": "office3:gsa:item:7:-10:-3",
+      "candidate_count": 2,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-2",
+      "best_score": 1.2638,
+      "second_score": 1.1155,
+      "score_margin": 0.1483,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-2",
+          "score": 1.2638,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.4638,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-28",
+          "score": 1.1155,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:8:-2:7",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:8:-2:7",
+          "node_appearance_key": "camera",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3155,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-59",
+      "hypothesis_id": "hyp-4",
+      "track_hint": "office3:gsa:item:7:-10:-3",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-2",
+      "best_score": 1.2638,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-5",
+      "track_hint": "office3:gsa:item:15:2:5",
+      "candidate_count": 1,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-2",
+      "best_score": 2.6699,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-2",
+          "score": 2.6699,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.3,
+            "geometry_profile": 0.3199,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.75
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-6",
+      "track_hint": "office3:gsa:item:5:10:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-60",
+      "hypothesis_id": "hyp-6",
+      "track_hint": "office3:gsa:item:5:10:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-7",
+      "track_hint": "office3:gsa:item:10:6:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-61",
+      "hypothesis_id": "hyp-7",
+      "track_hint": "office3:gsa:item:10:6:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-8",
+      "track_hint": "office3:gsa:item:7:9:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-62",
+      "hypothesis_id": "hyp-8",
+      "track_hint": "office3:gsa:item:7:9:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-9",
+      "track_hint": "office3:gsa:item:5:-12:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-63",
+      "hypothesis_id": "hyp-9",
+      "track_hint": "office3:gsa:item:5:-12:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-10",
+      "track_hint": "office3:gsa:item:5:-8:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-64",
+      "hypothesis_id": "hyp-10",
+      "track_hint": "office3:gsa:item:5:-8:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-11",
+      "track_hint": "office3:gsa:item:6:10:2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-65",
+      "hypothesis_id": "hyp-11",
+      "track_hint": "office3:gsa:item:6:10:2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-12",
+      "track_hint": "office3:gsa:item:9:-5:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-66",
+      "hypothesis_id": "hyp-12",
+      "track_hint": "office3:gsa:item:9:-5:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-13",
+      "track_hint": "office3:gsa:item:2:-4:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-67",
+      "hypothesis_id": "hyp-13",
+      "track_hint": "office3:gsa:item:2:-4:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-14",
+      "track_hint": "office3:gsa:item:8:8:4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-68",
+      "hypothesis_id": "hyp-14",
+      "track_hint": "office3:gsa:item:8:8:4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-15",
+      "track_hint": "office3:gsa:item:10:7:2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-69",
+      "hypothesis_id": "hyp-15",
+      "track_hint": "office3:gsa:item:10:7:2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-16",
+      "track_hint": "office3:gsa:item:2:-13:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-70",
+      "hypothesis_id": "hyp-16",
+      "track_hint": "office3:gsa:item:2:-13:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-17",
+      "track_hint": "office3:gsa:item:4:8:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-71",
+      "hypothesis_id": "hyp-17",
+      "track_hint": "office3:gsa:item:4:8:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-18",
+      "track_hint": "office3:gsa:item:8:5:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-72",
+      "hypothesis_id": "hyp-18",
+      "track_hint": "office3:gsa:item:8:5:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-19",
+      "track_hint": "office3:gsa:item:7:-5:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-73",
+      "hypothesis_id": "hyp-19",
+      "track_hint": "office3:gsa:item:7:-5:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-20",
+      "track_hint": "office3:gsa:item:4:-10:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-74",
+      "hypothesis_id": "hyp-20",
+      "track_hint": "office3:gsa:item:4:-10:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-21",
+      "track_hint": "office3:gsa:item:2:-9:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-75",
+      "hypothesis_id": "hyp-21",
+      "track_hint": "office3:gsa:item:2:-9:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-22",
+      "track_hint": "office3:gsa:item:9:-7:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-76",
+      "hypothesis_id": "hyp-22",
+      "track_hint": "office3:gsa:item:9:-7:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-23",
+      "track_hint": "office3:gsa:item:6:7:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-77",
+      "hypothesis_id": "hyp-23",
+      "track_hint": "office3:gsa:item:6:7:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-24",
+      "track_hint": "office3:gsa:item:4:-14:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-78",
+      "hypothesis_id": "hyp-24",
+      "track_hint": "office3:gsa:item:4:-14:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-25",
+      "track_hint": "office3:gsa:item:2:-2:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-79",
+      "hypothesis_id": "hyp-25",
+      "track_hint": "office3:gsa:item:2:-2:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-26",
+      "track_hint": "office3:gsa:item:5:1:-7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-80",
+      "hypothesis_id": "hyp-26",
+      "track_hint": "office3:gsa:item:5:1:-7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-27",
+      "track_hint": "office3:gsa:item:12:5:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-81",
+      "hypothesis_id": "hyp-27",
+      "track_hint": "office3:gsa:item:12:5:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-28",
+      "track_hint": "office3:gsa:item:6:6:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-82",
+      "hypothesis_id": "hyp-28",
+      "track_hint": "office3:gsa:item:6:6:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-29",
+      "track_hint": "office3:gsa:item:4:-10:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-83",
+      "hypothesis_id": "hyp-29",
+      "track_hint": "office3:gsa:item:4:-10:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "memory_relation_update",
+    "owner_component": "memory",
+    "payload": {
+      "relation_edge_count": 1191
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-1",
+      "track_hint": "office3:gsa:item:15:3:0",
+      "candidate_count": 5,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-29",
+      "best_score": 2.6198,
+      "second_score": 1.0689,
+      "score_margin": 1.5509,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-29",
+          "score": 2.6198,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:3:0",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:3:0",
+          "node_appearance_key": "picture",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.3,
+            "geometry_profile": 0.3198,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.75
+          }
+        },
+        {
+          "object_id": "obj-2",
+          "score": 1.0689,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3189,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-2",
+      "track_hint": "office3:gsa:item:7:-10:-3",
+      "candidate_count": 4,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-59",
+      "best_score": 2.6697,
+      "second_score": 1.1669,
+      "score_margin": 1.5028,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-59",
+          "score": 2.6697,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:7:-10:-3",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:7:-10:-3",
+          "node_appearance_key": "sofa",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.3,
+            "geometry_profile": 0.3197,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.75
+          }
+        },
+        {
+          "object_id": "obj-2",
+          "score": 1.1669,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3169,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-3",
+      "track_hint": "office3:gsa:item:6:0:7",
+      "candidate_count": 3,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-57",
+      "best_score": 1.4625,
+      "second_score": 1.2047,
+      "score_margin": 0.2578,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-57",
+          "score": 1.4625,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:7:0:7",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:7:0:7",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.3,
+            "geometry_profile": 0.3125,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.3
+          }
+        },
+        {
+          "object_id": "obj-2",
+          "score": 1.2047,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0.15,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3047,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-84",
+      "hypothesis_id": "hyp-3",
+      "track_hint": "office3:gsa:item:6:0:7",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-57",
+      "best_score": 1.4625,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-4",
+      "track_hint": "office3:gsa:item:7:-2:7",
+      "candidate_count": 2,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-2",
+      "best_score": 1.2198,
+      "second_score": 1.1474,
+      "score_margin": 0.0724,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-2",
+          "score": 1.2198,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0.15,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3198,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-57",
+          "score": 1.1474,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:7:0:7",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:7:0:7",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.2974,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-85",
+      "hypothesis_id": "hyp-4",
+      "track_hint": "office3:gsa:item:7:-2:7",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-2",
+      "best_score": 1.2198,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-5",
+      "track_hint": "office3:gsa:item:10:6:5",
+      "candidate_count": 1,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-2",
+      "best_score": 1.3416,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-2",
+          "score": 1.3416,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "office3:gsa:item:15:2:5",
+          "node_descriptor": "office3:item",
+          "node_continuity_key": "office3:gsa:item:15:2:5",
+          "node_appearance_key": "blinds",
+          "relation_bonus": 0.15,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.4416,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-86",
+      "hypothesis_id": "hyp-5",
+      "track_hint": "office3:gsa:item:10:6:5",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-2",
+      "best_score": 1.3416,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-6",
+      "track_hint": "office3:gsa:item:6:1:-7",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-87",
+      "hypothesis_id": "hyp-6",
+      "track_hint": "office3:gsa:item:6:1:-7",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-7",
+      "track_hint": "office3:gsa:item:5:10:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-88",
+      "hypothesis_id": "hyp-7",
+      "track_hint": "office3:gsa:item:5:10:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-8",
+      "track_hint": "office3:gsa:item:7:9:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-89",
+      "hypothesis_id": "hyp-8",
+      "track_hint": "office3:gsa:item:7:9:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-9",
+      "track_hint": "office3:gsa:item:15:2:5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-90",
+      "hypothesis_id": "hyp-9",
+      "track_hint": "office3:gsa:item:15:2:5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-10",
+      "track_hint": "office3:gsa:item:5:-12:-3",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-91",
+      "hypothesis_id": "hyp-10",
+      "track_hint": "office3:gsa:item:5:-12:-3",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-11",
+      "track_hint": "office3:gsa:item:5:-8:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-92",
+      "hypothesis_id": "hyp-11",
+      "track_hint": "office3:gsa:item:5:-8:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-12",
+      "track_hint": "office3:gsa:item:9:-5:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-93",
+      "hypothesis_id": "hyp-12",
+      "track_hint": "office3:gsa:item:9:-5:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-13",
+      "track_hint": "office3:gsa:item:6:10:2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-94",
+      "hypothesis_id": "hyp-13",
+      "track_hint": "office3:gsa:item:6:10:2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-14",
+      "track_hint": "office3:gsa:item:4:8:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-95",
+      "hypothesis_id": "hyp-14",
+      "track_hint": "office3:gsa:item:4:8:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-15",
+      "track_hint": "office3:gsa:item:8:8:4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-office3-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-96",
+      "hypothesis_id": "hyp-15",
+      "track_hint": "office3:gsa:item:8:8:4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  }
+]

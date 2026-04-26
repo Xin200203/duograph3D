@@ -1,0 +1,4293 @@
+[
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-1",
+      "track_hint": "room0:gsa:item:9:3:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-1",
+      "hypothesis_id": "hyp-1",
+      "track_hint": "room0:gsa:item:9:3:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-2",
+      "track_hint": "room0:gsa:item:2:4:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-2",
+      "hypothesis_id": "hyp-2",
+      "track_hint": "room0:gsa:item:2:4:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-3",
+      "track_hint": "room0:gsa:item:12:-4:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-3",
+      "hypothesis_id": "hyp-3",
+      "track_hint": "room0:gsa:item:12:-4:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-4",
+      "track_hint": "room0:gsa:item:14:-6:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-4",
+      "hypothesis_id": "hyp-4",
+      "track_hint": "room0:gsa:item:14:-6:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-5",
+      "track_hint": "room0:gsa:item:14:-6:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-5",
+      "hypothesis_id": "hyp-5",
+      "track_hint": "room0:gsa:item:14:-6:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-6",
+      "track_hint": "room0:gsa:item:-1:-6:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-6",
+      "hypothesis_id": "hyp-6",
+      "track_hint": "room0:gsa:item:-1:-6:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-7",
+      "track_hint": "room0:gsa:item:-3:8:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-7",
+      "hypothesis_id": "hyp-7",
+      "track_hint": "room0:gsa:item:-3:8:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-8",
+      "track_hint": "room0:gsa:item:11:-6:1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-8",
+      "hypothesis_id": "hyp-8",
+      "track_hint": "room0:gsa:item:11:-6:1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-9",
+      "track_hint": "room0:gsa:item:11:-2:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-9",
+      "hypothesis_id": "hyp-9",
+      "track_hint": "room0:gsa:item:11:-2:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-10",
+      "track_hint": "room0:gsa:item:-5:3:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-10",
+      "hypothesis_id": "hyp-10",
+      "track_hint": "room0:gsa:item:-5:3:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-11",
+      "track_hint": "room0:gsa:item:-5:6:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-11",
+      "hypothesis_id": "hyp-11",
+      "track_hint": "room0:gsa:item:-5:6:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-12",
+      "track_hint": "room0:gsa:item:-3:5:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-12",
+      "hypothesis_id": "hyp-12",
+      "track_hint": "room0:gsa:item:-3:5:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-13",
+      "track_hint": "room0:gsa:item:14:-5:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-13",
+      "hypothesis_id": "hyp-13",
+      "track_hint": "room0:gsa:item:14:-5:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-14",
+      "track_hint": "room0:gsa:item:-5:5:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-14",
+      "hypothesis_id": "hyp-14",
+      "track_hint": "room0:gsa:item:-5:5:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-15",
+      "track_hint": "room0:gsa:item:12:-3:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-15",
+      "hypothesis_id": "hyp-15",
+      "track_hint": "room0:gsa:item:12:-3:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-16",
+      "track_hint": "room0:gsa:item:-2:4:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-16",
+      "hypothesis_id": "hyp-16",
+      "track_hint": "room0:gsa:item:-2:4:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-17",
+      "track_hint": "room0:gsa:item:-2:6:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-17",
+      "hypothesis_id": "hyp-17",
+      "track_hint": "room0:gsa:item:-2:6:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-18",
+      "track_hint": "room0:gsa:item:10:-4:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-18",
+      "hypothesis_id": "hyp-18",
+      "track_hint": "room0:gsa:item:10:-4:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-19",
+      "track_hint": "room0:gsa:item:-5:13:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-19",
+      "hypothesis_id": "hyp-19",
+      "track_hint": "room0:gsa:item:-5:13:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-20",
+      "track_hint": "room0:gsa:item:10:-6:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-20",
+      "hypothesis_id": "hyp-20",
+      "track_hint": "room0:gsa:item:10:-6:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-21",
+      "track_hint": "room0:gsa:item:9:7:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-21",
+      "hypothesis_id": "hyp-21",
+      "track_hint": "room0:gsa:item:9:7:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-22",
+      "track_hint": "room0:gsa:item:13:-2:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-22",
+      "hypothesis_id": "hyp-22",
+      "track_hint": "room0:gsa:item:13:-2:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-23",
+      "track_hint": "room0:gsa:item:9:0:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-23",
+      "hypothesis_id": "hyp-23",
+      "track_hint": "room0:gsa:item:9:0:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-24",
+      "track_hint": "room0:gsa:item:2:-6:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-24",
+      "hypothesis_id": "hyp-24",
+      "track_hint": "room0:gsa:item:2:-6:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-25",
+      "track_hint": "room0:gsa:item:14:-4:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-25",
+      "hypothesis_id": "hyp-25",
+      "track_hint": "room0:gsa:item:14:-4:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-26",
+      "track_hint": "room0:gsa:item:11:-4:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-26",
+      "hypothesis_id": "hyp-26",
+      "track_hint": "room0:gsa:item:11:-4:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-27",
+      "track_hint": "room0:gsa:item:-2:9:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-27",
+      "hypothesis_id": "hyp-27",
+      "track_hint": "room0:gsa:item:-2:9:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 1,
+    "branch_id": "duograph3d_full",
+    "event_type": "memory_relation_update",
+    "owner_component": "memory",
+    "payload": {
+      "relation_edge_count": 351
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-1",
+      "track_hint": "room0:gsa:item:9:3:-6",
+      "candidate_count": 5,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-1",
+      "best_score": 2.6184,
+      "second_score": 1.0598,
+      "score_margin": 1.5586,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-1",
+          "score": 2.6184,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:9:3:-6",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:9:3:-6",
+          "node_appearance_key": "stool",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.3,
+            "geometry_profile": 0.3184,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.75
+          }
+        },
+        {
+          "object_id": "obj-5",
+          "score": 1.0598,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:14:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:14:-6:-2",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3098,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-2",
+      "track_hint": "room0:gsa:item:-2:-6:-2",
+      "candidate_count": 4,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-5",
+      "best_score": 1.1159,
+      "second_score": 1.1145,
+      "score_margin": 0.0014,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-5",
+          "score": 1.1159,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:14:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:14:-6:-2",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3159,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-3",
+          "score": 1.1145,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:12:-4:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:12:-4:-2",
+          "node_appearance_key": "nightstand",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3145,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-28",
+      "hypothesis_id": "hyp-2",
+      "track_hint": "room0:gsa:item:-2:-6:-2",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-5",
+      "best_score": 1.1159,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-3",
+      "track_hint": "room0:gsa:item:11:-4:-2",
+      "candidate_count": 3,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-3",
+      "best_score": 1.4181,
+      "second_score": 1.1109,
+      "score_margin": 0.3072,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-3",
+          "score": 1.4181,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:12:-4:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:12:-4:-2",
+          "node_appearance_key": "nightstand",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1995,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.3,
+            "geometry_profile": 0.3186,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.3
+          }
+        },
+        {
+          "object_id": "obj-4",
+          "score": 1.1109,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:14:-6:-1",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:14:-6:-1",
+          "node_appearance_key": "vent",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1995,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3114,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-29",
+      "hypothesis_id": "hyp-3",
+      "track_hint": "room0:gsa:item:11:-4:-2",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-3",
+      "best_score": 1.4181,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-4",
+      "track_hint": "room0:gsa:item:14:-6:-2",
+      "candidate_count": 2,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-3",
+      "best_score": 1.1163,
+      "second_score": 0.8594,
+      "score_margin": 0.2569,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-3",
+          "score": 1.1163,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:12:-4:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:12:-4:-2",
+          "node_appearance_key": "nightstand",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1993,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.317,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-2",
+          "score": 0.8594,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:2:4:-8",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:2:4:-8",
+          "node_appearance_key": "floor",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1993,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.0601,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-30",
+      "hypothesis_id": "hyp-4",
+      "track_hint": "room0:gsa:item:14:-6:-2",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-3",
+      "best_score": 1.1163,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-5",
+      "track_hint": "room0:gsa:item:11:-6:1",
+      "candidate_count": 1,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-2",
+      "best_score": 0.8962,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-2",
+          "score": 0.8962,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:2:4:-8",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:2:4:-8",
+          "node_appearance_key": "floor",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1977,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.0985,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-31",
+      "hypothesis_id": "hyp-5",
+      "track_hint": "room0:gsa:item:11:-6:1",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-2",
+      "best_score": 0.8962,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-6",
+      "track_hint": "room0:gsa:item:-5:6:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-32",
+      "hypothesis_id": "hyp-6",
+      "track_hint": "room0:gsa:item:-5:6:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-7",
+      "track_hint": "room0:gsa:item:11:-5:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-33",
+      "hypothesis_id": "hyp-7",
+      "track_hint": "room0:gsa:item:11:-5:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-8",
+      "track_hint": "room0:gsa:item:-5:4:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-34",
+      "hypothesis_id": "hyp-8",
+      "track_hint": "room0:gsa:item:-5:4:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-9",
+      "track_hint": "room0:gsa:item:11:-2:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-35",
+      "hypothesis_id": "hyp-9",
+      "track_hint": "room0:gsa:item:11:-2:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-10",
+      "track_hint": "room0:gsa:item:2:-6:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-36",
+      "hypothesis_id": "hyp-10",
+      "track_hint": "room0:gsa:item:2:-6:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-11",
+      "track_hint": "room0:gsa:item:-5:3:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-37",
+      "hypothesis_id": "hyp-11",
+      "track_hint": "room0:gsa:item:-5:3:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-12",
+      "track_hint": "room0:gsa:item:-2:1:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-38",
+      "hypothesis_id": "hyp-12",
+      "track_hint": "room0:gsa:item:-2:1:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-13",
+      "track_hint": "room0:gsa:item:11:-4:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-39",
+      "hypothesis_id": "hyp-13",
+      "track_hint": "room0:gsa:item:11:-4:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-14",
+      "track_hint": "room0:gsa:item:-5:7:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-40",
+      "hypothesis_id": "hyp-14",
+      "track_hint": "room0:gsa:item:-5:7:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-15",
+      "track_hint": "room0:gsa:item:-2:4:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-41",
+      "hypothesis_id": "hyp-15",
+      "track_hint": "room0:gsa:item:-2:4:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-16",
+      "track_hint": "room0:gsa:item:-5:13:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-42",
+      "hypothesis_id": "hyp-16",
+      "track_hint": "room0:gsa:item:-5:13:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-17",
+      "track_hint": "room0:gsa:item:-5:5:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-43",
+      "hypothesis_id": "hyp-17",
+      "track_hint": "room0:gsa:item:-5:5:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-18",
+      "track_hint": "room0:gsa:item:2:4:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-44",
+      "hypothesis_id": "hyp-18",
+      "track_hint": "room0:gsa:item:2:4:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-19",
+      "track_hint": "room0:gsa:item:9:7:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-45",
+      "hypothesis_id": "hyp-19",
+      "track_hint": "room0:gsa:item:9:7:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-20",
+      "track_hint": "room0:gsa:item:10:-6:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-46",
+      "hypothesis_id": "hyp-20",
+      "track_hint": "room0:gsa:item:10:-6:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-21",
+      "track_hint": "room0:gsa:item:-5:5:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-47",
+      "hypothesis_id": "hyp-21",
+      "track_hint": "room0:gsa:item:-5:5:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-22",
+      "track_hint": "room0:gsa:item:13:-2:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-48",
+      "hypothesis_id": "hyp-22",
+      "track_hint": "room0:gsa:item:13:-2:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-23",
+      "track_hint": "room0:gsa:item:9:1:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-49",
+      "hypothesis_id": "hyp-23",
+      "track_hint": "room0:gsa:item:9:1:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-24",
+      "track_hint": "room0:gsa:item:-2:7:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-50",
+      "hypothesis_id": "hyp-24",
+      "track_hint": "room0:gsa:item:-2:7:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-25",
+      "track_hint": "room0:gsa:item:13:-1:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-51",
+      "hypothesis_id": "hyp-25",
+      "track_hint": "room0:gsa:item:13:-1:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 2,
+    "branch_id": "duograph3d_full",
+    "event_type": "memory_relation_update",
+    "owner_component": "memory",
+    "payload": {
+      "relation_edge_count": 651
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-1",
+      "track_hint": "room0:gsa:item:9:7:-6",
+      "candidate_count": 5,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-1",
+      "best_score": 1.0691,
+      "second_score": 1.0635,
+      "score_margin": 0.0056,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-1",
+          "score": 1.0691,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:9:3:-6",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:9:3:-6",
+          "node_appearance_key": "stool",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3191,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-28",
+          "score": 1.0635,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:-2:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:-2:-6:-2",
+          "node_appearance_key": "door",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3135,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-52",
+      "hypothesis_id": "hyp-1",
+      "track_hint": "room0:gsa:item:9:7:-6",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-1",
+      "best_score": 1.0691,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-2",
+      "track_hint": "room0:gsa:item:9:3:-6",
+      "candidate_count": 4,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-1",
+      "best_score": 2.6184,
+      "second_score": 1.0642,
+      "score_margin": 1.5542,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-1",
+          "score": 2.6184,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:9:3:-6",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:9:3:-6",
+          "node_appearance_key": "stool",
+          "relation_bonus": 0.0,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.3,
+            "geometry_profile": 0.3184,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.75
+          }
+        },
+        {
+          "object_id": "obj-28",
+          "score": 1.0642,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:-2:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:-2:-6:-2",
+          "node_appearance_key": "door",
+          "relation_bonus": 0.0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3142,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-3",
+      "track_hint": "room0:gsa:item:14:-6:-2",
+      "candidate_count": 3,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-30",
+      "best_score": 2.6694,
+      "second_score": 1.1151,
+      "score_margin": 1.5543,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-30",
+          "score": 2.6694,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:14:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:14:-6:-2",
+          "node_appearance_key": "picture",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.3,
+            "geometry_profile": 0.3194,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.75
+          }
+        },
+        {
+          "object_id": "obj-29",
+          "score": 1.1151,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:11:-4:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:11:-4:-2",
+          "node_appearance_key": "nightstand",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3151,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-4",
+      "track_hint": "room0:gsa:item:-1:-6:-2",
+      "candidate_count": 2,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-28",
+      "best_score": 1.6002,
+      "second_score": 1.1657,
+      "score_margin": 0.4345,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-28",
+          "score": 1.6002,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:-2:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:-2:-6:-2",
+          "node_appearance_key": "door",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.3,
+            "geometry_profile": 0.4502,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.3
+          }
+        },
+        {
+          "object_id": "obj-29",
+          "score": 1.1657,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:11:-4:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:11:-4:-2",
+          "node_appearance_key": "nightstand",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3157,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-53",
+      "hypothesis_id": "hyp-4",
+      "track_hint": "room0:gsa:item:-1:-6:-2",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-28",
+      "best_score": 1.6002,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-5",
+      "track_hint": "room0:gsa:item:11:-4:-2",
+      "candidate_count": 1,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-28",
+      "best_score": 1.1696,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-28",
+          "score": 1.1696,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:-2:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:-2:-6:-2",
+          "node_appearance_key": "door",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3196,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-54",
+      "hypothesis_id": "hyp-5",
+      "track_hint": "room0:gsa:item:11:-4:-2",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-28",
+      "best_score": 1.1696,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-6",
+      "track_hint": "room0:gsa:item:11:-6:1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-55",
+      "hypothesis_id": "hyp-6",
+      "track_hint": "room0:gsa:item:11:-6:1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-7",
+      "track_hint": "room0:gsa:item:14:-2:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-56",
+      "hypothesis_id": "hyp-7",
+      "track_hint": "room0:gsa:item:14:-2:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-8",
+      "track_hint": "room0:gsa:item:-3:6:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-57",
+      "hypothesis_id": "hyp-8",
+      "track_hint": "room0:gsa:item:-3:6:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-9",
+      "track_hint": "room0:gsa:item:-5:4:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-58",
+      "hypothesis_id": "hyp-9",
+      "track_hint": "room0:gsa:item:-5:4:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-10",
+      "track_hint": "room0:gsa:item:-5:7:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-59",
+      "hypothesis_id": "hyp-10",
+      "track_hint": "room0:gsa:item:-5:7:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-11",
+      "track_hint": "room0:gsa:item:-5:4:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-60",
+      "hypothesis_id": "hyp-11",
+      "track_hint": "room0:gsa:item:-5:4:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-12",
+      "track_hint": "room0:gsa:item:-2:1:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-61",
+      "hypothesis_id": "hyp-12",
+      "track_hint": "room0:gsa:item:-2:1:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-13",
+      "track_hint": "room0:gsa:item:-2:9:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-62",
+      "hypothesis_id": "hyp-13",
+      "track_hint": "room0:gsa:item:-2:9:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-14",
+      "track_hint": "room0:gsa:item:11:-2:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-63",
+      "hypothesis_id": "hyp-14",
+      "track_hint": "room0:gsa:item:11:-2:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-15",
+      "track_hint": "room0:gsa:item:-5:7:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-64",
+      "hypothesis_id": "hyp-15",
+      "track_hint": "room0:gsa:item:-5:7:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-16",
+      "track_hint": "room0:gsa:item:-5:5:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-65",
+      "hypothesis_id": "hyp-16",
+      "track_hint": "room0:gsa:item:-5:5:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-17",
+      "track_hint": "room0:gsa:item:2:-6:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-66",
+      "hypothesis_id": "hyp-17",
+      "track_hint": "room0:gsa:item:2:-6:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-18",
+      "track_hint": "room0:gsa:item:11:-4:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-67",
+      "hypothesis_id": "hyp-18",
+      "track_hint": "room0:gsa:item:11:-4:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-19",
+      "track_hint": "room0:gsa:item:10:-6:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-68",
+      "hypothesis_id": "hyp-19",
+      "track_hint": "room0:gsa:item:10:-6:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-20",
+      "track_hint": "room0:gsa:item:2:5:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-69",
+      "hypothesis_id": "hyp-20",
+      "track_hint": "room0:gsa:item:2:5:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-21",
+      "track_hint": "room0:gsa:item:-5:5:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-70",
+      "hypothesis_id": "hyp-21",
+      "track_hint": "room0:gsa:item:-5:5:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-22",
+      "track_hint": "room0:gsa:item:9:1:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-71",
+      "hypothesis_id": "hyp-22",
+      "track_hint": "room0:gsa:item:9:1:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-23",
+      "track_hint": "room0:gsa:item:14:-4:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-72",
+      "hypothesis_id": "hyp-23",
+      "track_hint": "room0:gsa:item:14:-4:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-24",
+      "track_hint": "room0:gsa:item:-1:-6:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-73",
+      "hypothesis_id": "hyp-24",
+      "track_hint": "room0:gsa:item:-1:-6:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-25",
+      "track_hint": "room0:gsa:item:13:-1:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-74",
+      "hypothesis_id": "hyp-25",
+      "track_hint": "room0:gsa:item:13:-1:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 3,
+    "branch_id": "duograph3d_full",
+    "event_type": "memory_relation_update",
+    "owner_component": "memory",
+    "payload": {
+      "relation_edge_count": 950
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-1",
+      "track_hint": "room0:gsa:item:9:3:-6",
+      "candidate_count": 5,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-1",
+      "best_score": 2.6305,
+      "second_score": 1.223,
+      "score_margin": 1.4075,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-1",
+          "score": 2.6305,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:9:3:-6",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:9:3:-6",
+          "node_appearance_key": "stool",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.3,
+            "geometry_profile": 0.3305,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.75
+          }
+        },
+        {
+          "object_id": "obj-30",
+          "score": 1.223,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:14:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:14:-6:-2",
+          "node_appearance_key": "picture",
+          "relation_bonus": 0,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.473,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-2",
+      "track_hint": "room0:gsa:item:14:-6:-2",
+      "candidate_count": 4,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-30",
+      "best_score": 2.4196,
+      "second_score": 1.1114,
+      "score_margin": 1.3082,
+      "best_has_strong_identity": true,
+      "top_candidates": [
+        {
+          "object_id": "obj-30",
+          "score": 2.4196,
+          "has_strong_identity": true,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:14:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:14:-6:-2",
+          "node_appearance_key": "picture",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.8,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.45,
+            "appearance": 0.0,
+            "geometry_profile": 0.3196,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.45
+          }
+        },
+        {
+          "object_id": "obj-53",
+          "score": 1.1114,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:-1:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:-1:-6:-2",
+          "node_appearance_key": "door",
+          "relation_bonus": 0.05,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.2,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3114,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-3",
+      "track_hint": "room0:gsa:item:13:-6:-1",
+      "candidate_count": 3,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-53",
+      "best_score": 1.1543,
+      "second_score": 1.154,
+      "score_margin": 0.0003,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-53",
+          "score": 1.1543,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:-1:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:-1:-6:-2",
+          "node_appearance_key": "door",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1998,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3045,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-54",
+          "score": 1.154,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:11:-4:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:11:-4:-2",
+          "node_appearance_key": "nightstand",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1998,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.3042,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-75",
+      "hypothesis_id": "hyp-3",
+      "track_hint": "room0:gsa:item:13:-6:-1",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-53",
+      "best_score": 1.1543,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-4",
+      "track_hint": "room0:gsa:item:11:-6:1",
+      "candidate_count": 2,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-52",
+      "best_score": 1.1192,
+      "second_score": 1.1129,
+      "score_margin": 0.0063,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-52",
+          "score": 1.1192,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:9:7:-6",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:9:7:-6",
+          "node_appearance_key": "comforter",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1979,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.2713,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        },
+        {
+          "object_id": "obj-53",
+          "score": 1.1129,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:-1:-6:-2",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:-1:-6:-2",
+          "node_appearance_key": "door",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1979,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.265,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-76",
+      "hypothesis_id": "hyp-4",
+      "track_hint": "room0:gsa:item:11:-6:1",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-52",
+      "best_score": 1.1192,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-5",
+      "track_hint": "room0:gsa:item:-5:7:-2",
+      "candidate_count": 1,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "obj-52",
+      "best_score": 1.2862,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": [
+        {
+          "object_id": "obj-52",
+          "score": 1.2862,
+          "has_strong_identity": false,
+          "status": "active",
+          "node_geometry_key": "room0:gsa:item:9:7:-6",
+          "node_descriptor": "room0:item",
+          "node_continuity_key": "room0:gsa:item:9:7:-6",
+          "node_appearance_key": "comforter",
+          "relation_bonus": 0.1,
+          "components": {
+            "geometry_key": 0.0,
+            "descriptor": 0.55,
+            "confidence": 0.1968,
+            "propagation": 0.0,
+            "continuity": 0.0,
+            "appearance": 0.0,
+            "geometry_profile": 0.4394,
+            "continuity_profile_penalty": 0.0,
+            "temporal_total": 0.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-77",
+      "hypothesis_id": "hyp-5",
+      "track_hint": "room0:gsa:item:-5:7:-2",
+      "reason": "best_candidate_without_strong_identity",
+      "best_object_id": "obj-52",
+      "best_score": 1.2862,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-6",
+      "track_hint": "room0:gsa:item:-5:4:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-78",
+      "hypothesis_id": "hyp-6",
+      "track_hint": "room0:gsa:item:-5:4:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-7",
+      "track_hint": "room0:gsa:item:14:-2:-4",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-79",
+      "hypothesis_id": "hyp-7",
+      "track_hint": "room0:gsa:item:14:-2:-4",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-8",
+      "track_hint": "room0:gsa:item:11:-2:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-80",
+      "hypothesis_id": "hyp-8",
+      "track_hint": "room0:gsa:item:11:-2:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-9",
+      "track_hint": "room0:gsa:item:-5:6:1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-81",
+      "hypothesis_id": "hyp-9",
+      "track_hint": "room0:gsa:item:-5:6:1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-10",
+      "track_hint": "room0:gsa:item:-5:7:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-82",
+      "hypothesis_id": "hyp-10",
+      "track_hint": "room0:gsa:item:-5:7:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-11",
+      "track_hint": "room0:gsa:item:-5:4:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-83",
+      "hypothesis_id": "hyp-11",
+      "track_hint": "room0:gsa:item:-5:4:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-12",
+      "track_hint": "room0:gsa:item:-2:1:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-84",
+      "hypothesis_id": "hyp-12",
+      "track_hint": "room0:gsa:item:-2:1:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-13",
+      "track_hint": "room0:gsa:item:-5:3:1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-85",
+      "hypothesis_id": "hyp-13",
+      "track_hint": "room0:gsa:item:-5:3:1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-14",
+      "track_hint": "room0:gsa:item:-2:9:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-86",
+      "hypothesis_id": "hyp-14",
+      "track_hint": "room0:gsa:item:-2:9:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-15",
+      "track_hint": "room0:gsa:item:-2:4:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-87",
+      "hypothesis_id": "hyp-15",
+      "track_hint": "room0:gsa:item:-2:4:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-16",
+      "track_hint": "room0:gsa:item:-5:5:0",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-88",
+      "hypothesis_id": "hyp-16",
+      "track_hint": "room0:gsa:item:-5:5:0",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-17",
+      "track_hint": "room0:gsa:item:2:-6:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-89",
+      "hypothesis_id": "hyp-17",
+      "track_hint": "room0:gsa:item:2:-6:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-18",
+      "track_hint": "room0:gsa:item:10:-5:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-90",
+      "hypothesis_id": "hyp-18",
+      "track_hint": "room0:gsa:item:10:-5:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-19",
+      "track_hint": "room0:gsa:item:11:-4:-5",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-91",
+      "hypothesis_id": "hyp-19",
+      "track_hint": "room0:gsa:item:11:-4:-5",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-20",
+      "track_hint": "room0:gsa:item:9:5:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-92",
+      "hypothesis_id": "hyp-20",
+      "track_hint": "room0:gsa:item:9:5:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-21",
+      "track_hint": "room0:gsa:item:9:7:-6",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-93",
+      "hypothesis_id": "hyp-21",
+      "track_hint": "room0:gsa:item:9:7:-6",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-22",
+      "track_hint": "room0:gsa:item:2:4:-8",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-94",
+      "hypothesis_id": "hyp-22",
+      "track_hint": "room0:gsa:item:2:4:-8",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-23",
+      "track_hint": "room0:gsa:item:-5:5:-1",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-95",
+      "hypothesis_id": "hyp-23",
+      "track_hint": "room0:gsa:item:-5:5:-1",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_candidate_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "hypothesis_id": "hyp-24",
+      "track_hint": "room0:gsa:item:12:-4:-2",
+      "candidate_count": 0,
+      "candidate_budget": 5,
+      "threshold": 1.2,
+      "best_object_id": "",
+      "best_score": null,
+      "second_score": null,
+      "score_margin": null,
+      "best_has_strong_identity": false,
+      "top_candidates": []
+    }
+  },
+  {
+    "sequence_id": "replica-room0-conceptgraphs-gsa-monitor",
+    "step_id": 4,
+    "branch_id": "duograph3d_full",
+    "event_type": "association_birth_diagnostic",
+    "owner_component": "layer-2",
+    "payload": {
+      "object_id": "obj-96",
+      "hypothesis_id": "hyp-24",
+      "track_hint": "room0:gsa:item:12:-4:-2",
+      "reason": "no_candidate",
+      "best_object_id": "",
+      "best_score": null,
+      "best_has_strong_identity": false,
+      "threshold": 1.2
+    }
+  }
+]
