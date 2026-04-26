@@ -1,0 +1,130 @@
+{
+  "status": "alignment_exports_written",
+  "report": "docs/alignment_exports/dense_fixture/bounded_slice_fixture.json",
+  "geometry": "docs/alignment_exports/dense_fixture/dense_geometry_fixture.json",
+  "onlineanyseg": {
+    "adapter": "onlineanyseg",
+    "status": "format_aligned_official_ready",
+    "official_evaluation_ready": true,
+    "reason": "Dense point assignments and the required OnlineAnySeg metadata were supplied; the export is evaluator-ready, subject to running the external benchmark script against the matching GT roots.",
+    "dataset": "scannet",
+    "scene": "duograph3d_dense_alignment_fixture",
+    "branch_id": "duograph3d_full",
+    "object_count": 2,
+    "point_count": 6,
+    "alignment_mode": "dense_geometry",
+    "geometry_source": "local dense alignment fixture, not an experiment result",
+    "coordinate_frame": "gt_reconstruction_fixture",
+    "readiness": {
+      "dense_point_assignments": true,
+      "all_exported_objects_have_points": true,
+      "gt_aligned_geometry_declared": true,
+      "explicit_class_ids": true,
+      "explicit_object_features": true
+    },
+    "files": {
+      "final_ply": "docs/alignment_exports/dense_fixture/exports/onlineanyseg/duograph3d_dense_alignment_fixture/final.ply",
+      "ckpt_final_npz": "docs/alignment_exports/dense_fixture/exports/onlineanyseg/duograph3d_dense_alignment_fixture/ckpt_final.npz"
+    },
+    "evaluator_contract": {
+      "expected_scene_dir": "<result_dir>/<scene>",
+      "expected_files": [
+        "final.ply",
+        "ckpt_final.npz"
+      ],
+      "npz_keys": [
+        "pred_masks",
+        "pred_classes",
+        "pred_score"
+      ],
+      "command_template": "python eval/evaluate_seqs.py --result_dir <result_dir> --seq_name <scene> --gt_dir <gt_dir> --gt_pc_pattern %s/%s_vh_clean_2.ply --gt_seg_dir <gt_seg_dir> --gt_seg_pattern %s.txt"
+    },
+    "objects": [
+      {
+        "object_id": "obj-1",
+        "track_hint": "track-chair",
+        "score": 0.91,
+        "class_id": 5,
+        "class_name": "chair",
+        "point_count": 3,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-2",
+        "track_hint": "track-table",
+        "score": 0.84,
+        "class_id": 8,
+        "class_name": "table",
+        "point_count": 3,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      }
+    ]
+  },
+  "conceptgraphs": {
+    "adapter": "conceptgraphs",
+    "status": "format_aligned_official_ready",
+    "official_evaluation_ready": true,
+    "reason": "Dense point assignments and the required ConceptGraphs metadata were supplied; the export is evaluator-ready, subject to running the external benchmark script against the matching GT roots.",
+    "dataset": "scannet",
+    "scene": "duograph3d_dense_alignment_fixture",
+    "branch_id": "duograph3d_full",
+    "pred_exp_name": "duograph3d_alignment",
+    "object_count": 2,
+    "feature_dim": 4,
+    "alignment_mode": "dense_geometry",
+    "geometry_source": "local dense alignment fixture, not an experiment result",
+    "coordinate_frame": "gt_reconstruction_fixture",
+    "readiness": {
+      "dense_point_assignments": true,
+      "all_exported_objects_have_points": true,
+      "gt_aligned_geometry_declared": true,
+      "explicit_class_ids": true,
+      "explicit_object_features": true
+    },
+    "files": {
+      "conceptgraphs_pkl_gz": "docs/alignment_exports/dense_fixture/exports/conceptgraphs/duograph3d_dense_alignment_fixture/pcd_saves/full_pcd_duograph3d_alignment.pkl.gz",
+      "semantic_proxy_json": "docs/alignment_exports/dense_fixture/exports/conceptgraphs/duograph3d_dense_alignment_fixture/pcd_saves/duograph3d_alignment_semantic_proxy.json"
+    },
+    "evaluator_contract": {
+      "expected_glob": "<replica_root>/<scene>/pcd_saves/full_pcd_duograph3d_alignment*.pkl.gz",
+      "command_template": "python scripts/eval_replica_semseg.py --replica_root <replica_root> --replica_semantic_root <replica_semantic_root> --pred_exp_name duograph3d_alignment",
+      "payload_keys": [
+        "objects",
+        "bg_objects"
+      ],
+      "object_keys": [
+        "clip_ft",
+        "text_ft",
+        "pcd_np",
+        "pcd_color_np",
+        "bbox_np",
+        "class_name",
+        "class_id"
+      ]
+    },
+    "objects": [
+      {
+        "object_id": "obj-1",
+        "track_hint": "track-chair",
+        "score": 0.91,
+        "class_id": 5,
+        "class_name": "chair",
+        "point_count": 3,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-2",
+        "track_hint": "track-table",
+        "score": 0.84,
+        "class_id": 8,
+        "class_name": "table",
+        "point_count": 3,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      }
+    ]
+  }
+}

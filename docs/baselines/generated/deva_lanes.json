@@ -1,0 +1,162 @@
+[
+  {
+    "baseline_id": "deva_official_offline",
+    "label": "DEVA official offline",
+    "dataset": "replica",
+    "scene": "office0",
+    "family": "external_official_target",
+    "faithfulness": "official_repo_executed",
+    "primary_metric_name": "avg_segments_per_frame",
+    "primary_metric_value": 1.0,
+    "metrics": {
+      "frame_count": 6.0,
+      "frames_with_segments": 6.0,
+      "avg_segments_per_frame": 1.0,
+      "unique_track_ids": 1.0,
+      "avg_area": 64096.667
+    },
+    "notes": [
+      "Derived from executed DEVA JSONFiles output over the DuoGraph3D-exported offline contract."
+    ]
+  },
+  {
+    "baseline_id": "deva_official_offline",
+    "label": "DEVA official offline",
+    "dataset": "replica",
+    "scene": "office1",
+    "family": "external_official_target",
+    "faithfulness": "official_repo_executed",
+    "primary_metric_name": "avg_segments_per_frame",
+    "primary_metric_value": 0.0,
+    "metrics": {
+      "frame_count": 6.0,
+      "frames_with_segments": 0.0,
+      "avg_segments_per_frame": 0.0,
+      "unique_track_ids": 0.0,
+      "avg_area": 0.0
+    },
+    "notes": [
+      "Derived from executed DEVA JSONFiles output over the DuoGraph3D-exported offline contract."
+    ]
+  },
+  {
+    "baseline_id": "deva_official_offline",
+    "label": "DEVA official offline",
+    "dataset": "replica",
+    "scene": "office2",
+    "family": "external_official_target",
+    "faithfulness": "official_repo_executed",
+    "primary_metric_name": "avg_segments_per_frame",
+    "primary_metric_value": 0.667,
+    "metrics": {
+      "frame_count": 6.0,
+      "frames_with_segments": 4.0,
+      "avg_segments_per_frame": 0.667,
+      "unique_track_ids": 1.0,
+      "avg_area": 148893.5
+    },
+    "notes": [
+      "Derived from executed DEVA JSONFiles output over the DuoGraph3D-exported offline contract."
+    ]
+  },
+  {
+    "baseline_id": "deva_official_offline",
+    "label": "DEVA official offline",
+    "dataset": "replica",
+    "scene": "office3",
+    "family": "external_official_target",
+    "faithfulness": "official_repo_executed",
+    "primary_metric_name": "avg_segments_per_frame",
+    "primary_metric_value": 0.667,
+    "metrics": {
+      "frame_count": 6.0,
+      "frames_with_segments": 4.0,
+      "avg_segments_per_frame": 0.667,
+      "unique_track_ids": 1.0,
+      "avg_area": 97710.25
+    },
+    "notes": [
+      "Derived from executed DEVA JSONFiles output over the DuoGraph3D-exported offline contract."
+    ]
+  },
+  {
+    "baseline_id": "deva_official_offline",
+    "label": "DEVA official offline",
+    "dataset": "replica",
+    "scene": "office4",
+    "family": "external_official_target",
+    "faithfulness": "official_repo_executed",
+    "primary_metric_name": "avg_segments_per_frame",
+    "primary_metric_value": 0.0,
+    "metrics": {
+      "frame_count": 6.0,
+      "frames_with_segments": 0.0,
+      "avg_segments_per_frame": 0.0,
+      "unique_track_ids": 0.0,
+      "avg_area": 0.0
+    },
+    "notes": [
+      "Derived from executed DEVA JSONFiles output over the DuoGraph3D-exported offline contract."
+    ]
+  },
+  {
+    "baseline_id": "deva_official_offline",
+    "label": "DEVA official offline",
+    "dataset": "replica",
+    "scene": "room0",
+    "family": "external_official_target",
+    "faithfulness": "official_repo_executed",
+    "primary_metric_name": "avg_segments_per_frame",
+    "primary_metric_value": 0.0,
+    "metrics": {
+      "frame_count": 6.0,
+      "frames_with_segments": 0.0,
+      "avg_segments_per_frame": 0.0,
+      "unique_track_ids": 0.0,
+      "avg_area": 0.0
+    },
+    "notes": [
+      "Derived from executed DEVA JSONFiles output over the DuoGraph3D-exported offline contract."
+    ]
+  },
+  {
+    "baseline_id": "deva_official_offline",
+    "label": "DEVA official offline",
+    "dataset": "replica",
+    "scene": "room1",
+    "family": "external_official_target",
+    "faithfulness": "official_repo_executed",
+    "primary_metric_name": "avg_segments_per_frame",
+    "primary_metric_value": 0.0,
+    "metrics": {
+      "frame_count": 6.0,
+      "frames_with_segments": 0.0,
+      "avg_segments_per_frame": 0.0,
+      "unique_track_ids": 0.0,
+      "avg_area": 0.0
+    },
+    "notes": [
+      "Derived from executed DEVA JSONFiles output over the DuoGraph3D-exported offline contract."
+    ]
+  },
+  {
+    "baseline_id": "deva_official_offline",
+    "label": "DEVA official offline",
+    "dataset": "replica",
+    "scene": "room2",
+    "family": "external_official_target",
+    "faithfulness": "official_repo_executed",
+    "primary_metric_name": "avg_segments_per_frame",
+    "primary_metric_value": 0.0,
+    "metrics": {
+      "frame_count": 6.0,
+      "frames_with_segments": 0.0,
+      "avg_segments_per_frame": 0.0,
+      "unique_track_ids": 0.0,
+      "avg_area": 0.0
+    },
+    "notes": [
+      "Derived from executed DEVA JSONFiles output over the DuoGraph3D-exported offline contract."
+    ]
+  }
+]

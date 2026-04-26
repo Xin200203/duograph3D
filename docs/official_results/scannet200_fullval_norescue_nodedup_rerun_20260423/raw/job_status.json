@@ -1,0 +1,20 @@
+{
+  "status": "completed",
+  "remote_root": "/home/nebula/xxy/duograph3d_artifacts/formal_fullval_norescue_nodedup_rerun_20260423/norescue_nodedup_strict_independent",
+  "completed_at_log_time": "2026/04/23 19:46:00 +08:00",
+  "metric_jsons": [
+    "20260423_192234/20260423_192234.json"
+  ],
+  "online_monitor_summary": "online_monitor/online_monitor_summary.json",
+  "all_ap": 0.4134896278976999,
+  "all_ap_50": 0.6300141839009336,
+  "all_ap_25": 0.7885665629137266,
+  "scene_count": 312,
+  "frame_count": 13430,
+  "match_rate_mean": 0.820153534412384,
+  "birth_rate_mean": 0.17910180985927582,
+  "rescued_mean": 0.0,
+  "topk_drop_mean": 6.002382755279541,
+  "run_command": "run_command.sh",
+  "log": "20260423_192234.log"
+}

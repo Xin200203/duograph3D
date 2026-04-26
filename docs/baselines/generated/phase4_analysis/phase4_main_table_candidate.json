@@ -1,0 +1,114 @@
+{
+  "metrics": [
+    "identity_fragmentation_count",
+    "track_consistency_rate",
+    "real_observation_frame_rate",
+    "geometry_support_mean"
+  ],
+  "rows": [
+    {
+      "regime": "phase4_baseline",
+      "report_coverage": 6,
+      "metrics": {
+        "identity_fragmentation_count": {
+          "mean": 46.667,
+          "min": 0.0,
+          "max": 111.0
+        },
+        "track_consistency_rate": {
+          "mean": 0.742,
+          "min": 0.453,
+          "max": 1.0
+        },
+        "real_observation_frame_rate": {
+          "mean": 0.805,
+          "min": 0.667,
+          "max": 1.0
+        },
+        "geometry_support_mean": {
+          "mean": 0.33,
+          "min": 0.2,
+          "max": 0.62
+        }
+      }
+    },
+    {
+      "regime": "phase4_burst",
+      "report_coverage": 6,
+      "metrics": {
+        "identity_fragmentation_count": {
+          "mean": 18.0,
+          "min": 0.0,
+          "max": 40.0
+        },
+        "track_consistency_rate": {
+          "mean": 0.801,
+          "min": 0.583,
+          "max": 1.0
+        },
+        "real_observation_frame_rate": {
+          "mean": 0.5,
+          "min": 0.333,
+          "max": 0.667
+        },
+        "geometry_support_mean": {
+          "mean": 0.359,
+          "min": 0.2,
+          "max": 0.667
+        }
+      }
+    },
+    {
+      "regime": "phase4_random",
+      "report_coverage": 6,
+      "metrics": {
+        "identity_fragmentation_count": {
+          "mean": 11.167,
+          "min": 0.0,
+          "max": 25.0
+        },
+        "track_consistency_rate": {
+          "mean": 0.852,
+          "min": 0.679,
+          "max": 1.0
+        },
+        "real_observation_frame_rate": {
+          "mean": 0.361,
+          "min": 0.333,
+          "max": 0.5
+        },
+        "geometry_support_mean": {
+          "mean": 0.414,
+          "min": 0.2,
+          "max": 0.77
+        }
+      }
+    },
+    {
+      "regime": "phase4_stress",
+      "report_coverage": 6,
+      "metrics": {
+        "identity_fragmentation_count": {
+          "mean": 11.167,
+          "min": 0.0,
+          "max": 28.0
+        },
+        "track_consistency_rate": {
+          "mean": 0.854,
+          "min": 0.67,
+          "max": 1.0
+        },
+        "real_observation_frame_rate": {
+          "mean": 0.5,
+          "min": 0.333,
+          "max": 0.667
+        },
+        "geometry_support_mean": {
+          "mean": 0.394,
+          "min": 0.2,
+          "max": 0.853
+        }
+      }
+    }
+  ]
+}

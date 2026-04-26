@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+<style>
+    .title { font: 700 26px sans-serif; fill: #111; }
+    .subtitle { font: 500 18px sans-serif; fill: #222; }
+    .body { font: 400 16px sans-serif; fill: #222; }
+    .small { font: 400 14px sans-serif; fill: #333; }
+    .box { fill: #f7f9fc; stroke: #2c3e50; stroke-width: 2; rx: 12; ry: 12; }
+    .accent { fill: #eaf2ff; stroke: #356ae6; stroke-width: 2; rx: 12; ry: 12; }
+    .danger { fill: #fff0f0; stroke: #c0392b; stroke-width: 2; rx: 12; ry: 12; }
+    .arrow { stroke: #34495e; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+</style>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L0,6 L9,3 z" fill="#34495e"/>
+  </marker>
+</defs>
+<text class="title" x="40" y="60">Figure 4. Graph-memory structure</text>
+<text class="body" x="40" y="95">Object graph memory stores node state, lifecycle status, and explicit relation edges updated online.</text>
+<rect class="accent" x="90" y="150" width="260" height="210"/>
+<text class="subtitle" x="108" y="180">Memory node A</text>
+<text class="small" x="108" y="210">descriptor fused / recent</text>
+<text class="small" x="108" y="230">lifecycle state</text>
+<text class="small" x="108" y="250">support history</text>
+<text class="small" x="108" y="270">continuity / appearance</text>
+<rect class="accent" x="470" y="150" width="260" height="210"/>
+<text class="subtitle" x="488" y="180">Memory node B</text>
+<text class="small" x="488" y="210">descriptor fused / recent</text>
+<text class="small" x="488" y="230">lifecycle state</text>
+<text class="small" x="488" y="250">support history</text>
+<text class="small" x="488" y="270">continuity / appearance</text>
+<rect class="danger" x="850" y="150" width="260" height="210"/>
+<text class="subtitle" x="868" y="180">Relation edge</text>
+<text class="small" x="868" y="210">co-visibility count</text>
+<text class="small" x="868" y="230">last seen step</text>
+<text class="small" x="868" y="250">edge strength</text>
+<text class="small" x="868" y="270">feeds association bonus</text>
+<path class="arrow" d="M350 255 L470 255"/>
+<path class="arrow" d="M730 255 L850 255"/>
+<rect class="box" x="280" y="450" width="640" height="180"/>
+<text class="subtitle" x="298" y="480">Decision-bearing memory</text>
+<text class="small" x="298" y="510">Graph memory is not only a post-hoc export: relation edges are updated online</text>
+<text class="small" x="298" y="530">and can influence future current-to-memory association decisions.</text></svg>

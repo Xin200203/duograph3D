@@ -1,0 +1,18 @@
+repo=/home/nebula/xxy/OnlineAnySeg
+commit=152466e318f8220bcc6838c03e340cce2f2153b8
+remote=https://github.com/yjtang249/OnlineAnySeg.git
+primary_env=conceptgraph-cu118
+tmp_paths []
+main FAIL ModuleNotFoundError No module named 'MinkowskiEngine'
+Dataset.dataset OK
+Scene_rep FAIL ModuleNotFoundError No module named 'MinkowskiEngine'
+voxel_hashing OK
+
+alternative_env=ESAM
+tmp_paths []
+main FAIL ModuleNotFoundError No module named 'pytorch3d'
+Dataset.dataset FAIL ModuleNotFoundError No module named 'pytorch3d'
+Scene_rep FAIL ModuleNotFoundError No module named 'pytorch3d'
+voxel_hashing OK
+
+blocker=No single existing env has both OnlineAnySeg pytorch3d/open_clip deps and the Python-compatible MinkowskiEngine/FCGF stack.

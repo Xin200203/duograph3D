@@ -1,0 +1,6 @@
+OnlineAnySeg env health after reconfiguration (2026-04-23)
+repo=/home/nebula/xxy/OnlineAnySeg
+commit=152466e318f8220bcc6838c03e340cce2f2153b8
+env=duograph-oas-cu116 cloned_from=ESAM
+key additions=pytorch3d v0.7.2 built from source with CUDA_HOME=/usr/local/cuda-11.6 TORCH_CUDA_ARCH_LIST=8.6+PTX; future-fstrings 1.2.0
+import check: main OK; Dataset.dataset OK; Scene_rep OK; voxel_hashing OK

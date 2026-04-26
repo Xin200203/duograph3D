@@ -85,5 +85,6 @@ class DuoGraph3DPipeline:
             memory_nodes={key: replace(value) for key, value in memory.nodes.items()},
             event_count=len(logger.records),
             decisions=all_decisions,
+            relation_edges=memory.relation_snapshot(),
         )
         return result, logger

@@ -1,0 +1,44 @@
+{
+  "rows": [
+    {
+      "baseline_id": "deva_official_offline",
+      "label": "DEVA official offline",
+      "dataset": "replica",
+      "scope": "office0",
+      "comparison_axis": "temporal_external_lane",
+      "primary_metric_name": "avg_segments_per_frame",
+      "primary_metric_value": 1.0,
+      "faithfulness": "official_repo_executed"
+    },
+    {
+      "baseline_id": "deva_official_offline",
+      "label": "DEVA official offline",
+      "dataset": "replica",
+      "scope": "office2",
+      "comparison_axis": "temporal_external_lane",
+      "primary_metric_name": "avg_segments_per_frame",
+      "primary_metric_value": 0.667,
+      "faithfulness": "official_repo_executed"
+    },
+    {
+      "baseline_id": "deva_official_offline",
+      "label": "DEVA official offline",
+      "dataset": "replica",
+      "scope": "office3",
+      "comparison_axis": "temporal_external_lane",
+      "primary_metric_name": "avg_segments_per_frame",
+      "primary_metric_value": 0.667,
+      "faithfulness": "official_repo_executed"
+    },
+    {
+      "baseline_id": "esam_official_scannet_mv",
+      "label": "EmbodiedSAM official ScanNet-MV",
+      "dataset": "scannet",
+      "scope": "fullval",
+      "comparison_axis": "online_3d_external_lane",
+      "primary_metric_name": "all_ap",
+      "primary_metric_value": 0.4134895787603892,
+      "faithfulness": "official_family_fork_executed"
+    }
+  ]
+}

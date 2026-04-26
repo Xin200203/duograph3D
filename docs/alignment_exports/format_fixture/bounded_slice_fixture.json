@@ -1,0 +1,18 @@
+{
+  "dataset": "fixture",
+  "scene": "duograph3d_alignment_fixture",
+  "branches": {
+    "duograph3d_full": {
+      "memory_node_count": 2,
+      "avg_geometry_support": 0.8,
+      "track_assignments": {
+        "fixture-track-chair": [
+          "obj-chair"
+        ],
+        "fixture-track-table": [
+          "obj-table"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,2470 @@
+{
+  "status": "alignment_exports_written",
+  "report": "/home/nebula/xxy/duograph3d_phase4_regime_matrix/phase4_baseline/bounded_slice_scannet_scene0568_00.json",
+  "geometry": "/home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_smoke_20260423/duograph3d_dense_gt_sidecar/scene0568_00_duograph3d_gt_sidecar.json",
+  "onlineanyseg": {
+    "adapter": "onlineanyseg",
+    "status": "format_aligned_official_ready",
+    "official_evaluation_ready": true,
+    "reason": "Dense point assignments and the required OnlineAnySeg metadata were supplied; the export is evaluator-ready, subject to running the external benchmark script against the matching GT roots.",
+    "dataset": "scannet",
+    "scene": "scene0568_00",
+    "branch_id": "duograph3d_full",
+    "object_count": 119,
+    "point_count": 232453,
+    "alignment_mode": "dense_geometry",
+    "geometry_source": "gt-sidecar evaluator-bridge smoke; not method evidence",
+    "coordinate_frame": "scannet_gt_mesh_vertices",
+    "readiness": {
+      "dense_point_assignments": true,
+      "all_exported_objects_have_points": true,
+      "gt_aligned_geometry_declared": true,
+      "explicit_class_ids": true,
+      "explicit_object_features": true
+    },
+    "files": {
+      "final_ply": "/home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_smoke_20260423/duograph3d_dense_gt_sidecar/exports/onlineanyseg/scene0568_00/final.ply",
+      "ckpt_final_npz": "/home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_smoke_20260423/duograph3d_dense_gt_sidecar/exports/onlineanyseg/scene0568_00/ckpt_final.npz"
+    },
+    "evaluator_contract": {
+      "expected_scene_dir": "<result_dir>/<scene>",
+      "expected_files": [
+        "final.ply",
+        "ckpt_final.npz"
+      ],
+      "npz_keys": [
+        "pred_masks",
+        "pred_classes",
+        "pred_score"
+      ],
+      "command_template": "python eval/evaluate_seqs.py --result_dir <result_dir> --seq_name <scene> --gt_dir <gt_dir> --gt_pc_pattern %s/%s_vh_clean_2.ply --gt_seg_dir <gt_seg_dir> --gt_seg_pattern %s.txt"
+    },
+    "objects": [
+      {
+        "object_id": "obj-1",
+        "track_hint": "scene0568_00:track:21",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8215,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-10",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 22108,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-100",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6977,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-101",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 368,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-102",
+        "track_hint": "scene0568_00:track:68",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2283,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-103",
+        "track_hint": "scene0568_00:track:76",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4222,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-104",
+        "track_hint": "scene0568_00:track:77",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 485,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-105",
+        "track_hint": "scene0568_00:track:79",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6738,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-106",
+        "track_hint": "scene0568_00:track:80",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2692,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-107",
+        "track_hint": "scene0568_00:track:81",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1552,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-108",
+        "track_hint": "scene0568_00:track:84",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1421,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-109",
+        "track_hint": "scene0568_00:track:87",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-11",
+        "track_hint": "scene0568_00:track:56",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 39751,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-110",
+        "track_hint": "scene0568_00:track:89",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1750,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-111",
+        "track_hint": "scene0568_00:track:90",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4444,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-112",
+        "track_hint": "scene0568_00:track:91",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8452,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-113",
+        "track_hint": "scene0568_00:track:7",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1773,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-114",
+        "track_hint": "scene0568_00:track:95",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6117,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-115",
+        "track_hint": "scene0568_00:track:96",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4744,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-116",
+        "track_hint": "scene0568_00:track:97",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 311,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-117",
+        "track_hint": "scene0568_00:track:99",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 14658,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-118",
+        "track_hint": "scene0568_00:track:102",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 13268,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-119",
+        "track_hint": "scene0568_00:track:103",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3669,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-12",
+        "track_hint": "scene0568_00:track:57",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 7076,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-13",
+        "track_hint": "scene0568_00:track:58",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3456,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-14",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-15",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6279,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-16",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5865,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-17",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1487,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-18",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5504,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-19",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4688,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-2",
+        "track_hint": "scene0568_00:track:23",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8215,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-20",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 22108,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-21",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6977,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-22",
+        "track_hint": "scene0568_00:track:68",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 368,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-23",
+        "track_hint": "scene0568_00:track:76",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2283,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-24",
+        "track_hint": "scene0568_00:track:77",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4222,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-25",
+        "track_hint": "scene0568_00:track:79",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 485,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-26",
+        "track_hint": "scene0568_00:track:80",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6738,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-27",
+        "track_hint": "scene0568_00:track:81",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2692,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-28",
+        "track_hint": "scene0568_00:track:84",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1552,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-29",
+        "track_hint": "scene0568_00:track:87",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1421,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-3",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-30",
+        "track_hint": "scene0568_00:track:89",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 39751,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-31",
+        "track_hint": "scene0568_00:track:90",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1750,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-32",
+        "track_hint": "scene0568_00:track:91",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4444,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-33",
+        "track_hint": "scene0568_00:track:21",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8452,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-34",
+        "track_hint": "scene0568_00:track:23",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1773,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-35",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6117,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-36",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4744,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-37",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 311,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-38",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 14658,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-39",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 13268,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-4",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3669,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-40",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 7076,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-41",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3456,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-42",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-43",
+        "track_hint": "scene0568_00:track:56",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6279,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-44",
+        "track_hint": "scene0568_00:track:57",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5865,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-45",
+        "track_hint": "scene0568_00:track:58",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1487,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-46",
+        "track_hint": "scene0568_00:track:1",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5504,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-47",
+        "track_hint": "scene0568_00:track:7",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4688,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-48",
+        "track_hint": "scene0568_00:track:95",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8215,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-49",
+        "track_hint": "scene0568_00:track:96",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 22108,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-5",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6977,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-50",
+        "track_hint": "scene0568_00:track:97",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 368,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-51",
+        "track_hint": "scene0568_00:track:99",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2283,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-52",
+        "track_hint": "scene0568_00:track:102",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4222,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-53",
+        "track_hint": "scene0568_00:track:103",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 485,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-54",
+        "track_hint": "scene0568_00:track:21",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6738,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-55",
+        "track_hint": "scene0568_00:track:23",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2692,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-56",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1552,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-57",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1421,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-58",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-59",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 39751,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-6",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1750,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-60",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4444,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-61",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8452,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-62",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1773,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-63",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6117,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-64",
+        "track_hint": "scene0568_00:track:56",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4744,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-65",
+        "track_hint": "scene0568_00:track:57",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 311,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-66",
+        "track_hint": "scene0568_00:track:58",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 14658,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-67",
+        "track_hint": "scene0568_00:track:68",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 13268,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-68",
+        "track_hint": "scene0568_00:track:76",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3669,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-69",
+        "track_hint": "scene0568_00:track:77",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 7076,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-7",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3456,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-70",
+        "track_hint": "scene0568_00:track:79",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-71",
+        "track_hint": "scene0568_00:track:80",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6279,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-72",
+        "track_hint": "scene0568_00:track:81",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5865,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-73",
+        "track_hint": "scene0568_00:track:84",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1487,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-74",
+        "track_hint": "scene0568_00:track:87",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5504,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-75",
+        "track_hint": "scene0568_00:track:89",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4688,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-76",
+        "track_hint": "scene0568_00:track:90",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8215,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-77",
+        "track_hint": "scene0568_00:track:91",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 22108,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-78",
+        "track_hint": "scene0568_00:track:0",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6977,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-79",
+        "track_hint": "scene0568_00:track:2",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 368,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-8",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2283,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-80",
+        "track_hint": "scene0568_00:track:3",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4222,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-81",
+        "track_hint": "scene0568_00:track:4",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 485,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-82",
+        "track_hint": "scene0568_00:track:5",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6738,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-83",
+        "track_hint": "scene0568_00:track:6",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2692,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-84",
+        "track_hint": "scene0568_00:track:8",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1552,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-85",
+        "track_hint": "scene0568_00:track:9",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1421,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-86",
+        "track_hint": "scene0568_00:track:10",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-87",
+        "track_hint": "scene0568_00:track:114",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 39751,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-88",
+        "track_hint": "scene0568_00:track:115",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1750,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-89",
+        "track_hint": "scene0568_00:track:21",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4444,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-9",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8452,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-90",
+        "track_hint": "scene0568_00:track:23",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1773,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-91",
+        "track_hint": "scene0568_00:track:56",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6117,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-92",
+        "track_hint": "scene0568_00:track:57",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4744,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-93",
+        "track_hint": "scene0568_00:track:58",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 311,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-94",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 14658,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-95",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 13268,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-96",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3669,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-97",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 7076,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-98",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3456,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-99",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      }
+    ]
+  },
+  "conceptgraphs": {
+    "adapter": "conceptgraphs",
+    "status": "format_aligned_official_ready",
+    "official_evaluation_ready": true,
+    "reason": "Dense point assignments and the required ConceptGraphs metadata were supplied; the export is evaluator-ready, subject to running the external benchmark script against the matching GT roots.",
+    "dataset": "scannet",
+    "scene": "scene0568_00",
+    "branch_id": "duograph3d_full",
+    "pred_exp_name": "duograph3d_alignment",
+    "object_count": 119,
+    "feature_dim": 4,
+    "alignment_mode": "dense_geometry",
+    "geometry_source": "gt-sidecar evaluator-bridge smoke; not method evidence",
+    "coordinate_frame": "scannet_gt_mesh_vertices",
+    "readiness": {
+      "dense_point_assignments": true,
+      "all_exported_objects_have_points": true,
+      "gt_aligned_geometry_declared": true,
+      "explicit_class_ids": true,
+      "explicit_object_features": true
+    },
+    "files": {
+      "conceptgraphs_pkl_gz": "/home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_smoke_20260423/duograph3d_dense_gt_sidecar/exports/conceptgraphs/scene0568_00/pcd_saves/full_pcd_duograph3d_alignment.pkl.gz",
+      "semantic_proxy_json": "/home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_smoke_20260423/duograph3d_dense_gt_sidecar/exports/conceptgraphs/scene0568_00/pcd_saves/duograph3d_alignment_semantic_proxy.json"
+    },
+    "evaluator_contract": {
+      "expected_glob": "<replica_root>/<scene>/pcd_saves/full_pcd_duograph3d_alignment*.pkl.gz",
+      "command_template": "python scripts/eval_replica_semseg.py --replica_root <replica_root> --replica_semantic_root <replica_semantic_root> --pred_exp_name duograph3d_alignment",
+      "payload_keys": [
+        "objects",
+        "bg_objects"
+      ],
+      "object_keys": [
+        "clip_ft",
+        "text_ft",
+        "pcd_np",
+        "pcd_color_np",
+        "bbox_np",
+        "class_name",
+        "class_id"
+      ]
+    },
+    "objects": [
+      {
+        "object_id": "obj-1",
+        "track_hint": "scene0568_00:track:21",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8215,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-10",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 22108,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-100",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6977,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-101",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 368,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-102",
+        "track_hint": "scene0568_00:track:68",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2283,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-103",
+        "track_hint": "scene0568_00:track:76",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4222,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-104",
+        "track_hint": "scene0568_00:track:77",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 485,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-105",
+        "track_hint": "scene0568_00:track:79",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6738,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-106",
+        "track_hint": "scene0568_00:track:80",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2692,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-107",
+        "track_hint": "scene0568_00:track:81",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1552,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-108",
+        "track_hint": "scene0568_00:track:84",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1421,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-109",
+        "track_hint": "scene0568_00:track:87",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-11",
+        "track_hint": "scene0568_00:track:56",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 39751,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-110",
+        "track_hint": "scene0568_00:track:89",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1750,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-111",
+        "track_hint": "scene0568_00:track:90",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4444,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-112",
+        "track_hint": "scene0568_00:track:91",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8452,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-113",
+        "track_hint": "scene0568_00:track:7",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1773,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-114",
+        "track_hint": "scene0568_00:track:95",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6117,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-115",
+        "track_hint": "scene0568_00:track:96",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4744,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-116",
+        "track_hint": "scene0568_00:track:97",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 311,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-117",
+        "track_hint": "scene0568_00:track:99",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 14658,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-118",
+        "track_hint": "scene0568_00:track:102",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 13268,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-119",
+        "track_hint": "scene0568_00:track:103",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3669,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-12",
+        "track_hint": "scene0568_00:track:57",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 7076,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-13",
+        "track_hint": "scene0568_00:track:58",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3456,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-14",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-15",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6279,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-16",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5865,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-17",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1487,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-18",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5504,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-19",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4688,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-2",
+        "track_hint": "scene0568_00:track:23",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8215,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-20",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 22108,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-21",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6977,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-22",
+        "track_hint": "scene0568_00:track:68",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 368,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-23",
+        "track_hint": "scene0568_00:track:76",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2283,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-24",
+        "track_hint": "scene0568_00:track:77",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4222,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-25",
+        "track_hint": "scene0568_00:track:79",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 485,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-26",
+        "track_hint": "scene0568_00:track:80",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6738,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-27",
+        "track_hint": "scene0568_00:track:81",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2692,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-28",
+        "track_hint": "scene0568_00:track:84",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1552,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-29",
+        "track_hint": "scene0568_00:track:87",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1421,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-3",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-30",
+        "track_hint": "scene0568_00:track:89",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 39751,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-31",
+        "track_hint": "scene0568_00:track:90",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1750,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-32",
+        "track_hint": "scene0568_00:track:91",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4444,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-33",
+        "track_hint": "scene0568_00:track:21",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8452,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-34",
+        "track_hint": "scene0568_00:track:23",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1773,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-35",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6117,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-36",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4744,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-37",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 311,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-38",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 14658,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-39",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 13268,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-4",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3669,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-40",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 7076,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-41",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3456,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-42",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-43",
+        "track_hint": "scene0568_00:track:56",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6279,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-44",
+        "track_hint": "scene0568_00:track:57",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5865,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-45",
+        "track_hint": "scene0568_00:track:58",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1487,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-46",
+        "track_hint": "scene0568_00:track:1",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5504,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-47",
+        "track_hint": "scene0568_00:track:7",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4688,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-48",
+        "track_hint": "scene0568_00:track:95",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8215,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-49",
+        "track_hint": "scene0568_00:track:96",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 22108,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-5",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6977,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-50",
+        "track_hint": "scene0568_00:track:97",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 368,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-51",
+        "track_hint": "scene0568_00:track:99",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2283,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-52",
+        "track_hint": "scene0568_00:track:102",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4222,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-53",
+        "track_hint": "scene0568_00:track:103",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 485,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-54",
+        "track_hint": "scene0568_00:track:21",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6738,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-55",
+        "track_hint": "scene0568_00:track:23",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2692,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-56",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1552,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-57",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1421,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-58",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-59",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 39751,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-6",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1750,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-60",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4444,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-61",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8452,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-62",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1773,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-63",
+        "track_hint": "scene0568_00:track:43",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6117,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-64",
+        "track_hint": "scene0568_00:track:56",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4744,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-65",
+        "track_hint": "scene0568_00:track:57",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 311,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-66",
+        "track_hint": "scene0568_00:track:58",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 14658,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-67",
+        "track_hint": "scene0568_00:track:68",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 13268,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-68",
+        "track_hint": "scene0568_00:track:76",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3669,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-69",
+        "track_hint": "scene0568_00:track:77",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 7076,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-7",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3456,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-70",
+        "track_hint": "scene0568_00:track:79",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-71",
+        "track_hint": "scene0568_00:track:80",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6279,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-72",
+        "track_hint": "scene0568_00:track:81",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5865,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-73",
+        "track_hint": "scene0568_00:track:84",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1487,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-74",
+        "track_hint": "scene0568_00:track:87",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 5504,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-75",
+        "track_hint": "scene0568_00:track:89",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4688,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-76",
+        "track_hint": "scene0568_00:track:90",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8215,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-77",
+        "track_hint": "scene0568_00:track:91",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 22108,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-78",
+        "track_hint": "scene0568_00:track:0",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6977,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-79",
+        "track_hint": "scene0568_00:track:2",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 368,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-8",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2283,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-80",
+        "track_hint": "scene0568_00:track:3",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4222,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-81",
+        "track_hint": "scene0568_00:track:4",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 485,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-82",
+        "track_hint": "scene0568_00:track:5",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6738,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-83",
+        "track_hint": "scene0568_00:track:6",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2692,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-84",
+        "track_hint": "scene0568_00:track:8",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1552,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-85",
+        "track_hint": "scene0568_00:track:9",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1421,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-86",
+        "track_hint": "scene0568_00:track:10",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 2137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-87",
+        "track_hint": "scene0568_00:track:114",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 39751,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-88",
+        "track_hint": "scene0568_00:track:115",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1750,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-89",
+        "track_hint": "scene0568_00:track:21",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4444,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-9",
+        "track_hint": "scene0568_00:track:42",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 8452,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-90",
+        "track_hint": "scene0568_00:track:23",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 1773,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-91",
+        "track_hint": "scene0568_00:track:56",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 6117,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-92",
+        "track_hint": "scene0568_00:track:57",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4744,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-93",
+        "track_hint": "scene0568_00:track:58",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 311,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-94",
+        "track_hint": "scene0568_00:track:31",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 14658,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-95",
+        "track_hint": "scene0568_00:track:33",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 13268,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-96",
+        "track_hint": "scene0568_00:track:34",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3669,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-97",
+        "track_hint": "scene0568_00:track:35",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 7076,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-98",
+        "track_hint": "scene0568_00:track:36",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 3456,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      },
+      {
+        "object_id": "obj-99",
+        "track_hint": "scene0568_00:track:38",
+        "score": 0.5,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 4137,
+        "has_explicit_class": true,
+        "has_explicit_features": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "rows": [
+    {
+      "dataset": "scannet",
+      "scene": "scene0222_00",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "severity": 0.69,
+      "identity_fragmentation_count": 115.0,
+      "track_consistency_rate": 0.455,
+      "real_observation_frame_rate": 0.833,
+      "geometry_support_mean": 0.2
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_00",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "severity": 0.675,
+      "identity_fragmentation_count": 108.0,
+      "track_consistency_rate": 0.417,
+      "real_observation_frame_rate": 0.833,
+      "geometry_support_mean": 0.2
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0653_01",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "severity": 0.636,
+      "identity_fragmentation_count": 98.0,
+      "track_consistency_rate": 0.435,
+      "real_observation_frame_rate": 0.833,
+      "geometry_support_mean": 0.2
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_01",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "severity": 0.625,
+      "identity_fragmentation_count": 96.0,
+      "track_consistency_rate": 0.449,
+      "real_observation_frame_rate": 0.833,
+      "geometry_support_mean": 0.2
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0231_00",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "severity": 0.588,
+      "identity_fragmentation_count": 88.0,
+      "track_consistency_rate": 0.487,
+      "real_observation_frame_rate": 0.833,
+      "geometry_support_mean": 0.2
+    }
+  ]
+}

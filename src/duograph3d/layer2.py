@@ -34,6 +34,32 @@ class CurrentToMemoryAssociationLayer:
             return current
         return round((previous * 0.6) + (current * 0.4), 3)
 
+    @staticmethod
+    def _compatibility(current: float, previous: float, *, max_delta: float, max_score: float) -> float:
+        if current <= 0 or previous <= 0:
+            return 0.0
+        delta = abs(previous - current)
+        if delta > max_delta:
+            return 0.0
+        return round(max(max_score * (1.0 - delta / max_delta), 0.0), 4)
+
+    def _geometry_profile_consistency(
+        self,
+        *,
+        support_size: float,
+        depth_scale: float,
+        geometry_support: float,
+        node_support_size: float,
+        node_depth_scale: float,
+        node_geometry_support: float,
+    ) -> float:
+        return round(
+            self._compatibility(support_size, node_support_size, max_delta=0.2, max_score=0.18)
+            + self._compatibility(depth_scale, node_depth_scale, max_delta=0.3, max_score=0.18)
+            + self._compatibility(geometry_support, node_geometry_support, max_delta=0.25, max_score=0.14),
+            4,
+        )
+
     def _update_node_support(self, node, hypothesis: CurrentObjectHypothesis) -> None:
         continuity_key = self._str_signal(hypothesis, "continuity_key")
         appearance_key = self._str_signal(hypothesis, "appearance_key")
@@ -66,28 +92,108 @@ class CurrentToMemoryAssociationLayer:
         node_depth_scale: float,
         node_geometry_support: float,
     ) -> tuple[float, bool]:
+        score, strong_identity_match, _components = self._score_with_components(
+            hypothesis,
+            object_id,
+            node_descriptor,
+            node_geometry,
+            continuity_key=continuity_key,
+            appearance_key=appearance_key,
+            support_size=support_size,
+            depth_scale=depth_scale,
+            geometry_support=geometry_support,
+            node_continuity_key=node_continuity_key,
+            node_appearance_key=node_appearance_key,
+            node_support_size=node_support_size,
+            node_depth_scale=node_depth_scale,
+            node_geometry_support=node_geometry_support,
+        )
+        return score, strong_identity_match
+
+    def _score_with_components(
+        self,
+        hypothesis: CurrentObjectHypothesis,
+        object_id: str,
+        node_descriptor: str,
+        node_geometry: str,
+        *,
+        continuity_key: str,
+        appearance_key: str,
+        support_size: float,
+        depth_scale: float,
+        geometry_support: float,
+        node_continuity_key: str,
+        node_appearance_key: str,
+        node_support_size: float,
+        node_depth_scale: float,
+        node_geometry_support: float,
+    ) -> tuple[float, bool, dict[str, object]]:
+        del object_id
         score = 0.0
         strong_identity_match = False
+        geometry_key_score = 0.0
         if hypothesis.geometry_key == node_geometry:
-            score += 0.8
+            geometry_key_score = 0.8
+            score += geometry_key_score
             strong_identity_match = True
+        descriptor_score = 0.0
         if hypothesis.descriptor == node_descriptor:
-            score += 0.55
-        score += min(hypothesis.confidence, 1.0) * 0.2
+            descriptor_score = 0.55
+            score += descriptor_score
+        confidence_score = min(hypothesis.confidence, 1.0) * 0.2
+        score += confidence_score
+        temporal_score = 0.0
+        propagation_score = 0.0
         if hypothesis.provenance_counts.get(EvidenceProvenance.PROPAGATED.value):
-            score += 0.1
+            propagation_score = 0.1
+            temporal_score += propagation_score
+        continuity_score = 0.0
         if continuity_key and continuity_key == node_continuity_key:
-            score += 0.45
+            continuity_score = 0.45
+            temporal_score += continuity_score
             strong_identity_match = True
+        appearance_score = 0.0
         if appearance_key and appearance_key == node_appearance_key:
-            score += 0.3
-        if node_support_size > 0 and support_size > 0:
-            score += max(0.0, 0.12 - abs(node_support_size - support_size) * 0.2)
-        if node_depth_scale > 0 and depth_scale > 0:
-            score += max(0.0, 0.12 - abs(node_depth_scale - depth_scale) * 0.2)
-        if node_geometry_support > 0 and geometry_support > 0:
-            score += max(0.0, 0.08 - abs(node_geometry_support - geometry_support) * 0.2)
-        return score, strong_identity_match
+            appearance_score = 0.3
+            temporal_score += appearance_score
+        geometry_profile_score = self._geometry_profile_consistency(
+            support_size=support_size,
+            depth_scale=depth_scale,
+            geometry_support=geometry_support,
+            node_support_size=node_support_size,
+            node_depth_scale=node_depth_scale,
+            node_geometry_support=node_geometry_support,
+        )
+        continuity_profile_penalty = 0.0
+        if not (hypothesis.geometry_key == node_geometry) and continuity_key and continuity_key == node_continuity_key and geometry_profile_score == 0.0:
+            old_temporal_score = temporal_score
+            temporal_score = max(temporal_score - 0.2, 0.0)
+            continuity_profile_penalty = round(old_temporal_score - temporal_score, 4)
+            strong_identity_match = False
+        score += temporal_score
+        score += geometry_profile_score
+        components = {
+            "geometry_key": geometry_key_score,
+            "descriptor": descriptor_score,
+            "confidence": round(confidence_score, 4),
+            "propagation": propagation_score,
+            "continuity": continuity_score,
+            "appearance": appearance_score,
+            "geometry_profile": geometry_profile_score,
+            "continuity_profile_penalty": continuity_profile_penalty,
+            "temporal_total": round(temporal_score, 4),
+        }
+        return score, strong_identity_match, components
+
+    @staticmethod
+    def _birth_reason(best_id: str | None, best_score: float, best_has_identity: bool, threshold: float) -> str:
+        if best_id is None:
+            return "no_candidate"
+        if not best_has_identity:
+            return "best_candidate_without_strong_identity"
+        if best_score < threshold:
+            return "best_candidate_below_threshold"
+        return "no_candidate_above_threshold"
 
     def update(
         self,
@@ -101,6 +207,7 @@ class CurrentToMemoryAssociationLayer:
     ) -> list[AssociationDecision]:
         decisions: list[AssociationDecision] = []
         matched_ids: set[str] = set()
+        current_step_object_ids: list[str] = []
         for hypothesis in hypotheses:
             continuity_key = self._str_signal(hypothesis, "continuity_key")
             appearance_key = self._str_signal(hypothesis, "appearance_key")
@@ -115,8 +222,9 @@ class CurrentToMemoryAssociationLayer:
             best_id = None
             best_score = -1.0
             best_has_identity = False
+            candidate_scores: list[dict[str, object]] = []
             for candidate in candidates:
-                score, has_identity = self._score(
+                score, has_identity, components = self._score_with_components(
                     hypothesis,
                     candidate.object_id,
                     candidate.descriptor_fused,
@@ -132,10 +240,51 @@ class CurrentToMemoryAssociationLayer:
                     node_depth_scale=candidate.avg_depth_scale,
                     node_geometry_support=candidate.avg_geometry_support,
                 )
+                relation_bonus = sum(
+                    memory.relation_bonus(candidate.object_id, current_object_id) * 0.25
+                    for current_object_id in current_step_object_ids
+                )
+                score += relation_bonus
+                if self.config.emit_association_diagnostics:
+                    candidate_scores.append(
+                        {
+                            "object_id": candidate.object_id,
+                            "score": round(score, 4),
+                            "has_strong_identity": has_identity,
+                            "status": candidate.status.value,
+                            "node_geometry_key": candidate.geometry_key,
+                            "node_descriptor": candidate.descriptor_fused,
+                            "node_continuity_key": candidate.continuity_key_recent,
+                            "node_appearance_key": candidate.appearance_key_recent,
+                            "relation_bonus": round(relation_bonus, 4),
+                            "components": components,
+                        }
+                    )
                 if score > best_score:
                     best_score = score
                     best_id = candidate.object_id
                     best_has_identity = has_identity
+            if self.config.emit_association_diagnostics:
+                candidate_scores.sort(key=lambda item: float(item["score"]), reverse=True)
+                second_score = float(candidate_scores[1]["score"]) if len(candidate_scores) > 1 else None
+                logger.log(
+                    sequence_id=sequence_id,
+                    step_id=step_id,
+                    branch_id=branch_id,
+                    event_type="association_candidate_diagnostic",
+                    owner_component="layer-2",
+                    hypothesis_id=hypothesis.hypothesis_id,
+                    track_hint=hypothesis.track_hint,
+                    candidate_count=len(candidates),
+                    candidate_budget=self.config.candidate_budget,
+                    threshold=self.config.association_threshold,
+                    best_object_id=best_id or "",
+                    best_score=round(best_score, 4) if best_id is not None else None,
+                    second_score=second_score,
+                    score_margin=round(best_score - second_score, 4) if second_score is not None else None,
+                    best_has_strong_identity=best_has_identity,
+                    top_candidates=candidate_scores[: max(self.config.association_diagnostics_top_k, 0)],
+                )
             if best_id is not None and best_score >= self.config.association_threshold and best_has_identity:
                 node = memory.nodes[best_id]
                 action = "associate"
@@ -186,6 +335,7 @@ class CurrentToMemoryAssociationLayer:
                     score=best_score,
                 )
                 matched_ids.add(node.object_id)
+                current_step_object_ids.append(node.object_id)
                 decisions.append(
                     AssociationDecision(
                         hypothesis_id=hypothesis.hypothesis_id,
@@ -197,6 +347,12 @@ class CurrentToMemoryAssociationLayer:
                     )
                 )
             else:
+                birth_reason = self._birth_reason(
+                    best_id,
+                    best_score,
+                    best_has_identity,
+                    self.config.association_threshold,
+                )
                 node = memory.create_node(
                     descriptor=hypothesis.descriptor,
                     geometry_key=hypothesis.geometry_key,
@@ -230,17 +386,45 @@ class CurrentToMemoryAssociationLayer:
                     hypothesis_id=hypothesis.hypothesis_id,
                     track_hint=hypothesis.track_hint,
                 )
+                if self.config.emit_association_diagnostics:
+                    logger.log(
+                        sequence_id=sequence_id,
+                        step_id=step_id,
+                        branch_id=branch_id,
+                        event_type="association_birth_diagnostic",
+                        owner_component="layer-2",
+                        object_id=node.object_id,
+                        hypothesis_id=hypothesis.hypothesis_id,
+                        track_hint=hypothesis.track_hint,
+                        reason=birth_reason,
+                        best_object_id=best_id or "",
+                        best_score=round(best_score, 4) if best_id is not None else None,
+                        best_has_strong_identity=best_has_identity,
+                        threshold=self.config.association_threshold,
+                    )
                 matched_ids.add(node.object_id)
+                current_step_object_ids.append(node.object_id)
                 decisions.append(
                     AssociationDecision(
                         hypothesis_id=hypothesis.hypothesis_id,
                         action="birth",
                         object_id=node.object_id,
                         score=max(best_score, 0.0),
-                        reason="no_candidate_above_threshold",
+                        reason=birth_reason,
                         track_hint=hypothesis.track_hint,
                     )
                 )
+        relation_edge_count_before = len(memory.relation_edges)
+        memory.register_co_visibility(current_step_object_ids, step_id=step_id)
+        if len(memory.relation_edges) > relation_edge_count_before:
+            logger.log(
+                sequence_id=sequence_id,
+                step_id=step_id,
+                branch_id=branch_id,
+                event_type="memory_relation_update",
+                owner_component="memory",
+                relation_edge_count=len(memory.relation_edges),
+            )
         for node in memory.nodes.values():
             if node.object_id in matched_ids or node.status is ObjectStatus.RETIRED:
                 continue

@@ -45,6 +45,7 @@ def summarize_run(result: SequenceRunResult, logger: EventLogger) -> dict[str, o
         ),
         "track_fragmentation": track_fragmentation,
         "track_assignments": track_assignments,
+        "memory_relation_edge_count": len(result.relation_edges),
         "avg_geometry_support": round(mean(node.avg_geometry_support for node in nodes), 3) if nodes else 0.0,
         "avg_support_size": round(mean(node.avg_support_size for node in nodes), 3) if nodes else 0.0,
         "avg_depth_scale": round(mean(node.avg_depth_scale for node in nodes), 3) if nodes else 0.0,

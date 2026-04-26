@@ -1,0 +1,795 @@
+{
+  "scene_count": 24,
+  "dataset_counts": {
+    "replica": 12,
+    "scannet": 12
+  },
+  "row_pass_counts": {
+    "reentry_recovery_proxy": 10,
+    "identity_churn_proxy": 12,
+    "counterfactual_divergence_proxy": 11
+  },
+  "row_total_counts": {
+    "identity_churn_proxy": 24,
+    "reentry_recovery_proxy": 24,
+    "memory_authority_usage": 24,
+    "counterfactual_divergence_proxy": 24,
+    "dense_authority_gap_proxy": 24
+  },
+  "signature_counts": {
+    "temporal_reentry_gap": 10,
+    "single_layer_fragmentation": 12,
+    "counterfactual_fragmentation": 11
+  },
+  "all_scenes_pass": false,
+  "scene_rows": [
+    {
+      "dataset": "replica",
+      "scene": "office0",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office2",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office3",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 1,
+          "detail": "reentries none=1 naive=1 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_00",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 111,
+          "detail": "single=187 duo=76"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=76"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 90,
+          "detail": "counter=166 duo=76"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=30 duo_nodes=119; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_01",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 123,
+          "detail": "single=216 duo=93"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=93"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 116,
+          "detail": "counter=209 duo=93"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=36 duo_nodes=144; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_02",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 167,
+          "detail": "single=278 duo=111"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=111"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 167,
+          "detail": "counter=278 duo=111"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=35 duo_nodes=166; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office0",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 2,
+          "detail": "reentries none=2 naive=2 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office2",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 1,
+          "detail": "reentries none=1 naive=1 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=0 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office3",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 2,
+          "detail": "reentries none=2 naive=2 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_00",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 3,
+          "detail": "single=16 duo=13"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=13"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 3,
+          "detail": "counter=16 duo=13"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=19 duo_nodes=35; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_01",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 13,
+          "detail": "single=39 duo=26"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=26"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 5,
+          "detail": "counter=31 duo=26"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=21 duo_nodes=54; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_02",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 17,
+          "detail": "single=45 duo=28"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=28"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 5,
+          "detail": "counter=33 duo=28"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=20 duo_nodes=56; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office0",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 1,
+          "detail": "reentries none=1 naive=1 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office2",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 1,
+          "detail": "reentries none=1 naive=1 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office3",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 1,
+          "detail": "reentries none=1 naive=1 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_00",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 11,
+          "detail": "single=40 duo=29"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=29"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 11,
+          "detail": "counter=40 duo=29"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=30 duo_nodes=59; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_01",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 15,
+          "detail": "single=55 duo=40"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=40"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 15,
+          "detail": "counter=55 duo=40"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=36 duo_nodes=76; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_02",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 15,
+          "detail": "single=54 duo=39"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=39"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 15,
+          "detail": "counter=54 duo=39"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=35 duo_nodes=74; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office0",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 2,
+          "detail": "reentries none=2 naive=2 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office2",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 1,
+          "detail": "reentries none=1 naive=1 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office3",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "single=0 duo=0"
+        },
+        "reentry_recovery_proxy": {
+          "pass": true,
+          "value": 1,
+          "detail": "reentries none=1 naive=1 deva=0; fragmentation none=0 naive=0 deva=0"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=0 duo=0"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=1 duo_nodes=1; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_00",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 6,
+          "detail": "single=23 duo=17"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=17"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "counter=17 duo=17"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=23 duo_nodes=40; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_01",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 10,
+          "detail": "single=35 duo=25"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=25"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 4,
+          "detail": "counter=29 duo=25"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=26 duo_nodes=51; dense_authority=0 duo_authority=0"
+        }
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0568_02",
+      "all_rows_pass": false,
+      "rows": {
+        "identity_churn_proxy": {
+          "pass": true,
+          "value": 10,
+          "detail": "single=35 duo=25"
+        },
+        "reentry_recovery_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "reentries none=0 naive=0 deva=0; fragmentation none=0 naive=0 deva=25"
+        },
+        "memory_authority_usage": {
+          "pass": false,
+          "value": 0,
+          "detail": "events=0"
+        },
+        "counterfactual_divergence_proxy": {
+          "pass": true,
+          "value": 4,
+          "detail": "counter=29 duo=25"
+        },
+        "dense_authority_gap_proxy": {
+          "pass": false,
+          "value": 0,
+          "detail": "dense_nodes=26 duo_nodes=51; dense_authority=0 duo_authority=0"
+        }
+      }
+    }
+  ]
+}

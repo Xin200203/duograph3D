@@ -41,6 +41,84 @@ def deva_official_target(repo_commit: str) -> dict[str, object]:
     return asdict(target)
 
 
+def esam_official_target(repo_commit: str) -> dict[str, object]:
+    target = ExternalBaselineTarget(
+        baseline_id="esam_official_scannet_mv",
+        label="EmbodiedSAM official ScanNet-MV evaluation",
+        repo_url="https://github.com/xuxw98/ESAM",
+        repo_commit=repo_commit,
+        paper_url="https://arxiv.org/abs/2408.11811",
+        family="external_official_target",
+        integration_mode="official_scannet_mv_eval",
+        faithfulness="official_repo_target",
+        required_inputs=["config", "checkpoint", "work_dir"],
+        reference_commands=[
+            "CUDA_VISIBLE_DEVICES=0 python tools/test.py configs/ESAM_CA/ESAM_online_scannet200_CA.py work_dirs/ESAM_online_scannet200_CA/epoch_128.pth --work-dir work_dirs/ESAM_online_scannet200_CA/",
+            "CUDA_VISIBLE_DEVICES=0 python vis_demo/stream_demo.py --data_root <data_root>",
+        ],
+        notes=[
+            "Official ESAM docs include evaluation commands for ScanNet200-MV and custom-data stream demos.",
+            "This target serves as the second reviewer-credible external baseline family for DuoGraph3D Phase 3.",
+        ],
+    )
+    return asdict(target)
+
+
+def onlineanyseg_official_target(repo_commit: str) -> dict[str, object]:
+    target = ExternalBaselineTarget(
+        baseline_id="onlineanyseg_official_scannet",
+        label="OnlineAnySeg official ScanNet online 3D segmentation",
+        repo_url="https://github.com/yjtang249/OnlineAnySeg",
+        repo_commit=repo_commit,
+        paper_url="https://arxiv.org/abs/2503.01309",
+        family="external_direct_neighbor",
+        integration_mode="official_scannet_eval_surface",
+        faithfulness="official_repo_target",
+        required_inputs=[
+            "result_dir/<scene>/final.ply",
+            "result_dir/<scene>/ckpt_final.npz",
+            "scannet scan root",
+            "scannet gt segmentation txt",
+        ],
+        reference_commands=[
+            "python main.py -c config/scannet_cropformer.yaml --seq_name <scene> -d <sequence_dir> -i <seg_sequence_dir> -o <output_dir>",
+            "PYTHONPATH=<OnlineAnySeg_root> python eval/evaluate_seqs.py --result_dir <output_dir> --seq_name <scene> --gt_dir <scannet_root> --gt_pc_pattern %s/%s_vh_clean_2.ply --gt_seg_dir <gt_seg_dir> --gt_seg_pattern %s.txt --dataset scannet",
+        ],
+        notes=[
+            "This is the first story-aligned direct-neighbor lane because it targets online zero-shot 3D instance segmentation.",
+            "The evaluator surface is now verified separately from full method execution; full OnlineAnySeg main execution still depends on a compatible MinkowskiEngine/FCGF stack.",
+        ],
+    )
+    return asdict(target)
+
+
+def conceptgraphs_official_target(repo_commit: str) -> dict[str, object]:
+    target = ExternalBaselineTarget(
+        baseline_id="conceptgraphs_official_replica",
+        label="ConceptGraphs official Replica object-map semantic evaluation",
+        repo_url="https://github.com/concept-graphs/concept-graphs",
+        repo_commit=repo_commit,
+        paper_url="https://arxiv.org/abs/2309.16650",
+        family="external_graph_memory_neighbor",
+        integration_mode="official_replica_object_map_eval_surface",
+        faithfulness="official_repo_target",
+        required_inputs=[
+            "replica_root/<scene>/pcd_saves/full_pcd_<pred_exp_name>*.pkl.gz",
+            "replica semantic root",
+            "rgb_cloud reconstruction h5",
+            "object CLIP/text features",
+        ],
+        reference_commands=[
+            "python -m conceptgraph.scripts.eval_replica_semseg --replica_root <replica_root> --replica_semantic_root <replica_semantic_root> --pred_exp_name <pred_exp_name>",
+        ],
+        notes=[
+            "This lane is the first graph/object-memory external comparison target.",
+            "The DuoGraph3D exporter now writes a ConceptGraphs-style object-map payload; official semantic evaluation still requires a compatible chamferdist/gradslam runtime and Replica semantic roots.",
+        ],
+    )
+    return asdict(target)
+
+
 def render_external_baseline_target_markdown(target: dict[str, object]) -> str:
     lines = [
         "# External Baseline Target",

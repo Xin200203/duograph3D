@@ -1,0 +1,25 @@
+===== scene0426_01 2026-04-23T20:25:32+08:00 =====
+
+0it [00:00, ?it/s]
+1it [00:00,  2.04it/s]
+6it [00:00, 11.89it/s]
+11it [00:00, 19.86it/s]
+16it [00:00, 26.30it/s]
+21it [00:01, 24.85it/s]
+26it [00:01, 26.80it/s]
+31it [00:01, 27.77it/s]
+36it [00:01, 31.36it/s]
+41it [00:01, 26.62it/s]
+
+[INFO] Pointcloud geometric feature extractor model has been loaded from: third_party/FCGF/model/ResUNetBN2C-16feat-3conv.pth
+Finish merging at frame_10 ! Current merged mask number = 22
+
+At frame_20, number of mask with geometric feature: 7 --> 9, takes 0.0114 s
+Finish merging at frame_20 ! Current merged mask number = 33
+
+At frame_30, number of mask with geometric feature: 11 --> 19, takes 0.0182 s
+Finish merging at frame_30 ! Current merged mask number = 35
+################ Begin to save final ckpt and seg mesh/pointcloud...
+Segmented instances result was saved to: /home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_subset20_sparse_20260423/output/scene0426_01/ckpt_final.npz
+Input sequence finished !
+

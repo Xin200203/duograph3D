@@ -1,0 +1,45 @@
+{
+  "baseline": {
+    "method": "ESAM online baseline subset5",
+    "metrics_path": "docs/official_results/scannet200_subset5_20260423/raw/baseline_metrics.json",
+    "monitor_path": "docs/official_results/scannet200_subset5_20260423/raw/baseline_online_monitor_summary.json",
+    "scene_count": 5,
+    "frame_count": 172,
+    "all_ap": 0.5146213234483376,
+    "all_ap_50": 0.734771671056559,
+    "all_ap_25": 0.8507899823964835,
+    "time": 2.692308855056763,
+    "data_time": 0.2615764617919922,
+    "match_rate_mean": 0.7602675557136536,
+    "birth_rate_mean": 0.2281045764684677,
+    "rescued_mean": 0.0,
+    "topk_drop_mean": 0.5523256063461304,
+    "mem_size_kept_mean": 50.6860466003418
+  },
+  "candidate": {
+    "method": "DuoGraph-style rescue+dedup subset5",
+    "metrics_path": "docs/official_results/scannet200_subset5_20260423/raw/duograph3d_rescue_dedup_metrics.json",
+    "monitor_path": "docs/official_results/scannet200_subset5_20260423/raw/duograph3d_online_monitor_summary.json",
+    "scene_count": 5,
+    "frame_count": 172,
+    "all_ap": 0.5329621220735015,
+    "all_ap_50": 0.7561101693761412,
+    "all_ap_25": 0.8837007680032752,
+    "time": 5.150455904006958,
+    "data_time": 0.28102974891662597,
+    "match_rate_mean": 0.3178447484970093,
+    "birth_rate_mean": 0.12944376468658447,
+    "rescued_mean": 3.4069766998291016,
+    "topk_drop_mean": 0.0,
+    "mem_size_kept_mean": 34.83720779418945
+  },
+  "delta": {
+    "all_ap": 0.018341,
+    "all_ap_50": 0.021338,
+    "all_ap_25": 0.032911,
+    "match_rate_mean": -0.442423,
+    "birth_rate_mean": -0.098661,
+    "rescued_mean": 3.406977
+  },
+  "candidate_beats_baseline": true
+}

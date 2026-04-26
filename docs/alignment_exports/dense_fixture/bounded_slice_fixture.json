@@ -1,0 +1,18 @@
+{
+  "dataset": "scannet",
+  "scene": "duograph3d_dense_alignment_fixture",
+  "branches": {
+    "duograph3d_full": {
+      "memory_node_count": 2,
+      "avg_geometry_support": 0.86,
+      "track_assignments": {
+        "track-chair": [
+          "obj-1"
+        ],
+        "track-table": [
+          "obj-2"
+        ]
+      }
+    }
+  }
+}

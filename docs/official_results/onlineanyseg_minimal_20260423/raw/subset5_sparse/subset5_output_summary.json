@@ -1,0 +1,43 @@
+{
+  "root": "/home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_subset5_sparse_20260423",
+  "scenes": [
+    {
+      "scene": "scene0568_00",
+      "pred_instances": 24,
+      "points": 91032,
+      "feature_dim": 512
+    },
+    {
+      "scene": "scene0568_01",
+      "pred_instances": 18,
+      "points": 63620,
+      "feature_dim": 512
+    },
+    {
+      "scene": "scene0568_02",
+      "pred_instances": 27,
+      "points": 76623,
+      "feature_dim": 512
+    },
+    {
+      "scene": "scene0304_00",
+      "pred_instances": 11,
+      "points": 66883,
+      "feature_dim": 512
+    },
+    {
+      "scene": "scene0488_00",
+      "pred_instances": 16,
+      "points": 35057,
+      "feature_dim": 512
+    }
+  ],
+  "run_status": [
+    "scene0568_00\tOK",
+    "scene0568_01\tOK",
+    "scene0568_02\tOK",
+    "scene0304_00\tOK",
+    "scene0488_00\tOK"
+  ],
+  "eval_log": "/home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_subset5_sparse_20260423/eval_subset5.log"
+}

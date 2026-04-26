@@ -1,0 +1,19 @@
+
+There are 1 sequences needed to be evaluated totally, 0 selected sequences are missing...
+start evaluating:
+evaluating 1 scans...
+
+Begin to process sequence scene0568_00 (1 / 1)
+Filter predicted instances: 31 --> 31 predicted instances
+Final pred instance num: 31; final GT instance num 31 (with valid labels)
+scans processed: 1 / 1 
+
+################################################################
+what           :             AP         AP_50%         AP_25%
+################################################################
+wall           :          0.849          0.968          1.000
+----------------------------------------------------------------
+average        :          0.849          0.968          1.000
+
+save results to /home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_smoke_20260423/oracle_gt_surface_eval_class_agnostic.txt
+

@@ -1,0 +1,40 @@
+date=2026-04-23T20:11:54+08:00
+
+There are 5 sequences needed to be evaluated totally, 0 selected sequences are missing...
+start evaluating:
+evaluating 5 scans...
+
+Begin to process sequence scene0568_00 (1 / 5)
+Filter predicted instances: 24 --> 24 predicted instances
+Final pred instance num: 24; final GT instance num 31 (with valid labels)
+scans processed: 1 / 5 
+
+Begin to process sequence scene0568_01 (2 / 5)
+Filter predicted instances: 18 --> 18 predicted instances
+Final pred instance num: 18; final GT instance num 34 (with valid labels)
+scans processed: 2 / 5 
+
+Begin to process sequence scene0568_02 (3 / 5)
+Filter predicted instances: 27 --> 27 predicted instances
+Final pred instance num: 27; final GT instance num 31 (with valid labels)
+scans processed: 3 / 5 
+
+Begin to process sequence scene0304_00 (4 / 5)
+Filter predicted instances: 11 --> 11 predicted instances
+Final pred instance num: 11; final GT instance num 16 (with valid labels)
+scans processed: 4 / 5 
+
+Begin to process sequence scene0488_00 (5 / 5)
+Filter predicted instances: 16 --> 16 predicted instances
+Final pred instance num: 16; final GT instance num 25 (with valid labels)
+scans processed: 5 / 5 
+
+################################################################
+what           :             AP         AP_50%         AP_25%
+################################################################
+wall           :          0.077          0.164          0.427
+----------------------------------------------------------------
+average        :          0.077          0.164          0.427
+
+save results to /home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_subset5_sparse_20260423/eval_subset5_class_agnostic.txt
+

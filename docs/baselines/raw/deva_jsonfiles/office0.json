@@ -1,0 +1,70 @@
+{
+    "annotations": [
+        {
+            "file_name": "frame000000.jpg",
+            "segments_info": [
+                {
+                    "category_id": 2,
+                    "id": 14802278,
+                    "score": 0.95,
+                    "area": 171324
+                }
+            ]
+        },
+        {
+            "file_name": "frame000399.jpg",
+            "segments_info": [
+                {
+                    "category_id": 2,
+                    "id": 14802278,
+                    "score": 0.95,
+                    "area": 25465
+                }
+            ]
+        },
+        {
+            "file_name": "frame000799.jpg",
+            "segments_info": [
+                {
+                    "category_id": 2,
+                    "id": 14802278,
+                    "score": 0.95,
+                    "area": 129970
+                }
+            ]
+        },
+        {
+            "file_name": "frame001199.jpg",
+            "segments_info": [
+                {
+                    "category_id": 2,
+                    "id": 14802278,
+                    "score": 0.95,
+                    "area": 47319
+                }
+            ]
+        },
+        {
+            "file_name": "frame001599.jpg",
+            "segments_info": [
+                {
+                    "category_id": 2,
+                    "id": 14802278,
+                    "score": 0.95,
+                    "area": 8082
+                }
+            ]
+        },
+        {
+            "file_name": "frame001999.jpg",
+            "segments_info": [
+                {
+                    "category_id": 2,
+                    "id": 14802278,
+                    "score": 0.95,
+                    "area": 2420
+                }
+            ]
+        }
+    ]
+}

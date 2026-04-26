@@ -1,0 +1,114 @@
+date=2026-04-23T20:26:37+08:00
+
+There are 20 sequences needed to be evaluated totally, 0 selected sequences are missing...
+start evaluating:
+evaluating 20 scans...
+
+Begin to process sequence scene0568_00 (1 / 20)
+Filter predicted instances: 24 --> 24 predicted instances
+Final pred instance num: 24; final GT instance num 31 (with valid labels)
+scans processed: 1 / 20 
+
+Begin to process sequence scene0568_01 (2 / 20)
+Filter predicted instances: 18 --> 18 predicted instances
+Final pred instance num: 18; final GT instance num 34 (with valid labels)
+scans processed: 2 / 20 
+
+Begin to process sequence scene0568_02 (3 / 20)
+Filter predicted instances: 27 --> 27 predicted instances
+Final pred instance num: 27; final GT instance num 31 (with valid labels)
+scans processed: 3 / 20 
+
+Begin to process sequence scene0304_00 (4 / 20)
+Filter predicted instances: 11 --> 11 predicted instances
+Final pred instance num: 11; final GT instance num 16 (with valid labels)
+scans processed: 4 / 20 
+
+Begin to process sequence scene0488_00 (5 / 20)
+Filter predicted instances: 16 --> 16 predicted instances
+Final pred instance num: 16; final GT instance num 25 (with valid labels)
+scans processed: 5 / 20 
+
+Begin to process sequence scene0488_01 (6 / 20)
+Filter predicted instances: 19 --> 19 predicted instances
+Final pred instance num: 19; final GT instance num 25 (with valid labels)
+scans processed: 6 / 20 
+
+Begin to process sequence scene0412_00 (7 / 20)
+Filter predicted instances: 22 --> 22 predicted instances
+Final pred instance num: 22; final GT instance num 27 (with valid labels)
+scans processed: 7 / 20 
+
+Begin to process sequence scene0412_01 (8 / 20)
+Filter predicted instances: 16 --> 16 predicted instances
+Final pred instance num: 16; final GT instance num 22 (with valid labels)
+scans processed: 8 / 20 
+
+Begin to process sequence scene0217_00 (9 / 20)
+Filter predicted instances: 19 --> 19 predicted instances
+Final pred instance num: 19; final GT instance num 31 (with valid labels)
+scans processed: 9 / 20 
+
+Begin to process sequence scene0019_00 (10 / 20)
+Filter predicted instances: 4 --> 4 predicted instances
+Final pred instance num: 4; final GT instance num 23 (with valid labels)
+scans processed: 10 / 20 
+
+Begin to process sequence scene0019_01 (11 / 20)
+Filter predicted instances: 3 --> 3 predicted instances
+Final pred instance num: 3; final GT instance num 27 (with valid labels)
+scans processed: 11 / 20 
+
+Begin to process sequence scene0414_00 (12 / 20)
+Filter predicted instances: 14 --> 14 predicted instances
+Final pred instance num: 14; final GT instance num 40 (with valid labels)
+scans processed: 12 / 20 
+
+Begin to process sequence scene0575_00 (13 / 20)
+Filter predicted instances: 24 --> 24 predicted instances
+Final pred instance num: 24; final GT instance num 23 (with valid labels)
+scans processed: 13 / 20 
+
+Begin to process sequence scene0575_01 (14 / 20)
+Filter predicted instances: 31 --> 31 predicted instances
+Final pred instance num: 31; final GT instance num 22 (with valid labels)
+scans processed: 14 / 20 
+
+Begin to process sequence scene0575_02 (15 / 20)
+Filter predicted instances: 31 --> 31 predicted instances
+Final pred instance num: 31; final GT instance num 22 (with valid labels)
+scans processed: 15 / 20 
+
+Begin to process sequence scene0426_00 (16 / 20)
+Filter predicted instances: 14 --> 14 predicted instances
+Final pred instance num: 14; final GT instance num 39 (with valid labels)
+scans processed: 16 / 20 
+
+Begin to process sequence scene0426_01 (17 / 20)
+Filter predicted instances: 18 --> 18 predicted instances
+Final pred instance num: 18; final GT instance num 35 (with valid labels)
+scans processed: 17 / 20 
+
+Begin to process sequence scene0426_02 (18 / 20)
+Filter predicted instances: 4 --> 4 predicted instances
+Final pred instance num: 4; final GT instance num 37 (with valid labels)
+scans processed: 18 / 20 
+
+Begin to process sequence scene0426_03 (19 / 20)
+Filter predicted instances: 9 --> 9 predicted instances
+Final pred instance num: 9; final GT instance num 30 (with valid labels)
+scans processed: 19 / 20 
+
+Begin to process sequence scene0549_00 (20 / 20)
+Filter predicted instances: 11 --> 11 predicted instances
+Final pred instance num: 11; final GT instance num 32 (with valid labels)
+scans processed: 20 / 20 
+
+################################################################
+what           :             AP         AP_50%         AP_25%
+################################################################
+wall           :          0.061          0.138          0.298
+----------------------------------------------------------------
+average        :          0.061          0.138          0.298
+
+save results to /home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_subset20_sparse_20260423/eval_subset20_class_agnostic.txt

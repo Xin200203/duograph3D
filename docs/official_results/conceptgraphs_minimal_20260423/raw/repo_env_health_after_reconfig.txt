@@ -1,0 +1,7 @@
+ConceptGraphs env health after reconfiguration (2026-04-23)
+repo=/home/nebula/xxy/concept-graphs
+commit=72f5962822b5e8678a446f367a06df1a977d2a4d
+env=duograph-baselines-cu118 cloned_from=conceptgraph-cu118
+key additions=chamferdist 1.0.3 built with CUDA_HOME=/usr/local/cuda-11.6 TORCH_CUDA_ARCH_LIST=8.6+PTX; gradslam 0.1.0 installed
+import check: conceptgraph.scripts.eval_replica_semseg OK; conceptgraph.slam.slam_classes OK
+remaining warning: conceptgraph.slam.cfslam_pipeline_batch still has upstream import drift: from conceptgraph.utils.general_utils import to_tensor, but to_tensor lives in conceptgraph.slam.slam_classes. No repo patch applied yet.

@@ -1,0 +1,54 @@
+date=2026-04-23T20:19:05+08:00
+host=nebula-System-Product-Name
+repo=/home/nebula/xxy/concept-graphs
+env=duograph-baselines-cu118
+
+== import eval_replica_semseg ==
+conceptgraph.scripts.eval_replica_semseg: OK /home/nebula/xxy/concept-graphs/conceptgraph/scripts/eval_replica_semseg.py
+gradslam: OK /home/nebula/miniconda3/envs/duograph-baselines-cu118/lib/python3.10/site-packages/gradslam/__init__.py
+chamferdist: OK /home/nebula/miniconda3/envs/duograph-baselines-cu118/lib/python3.10/site-packages/chamferdist/__init__.py
+
+== to_tensor locations ==
+conceptgraph/slam/cfslam_pipeline_batch.py
+   from conceptgraph.utils.general_utils import to_tensor
+conceptgraph/slam/slam_classes.py
+   def to_tensor(numpy_array, device=None):
+   new_clip_ft = to_tensor(new_clip_ft)
+   new_obj['clip_ft'] = to_tensor(new_obj['clip_ft'])
+   # new_obj['text_ft'] = to_tensor(new_obj['text_ft'])
+conceptgraph/slam/utils.py
+   from conceptgraph.slam.slam_classes import MapEdgeMapping, MapObjectList, DetectionList, to_tensor
+   # obj2['text_ft'] = to_tensor(obj2['text_ft'], device)
+   # obj1['text_ft'] = to_tensor(obj1['text_ft'], device)
+   to_tensor(objects[i]["clip_ft"]),
+   to_tensor(objects[j]["clip_ft"]),
+   #     to_tensor(objects[i]["text_ft"]),
+
+== Replica candidate roots ==
+FOUND /home/nebula/xxy/dataset/Replica
+/home/nebula/xxy/dataset/Replica/office4/traj.txt
+/home/nebula/xxy/dataset/Replica/office0/traj.txt
+/home/nebula/xxy/dataset/Replica/office3_mesh.ply
+/home/nebula/xxy/dataset/Replica/room2_mesh.ply
+/home/nebula/xxy/dataset/Replica/office0_mesh.ply
+/home/nebula/xxy/dataset/Replica/room0/traj.txt
+/home/nebula/xxy/dataset/Replica/room1_mesh.ply
+/home/nebula/xxy/dataset/Replica/office1_mesh.ply
+/home/nebula/xxy/dataset/Replica/room0_mesh.ply
+/home/nebula/xxy/dataset/Replica/office2/traj.txt
+/home/nebula/xxy/dataset/Replica/room2/traj.txt
+/home/nebula/xxy/dataset/Replica/office2_mesh.ply
+/home/nebula/xxy/dataset/Replica/office3/traj.txt
+/home/nebula/xxy/dataset/Replica/room1/traj.txt
+/home/nebula/xxy/dataset/Replica/office1/traj.txt
+/home/nebula/xxy/dataset/Replica/office4_mesh.ply
+MISSING /home/nebula/xxy/datasets/Replica
+MISSING /home/nebula/xxy/Replica
+MISSING /home/nebula/xxy/concept-graphs/data/Replica
+MISSING /home/nebula/xxy/concept-graphs/data/replica
+
+== ConceptGraphs pcd save candidates ==
+
+== current DuoGraph3D ConceptGraphs export ==
+/home/nebula/xxy/duograph3d_artifacts/conceptgraphs_env_health_20260423.txt
+/home/nebula/xxy/duograph3d_artifacts/conceptgraphs_minimal_20260423/conceptgraphs_scoring_path_audit_20260423.txt

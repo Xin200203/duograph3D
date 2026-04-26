@@ -1,0 +1,38 @@
+===== scene0412_00 2026-04-23T20:24:09+08:00 =====
+
+0it [00:00, ?it/s]
+1it [00:00,  1.99it/s]
+6it [00:00, 12.48it/s]
+11it [00:00, 17.40it/s]
+17it [00:00, 26.44it/s]
+21it [00:01, 22.02it/s]
+26it [00:01, 26.28it/s]
+31it [00:01, 25.53it/s]
+36it [00:01, 28.33it/s]
+41it [00:01, 28.42it/s]
+51it [00:02, 28.80it/s]
+56it [00:02, 29.95it/s]
+59it [00:02, 25.63it/s]
+
+[INFO] Pointcloud geometric feature extractor model has been loaded from: third_party/FCGF/model/ResUNetBN2C-16feat-3conv.pth
+
+At frame_10, number of mask with geometric feature: 6 --> 6, takes 0.0110 s
+Finish merging at frame_10 ! Current merged mask number = 34
+
+At frame_20, number of mask with geometric feature: 13 --> 20, takes 0.0165 s
+Finish merging at frame_20 ! Current merged mask number = 34
+
+At frame_30, number of mask with geometric feature: 28 --> 36, takes 0.0201 s
+Finish merging at frame_30 ! Current merged mask number = 32
+
+At frame_40, number of mask with geometric feature: 30 --> 35, takes 0.0185 s
+Finish merging at frame_40 ! Current merged mask number = 35
+
+At frame_50, number of mask with geometric feature: 33 --> 35, takes 0.0186 s
+Finish merging at frame_50 ! Current merged mask number = 30
+################ Begin to save final ckpt and seg mesh/pointcloud...
+[1;33m[Open3D WARNING] Write Ply clamped color value to valid range[0;m
+Segmented instances result was saved to: /home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_subset20_sparse_20260423/output/scene0412_00/ckpt_final.npz
+[1;33m[Open3D WARNING] Write Ply clamped color value to valid range[0;m
+Input sequence finished !
+

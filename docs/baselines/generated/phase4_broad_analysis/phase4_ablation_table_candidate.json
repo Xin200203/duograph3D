@@ -1,0 +1,89 @@
+{
+  "baseline_regime": "phase4_baseline",
+  "metrics": [
+    "identity_fragmentation_count",
+    "track_consistency_rate",
+    "real_observation_frame_rate",
+    "geometry_support_mean"
+  ],
+  "rows": [
+    {
+      "regime": "phase4_burst",
+      "report_coverage": 11,
+      "metrics": {
+        "identity_fragmentation_count": {
+          "baseline_mean": 63.455,
+          "regime_mean": 20.273,
+          "delta_vs_baseline": 43.182
+        },
+        "track_consistency_rate": {
+          "baseline_mean": 0.594,
+          "regime_mean": 0.716,
+          "delta_vs_baseline": 0.122
+        },
+        "real_observation_frame_rate": {
+          "baseline_mean": 0.818,
+          "regime_mean": 0.5,
+          "delta_vs_baseline": -0.318
+        },
+        "geometry_support_mean": {
+          "baseline_mean": 0.271,
+          "regime_mean": 0.287,
+          "delta_vs_baseline": 0.016
+        }
+      }
+    },
+    {
+      "regime": "phase4_random",
+      "report_coverage": 11,
+      "metrics": {
+        "identity_fragmentation_count": {
+          "baseline_mean": 63.455,
+          "regime_mean": 11.364,
+          "delta_vs_baseline": 52.091
+        },
+        "track_consistency_rate": {
+          "baseline_mean": 0.594,
+          "regime_mean": 0.815,
+          "delta_vs_baseline": 0.221
+        },
+        "real_observation_frame_rate": {
+          "baseline_mean": 0.818,
+          "regime_mean": 0.348,
+          "delta_vs_baseline": -0.47
+        },
+        "geometry_support_mean": {
+          "baseline_mean": 0.271,
+          "regime_mean": 0.317,
+          "delta_vs_baseline": 0.046
+        }
+      }
+    },
+    {
+      "regime": "phase4_stress",
+      "report_coverage": 11,
+      "metrics": {
+        "identity_fragmentation_count": {
+          "baseline_mean": 63.455,
+          "regime_mean": 21.091,
+          "delta_vs_baseline": 42.364
+        },
+        "track_consistency_rate": {
+          "baseline_mean": 0.594,
+          "regime_mean": 0.736,
+          "delta_vs_baseline": 0.142
+        },
+        "real_observation_frame_rate": {
+          "baseline_mean": 0.818,
+          "regime_mean": 0.5,
+          "delta_vs_baseline": -0.318
+        },
+        "geometry_support_mean": {
+          "baseline_mean": 0.271,
+          "regime_mean": 0.306,
+          "delta_vs_baseline": 0.035
+        }
+      }
+    }
+  ]
+}

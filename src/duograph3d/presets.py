@@ -38,6 +38,7 @@ SCANNET_HOLDOUT6 = [
 class SuiteSpec:
     name: str
     scannet_scenes: list[str]
+    replica_scenes: list[str] | None = None
     drop_mode: str = "none"
     drop_every: int = 0
     drop_offset: int = 1
@@ -46,6 +47,7 @@ class SuiteSpec:
     drop_probability: float = 0.35
     random_seed: int = 0
     limit: int = 6
+    observation_source: str = "synthetic_template"
 
 
 def build_all_suite_specs() -> list[SuiteSpec]:

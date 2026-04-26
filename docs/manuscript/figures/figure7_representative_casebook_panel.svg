@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+<style>
+    .title { font: 700 26px sans-serif; fill: #111; }
+    .subtitle { font: 500 18px sans-serif; fill: #222; }
+    .body { font: 400 16px sans-serif; fill: #222; }
+    .small { font: 400 14px sans-serif; fill: #333; }
+    .box { fill: #f7f9fc; stroke: #2c3e50; stroke-width: 2; rx: 12; ry: 12; }
+    .accent { fill: #eaf2ff; stroke: #356ae6; stroke-width: 2; rx: 12; ry: 12; }
+    .danger { fill: #fff0f0; stroke: #c0392b; stroke-width: 2; rx: 12; ry: 12; }
+    .arrow { stroke: #34495e; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+</style>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L0,6 L9,3 z" fill="#34495e"/>
+  </marker>
+</defs>
+<text class="title" x="40" y="60">Figure 7. Representative casebook panel</text>
+<text class="body" x="40" y="95">Current best/worst qualitative anchors used for Phase 5 figure selection.</text>
+<rect class="accent" x="60" y="150" width="380" height="250"/>
+<text class="subtitle" x="78" y="180">Scene summary</text>
+<text class="small" x="78" y="210">best_identity_stability: replica/office0</text>
+<text class="small" x="78" y="230">identity_fragmentation_count = 0.0</text>
+<text class="small" x="78" y="250">best_track_consistency: replica/office3</text>
+<text class="small" x="78" y="270">track_consistency_rate = 1.0</text>
+<text class="small" x="78" y="290">worst_fragmentation: scannet/scene0222_00</text>
+<text class="small" x="78" y="310">identity_fragmentation_count = 115.0</text>
+<text class="small" x="78" y="330">weakest_geometry_support: scannet/scene0050_00</text>
+<text class="small" x="78" y="350">geometry_support_mean = 0.2</text>
+<rect class="box" x="500" y="150" width="620" height="460"/>
+<text class="subtitle" x="518" y="180">Event excerpt</text>
+<text class="small" x="518" y="210">best_identity_stability</text>
+<text class="small" x="518" y="230">best_track_consistency</text>
+<text class="small" x="518" y="250">worst_fragmentation</text>
+<text class="small" x="518" y="270">weakest_geometry_support</text></svg>

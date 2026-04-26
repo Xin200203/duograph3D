@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<style>
+    .title { font: 700 26px sans-serif; fill: #111; }
+    .subtitle { font: 500 18px sans-serif; fill: #222; }
+    .body { font: 400 16px sans-serif; fill: #222; }
+    .small { font: 400 14px sans-serif; fill: #333; }
+    .box { fill: #f7f9fc; stroke: #2c3e50; stroke-width: 2; rx: 12; ry: 12; }
+    .accent { fill: #eaf2ff; stroke: #356ae6; stroke-width: 2; rx: 12; ry: 12; }
+    .danger { fill: #fff0f0; stroke: #c0392b; stroke-width: 2; rx: 12; ry: 12; }
+    .arrow { stroke: #34495e; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+</style>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L0,6 L9,3 z" fill="#34495e"/>
+  </marker>
+</defs>
+<text class="title" x="40" y="60">Figure 2. Layer-1 current-evidence repair</text>
+<text class="body" x="40" y="95">Evidence items are linked by continuity, appearance, and geometry-profile consistency before component collapse.</text>
+<rect class="accent" x="60" y="150" width="240" height="180"/>
+<text class="subtitle" x="78" y="180">Evidence items</text>
+<text class="small" x="78" y="210">proposal id</text>
+<text class="small" x="78" y="230">descriptor / geometry key</text>
+<text class="small" x="78" y="250">support size / depth scale</text>
+<text class="small" x="78" y="270">continuity / appearance keys</text>
+<rect class="accent" x="360" y="110" width="320" height="260"/>
+<text class="subtitle" x="378" y="140">Compatibility graph</text>
+<text class="small" x="378" y="170">repair-group overlap</text>
+<text class="small" x="378" y="190">continuity match</text>
+<text class="small" x="378" y="210">appearance match</text>
+<text class="small" x="378" y="230">geometry-profile consistency</text>
+<text class="small" x="378" y="250">edge reasons retained</text>
+<rect class="box" x="740" y="150" width="360" height="180"/>
+<text class="subtitle" x="758" y="180">Connected components -> hypotheses</text>
+<text class="small" x="758" y="210">one component = one repaired hypothesis</text>
+<text class="small" x="758" y="230">ambiguity flags preserved</text>
+<text class="small" x="758" y="250">repair reasons propagated</text>
+<path class="arrow" d="M300 240 L360 240"/>
+<path class="arrow" d="M680 240 L740 240"/>
+<rect class="box" x="360" y="430" width="520" height="170"/>
+<text class="subtitle" x="378" y="460">Why it matters</text>
+<text class="small" x="378" y="490">Makes current-evidence graph operational rather than diagrammatic.</text>
+<text class="small" x="378" y="510">Separates local evidence repair from long-term memory association.</text></svg>

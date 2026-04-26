@@ -1,0 +1,18 @@
+{
+  "scene_count": 44,
+  "real_observation_report_coverage": 44,
+  "all_old_proxy_scenes_pass": false,
+  "all_old_proxy_regimes_pass": false,
+  "has_main_table_candidate": true,
+  "has_ablation_table_candidate": true,
+  "has_worst_best_analysis": true,
+  "has_failure_casebook": true,
+  "has_representative_casebook": true,
+  "has_external_baseline_matrix": true,
+  "legacy_proxy_reference_only_candidate": true,
+  "candidate_package_complete": true,
+  "paper_grade_candidate": true,
+  "remaining_gap": [
+    "legacy proxy gates have been downgraded to historical reference only"
+  ]
+}

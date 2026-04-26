@@ -1,0 +1,254 @@
+{
+  "counts": {
+    "scenes": 312,
+    "frames": 13430
+  },
+  "det_to_merge": {
+    "n": 13430,
+    "mean": 9.243038177490234,
+    "median": 9.0,
+    "p90": 16.0,
+    "p95": 17.0
+  },
+  "matched": {
+    "n": 13430,
+    "mean": 7.459121227264404,
+    "median": 7.0,
+    "p90": 13.0,
+    "p95": 15.0
+  },
+  "birth": {
+    "n": 13430,
+    "mean": 1.7839165925979614,
+    "median": 1.0,
+    "p90": 5.0,
+    "p95": 7.0
+  },
+  "absorbed": {
+    "n": 13430,
+    "mean": 0.0,
+    "median": 0.0,
+    "p90": 0.0,
+    "p95": 0.0
+  },
+  "supporters": {
+    "n": 13430,
+    "mean": 0.0,
+    "median": 0.0,
+    "p90": 0.0,
+    "p95": 0.0
+  },
+  "rescued": {
+    "n": 13430,
+    "mean": 0.0,
+    "median": 0.0,
+    "p90": 0.0,
+    "p95": 0.0
+  },
+  "rescued_from_l": {
+    "n": 13430,
+    "mean": 0.0,
+    "median": 0.0,
+    "p90": 0.0,
+    "p95": 0.0
+  },
+  "rescued_from_uh": {
+    "n": 13430,
+    "mean": 0.0,
+    "median": 0.0,
+    "p90": 0.0,
+    "p95": 0.0
+  },
+  "rescue_ambiguous": {
+    "n": 13430,
+    "mean": 0.0,
+    "median": 0.0,
+    "p90": 0.0,
+    "p95": 0.0
+  },
+  "match_rate": {
+    "n": 13430,
+    "mean": 0.820153534412384,
+    "median": 0.8888888955116272,
+    "p90": 1.0,
+    "p95": 1.0
+  },
+  "birth_rate": {
+    "n": 13430,
+    "mean": 0.17910180985927582,
+    "median": 0.1111111119389534,
+    "p90": 0.5,
+    "p95": 0.625
+  },
+  "mem_size_full": {
+    "n": 13430,
+    "mean": 62.93350601196289,
+    "median": 55.0,
+    "p90": 119.0,
+    "p95": 143.0
+  },
+  "mem_size_kept": {
+    "n": 13430,
+    "mean": 56.93112564086914,
+    "median": 55.0,
+    "p90": 100.0,
+    "p95": 100.0
+  },
+  "topk_drop": {
+    "n": 13430,
+    "mean": 6.002382755279541,
+    "median": 0.0,
+    "p90": 19.0,
+    "p95": 43.0
+  },
+  "rescue_stats": {
+    "delta_mask_pts_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "new_vox_ratio_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "gate_contain_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "gate_dino_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "gate_feat3d_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "det_purity_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "det_cov_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "det_iou_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    }
+  },
+  "l_pool_stats": {
+    "n": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "npoints_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "det_cov_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "det_iou_mean": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "useful_any05_rate": {
+      "n": 13430,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    }
+  },
+  "dedup_stats": {
+    "pairs_checked": {
+      "n": 13118,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "pairs_merged": {
+      "n": 13118,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "reject_no_feat": {
+      "n": 13118,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "reject_no_vox": {
+      "n": 13118,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "reject_geom": {
+      "n": 13118,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "present_rate": 0.9767684288905436,
+    "nonzero_rate": 0.0,
+    "pairs_checked_nonzero": {
+      "n": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "pairs_merged_nonzero": {
+      "n": 0,
+      "mean": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0
+    },
+    "merge_ratio": 0.0,
+    "merge_ratio_nonzero": 0.0
+  }
+}

@@ -33,10 +33,11 @@ def summarize_scannet(paths: RemoteExperimentPaths) -> dict[str, object]:
     raw_scene = ScanNetRawScene.from_root(paths.scannet_scans_root / "scene0008_00")
     pose_scene = ScanNetPoseCenteredScene.from_root(paths.scannet_pose_centered_root / "scene0008_00")
     issues = raw_scene.validate() + pose_scene.validate()
+    labels = raw_scene.object_labels()
     pipeline = DuoGraph3DPipeline()
     run_result, logger = pipeline.run_sequence(
         sequence_id="scannet-scene0008-smoke",
-        frames=pose_scene.to_frame_inputs(limit=3),
+        frames=pose_scene.to_frame_inputs(labels, limit=3),
         temporal_variant=TemporalVariant.NAIVE_FRAMEWISE,
         branch_id=BRANCH_DUOGRAPH3D,
     )

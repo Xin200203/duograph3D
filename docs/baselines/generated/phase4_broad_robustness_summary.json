@@ -1,0 +1,95 @@
+{
+  "regime_count": 4,
+  "regimes": {
+    "phase4_baseline": {
+      "scene_count": 11,
+      "all_scenes_pass": false,
+      "row_pass_counts": {
+        "reentry_recovery_proxy": 1,
+        "identity_churn_proxy": 8,
+        "counterfactual_divergence_proxy": 8
+      },
+      "row_total_counts": {
+        "identity_churn_proxy": 11,
+        "reentry_recovery_proxy": 11,
+        "memory_authority_usage": 11,
+        "counterfactual_divergence_proxy": 11,
+        "dense_authority_gap_proxy": 11
+      },
+      "signature_counts": {
+        "temporal_reentry_gap": 1,
+        "single_layer_fragmentation": 8,
+        "counterfactual_fragmentation": 8
+      }
+    },
+    "phase4_stress": {
+      "scene_count": 11,
+      "all_scenes_pass": false,
+      "row_pass_counts": {
+        "reentry_recovery_proxy": 6,
+        "identity_churn_proxy": 8,
+        "counterfactual_divergence_proxy": 6
+      },
+      "row_total_counts": {
+        "identity_churn_proxy": 11,
+        "reentry_recovery_proxy": 11,
+        "memory_authority_usage": 11,
+        "counterfactual_divergence_proxy": 11,
+        "dense_authority_gap_proxy": 11
+      },
+      "signature_counts": {
+        "temporal_reentry_gap": 6,
+        "single_layer_fragmentation": 8,
+        "counterfactual_fragmentation": 6
+      }
+    },
+    "phase4_burst": {
+      "scene_count": 11,
+      "all_scenes_pass": false,
+      "row_pass_counts": {
+        "reentry_recovery_proxy": 3,
+        "identity_churn_proxy": 8,
+        "counterfactual_divergence_proxy": 6
+      },
+      "row_total_counts": {
+        "identity_churn_proxy": 11,
+        "reentry_recovery_proxy": 11,
+        "memory_authority_usage": 11,
+        "counterfactual_divergence_proxy": 11,
+        "dense_authority_gap_proxy": 11
+      },
+      "signature_counts": {
+        "temporal_reentry_gap": 3,
+        "single_layer_fragmentation": 8,
+        "counterfactual_fragmentation": 6
+      }
+    },
+    "phase4_random": {
+      "scene_count": 11,
+      "all_scenes_pass": false,
+      "row_pass_counts": {
+        "reentry_recovery_proxy": 3,
+        "identity_churn_proxy": 7,
+        "counterfactual_divergence_proxy": 4
+      },
+      "row_total_counts": {
+        "identity_churn_proxy": 11,
+        "reentry_recovery_proxy": 11,
+        "memory_authority_usage": 11,
+        "counterfactual_divergence_proxy": 11,
+        "dense_authority_gap_proxy": 11
+      },
+      "signature_counts": {
+        "temporal_reentry_gap": 3,
+        "single_layer_fragmentation": 7,
+        "counterfactual_fragmentation": 4
+      }
+    }
+  },
+  "row_stability": {
+    "counterfactual_divergence_proxy": false,
+    "identity_churn_proxy": false,
+    "reentry_recovery_proxy": false
+  },
+  "all_regimes_pass": false
+}

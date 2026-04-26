@@ -1,0 +1,92 @@
+===== start 2026-04-24T13:10:27+08:00 =====
+Loading CLIP text encoder
+=== room0: prepare ===
+{"scene": "room0", "frame_count": 400, "frames_with_observations": 400, "raw_detection_count": 17601, "kept_observation_count": 17502, "key_count": 1279, "seconds": 63.154, "parameters": {"voxel_size": 0.75, "min_mask_pixels": 300, "max_points_per_obs": 48, "max_points_per_object": 4096, "temporal_variant": "temporal_naive_framewise"}}
+=== room0: DuoGraph3D ===
+{"scene": "room0", "duograph_seconds": 7.903, "memory_node_count": 13695, "track_count": 1279}
+=== room0: export ===
+=== room0: eval_replica ===
+Using only the classes that exists in GT of this scene:  29
+23 classes remains. They are:  [(1, 'basket'), (5, 'blanket'), (6, 'blinds'), (7, 'book'), (12, 'cabinet'), (13, 'candle'), (14, 'chair'), (18, 'cushion'), (24, 'indoor-plant'), (25, 'lamp'), (29, 'picture'), (30, 'pillar'), (33, 'plant-stand'), (34, 'plate'), (35, 'pot'), (38, 'sofa'), (39, 'stool'), (40, 'switch'), (41, 'table'), (46, 'vase'), (47, 'vent'), (49, 'wall-plug'), (51, 'rug')]
+Loading mapping result from /home/nebula/xxy/dataset/Replica/room0/pcd_saves/full_pcd_duograph3d_gsa_parity_naive.pkl.gz
+52
+{"scene_id": "room0", "miou": 21.493254431887813, "mrecall": 39.901644574559256, "mprecision": 39.037151464625545, "mf1score": 28.351548924223906, "fmiou": 46.262820215534774}
+=== room1: prepare ===
+{"scene": "room1", "frame_count": 400, "frames_with_observations": 400, "raw_detection_count": 10649, "kept_observation_count": 10608, "key_count": 748, "seconds": 40.873, "parameters": {"voxel_size": 0.75, "min_mask_pixels": 300, "max_points_per_obs": 48, "max_points_per_object": 4096, "temporal_variant": "temporal_naive_framewise"}}
+=== room1: DuoGraph3D ===
+{"scene": "room1", "duograph_seconds": 3.145, "memory_node_count": 7936, "track_count": 748}
+=== room1: export ===
+=== room1: eval_replica ===
+Using only the classes that exists in GT of this scene:  25
+19 classes remains. They are:  [(1, 'basket'), (2, 'bed'), (5, 'blanket'), (6, 'blinds'), (7, 'book'), (12, 'cabinet'), (17, 'comforter'), (24, 'indoor-plant'), (25, 'lamp'), (27, 'nightstand'), (28, 'panel'), (29, 'picture'), (31, 'pillow'), (34, 'plate'), (40, 'switch'), (46, 'vase'), (47, 'vent'), (49, 'wall-plug'), (51, 'rug')]
+Loading mapping result from /home/nebula/xxy/dataset/Replica/room1/pcd_saves/full_pcd_duograph3d_gsa_parity_naive.pkl.gz
+52
+{"scene_id": "room1", "miou": 26.930458111516938, "mrecall": 47.81303082188395, "mprecision": 48.27021733906708, "mf1score": 35.85460361756158, "fmiou": 40.64072949234391}
+=== room2: prepare ===
+{"scene": "room2", "frame_count": 400, "frames_with_observations": 400, "raw_detection_count": 11130, "kept_observation_count": 11077, "key_count": 1034, "seconds": 42.749, "parameters": {"voxel_size": 0.75, "min_mask_pixels": 300, "max_points_per_obs": 48, "max_points_per_object": 4096, "temporal_variant": "temporal_naive_framewise"}}
+=== room2: DuoGraph3D ===
+{"scene": "room2", "duograph_seconds": 3.884, "memory_node_count": 8674, "track_count": 1034}
+=== room2: export ===
+=== room2: eval_replica ===
+Using only the classes that exists in GT of this scene:  22
+16 classes remains. They are:  [(6, 'blinds'), (8, 'bottle'), (9, 'box'), (10, 'bowl'), (14, 'chair'), (24, 'indoor-plant'), (25, 'lamp'), (34, 'plate'), (36, 'sculpture'), (37, 'shelf'), (40, 'switch'), (41, 'table'), (46, 'vase'), (47, 'vent'), (49, 'wall-plug'), (51, 'rug')]
+Loading mapping result from /home/nebula/xxy/dataset/Replica/room2/pcd_saves/full_pcd_duograph3d_gsa_parity_naive.pkl.gz
+52
+{"scene_id": "room2", "miou": 23.202928047976457, "mrecall": 39.22466737203649, "mprecision": 50.16538583440706, "mf1score": 29.38207985948489, "fmiou": 39.70267835737895}
+=== office0: prepare ===
+{"scene": "office0", "frame_count": 400, "frames_with_observations": 400, "raw_detection_count": 15383, "kept_observation_count": 15288, "key_count": 1012, "seconds": 49.183, "parameters": {"voxel_size": 0.75, "min_mask_pixels": 300, "max_points_per_obs": 48, "max_points_per_object": 4096, "temporal_variant": "temporal_naive_framewise"}}
+=== office0: DuoGraph3D ===
+{"scene": "office0", "duograph_seconds": 6.371, "memory_node_count": 11387, "track_count": 1012}
+=== office0: export ===
+=== office0: eval_replica ===
+Using only the classes that exists in GT of this scene:  25
+20 classes remains. They are:  [(4, 'bin'), (6, 'blinds'), (11, 'camera'), (14, 'chair'), (15, 'clock'), (21, 'desk-organizer'), (24, 'indoor-plant'), (25, 'lamp'), (28, 'panel'), (30, 'pillar'), (33, 'plant-stand'), (38, 'sofa'), (40, 'switch'), (41, 'table'), (42, 'tablet'), (43, 'tissue-paper'), (44, 'tv-screen'), (47, 'vent'), (49, 'wall-plug'), (51, 'rug')]
+Loading mapping result from /home/nebula/xxy/dataset/Replica/office0/pcd_saves/full_pcd_duograph3d_gsa_parity_naive.pkl.gz
+52
+{"scene_id": "office0", "miou": 16.459998681093566, "mrecall": 31.620190651156012, "mprecision": 33.25854281894863, "mf1score": 21.634804934781286, "fmiou": 28.67712315522165}
+=== office1: prepare ===
+{"scene": "office1", "frame_count": 400, "frames_with_observations": 400, "raw_detection_count": 9206, "kept_observation_count": 9167, "key_count": 651, "seconds": 32.93, "parameters": {"voxel_size": 0.75, "min_mask_pixels": 300, "max_points_per_obs": 48, "max_points_per_object": 4096, "temporal_variant": "temporal_naive_framewise"}}
+=== office1: DuoGraph3D ===
+{"scene": "office1", "duograph_seconds": 2.607, "memory_node_count": 6802, "track_count": 651}
+=== office1: export ===
+=== office1: eval_replica ===
+Using only the classes that exists in GT of this scene:  23
+18 classes remains. They are:  [(4, 'bin'), (5, 'blanket'), (6, 'blinds'), (8, 'bottle'), (14, 'chair'), (16, 'cloth'), (20, 'desk'), (21, 'desk-organizer'), (25, 'lamp'), (26, 'monitor'), (28, 'panel'), (30, 'pillar'), (31, 'pillow'), (40, 'switch'), (41, 'table'), (43, 'tissue-paper'), (47, 'vent'), (49, 'wall-plug')]
+Loading mapping result from /home/nebula/xxy/dataset/Replica/office1/pcd_saves/full_pcd_duograph3d_gsa_parity_naive.pkl.gz
+52
+{"scene_id": "office1", "miou": 10.058012001940773, "mrecall": 26.11462488873965, "mprecision": 27.84305488069852, "mf1score": 13.50412456138755, "fmiou": 12.993050106221423}
+=== office2: prepare ===
+{"scene": "office2", "frame_count": 400, "frames_with_observations": 400, "raw_detection_count": 14788, "kept_observation_count": 14674, "key_count": 1252, "seconds": 51.027, "parameters": {"voxel_size": 0.75, "min_mask_pixels": 300, "max_points_per_obs": 48, "max_points_per_object": 4096, "temporal_variant": "temporal_naive_framewise"}}
+=== office2: DuoGraph3D ===
+{"scene": "office2", "duograph_seconds": 6.465, "memory_node_count": 11620, "track_count": 1252}
+=== office2: export ===
+=== office2: eval_replica ===
+Using only the classes that exists in GT of this scene:  22
+16 classes remains. They are:  [(4, 'bin'), (8, 'bottle'), (11, 'camera'), (14, 'chair'), (15, 'clock'), (18, 'cushion'), (25, 'lamp'), (28, 'panel'), (38, 'sofa'), (39, 'stool'), (41, 'table'), (42, 'tablet'), (43, 'tissue-paper'), (44, 'tv-screen'), (47, 'vent'), (49, 'wall-plug')]
+Loading mapping result from /home/nebula/xxy/dataset/Replica/office2/pcd_saves/full_pcd_duograph3d_gsa_parity_naive.pkl.gz
+52
+{"scene_id": "office2", "miou": 20.49525934708072, "mrecall": 38.31879631616175, "mprecision": 42.252465784258675, "mf1score": 27.807611520682784, "fmiou": 38.595008469816875}
+=== office3: prepare ===
+{"scene": "office3", "frame_count": 400, "frames_with_observations": 400, "raw_detection_count": 17090, "kept_observation_count": 16816, "key_count": 1562, "seconds": 54.814, "parameters": {"voxel_size": 0.75, "min_mask_pixels": 300, "max_points_per_obs": 48, "max_points_per_object": 4096, "temporal_variant": "temporal_naive_framewise"}}
+=== office3: DuoGraph3D ===
+{"scene": "office3", "duograph_seconds": 8.766, "memory_node_count": 13778, "track_count": 1562}
+=== office3: export ===
+=== office3: eval_replica ===
+Using only the classes that exists in GT of this scene:  27
+21 classes remains. They are:  [(3, 'bench'), (4, 'bin'), (6, 'blinds'), (8, 'bottle'), (9, 'box'), (11, 'camera'), (14, 'chair'), (15, 'clock'), (18, 'cushion'), (21, 'desk-organizer'), (25, 'lamp'), (28, 'panel'), (32, 'pipe'), (38, 'sofa'), (40, 'switch'), (41, 'table'), (42, 'tablet'), (43, 'tissue-paper'), (45, 'tv-stand'), (47, 'vent'), (49, 'wall-plug')]
+Loading mapping result from /home/nebula/xxy/dataset/Replica/office3/pcd_saves/full_pcd_duograph3d_gsa_parity_naive.pkl.gz
+52
+{"scene_id": "office3", "miou": 9.793513008792486, "mrecall": 37.24090144304292, "mprecision": 22.936118856471563, "mf1score": 14.108632510358149, "fmiou": 24.73800707082895}
+=== office4: prepare ===
+{"scene": "office4", "frame_count": 400, "frames_with_observations": 400, "raw_detection_count": 13952, "kept_observation_count": 13860, "key_count": 1578, "seconds": 45.906, "parameters": {"voxel_size": 0.75, "min_mask_pixels": 300, "max_points_per_obs": 48, "max_points_per_object": 4096, "temporal_variant": "temporal_naive_framewise"}}
+=== office4: DuoGraph3D ===
+{"scene": "office4", "duograph_seconds": 6.255, "memory_node_count": 11252, "track_count": 1578}
+=== office4: export ===
+=== office4: eval_replica ===
+Using only the classes that exists in GT of this scene:  16
+10 classes remains. They are:  [(3, 'bench'), (4, 'bin'), (11, 'camera'), (14, 'chair'), (15, 'clock'), (25, 'lamp'), (28, 'panel'), (41, 'table'), (44, 'tv-screen'), (47, 'vent')]
+Loading mapping result from /home/nebula/xxy/dataset/Replica/office4/pcd_saves/full_pcd_duograph3d_gsa_parity_naive.pkl.gz
+52
+{"scene_id": "office4", "miou": 36.53371739201248, "mrecall": 54.7750860452652, "mprecision": 50.78725044615566, "mf1score": 44.92304141461009, "fmiou": 41.10791251894364}
+/home/nebula/xxy/duograph3d_artifacts/duograph3d_conceptgraphs_gsa_parity_20260424/duograph_gsa_parity_summary.json
+===== done 2026-04-24T13:23:49+08:00 =====

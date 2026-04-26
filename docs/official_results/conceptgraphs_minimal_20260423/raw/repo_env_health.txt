@@ -1,0 +1,10 @@
+repo=/home/nebula/xxy/concept-graphs
+commit=72f5962822b5e8678a446f367a06df1a977d2a4d
+remote=https://github.com/concept-graphs/concept-graphs.git
+env=conceptgraph-cu118
+conceptgraph.scripts.eval_replica_semseg FAIL ModuleNotFoundError No module named 'chamferdist'
+conceptgraph.slam.cfslam_pipeline_batch FAIL ImportError cannot import name 'to_tensor' from 'conceptgraph.utils.general_utils' (/home/nebula/xxy/concept-graphs/conceptgraph/utils/general_utils.py)
+conceptgraph.slam.slam_classes OK
+
+chamferdist_install_attempt=failed
+blocker=chamferdist build fails because nvcc 11.7 does not support compute_89 on RTX4090

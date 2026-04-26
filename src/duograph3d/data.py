@@ -92,6 +92,276 @@ def _normalize_geometry_support(value: float) -> float:
     return round(min(max(value, 0.2), 1.5), 3)
 
 
+def _support_from_payload(
+    payload: dict[str, object],
+    *,
+    frame_token: str,
+    default_source_kind: str,
+) -> ObservationSupport:
+    return ObservationSupport(
+        proposal_id=str(payload.get("proposal_id") or payload.get("observation_id") or frame_token),
+        frame_token=frame_token,
+        pose_token=str(payload.get("pose_token") or ""),
+        source_kind=str(payload.get("source_kind") or default_source_kind),
+        support_size=float(payload.get("support_size") or 0.0),
+        depth_scale=float(payload.get("depth_scale") or 1.0),
+        appearance_key=str(payload.get("appearance_key") or payload.get("descriptor") or ""),
+        continuity_key=str(payload.get("continuity_key") or payload.get("repair_group_id") or payload.get("geometry_key") or ""),
+        geometry_support=float(payload.get("geometry_support") or 0.0),
+    )
+
+
+def _observation_from_payload(
+    payload: dict[str, object],
+    *,
+    frame_token: str,
+    default_source_kind: str,
+    fallback_id: str,
+) -> Observation:
+    support_payload = payload.get("support")
+    support = None
+    if isinstance(support_payload, dict):
+        support = _support_from_payload(support_payload, frame_token=frame_token, default_source_kind=default_source_kind)
+    else:
+        support = _support_from_payload(payload, frame_token=frame_token, default_source_kind=default_source_kind)
+    return Observation(
+        observation_id=str(payload.get("observation_id") or fallback_id),
+        descriptor=str(payload.get("descriptor") or "object"),
+        geometry_key=str(payload.get("geometry_key") or payload.get("repair_group_id") or fallback_id),
+        confidence=float(payload.get("confidence") or 1.0),
+        repair_group_id=str(payload.get("repair_group_id")) if payload.get("repair_group_id") is not None else None,
+        support_tokens=tuple(str(token) for token in payload.get("support_tokens", ())),
+        support=support,
+    )
+
+
+def _build_generic_observation_lookup(
+    observation_json: str | Path,
+    *,
+    default_source_kind: str,
+) -> tuple[dict[str, list[Observation]], dict[str, object], list[str]]:
+    payload = json.loads(Path(observation_json).read_text())
+    issues: list[str] = []
+    frames = payload.get("frames", [])
+    if not isinstance(frames, list):
+        return {}, {"observation_mode": "invalid"}, [f"invalid observation json frame list: {observation_json}"]
+    lookup: dict[str, list[Observation]] = {}
+    for frame_index, frame_payload in enumerate(frames):
+        if not isinstance(frame_payload, dict):
+            issues.append(f"invalid frame payload at index {frame_index}: {observation_json}")
+            continue
+        frame_token = str(frame_payload.get("frame_id") or frame_payload.get("rgb_name") or frame_payload.get("pose_name") or f"frame-{frame_index}")
+        observations_payload = frame_payload.get("observations", [])
+        if not isinstance(observations_payload, list):
+            issues.append(f"invalid observations list for frame `{frame_token}` in {observation_json}")
+            continue
+        observations = [
+            _observation_from_payload(
+                item,
+                frame_token=frame_token,
+                default_source_kind=default_source_kind,
+                fallback_id=f"{frame_token}:obs-{obs_index}",
+            )
+            for obs_index, item in enumerate(observations_payload, start=1)
+            if isinstance(item, dict)
+        ]
+        aliases = {
+            frame_token,
+            str(frame_payload.get("frame_id") or ""),
+            str(frame_payload.get("rgb_name") or ""),
+            str(frame_payload.get("rgb_stem") or ""),
+            str(frame_payload.get("pose_name") or ""),
+            str(frame_payload.get("pose_stem") or ""),
+            str(frame_payload.get("frame_index") or ""),
+        }
+        if frame_payload.get("frame_index") is not None:
+            try:
+                aliases.add(f"{int(frame_payload['frame_index']):06d}")
+            except (TypeError, ValueError):
+                pass
+        aliases = {alias for alias in aliases if alias}
+        if not aliases:
+            issues.append(f"frame `{frame_token}` in {observation_json} has no usable aliases")
+            continue
+        for alias in aliases:
+            lookup[alias] = observations
+    metadata = {
+        "observation_mode": "real_frame_observation_json",
+        "observation_source": str(observation_json),
+        "observation_frame_entries": len(frames),
+    }
+    return lookup, metadata, issues
+
+
+def _build_deva_observation_lookup(
+    observation_json: str | Path,
+    *,
+    scene_name: str,
+) -> tuple[dict[str, list[Observation]], dict[str, object], list[str]]:
+    payload = json.loads(Path(observation_json).read_text())
+    annotations = payload.get("annotations", [])
+    if not isinstance(annotations, list):
+        return {}, {"observation_mode": "invalid"}, [f"invalid DEVA annotations list: {observation_json}"]
+    lookup: dict[str, list[Observation]] = {}
+    issues: list[str] = []
+    for frame_index, annotation in enumerate(annotations):
+        if not isinstance(annotation, dict):
+            issues.append(f"invalid DEVA annotation at index {frame_index}: {observation_json}")
+            continue
+        file_name = Path(str(annotation.get("file_name") or "")).name
+        frame_token = file_name or f"{scene_name}:deva:{frame_index}"
+        observations: list[Observation] = []
+        for segment_index, segment in enumerate(annotation.get("segments_info", []), start=1):
+            if not isinstance(segment, dict):
+                continue
+            track_id = segment.get("id", segment_index)
+            category_id = segment.get("category_id", 0)
+            area = float(segment.get("area") or 0.0)
+            score = float(segment.get("score") or 0.0)
+            track_key = f"{scene_name}:deva-track:{track_id}"
+            descriptor = f"{scene_name}:deva-cat-{category_id}"
+            observations.append(
+                Observation(
+                    observation_id=f"{frame_token}:{track_id}",
+                    descriptor=descriptor,
+                    geometry_key=track_key,
+                    confidence=score if score > 0 else 0.5,
+                    repair_group_id=track_key,
+                    support_tokens=(frame_token, f"track:{track_id}", f"category:{category_id}"),
+                    support=ObservationSupport(
+                        proposal_id=f"deva:{frame_token}:{track_id}",
+                        frame_token=frame_token,
+                        source_kind="deva_output_json",
+                        support_size=round(max(area, 1.0) / 1_000_000.0, 3),
+                        depth_scale=1.0,
+                        appearance_key=descriptor,
+                        continuity_key=track_key,
+                        geometry_support=_normalize_geometry_support(area / 200_000.0 if area > 0 else 0.2),
+                    ),
+                )
+            )
+        aliases = {frame_token, Path(frame_token).stem}
+        for alias in aliases:
+            if alias:
+                lookup[alias] = observations
+    metadata = {
+        "observation_mode": "real_deva_output_json",
+        "observation_source": str(observation_json),
+        "observation_frame_entries": len(annotations),
+    }
+    return lookup, metadata, issues
+
+
+def _build_scannet_online_monitor_frames(
+    observation_json: str | Path,
+    *,
+    scene_id: str,
+) -> tuple[list[FrameInput], dict[str, object], list[str]]:
+    payload = json.loads(Path(observation_json).read_text())
+    issues: list[str] = []
+    entries = payload if isinstance(payload, list) else payload.get("scenes", [])
+    if not isinstance(entries, list):
+        return [], {"observation_mode": "invalid"}, [f"invalid online monitor payload: {observation_json}"]
+    selected = None
+    for entry in entries:
+        if isinstance(entry, dict) and str(entry.get("scene_id") or "") == scene_id:
+            selected = entry
+            break
+    if selected is None:
+        return [], {"observation_mode": "real_scannet_online_monitor_json", "observation_source": str(observation_json)}, [f"missing scene `{scene_id}` in online monitor json: {observation_json}"]
+    frame_entries = selected.get("frames", [])
+    if not isinstance(frame_entries, list):
+        return [], {"observation_mode": "real_scannet_online_monitor_json", "observation_source": str(observation_json)}, [f"invalid frame list for scene `{scene_id}` in online monitor json: {observation_json}"]
+    frames: list[FrameInput] = []
+    ordered_entries: list[tuple[int, dict[str, object]]] = []
+    for frame_offset, frame in enumerate(frame_entries):
+        if not isinstance(frame, dict):
+            continue
+        frame_index = int(frame.get("frame_i", frame.get("fi", frame_offset)))
+        ordered_entries.append((frame_index, frame))
+    for frame_index, frame in sorted(ordered_entries, key=lambda item: item[0]):
+        track_ids: set[int] = set()
+        for key in ("matched_track_ids", "birth_track_ids"):
+            values = frame.get(key, [])
+            if isinstance(values, list):
+                for value in values:
+                    try:
+                        track_ids.add(int(value))
+                    except (TypeError, ValueError):
+                        continue
+        observations = [
+            Observation(
+                observation_id=f"{scene_id}:monitor-track:{track_id}:frame:{frame_index}",
+                descriptor=f"{scene_id}:track-{track_id}",
+                geometry_key=f"{scene_id}:track:{track_id}",
+                confidence=1.0,
+                repair_group_id=f"{scene_id}:track:{track_id}",
+                support_tokens=(f"monitor-frame:{frame_index}", f"track:{track_id}"),
+                support=ObservationSupport(
+                    proposal_id=f"{scene_id}:monitor:{track_id}:{frame_index}",
+                    frame_token=f"{scene_id}:monitor:{frame_index}",
+                    source_kind="scannet_online_monitor_json",
+                    support_size=0.0,
+                    depth_scale=1.0,
+                    appearance_key=f"{scene_id}:track-{track_id}",
+                    continuity_key=f"{scene_id}:track:{track_id}",
+                    geometry_support=0.2,
+                ),
+            )
+            for track_id in sorted(track_ids)
+        ]
+        frames.append(FrameInput(frame_id=f"scannet-{scene_id}-monitor-{frame_index:04d}", observations=observations))
+    metadata = {
+        "observation_mode": "real_scannet_online_monitor_json",
+        "observation_source": str(observation_json),
+        "observation_frame_entries": len(frame_entries),
+        "observation_scene_id": scene_id,
+    }
+    return frames, metadata, issues
+
+
+def _replica_frame_aliases(scene_name: str, pair: "ReplicaFrame") -> tuple[str, ...]:
+    frame_token = f"replica-{scene_name}-{pair.frame_index:06d}"
+    return (
+        frame_token,
+        str(pair.frame_index),
+        f"{pair.frame_index:06d}",
+        pair.rgb_path.name,
+        pair.rgb_path.stem,
+    )
+
+
+def _scannet_frame_aliases(scene_id: str, pose_path: Path) -> tuple[str, ...]:
+    frame_token = f"scannet-{scene_id}-{pose_path.stem}"
+    return (
+        frame_token,
+        pose_path.name,
+        pose_path.stem,
+    )
+
+
+def _align_observation_lookup(
+    *,
+    expected_alias_rows: list[tuple[str, ...]],
+    frame_ids: list[str],
+    lookup: dict[str, list[Observation]],
+    missing_issue_prefix: str,
+) -> tuple[list[FrameInput], list[str]]:
+    issues: list[str] = []
+    frames: list[FrameInput] = []
+    for frame_id, aliases in zip(frame_ids, expected_alias_rows):
+        observations: list[Observation] | None = None
+        for alias in aliases:
+            if alias in lookup:
+                observations = list(lookup[alias])
+                break
+        if observations is None:
+            issues.append(f"{missing_issue_prefix}: {frame_id}")
+            observations = []
+        frames.append(FrameInput(frame_id=frame_id, observations=observations))
+    return frames, issues
+
+
 @dataclass(frozen=True)
 class ObjectTemplate:
     track_id: str
@@ -270,7 +540,7 @@ class ReplicaSequence:
             pairs.append(ReplicaFrame(rgb_path=rgb, depth_path=depth, frame_index=idx, pose_line=pose_line))
         return pairs
 
-    def to_frame_inputs(self, limit: int = 3) -> list[FrameInput]:
+    def to_synthetic_frame_inputs(self, limit: int = 3) -> list[FrameInput]:
         pairs = self.paired_frames()
         selected = _sample_evenly([Path(f"{item.frame_index}") for item in pairs], limit)
         pair_map = {item.frame_index: item for item in pairs}
@@ -299,6 +569,9 @@ class ReplicaSequence:
             )
             frames.append(FrameInput(frame_id=f"replica-{self.scene_name}-{frame_index:06d}", observations=observations))
         return frames
+
+    def to_frame_inputs(self, limit: int = 3) -> list[FrameInput]:
+        return self.to_synthetic_frame_inputs(limit=limit)
 
 
 @dataclass
@@ -373,7 +646,7 @@ class ScanNetPoseCenteredScene:
             return [f"no pose npy files in {self.root}"]
         return []
 
-    def to_frame_inputs(self, labels: list[str], limit: int = 3) -> list[FrameInput]:
+    def to_synthetic_frame_inputs(self, labels: list[str], limit: int = 3) -> list[FrameInput]:
         template_count = _scannet_template_count(len(labels or [self.scene_id]))
         templates = _build_object_templates(self.scene_id, labels or [self.scene_id], count=template_count)
         frames: list[FrameInput] = []
@@ -396,6 +669,9 @@ class ScanNetPoseCenteredScene:
             frames.append(FrameInput(frame_id=f"scannet-{self.scene_id}-{pose_path.stem}", observations=observations))
         return frames
 
+    def to_frame_inputs(self, labels: list[str], limit: int = 3) -> list[FrameInput]:
+        return self.to_synthetic_frame_inputs(labels, limit=limit)
+
 
 @dataclass
 class BoundedSlice:
@@ -407,27 +683,108 @@ class BoundedSlice:
     metadata: dict[str, object]
 
 
-def build_replica_bounded_slice(scene_root: str | Path, limit: int = 8) -> BoundedSlice:
+def build_replica_bounded_slice(
+    scene_root: str | Path,
+    limit: int = 8,
+    *,
+    observation_json: str | Path | None = None,
+    observation_format: str = "frame_observation_json",
+    allow_synthetic_fallback: bool = True,
+) -> BoundedSlice:
     sequence = ReplicaSequence.from_root(scene_root)
+    issues = sequence.validate()
+    metadata = sequence.metadata()
+    source_paths = [str(sequence.root), str(sequence.traj_path)]
+    if observation_json is not None:
+        if observation_format == "deva_output":
+            lookup, observation_metadata, observation_issues = _build_deva_observation_lookup(
+                observation_json,
+                scene_name=sequence.scene_name,
+            )
+        else:
+            lookup, observation_metadata, observation_issues = _build_generic_observation_lookup(
+                observation_json,
+                default_source_kind="replica_observation_json",
+            )
+        pairs = sequence.paired_frames()
+        selected_pairs = _sample_evenly(pairs, limit)
+        alias_rows = [_replica_frame_aliases(sequence.scene_name, pair) for pair in selected_pairs]
+        frame_ids = [f"replica-{sequence.scene_name}-{pair.frame_index:06d}" for pair in selected_pairs]
+        frames, alignment_issues = _align_observation_lookup(
+            expected_alias_rows=alias_rows,
+            frame_ids=frame_ids,
+            lookup=lookup,
+            missing_issue_prefix=f"missing observation frame for replica `{sequence.scene_name}`",
+        )
+        issues = issues + observation_issues + alignment_issues
+        metadata = {**metadata, **observation_metadata}
+        source_paths.append(str(observation_json))
+    else:
+        frames = sequence.to_synthetic_frame_inputs(limit=limit)
+        metadata = {**metadata, "observation_mode": "synthetic_template", "observation_source": "ReplicaSequence.to_synthetic_frame_inputs"}
+        if not allow_synthetic_fallback:
+            issues.append(f"missing required real observation source for replica `{sequence.scene_name}`")
     return BoundedSlice(
         dataset_name="replica",
         scene_name=sequence.scene_name,
-        frames=sequence.to_frame_inputs(limit=limit),
-        source_paths=[str(sequence.root), str(sequence.traj_path)],
-        issues=sequence.validate(),
-        metadata=sequence.metadata(),
+        frames=frames,
+        source_paths=source_paths,
+        issues=issues,
+        metadata=metadata,
     )
 
 
-def build_scannet_bounded_slice(raw_scene_root: str | Path, pose_scene_root: str | Path, limit: int = 8) -> BoundedSlice:
+def build_scannet_bounded_slice(
+    raw_scene_root: str | Path,
+    pose_scene_root: str | Path,
+    limit: int = 8,
+    *,
+    observation_json: str | Path | None = None,
+    observation_format: str = "frame_observation_json",
+    allow_synthetic_fallback: bool = True,
+) -> BoundedSlice:
     raw_scene = ScanNetRawScene.from_root(raw_scene_root)
     pose_scene = ScanNetPoseCenteredScene.from_root(pose_scene_root)
     labels = raw_scene.object_labels()
+    issues = raw_scene.validate() + pose_scene.validate()
+    metadata = raw_scene.metadata()
+    source_paths = [str(raw_scene.root), str(pose_scene.root)]
+    if observation_json is not None:
+        if observation_format == "scannet_online_monitor":
+            monitor_frames, observation_metadata, observation_issues = _build_scannet_online_monitor_frames(
+                observation_json,
+                scene_id=raw_scene.scene_id,
+            )
+            selected = _sample_evenly([Path(str(index)) for index in range(len(monitor_frames))], limit)
+            frames = [monitor_frames[int(item.name)] for item in selected]
+            alignment_issues: list[str] = []
+        else:
+            lookup, observation_metadata, observation_issues = _build_generic_observation_lookup(
+                observation_json,
+                default_source_kind="scannet_observation_json",
+            )
+            selected_pose_files = _sample_evenly(pose_scene.pose_files, limit)
+            alias_rows = [_scannet_frame_aliases(raw_scene.scene_id, pose_path) for pose_path in selected_pose_files]
+            frame_ids = [f"scannet-{raw_scene.scene_id}-{pose_path.stem}" for pose_path in selected_pose_files]
+            frames, alignment_issues = _align_observation_lookup(
+                expected_alias_rows=alias_rows,
+                frame_ids=frame_ids,
+                lookup=lookup,
+                missing_issue_prefix=f"missing observation frame for scannet `{raw_scene.scene_id}`",
+            )
+        issues = issues + observation_issues + alignment_issues
+        metadata = {**metadata, **observation_metadata}
+        source_paths.append(str(observation_json))
+    else:
+        frames = pose_scene.to_synthetic_frame_inputs(labels, limit=limit)
+        metadata = {**metadata, "observation_mode": "synthetic_template", "observation_source": "ScanNetPoseCenteredScene.to_synthetic_frame_inputs"}
+        if not allow_synthetic_fallback:
+            issues.append(f"missing required real observation source for scannet `{raw_scene.scene_id}`")
     return BoundedSlice(
         dataset_name="scannet",
         scene_name=raw_scene.scene_id,
-        frames=pose_scene.to_frame_inputs(labels, limit=limit),
-        source_paths=[str(raw_scene.root), str(pose_scene.root)],
-        issues=raw_scene.validate() + pose_scene.validate(),
-        metadata=raw_scene.metadata(),
+        frames=frames,
+        source_paths=source_paths,
+        issues=issues,
+        metadata=metadata,
     )

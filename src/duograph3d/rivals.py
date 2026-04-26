@@ -71,6 +71,7 @@ class SingleLayerRival:
                 memory_nodes={key: replace(value) for key, value in memory.nodes.items()},
                 event_count=len(logger.records),
                 decisions=decisions,
+                relation_edges=memory.relation_snapshot(),
             ),
             logger,
         )
@@ -150,6 +151,7 @@ class DenseAuthorityExportRival:
                 memory_nodes=exported_memory.snapshot(),
                 event_count=len(logger.records),
                 decisions=[],
+                relation_edges=exported_memory.relation_snapshot(),
             ),
             logger,
         )

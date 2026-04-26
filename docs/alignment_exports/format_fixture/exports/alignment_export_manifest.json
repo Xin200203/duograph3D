@@ -1,0 +1,130 @@
+{
+  "status": "alignment_exports_written",
+  "report": "docs/alignment_exports/format_fixture/bounded_slice_fixture.json",
+  "geometry": "",
+  "onlineanyseg": {
+    "adapter": "onlineanyseg",
+    "status": "format_aligned_proxy_geometry",
+    "official_evaluation_ready": false,
+    "reason": "DuoGraph3D reports expose object identities but not dense point/mask assignments; exported masks are geometry placeholders for evaluator-format bring-up.",
+    "dataset": "fixture",
+    "scene": "duograph3d_alignment_fixture",
+    "branch_id": "duograph3d_full",
+    "object_count": 2,
+    "point_count": 32,
+    "alignment_mode": "proxy_geometry",
+    "geometry_source": "",
+    "coordinate_frame": "",
+    "readiness": {
+      "dense_point_assignments": false,
+      "all_exported_objects_have_points": false,
+      "gt_aligned_geometry_declared": false,
+      "explicit_class_ids": false,
+      "explicit_object_features": false
+    },
+    "files": {
+      "final_ply": "docs/alignment_exports/format_fixture/exports/onlineanyseg/duograph3d_alignment_fixture/final.ply",
+      "ckpt_final_npz": "docs/alignment_exports/format_fixture/exports/onlineanyseg/duograph3d_alignment_fixture/ckpt_final.npz"
+    },
+    "evaluator_contract": {
+      "expected_scene_dir": "<result_dir>/<scene>",
+      "expected_files": [
+        "final.ply",
+        "ckpt_final.npz"
+      ],
+      "npz_keys": [
+        "pred_masks",
+        "pred_classes",
+        "pred_score"
+      ],
+      "command_template": "python eval/evaluate_seqs.py --result_dir <result_dir> --seq_name <scene> --gt_dir <gt_dir> --gt_pc_pattern %s/%s_vh_clean_2.ply --gt_seg_dir <gt_seg_dir> --gt_seg_pattern %s.txt"
+    },
+    "objects": [
+      {
+        "object_id": "obj-chair",
+        "track_hint": "fixture-track-chair",
+        "score": 0.8,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 0,
+        "has_explicit_class": false,
+        "has_explicit_features": false
+      },
+      {
+        "object_id": "obj-table",
+        "track_hint": "fixture-track-table",
+        "score": 0.8,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 0,
+        "has_explicit_class": false,
+        "has_explicit_features": false
+      }
+    ]
+  },
+  "conceptgraphs": {
+    "adapter": "conceptgraphs",
+    "status": "format_aligned_proxy_geometry",
+    "official_evaluation_ready": false,
+    "reason": "DuoGraph3D reports expose object identities but not dense point/mask assignments; exported masks are geometry placeholders for evaluator-format bring-up.",
+    "dataset": "fixture",
+    "scene": "duograph3d_alignment_fixture",
+    "branch_id": "duograph3d_full",
+    "pred_exp_name": "duograph3d_alignment",
+    "object_count": 2,
+    "feature_dim": 512,
+    "alignment_mode": "proxy_geometry",
+    "geometry_source": "",
+    "coordinate_frame": "",
+    "readiness": {
+      "dense_point_assignments": false,
+      "all_exported_objects_have_points": false,
+      "gt_aligned_geometry_declared": false,
+      "explicit_class_ids": false,
+      "explicit_object_features": false
+    },
+    "files": {
+      "conceptgraphs_pkl_gz": "docs/alignment_exports/format_fixture/exports/conceptgraphs/duograph3d_alignment_fixture/pcd_saves/full_pcd_duograph3d_alignment.pkl.gz",
+      "semantic_proxy_json": "docs/alignment_exports/format_fixture/exports/conceptgraphs/duograph3d_alignment_fixture/pcd_saves/duograph3d_alignment_semantic_proxy.json"
+    },
+    "evaluator_contract": {
+      "expected_glob": "<replica_root>/<scene>/pcd_saves/full_pcd_duograph3d_alignment*.pkl.gz",
+      "command_template": "python scripts/eval_replica_semseg.py --replica_root <replica_root> --replica_semantic_root <replica_semantic_root> --pred_exp_name duograph3d_alignment",
+      "payload_keys": [
+        "objects",
+        "bg_objects"
+      ],
+      "object_keys": [
+        "clip_ft",
+        "text_ft",
+        "pcd_np",
+        "pcd_color_np",
+        "bbox_np",
+        "class_name",
+        "class_id"
+      ]
+    },
+    "objects": [
+      {
+        "object_id": "obj-chair",
+        "track_hint": "fixture-track-chair",
+        "score": 0.8,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 0,
+        "has_explicit_class": false,
+        "has_explicit_features": false
+      },
+      {
+        "object_id": "obj-table",
+        "track_hint": "fixture-track-table",
+        "score": 0.8,
+        "class_id": 1,
+        "class_name": "object",
+        "point_count": 0,
+        "has_explicit_class": false,
+        "has_explicit_features": false
+      }
+    ]
+  }
+}

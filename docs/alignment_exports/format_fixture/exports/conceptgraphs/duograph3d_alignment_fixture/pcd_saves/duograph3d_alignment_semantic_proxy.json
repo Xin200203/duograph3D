@@ -1,0 +1,24 @@
+{
+  "scene": "duograph3d_alignment_fixture",
+  "dataset": "fixture",
+  "objects": [
+    {
+      "object_id": "obj-chair",
+      "track_hint": "fixture-track-chair",
+      "class_name": "object",
+      "class_id": 1,
+      "score": 0.8,
+      "point_count": 16,
+      "has_explicit_features": false
+    },
+    {
+      "object_id": "obj-table",
+      "track_hint": "fixture-track-table",
+      "class_name": "object",
+      "class_id": 1,
+      "score": 0.8,
+      "point_count": 16,
+      "has_explicit_features": false
+    }
+  ]
+}

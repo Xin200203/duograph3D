@@ -1,0 +1,119 @@
+{
+  "source": "local dense alignment fixture, not an experiment result",
+  "coordinate_frame": "gt_reconstruction_fixture",
+  "gt_aligned": true,
+  "points": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.05,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.05,
+      0.0
+    ],
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      1.05,
+      0.0,
+      0.0
+    ],
+    [
+      1.0,
+      0.05,
+      0.0
+    ]
+  ],
+  "colors": [
+    [
+      220,
+      30,
+      30
+    ],
+    [
+      220,
+      30,
+      30
+    ],
+    [
+      220,
+      30,
+      30
+    ],
+    [
+      30,
+      180,
+      60
+    ],
+    [
+      30,
+      180,
+      60
+    ],
+    [
+      30,
+      180,
+      60
+    ]
+  ],
+  "objects": [
+    {
+      "object_id": "obj-1",
+      "track_hint": "track-chair",
+      "point_indices": [
+        0,
+        1,
+        2
+      ],
+      "class_id": 5,
+      "class_name": "chair",
+      "score": 0.91,
+      "clip_ft": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "text_ft": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "object_id": "obj-2",
+      "track_hint": "track-table",
+      "point_indices": [
+        3,
+        4,
+        5
+      ],
+      "class_id": 8,
+      "class_name": "table",
+      "score": 0.84,
+      "clip_ft": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "text_ft": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  ]
+}

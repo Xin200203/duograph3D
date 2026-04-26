@@ -1,0 +1,56 @@
+{
+    "annotations": [
+        {
+            "file_name": "frame000000.jpg",
+            "segments_info": [
+                {
+                    "category_id": 5,
+                    "id": 15351475,
+                    "score": 0.95,
+                    "area": 195696
+                }
+            ]
+        },
+        {
+            "file_name": "frame000399.jpg",
+            "segments_info": [
+                {
+                    "category_id": 5,
+                    "id": 15351475,
+                    "score": 0.95,
+                    "area": 234474
+                }
+            ]
+        },
+        {
+            "file_name": "frame000799.jpg",
+            "segments_info": [
+                {
+                    "category_id": 5,
+                    "id": 15351475,
+                    "score": 0.95,
+                    "area": 132940
+                }
+            ]
+        },
+        {
+            "file_name": "frame001199.jpg",
+            "segments_info": [
+                {
+                    "category_id": 5,
+                    "id": 15351475,
+                    "score": 0.95,
+                    "area": 32464
+                }
+            ]
+        },
+        {
+            "file_name": "frame001599.jpg",
+            "segments_info": []
+        },
+        {
+            "file_name": "frame001999.jpg",
+            "segments_info": []
+        }
+    ]
+}

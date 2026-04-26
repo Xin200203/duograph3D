@@ -25,16 +25,28 @@ def main() -> None:
     parser.add_argument("--burst-start-index", type=int, default=1)
     parser.add_argument("--drop-probability", type=float, default=0.35)
     parser.add_argument("--random-seed", type=int, default=0)
+    parser.add_argument("--observation-json", default=None)
+    parser.add_argument("--observation-format", choices=["frame_observation_json", "deva_output", "scannet_online_monitor"], default="frame_observation_json")
+    parser.add_argument("--require-real-observations", action="store_true")
     args = parser.parse_args()
 
     paths = RemoteExperimentPaths()
     if args.dataset == "replica":
-        bounded = build_replica_bounded_slice(paths.replica_root / args.scene, limit=args.limit)
+        bounded = build_replica_bounded_slice(
+            paths.replica_root / args.scene,
+            limit=args.limit,
+            observation_json=args.observation_json,
+            observation_format=args.observation_format,
+            allow_synthetic_fallback=not args.require_real_observations,
+        )
     else:
         bounded = build_scannet_bounded_slice(
             paths.scannet_scans_root / args.scene,
             paths.scannet_pose_centered_root / args.scene,
             limit=args.limit,
+            observation_json=args.observation_json,
+            observation_format=args.observation_format,
+            allow_synthetic_fallback=not args.require_real_observations,
         )
 
     experiment_frames = apply_occlusion_regime(
@@ -68,6 +80,7 @@ def main() -> None:
         "random_seed": args.random_seed,
         "source_paths": bounded.source_paths,
         "issues": bounded.issues,
+        "scene_metadata": bounded.metadata,
         "branches": {branch_id: summarize_run(result, logger) for branch_id, (result, logger) in results.items()},
         "branch_event_files": branch_event_files,
         "temporal_triplet": temporal_triplet,

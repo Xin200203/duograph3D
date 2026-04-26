@@ -1,0 +1,144 @@
+{
+  "lane_id": "onlineanyseg_minimal_20260423",
+  "role": "Zero-shot direct baseline: OnlineAnySeg official method/evaluator bring-up",
+  "status": "official OnlineAnySeg environment repaired; ScanNet200 subset20 sparse-feature method smoke and official evaluator completed",
+  "health": {
+    "checks": [
+      "import check: main OK; Dataset.dataset OK; Scene_rep OK; voxel_hashing OK"
+    ],
+    "repo": "/home/nebula/xxy/OnlineAnySeg",
+    "commit": "152466e318f8220bcc6838c03e340cce2f2153b8",
+    "env": "duograph-oas-cu116 cloned_from=ESAM",
+    "key additions": "pytorch3d v0.7.2 built from source with CUDA_HOME=/usr/local/cuda-11.6 TORCH_CUDA_ARCH_LIST=8.6+PTX; future-fstrings 1.2.0",
+    "has_failures": false
+  },
+  "artifacts": {
+    "remote_repo": "/home/nebula/xxy/OnlineAnySeg",
+    "subset20_remote_root": "/home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_subset20_sparse_20260423",
+    "subset20_run_script": "docs/official_results/onlineanyseg_minimal_20260423/raw/subset20_sparse/run_subset20.sh",
+    "subset20_run_status": "docs/official_results/onlineanyseg_minimal_20260423/raw/subset20_sparse/run_status.tsv",
+    "subset20_evaluator_log": "docs/official_results/onlineanyseg_minimal_20260423/raw/subset20_sparse/eval_subset20.log",
+    "subset20_manifest": "docs/official_results/onlineanyseg_minimal_20260423/raw/subset20_sparse/prep_manifest.json",
+    "subset20_output_summary": "docs/official_results/onlineanyseg_minimal_20260423/raw/subset20_sparse/subset20_output_summary.json",
+    "subset5_evaluator_log": "docs/official_results/onlineanyseg_minimal_20260423/raw/subset5_sparse/eval_subset5.log",
+    "one_scene_smoke_log": "docs/official_results/onlineanyseg_minimal_20260423/raw/onlineanyseg_scene0568_sparse83_eval.log",
+    "legacy_gt_sidecar_eval": "docs/official_results/onlineanyseg_minimal_20260423/raw/duograph3d_dense_gt_sidecar_eval.log"
+  },
+  "boundary": "The 0.061/0.138/0.298 AP result is a zero-shot OnlineAnySeg subset20 sparse-feature bring-up using pooled dense CLIP features and mask_weight_threshold=1; it supersedes the subset5 smoke for scale evidence but is still not a final full official benchmark. ESAM is auxiliary, not the primary comparator.",
+  "next_steps": [
+    "Scale OnlineAnySeg from subset20 sparse-feature smoke to a larger zero-shot set or generate complete official mask embeddings.",
+    "Use OnlineAnySeg and ConceptGraphs, not ESAM, as the primary zero-shot comparison lanes in the manuscript."
+  ],
+  "evaluator_smoke": {
+    "selected_sequences": 20,
+    "missing_sequences": 0,
+    "pred_instance_count": 335,
+    "gt_instance_count": 572,
+    "sequence_instance_counts": [
+      {
+        "scene": "scene0568_00",
+        "pred_instance_count": 24,
+        "gt_instance_count": 31
+      },
+      {
+        "scene": "scene0568_01",
+        "pred_instance_count": 18,
+        "gt_instance_count": 34
+      },
+      {
+        "scene": "scene0568_02",
+        "pred_instance_count": 27,
+        "gt_instance_count": 31
+      },
+      {
+        "scene": "scene0304_00",
+        "pred_instance_count": 11,
+        "gt_instance_count": 16
+      },
+      {
+        "scene": "scene0488_00",
+        "pred_instance_count": 16,
+        "gt_instance_count": 25
+      },
+      {
+        "scene": "scene0488_01",
+        "pred_instance_count": 19,
+        "gt_instance_count": 25
+      },
+      {
+        "scene": "scene0412_00",
+        "pred_instance_count": 22,
+        "gt_instance_count": 27
+      },
+      {
+        "scene": "scene0412_01",
+        "pred_instance_count": 16,
+        "gt_instance_count": 22
+      },
+      {
+        "scene": "scene0217_00",
+        "pred_instance_count": 19,
+        "gt_instance_count": 31
+      },
+      {
+        "scene": "scene0019_00",
+        "pred_instance_count": 4,
+        "gt_instance_count": 23
+      },
+      {
+        "scene": "scene0019_01",
+        "pred_instance_count": 3,
+        "gt_instance_count": 27
+      },
+      {
+        "scene": "scene0414_00",
+        "pred_instance_count": 14,
+        "gt_instance_count": 40
+      },
+      {
+        "scene": "scene0575_00",
+        "pred_instance_count": 24,
+        "gt_instance_count": 23
+      },
+      {
+        "scene": "scene0575_01",
+        "pred_instance_count": 31,
+        "gt_instance_count": 22
+      },
+      {
+        "scene": "scene0575_02",
+        "pred_instance_count": 31,
+        "gt_instance_count": 22
+      },
+      {
+        "scene": "scene0426_00",
+        "pred_instance_count": 14,
+        "gt_instance_count": 39
+      },
+      {
+        "scene": "scene0426_01",
+        "pred_instance_count": 18,
+        "gt_instance_count": 35
+      },
+      {
+        "scene": "scene0426_02",
+        "pred_instance_count": 4,
+        "gt_instance_count": 37
+      },
+      {
+        "scene": "scene0426_03",
+        "pred_instance_count": 9,
+        "gt_instance_count": 30
+      },
+      {
+        "scene": "scene0549_00",
+        "pred_instance_count": 11,
+        "gt_instance_count": 32
+      }
+    ],
+    "all_ap": 0.061,
+    "all_ap_50": 0.138,
+    "all_ap_25": 0.298,
+    "evaluator_completed": true
+  }
+}

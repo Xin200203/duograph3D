@@ -15,10 +15,25 @@ from .rivals import run_all_branches
 
 def run_one(dataset: str, scene: str, spec: SuiteSpec, output_dir: Path) -> tuple[Path, Path]:
     paths = RemoteExperimentPaths()
+    use_real_observations = spec.observation_source == "real_external"
     if dataset == "replica":
-        bounded = build_replica_bounded_slice(paths.replica_root / scene, limit=spec.limit)
+        observation_json = paths.replica_deva_output_json_root / f"{scene}.json" if use_real_observations else None
+        bounded = build_replica_bounded_slice(
+            paths.replica_root / scene,
+            limit=spec.limit,
+            observation_json=observation_json,
+            observation_format="deva_output",
+            allow_synthetic_fallback=not use_real_observations,
+        )
     else:
-        bounded = build_scannet_bounded_slice(paths.scannet_scans_root / scene, paths.scannet_pose_centered_root / scene, limit=spec.limit)
+        bounded = build_scannet_bounded_slice(
+            paths.scannet_scans_root / scene,
+            paths.scannet_pose_centered_root / scene,
+            limit=spec.limit,
+            observation_json=paths.scannet_esam_online_monitor_json if use_real_observations else None,
+            observation_format="scannet_online_monitor" if use_real_observations else "frame_observation_json",
+            allow_synthetic_fallback=not use_real_observations,
+        )
     experiment_frames = apply_occlusion_regime(
         bounded.frames,
         mode=spec.drop_mode,
@@ -67,7 +82,8 @@ def run_suite(spec: SuiteSpec, output_root: Path | None = None) -> tuple[Path, P
     output_dir.mkdir(parents=True, exist_ok=True)
     source_g2_paths = []
     g2_summaries = []
-    for scene in REPLICA_SCENES:
+    replica_scenes = spec.replica_scenes or REPLICA_SCENES
+    for scene in replica_scenes:
         _, g2_path = run_one("replica", scene, spec, output_dir)
         source_g2_paths.append(str(g2_path))
         g2_summaries.append(json.loads(g2_path.read_text()))

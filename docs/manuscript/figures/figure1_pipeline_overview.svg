@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="720" viewBox="0 0 1400 720">
+<style>
+    .title { font: 700 26px sans-serif; fill: #111; }
+    .subtitle { font: 500 18px sans-serif; fill: #222; }
+    .body { font: 400 16px sans-serif; fill: #222; }
+    .small { font: 400 14px sans-serif; fill: #333; }
+    .box { fill: #f7f9fc; stroke: #2c3e50; stroke-width: 2; rx: 12; ry: 12; }
+    .accent { fill: #eaf2ff; stroke: #356ae6; stroke-width: 2; rx: 12; ry: 12; }
+    .danger { fill: #fff0f0; stroke: #c0392b; stroke-width: 2; rx: 12; ry: 12; }
+    .arrow { stroke: #34495e; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+</style>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L0,6 L9,3 z" fill="#34495e"/>
+  </marker>
+</defs>
+<text class="title" x="40" y="60">Figure 1. DuoGraph3D overall pipeline</text>
+<text class="body" x="40" y="95">Real observations flow through evidence repair, association, graph-memory updates, and manuscript-facing analysis assets.</text>
+<rect class="accent" x="40" y="140" width="220" height="160"/>
+<text class="subtitle" x="58" y="170">Real observations</text>
+<text class="small" x="58" y="200">Replica: DEVA JSON</text>
+<text class="small" x="58" y="220">ScanNet: ESAM monitor</text>
+<text class="small" x="58" y="240">Synthetic path isolated</text>
+<rect class="box" x="320" y="140" width="220" height="160"/>
+<text class="subtitle" x="338" y="170">Evidence builder</text>
+<text class="small" x="338" y="200">Current + propagated evidence</text>
+<text class="small" x="338" y="220">Support signals preserved</text>
+<text class="small" x="338" y="240">Temporal variants available</text>
+<rect class="accent" x="600" y="110" width="260" height="220"/>
+<text class="subtitle" x="618" y="140">Layer-1 repair</text>
+<text class="small" x="618" y="170">Compatibility graph</text>
+<text class="small" x="618" y="190">Continuity / appearance /</text>
+<text class="small" x="618" y="210">geometry-profile consistency</text>
+<text class="small" x="618" y="230">Connected-component repair</text>
+<rect class="accent" x="920" y="110" width="260" height="220"/>
+<text class="subtitle" x="938" y="140">Layer-2 association</text>
+<text class="small" x="938" y="170">Temporal identity cues</text>
+<text class="small" x="938" y="190">Geometry-profile check</text>
+<text class="small" x="938" y="210">Dual-consistency gate</text>
+<text class="small" x="938" y="230">Relation-aware bonus</text>
+<rect class="accent" x="1240" y="110" width="120" height="220"/>
+<text class="subtitle" x="1258" y="140">Graph memory</text>
+<text class="small" x="1258" y="170">node state</text>
+<text class="small" x="1258" y="190">lifecycle</text>
+<text class="small" x="1258" y="210">relation edges</text>
+<text class="small" x="1258" y="230">co-visibility</text>
+<rect class="box" x="600" y="420" width="300" height="180"/>
+<text class="subtitle" x="618" y="450">Phase 4 package</text>
+<text class="small" x="618" y="480">main table candidate</text>
+<text class="small" x="618" y="500">ablation table candidate</text>
+<text class="small" x="618" y="520">worst/best analysis</text>
+<text class="small" x="618" y="540">failure + representative casebooks</text>
+<rect class="box" x="960" y="420" width="320" height="180"/>
+<text class="subtitle" x="978" y="450">Phase 5 manuscript assets</text>
+<text class="small" x="978" y="480">paper draft</text>
+<text class="small" x="978" y="500">reviewer defense</text>
+<text class="small" x="978" y="520">figure specs / caption bank</text>
+<text class="small" x="978" y="540">supplementary outline</text>
+<path class="arrow" d="M260 220 L320 220"/>
+<path class="arrow" d="M540 220 L600 220"/>
+<path class="arrow" d="M860 220 L920 220"/>
+<path class="arrow" d="M1180 220 L1240 220"/>
+<path class="arrow" d="M860 300 L860 420"/>
+<path class="arrow" d="M1060 300 L1060 420"/>
+<path class="arrow" d="M900 510 L960 510"/>
+</svg>

@@ -1,0 +1,87 @@
+{
+  "scene_count": 8,
+  "rows": [
+    {
+      "scene": "office0",
+      "frame_count": 6,
+      "frames_with_segments": 6,
+      "avg_segments_per_frame": 1,
+      "unique_track_ids": 1,
+      "avg_area": 64096.667,
+      "min_area": 2420.0,
+      "max_area": 171324.0
+    },
+    {
+      "scene": "office1",
+      "frame_count": 6,
+      "frames_with_segments": 0,
+      "avg_segments_per_frame": 0,
+      "unique_track_ids": 0,
+      "avg_area": 0.0,
+      "min_area": 0.0,
+      "max_area": 0.0
+    },
+    {
+      "scene": "office2",
+      "frame_count": 6,
+      "frames_with_segments": 4,
+      "avg_segments_per_frame": 0.667,
+      "unique_track_ids": 1,
+      "avg_area": 148893.5,
+      "min_area": 32464.0,
+      "max_area": 234474.0
+    },
+    {
+      "scene": "office3",
+      "frame_count": 6,
+      "frames_with_segments": 4,
+      "avg_segments_per_frame": 0.667,
+      "unique_track_ids": 1,
+      "avg_area": 97710.25,
+      "min_area": 20309.0,
+      "max_area": 183274.0
+    },
+    {
+      "scene": "office4",
+      "frame_count": 6,
+      "frames_with_segments": 0,
+      "avg_segments_per_frame": 0,
+      "unique_track_ids": 0,
+      "avg_area": 0.0,
+      "min_area": 0.0,
+      "max_area": 0.0
+    },
+    {
+      "scene": "room0",
+      "frame_count": 6,
+      "frames_with_segments": 0,
+      "avg_segments_per_frame": 0,
+      "unique_track_ids": 0,
+      "avg_area": 0.0,
+      "min_area": 0.0,
+      "max_area": 0.0
+    },
+    {
+      "scene": "room1",
+      "frame_count": 6,
+      "frames_with_segments": 0,
+      "avg_segments_per_frame": 0,
+      "unique_track_ids": 0,
+      "avg_area": 0.0,
+      "min_area": 0.0,
+      "max_area": 0.0
+    },
+    {
+      "scene": "room2",
+      "frame_count": 6,
+      "frames_with_segments": 0,
+      "avg_segments_per_frame": 0,
+      "unique_track_ids": 0,
+      "avg_area": 0.0,
+      "min_area": 0.0,
+      "max_area": 0.0
+    }
+  ],
+  "mean_segments_per_frame": 0.292,
+  "mean_unique_track_ids": 0.375
+}

@@ -1,0 +1,362 @@
+[
+  {
+    "scene": "scene0019_00",
+    "missing": false,
+    "pred_masks_shape": [
+      4461,
+      4
+    ],
+    "pred_score_shape": [
+      4
+    ],
+    "pred_classes_shape": [
+      4
+    ],
+    "pred_sem_features_shape": [
+      512,
+      4
+    ]
+  },
+  {
+    "scene": "scene0019_01",
+    "missing": false,
+    "pred_masks_shape": [
+      6916,
+      3
+    ],
+    "pred_score_shape": [
+      3
+    ],
+    "pred_classes_shape": [
+      3
+    ],
+    "pred_sem_features_shape": [
+      512,
+      3
+    ]
+  },
+  {
+    "scene": "scene0217_00",
+    "missing": false,
+    "pred_masks_shape": [
+      31169,
+      19
+    ],
+    "pred_score_shape": [
+      19
+    ],
+    "pred_classes_shape": [
+      19
+    ],
+    "pred_sem_features_shape": [
+      512,
+      19
+    ]
+  },
+  {
+    "scene": "scene0304_00",
+    "missing": false,
+    "pred_masks_shape": [
+      66883,
+      11
+    ],
+    "pred_score_shape": [
+      11
+    ],
+    "pred_classes_shape": [
+      11
+    ],
+    "pred_sem_features_shape": [
+      512,
+      11
+    ]
+  },
+  {
+    "scene": "scene0412_00",
+    "missing": false,
+    "pred_masks_shape": [
+      53422,
+      22
+    ],
+    "pred_score_shape": [
+      22
+    ],
+    "pred_classes_shape": [
+      22
+    ],
+    "pred_sem_features_shape": [
+      512,
+      22
+    ]
+  },
+  {
+    "scene": "scene0412_01",
+    "missing": false,
+    "pred_masks_shape": [
+      41758,
+      16
+    ],
+    "pred_score_shape": [
+      16
+    ],
+    "pred_classes_shape": [
+      16
+    ],
+    "pred_sem_features_shape": [
+      512,
+      16
+    ]
+  },
+  {
+    "scene": "scene0414_00",
+    "missing": false,
+    "pred_masks_shape": [
+      19584,
+      14
+    ],
+    "pred_score_shape": [
+      14
+    ],
+    "pred_classes_shape": [
+      14
+    ],
+    "pred_sem_features_shape": [
+      512,
+      14
+    ]
+  },
+  {
+    "scene": "scene0426_00",
+    "missing": false,
+    "pred_masks_shape": [
+      32009,
+      14
+    ],
+    "pred_score_shape": [
+      14
+    ],
+    "pred_classes_shape": [
+      14
+    ],
+    "pred_sem_features_shape": [
+      512,
+      14
+    ]
+  },
+  {
+    "scene": "scene0426_01",
+    "missing": false,
+    "pred_masks_shape": [
+      20200,
+      18
+    ],
+    "pred_score_shape": [
+      18
+    ],
+    "pred_classes_shape": [
+      18
+    ],
+    "pred_sem_features_shape": [
+      512,
+      18
+    ]
+  },
+  {
+    "scene": "scene0426_02",
+    "missing": false,
+    "pred_masks_shape": [
+      14778,
+      4
+    ],
+    "pred_score_shape": [
+      4
+    ],
+    "pred_classes_shape": [
+      4
+    ],
+    "pred_sem_features_shape": [
+      512,
+      4
+    ]
+  },
+  {
+    "scene": "scene0426_03",
+    "missing": false,
+    "pred_masks_shape": [
+      14878,
+      9
+    ],
+    "pred_score_shape": [
+      9
+    ],
+    "pred_classes_shape": [
+      9
+    ],
+    "pred_sem_features_shape": [
+      512,
+      9
+    ]
+  },
+  {
+    "scene": "scene0488_00",
+    "missing": false,
+    "pred_masks_shape": [
+      35057,
+      16
+    ],
+    "pred_score_shape": [
+      16
+    ],
+    "pred_classes_shape": [
+      16
+    ],
+    "pred_sem_features_shape": [
+      512,
+      16
+    ]
+  },
+  {
+    "scene": "scene0488_01",
+    "missing": false,
+    "pred_masks_shape": [
+      35614,
+      19
+    ],
+    "pred_score_shape": [
+      19
+    ],
+    "pred_classes_shape": [
+      19
+    ],
+    "pred_sem_features_shape": [
+      512,
+      19
+    ]
+  },
+  {
+    "scene": "scene0549_00",
+    "missing": false,
+    "pred_masks_shape": [
+      24480,
+      11
+    ],
+    "pred_score_shape": [
+      11
+    ],
+    "pred_classes_shape": [
+      11
+    ],
+    "pred_sem_features_shape": [
+      512,
+      11
+    ]
+  },
+  {
+    "scene": "scene0568_00",
+    "missing": false,
+    "pred_masks_shape": [
+      91032,
+      24
+    ],
+    "pred_score_shape": [
+      24
+    ],
+    "pred_classes_shape": [
+      24
+    ],
+    "pred_sem_features_shape": [
+      512,
+      24
+    ]
+  },
+  {
+    "scene": "scene0568_01",
+    "missing": false,
+    "pred_masks_shape": [
+      63620,
+      18
+    ],
+    "pred_score_shape": [
+      18
+    ],
+    "pred_classes_shape": [
+      18
+    ],
+    "pred_sem_features_shape": [
+      512,
+      18
+    ]
+  },
+  {
+    "scene": "scene0568_02",
+    "missing": false,
+    "pred_masks_shape": [
+      76623,
+      27
+    ],
+    "pred_score_shape": [
+      27
+    ],
+    "pred_classes_shape": [
+      27
+    ],
+    "pred_sem_features_shape": [
+      512,
+      27
+    ]
+  },
+  {
+    "scene": "scene0575_00",
+    "missing": false,
+    "pred_masks_shape": [
+      89000,
+      24
+    ],
+    "pred_score_shape": [
+      24
+    ],
+    "pred_classes_shape": [
+      24
+    ],
+    "pred_sem_features_shape": [
+      512,
+      24
+    ]
+  },
+  {
+    "scene": "scene0575_01",
+    "missing": false,
+    "pred_masks_shape": [
+      99324,
+      31
+    ],
+    "pred_score_shape": [
+      31
+    ],
+    "pred_classes_shape": [
+      31
+    ],
+    "pred_sem_features_shape": [
+      512,
+      31
+    ]
+  },
+  {
+    "scene": "scene0575_02",
+    "missing": false,
+    "pred_masks_shape": [
+      96884,
+      31
+    ],
+    "pred_score_shape": [
+      31
+    ],
+    "pred_classes_shape": [
+      31
+    ],
+    "pred_sem_features_shape": [
+      512,
+      31
+    ]
+  }
+]

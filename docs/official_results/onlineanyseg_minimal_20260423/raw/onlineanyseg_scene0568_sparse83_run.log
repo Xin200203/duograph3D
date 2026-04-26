@@ -1,0 +1,22 @@
+date=2026-04-23T19:48:21+08:00 rerun=mask_weight_threshold_1
+
+0it [00:00, ?it/s]
+1it [00:00,  1.89it/s]
+11it [00:00, 17.14it/s]
+21it [00:00, 28.75it/s]
+31it [00:01, 35.75it/s]
+41it [00:01, 39.06it/s]
+51it [00:01, 31.57it/s]
+61it [00:02, 32.20it/s]
+71it [00:02, 37.13it/s]
+81it [00:02, 40.70it/s]
+83it [00:02, 33.43it/s]
+
+[INFO] Pointcloud geometric feature extractor model has been loaded from: third_party/FCGF/model/ResUNetBN2C-16feat-3conv.pth
+
+At frame_50, number of mask with geometric feature: 40 --> 46, takes 0.0243 s
+Finish merging at frame_50 ! Current merged mask number = 29
+################ Begin to save final ckpt and seg mesh/pointcloud...
+Segmented instances result was saved to: /home/nebula/xxy/duograph3d_artifacts/onlineanyseg_official_scene0568_sparse83_20260423/output/scene0568_00/ckpt_final.npz
+Input sequence finished !
+

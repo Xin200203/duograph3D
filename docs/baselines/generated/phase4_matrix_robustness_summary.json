@@ -1,0 +1,95 @@
+{
+  "regime_count": 4,
+  "regimes": {
+    "phase4_baseline": {
+      "scene_count": 6,
+      "all_scenes_pass": false,
+      "row_pass_counts": {
+        "reentry_recovery_proxy": 1,
+        "identity_churn_proxy": 3,
+        "counterfactual_divergence_proxy": 3
+      },
+      "row_total_counts": {
+        "identity_churn_proxy": 6,
+        "reentry_recovery_proxy": 6,
+        "memory_authority_usage": 6,
+        "counterfactual_divergence_proxy": 6,
+        "dense_authority_gap_proxy": 6
+      },
+      "signature_counts": {
+        "temporal_reentry_gap": 1,
+        "single_layer_fragmentation": 3,
+        "counterfactual_fragmentation": 3
+      }
+    },
+    "phase4_stress": {
+      "scene_count": 6,
+      "all_scenes_pass": false,
+      "row_pass_counts": {
+        "reentry_recovery_proxy": 3,
+        "identity_churn_proxy": 3,
+        "counterfactual_divergence_proxy": 3
+      },
+      "row_total_counts": {
+        "identity_churn_proxy": 6,
+        "reentry_recovery_proxy": 6,
+        "memory_authority_usage": 6,
+        "counterfactual_divergence_proxy": 6,
+        "dense_authority_gap_proxy": 6
+      },
+      "signature_counts": {
+        "temporal_reentry_gap": 3,
+        "single_layer_fragmentation": 3,
+        "counterfactual_fragmentation": 3
+      }
+    },
+    "phase4_burst": {
+      "scene_count": 6,
+      "all_scenes_pass": false,
+      "row_pass_counts": {
+        "reentry_recovery_proxy": 3,
+        "identity_churn_proxy": 3,
+        "counterfactual_divergence_proxy": 3
+      },
+      "row_total_counts": {
+        "identity_churn_proxy": 6,
+        "reentry_recovery_proxy": 6,
+        "memory_authority_usage": 6,
+        "counterfactual_divergence_proxy": 6,
+        "dense_authority_gap_proxy": 6
+      },
+      "signature_counts": {
+        "temporal_reentry_gap": 3,
+        "single_layer_fragmentation": 3,
+        "counterfactual_fragmentation": 3
+      }
+    },
+    "phase4_random": {
+      "scene_count": 6,
+      "all_scenes_pass": false,
+      "row_pass_counts": {
+        "reentry_recovery_proxy": 3,
+        "identity_churn_proxy": 3,
+        "counterfactual_divergence_proxy": 2
+      },
+      "row_total_counts": {
+        "identity_churn_proxy": 6,
+        "reentry_recovery_proxy": 6,
+        "memory_authority_usage": 6,
+        "counterfactual_divergence_proxy": 6,
+        "dense_authority_gap_proxy": 6
+      },
+      "signature_counts": {
+        "temporal_reentry_gap": 3,
+        "single_layer_fragmentation": 3,
+        "counterfactual_fragmentation": 2
+      }
+    }
+  },
+  "row_stability": {
+    "counterfactual_divergence_proxy": false,
+    "identity_churn_proxy": false,
+    "reentry_recovery_proxy": false
+  },
+  "all_regimes_pass": false
+}

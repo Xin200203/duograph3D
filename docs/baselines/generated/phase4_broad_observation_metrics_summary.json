@@ -1,0 +1,882 @@
+{
+  "report_coverage": 44,
+  "rows": [
+    {
+      "dataset": "replica",
+      "scene": "office3",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.667,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.466,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0231_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 88.0,
+        "track_consistency_rate": 0.487,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.833,
+        "relation_density": 0.253,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 2327.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0700_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 49.0,
+        "track_consistency_rate": 0.551,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.833,
+        "relation_density": 0.279,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 883.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office2",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.667,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.62,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0580_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 68.0,
+        "track_consistency_rate": 0.361,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.833,
+        "relation_density": 0.226,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 1009.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_01",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 96.0,
+        "track_consistency_rate": 0.449,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.833,
+        "relation_density": 0.236,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 2359.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0222_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 115.0,
+        "track_consistency_rate": 0.455,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.833,
+        "relation_density": 0.245,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 3638.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0653_01",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 98.0,
+        "track_consistency_rate": 0.435,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.833,
+        "relation_density": 0.238,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 2487.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office0",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 1.0,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.295,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 108.0,
+        "track_consistency_rate": 0.417,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.833,
+        "relation_density": 0.232,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 2843.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0050_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 76.0,
+        "track_consistency_rate": 0.378,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.833,
+        "relation_density": 0.235,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 1305.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office3",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.502,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0231_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 22.0,
+        "track_consistency_rate": 0.696,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.428,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 524.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0700_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 18.0,
+        "track_consistency_rate": 0.716,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.437,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 341.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office2",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.853,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0580_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 16.0,
+        "track_consistency_rate": 0.583,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.347,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 131.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_01",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 24.0,
+        "track_consistency_rate": 0.685,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.349,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 377.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0222_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 26.0,
+        "track_consistency_rate": 0.7,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.457,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 836.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0653_01",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 50.0,
+        "track_consistency_rate": 0.55,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.313,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 1118.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office0",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.667,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.406,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 36.0,
+        "track_consistency_rate": 0.593,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.318,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 622.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0050_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 40.0,
+        "track_consistency_rate": 0.573,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.315,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 636.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office3",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.542,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0231_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 39.0,
+        "track_consistency_rate": 0.604,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.376,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 1071.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0700_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 21.0,
+        "track_consistency_rate": 0.653,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.421,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 417.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office2",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.667,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0580_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 18.0,
+        "track_consistency_rate": 0.524,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.373,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 185.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_01",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 32.0,
+        "track_consistency_rate": 0.595,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.351,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 622.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0222_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 44.0,
+        "track_consistency_rate": 0.603,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.379,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 1387.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0653_01",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 27.0,
+        "track_consistency_rate": 0.601,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.397,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 589.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office0",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.667,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.347,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 31.0,
+        "track_consistency_rate": 0.574,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.356,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 588.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0050_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 11.0,
+        "track_consistency_rate": 0.722,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.437,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 142.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office3",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.77,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0231_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 25.0,
+        "track_consistency_rate": 0.691,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.416,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 551.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0700_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 9.0,
+        "track_consistency_rate": 0.812,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.507,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 152.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office2",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.667,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0580_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 8.0,
+        "track_consistency_rate": 0.733,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.575,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 88.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_01",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 23.0,
+        "track_consistency_rate": 0.681,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.414,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 448.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0222_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 27.0,
+        "track_consistency_rate": 0.7,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.417,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 665.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0653_01",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 9.0,
+        "track_consistency_rate": 0.8,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.496,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 137.0
+      }
+    },
+    {
+      "dataset": "replica",
+      "scene": "office0",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_deva_output_json",
+      "rows": {
+        "identity_fragmentation_count": 0.0,
+        "track_consistency_rate": 1.0,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.5,
+        "relation_density": 0.0,
+        "geometry_support_mean": 0.445,
+        "memory_relation_edge_count": 0.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0645_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 19.0,
+        "track_consistency_rate": 0.683,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.421,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 312.0
+      }
+    },
+    {
+      "dataset": "scannet",
+      "scene": "scene0050_00",
+      "branch_id": "duograph3d_full",
+      "observation_mode": "real_scannet_online_monitor_json",
+      "rows": {
+        "identity_fragmentation_count": 5.0,
+        "track_consistency_rate": 0.861,
+        "memory_object_purity": 1.0,
+        "real_observation_frame_rate": 0.333,
+        "relation_density": 0.559,
+        "geometry_support_mean": 0.2,
+        "memory_relation_edge_count": 76.0
+      }
+    }
+  ],
+  "aggregate_rows": [
+    {
+      "metric": "geometry_support_mean",
+      "count": 44,
+      "mean": 0.295,
+      "min": 0.2,
+      "max": 0.853
+    },
+    {
+      "metric": "identity_fragmentation_count",
+      "count": 44,
+      "mean": 29.045,
+      "min": 0.0,
+      "max": 115.0
+    },
+    {
+      "metric": "memory_object_purity",
+      "count": 44,
+      "mean": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    {
+      "metric": "memory_relation_edge_count",
+      "count": 44,
+      "mean": 656.045,
+      "min": 0.0,
+      "max": 3638.0
+    },
+    {
+      "metric": "real_observation_frame_rate",
+      "count": 44,
+      "mean": 0.542,
+      "min": 0.333,
+      "max": 1.0
+    },
+    {
+      "metric": "relation_density",
+      "count": 44,
+      "mean": 0.268,
+      "min": 0.0,
+      "max": 0.575
+    },
+    {
+      "metric": "track_consistency_rate",
+      "count": 44,
+      "mean": 0.715,
+      "min": 0.361,
+      "max": 1.0
+    }
+  ],
+  "regime_rows": [
+    {
+      "regime": "phase4_baseline",
+      "report_coverage": 11,
+      "metrics": {
+        "geometry_support_mean": {
+          "mean": 0.271,
+          "min": 0.2,
+          "max": 0.62
+        },
+        "identity_fragmentation_count": {
+          "mean": 63.455,
+          "min": 0.0,
+          "max": 115.0
+        },
+        "memory_object_purity": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "memory_relation_edge_count": {
+          "mean": 1531.909,
+          "min": 0.0,
+          "max": 3638.0
+        },
+        "real_observation_frame_rate": {
+          "mean": 0.818,
+          "min": 0.667,
+          "max": 1.0
+        },
+        "relation_density": {
+          "mean": 0.177,
+          "min": 0.0,
+          "max": 0.279
+        },
+        "track_consistency_rate": {
+          "mean": 0.594,
+          "min": 0.361,
+          "max": 1.0
+        }
+      }
+    },
+    {
+      "regime": "phase4_burst",
+      "report_coverage": 11,
+      "metrics": {
+        "geometry_support_mean": {
+          "mean": 0.287,
+          "min": 0.2,
+          "max": 0.667
+        },
+        "identity_fragmentation_count": {
+          "mean": 20.273,
+          "min": 0.0,
+          "max": 44.0
+        },
+        "memory_object_purity": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "memory_relation_edge_count": {
+          "mean": 454.636,
+          "min": 0.0,
+          "max": 1387.0
+        },
+        "real_observation_frame_rate": {
+          "mean": 0.5,
+          "min": 0.333,
+          "max": 0.667
+        },
+        "relation_density": {
+          "mean": 0.281,
+          "min": 0.0,
+          "max": 0.437
+        },
+        "track_consistency_rate": {
+          "mean": 0.716,
+          "min": 0.524,
+          "max": 1.0
+        }
+      }
+    },
+    {
+      "regime": "phase4_random",
+      "report_coverage": 11,
+      "metrics": {
+        "geometry_support_mean": {
+          "mean": 0.317,
+          "min": 0.2,
+          "max": 0.77
+        },
+        "identity_fragmentation_count": {
+          "mean": 11.364,
+          "min": 0.0,
+          "max": 27.0
+        },
+        "memory_object_purity": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "memory_relation_edge_count": {
+          "mean": 220.818,
+          "min": 0.0,
+          "max": 665.0
+        },
+        "real_observation_frame_rate": {
+          "mean": 0.348,
+          "min": 0.333,
+          "max": 0.5
+        },
+        "relation_density": {
+          "mean": 0.346,
+          "min": 0.0,
+          "max": 0.575
+        },
+        "track_consistency_rate": {
+          "mean": 0.815,
+          "min": 0.681,
+          "max": 1.0
+        }
+      }
+    },
+    {
+      "regime": "phase4_stress",
+      "report_coverage": 11,
+      "metrics": {
+        "geometry_support_mean": {
+          "mean": 0.306,
+          "min": 0.2,
+          "max": 0.853
+        },
+        "identity_fragmentation_count": {
+          "mean": 21.091,
+          "min": 0.0,
+          "max": 50.0
+        },
+        "memory_object_purity": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "memory_relation_edge_count": {
+          "mean": 416.818,
+          "min": 0.0,
+          "max": 1118.0
+        },
+        "real_observation_frame_rate": {
+          "mean": 0.5,
+          "min": 0.333,
+          "max": 0.667
+        },
+        "relation_density": {
+          "mean": 0.269,
+          "min": 0.0,
+          "max": 0.457
+        },
+        "track_consistency_rate": {
+          "mean": 0.736,
+          "min": 0.55,
+          "max": 1.0
+        }
+      }
+    }
+  ]
+}

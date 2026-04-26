@@ -1,0 +1,27 @@
+# conceptgraphs_minimal_20260423 Lane Summary
+
+- Role: Zero-shot graph/object-memory baseline: ConceptGraphs evaluator bring-up
+- Status: isolated env repaired; eval_replica_semseg/gradslam/chamferdist import OK; scoring remains blocked by Replica semantic roots and current ScanNet export mismatch
+- Boundary: ConceptGraphs is a primary zero-shot/object-memory comparator, but no semantic score is claimed yet: the evaluator imports are repaired, while official eval_replica_semseg expects Replica semantic outputs/roots and the current DuoGraph3D export is ScanNet-oriented. The audit also confirms the remaining cfslam_pipeline_batch to_tensor import drift.
+
+## Health
+
+- repo: `/home/nebula/xxy/concept-graphs`
+- commit: `72f5962822b5e8678a446f367a06df1a977d2a4d`
+- env: `duograph-baselines-cu118 cloned_from=conceptgraph-cu118`
+
+### Checks
+
+- `import check: conceptgraph.scripts.eval_replica_semseg OK; conceptgraph.slam.slam_classes OK`
+
+## Artifacts
+
+- remote_repo: `/home/nebula/xxy/concept-graphs`
+- conceptgraphs_alignment_manifest: `docs/official_results/conceptgraphs_minimal_20260423/raw/duograph3d_conceptgraphs_alignment_manifest.json`
+- scoring_path_audit: `docs/official_results/conceptgraphs_minimal_20260423/raw/conceptgraphs_scoring_path_audit_20260423.txt`
+
+## Next steps
+
+- Build a Replica-format DuoGraph3D export with matching Replica semantic roots, or implement a documented ScanNet-compatible ConceptGraphs scoring path.
+- Patch or local-override cfslam_pipeline_batch to import to_tensor from conceptgraph.slam.slam_classes before running the full ConceptGraphs mapping pipeline.
+

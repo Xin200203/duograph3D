@@ -81,6 +81,16 @@ class CurrentObjectHypothesis:
 
 
 @dataclass
+class MemoryRelationEdge:
+    source_object_id: str
+    target_object_id: str
+    relation_type: str = "co_visibility"
+    co_visibility_count: int = 0
+    last_seen_step: int = 0
+    strength: float = 0.0
+
+
+@dataclass
 class MemoryObjectNode:
     object_id: str
     descriptor_fused: str
@@ -133,6 +143,8 @@ class PipelineConfig:
     dormant_after_misses: int = 2
     retire_after_misses: int = 4
     propagation_keepalive_misses: int = 2
+    emit_association_diagnostics: bool = False
+    association_diagnostics_top_k: int = 3
 
 
 @dataclass
@@ -142,6 +154,7 @@ class SequenceRunResult:
     memory_nodes: dict[str, MemoryObjectNode]
     event_count: int
     decisions: list[AssociationDecision]
+    relation_edges: dict[tuple[str, str], MemoryRelationEdge] = field(default_factory=dict)
 
 
 def mean_confidence(items: Iterable[float]) -> float:

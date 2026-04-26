@@ -1,0 +1,68 @@
+{
+  "rows": [
+    {
+      "metric": "identity_fragmentation_count",
+      "direction": "lower_better",
+      "best": {
+        "dataset": "replica",
+        "scene": "office0",
+        "value": 0.0,
+        "observation_mode": "real_deva_output_json"
+      },
+      "worst": {
+        "dataset": "scannet",
+        "scene": "scene0222_00",
+        "value": 115.0,
+        "observation_mode": "real_scannet_online_monitor_json"
+      }
+    },
+    {
+      "metric": "track_consistency_rate",
+      "direction": "higher_better",
+      "best": {
+        "dataset": "replica",
+        "scene": "office3",
+        "value": 1.0,
+        "observation_mode": "real_deva_output_json"
+      },
+      "worst": {
+        "dataset": "scannet",
+        "scene": "scene0580_00",
+        "value": 0.361,
+        "observation_mode": "real_scannet_online_monitor_json"
+      }
+    },
+    {
+      "metric": "real_observation_frame_rate",
+      "direction": "higher_better",
+      "best": {
+        "dataset": "replica",
+        "scene": "office0",
+        "value": 1.0,
+        "observation_mode": "real_deva_output_json"
+      },
+      "worst": {
+        "dataset": "replica",
+        "scene": "office2",
+        "value": 0.333,
+        "observation_mode": "real_deva_output_json"
+      }
+    },
+    {
+      "metric": "geometry_support_mean",
+      "direction": "higher_better",
+      "best": {
+        "dataset": "replica",
+        "scene": "office2",
+        "value": 0.853,
+        "observation_mode": "real_deva_output_json"
+      },
+      "worst": {
+        "dataset": "scannet",
+        "scene": "scene0050_00",
+        "value": 0.2,
+        "observation_mode": "real_scannet_online_monitor_json"
+      }
+    }
+  ]
+}
