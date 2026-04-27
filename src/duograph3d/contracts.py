@@ -190,7 +190,7 @@ class AssociationDecision:
 @dataclass
 class PipelineConfig:
     candidate_budget: int = 5
-    association_threshold: float = 1.55
+    association_threshold: float = 1.7
     occluded_after_misses: int = 1
     dormant_after_misses: int = 2
     retire_after_misses: int = 4
@@ -199,11 +199,15 @@ class PipelineConfig:
     association_diagnostics_top_k: int = 3
     enable_history_candidates: bool = True
     history_candidate_top_k: int = 5
-    history_candidate_affinity_threshold: float = 0.55
-    history_candidate_margin_threshold: float = 0.05
+    history_candidate_affinity_threshold: float = 0.7
+    history_candidate_margin_threshold: float = 0.15
     layer1_merge_threshold: float = 0.9
     layer1_history_shared_boost: float = 0.45
-    layer2_history_identity_threshold: float = 0.62
+    layer1_history_min_spatial_score: float = 0.45
+    layer1_history_min_semantic_score: float = 0.55
+    layer1_history_min_visual_score: float = 0.0
+    layer1_history_min_size_score: float = 0.0
+    layer2_history_identity_threshold: float = 0.7
     memory_max_points_per_object: int = 512
     enable_object_consolidation: bool = True
     object_merge_interval: int = 20

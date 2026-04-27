@@ -61,6 +61,7 @@ MAX_BBOX_AREA_RATIO: float | None = None
 APPLY_MASK_SUBTRACT_CONTAINED = False
 CLASS_AGNOSTIC_IDENTITY = False
 CLASS_AGNOSTIC_TOKEN = "item"
+PIPELINE_GATE_OVERRIDES: dict[str, float] = {}
 
 
 def object_payload_from_arrays(
@@ -511,8 +512,15 @@ def majority(items: list[str]) -> tuple[str, int]:
     return Counter(items).most_common(1)[0]
 
 
-def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, GTAssignment]):
+def build_pipeline_config() -> PipelineConfig:
     config = PipelineConfig(emit_association_diagnostics=True, association_diagnostics_top_k=2)
+    for key, value in PIPELINE_GATE_OVERRIDES.items():
+        setattr(config, key, value)
+    return config
+
+
+def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, GTAssignment]):
+    config = build_pipeline_config()
     memory = ObjectGraphMemory(config)
     logger = EventLogger()
     builder = EvidenceBuilder(config)
@@ -853,7 +861,7 @@ def load_baseline_rows() -> dict[str, dict[str, str]]:
 
 
 def configure_profile(args) -> None:
-    global ROOT, BASELINE_PRED_EXP_NAME, DUOGRAPH_PRED_EXP_NAME, PROFILE
+    global ROOT, BASELINE_PRED_EXP_NAME, DUOGRAPH_PRED_EXP_NAME, PROFILE, PIPELINE_GATE_OVERRIDES
     global VOXEL_SIZE, MIN_VALID_DEPTH_POINTS, MAX_POINTS_PER_OBS
     global MASK_CONF_THRESHOLD, MAX_BBOX_AREA_RATIO, APPLY_MASK_SUBTRACT_CONTAINED, CLASS_AGNOSTIC_IDENTITY
 
@@ -883,6 +891,21 @@ def configure_profile(args) -> None:
         DUOGRAPH_PRED_EXP_NAME = args.duograph_pred_exp_name
     if args.baseline_pred_exp_name:
         BASELINE_PRED_EXP_NAME = args.baseline_pred_exp_name
+    gate_args = {
+        "association_threshold": args.association_threshold,
+        "history_candidate_affinity_threshold": args.history_affinity_threshold,
+        "history_candidate_margin_threshold": args.history_margin_threshold,
+        "layer1_merge_threshold": args.layer1_merge_threshold,
+        "layer1_history_shared_boost": args.layer1_history_boost,
+        "layer1_history_min_spatial_score": args.layer1_history_min_spatial,
+        "layer1_history_min_semantic_score": args.layer1_history_min_semantic,
+        "layer1_history_min_visual_score": args.layer1_history_min_visual,
+        "layer1_history_min_size_score": args.layer1_history_min_size,
+        "layer2_history_identity_threshold": args.layer2_history_identity_threshold,
+        "object_merge_threshold": args.object_merge_threshold,
+        "object_merge_spatial_threshold": args.object_merge_spatial_threshold,
+    }
+    PIPELINE_GATE_OVERRIDES = {key: value for key, value in gate_args.items() if value is not None}
 
 
 def main() -> None:
@@ -893,6 +916,18 @@ def main() -> None:
     parser.add_argument("--skip-object-export", action="store_true")
     parser.add_argument("--duograph-pred-exp-name", default=None)
     parser.add_argument("--baseline-pred-exp-name", default=None)
+    parser.add_argument("--association-threshold", type=float, default=None)
+    parser.add_argument("--history-affinity-threshold", type=float, default=None)
+    parser.add_argument("--history-margin-threshold", type=float, default=None)
+    parser.add_argument("--layer1-merge-threshold", type=float, default=None)
+    parser.add_argument("--layer1-history-boost", type=float, default=None)
+    parser.add_argument("--layer1-history-min-spatial", type=float, default=None)
+    parser.add_argument("--layer1-history-min-semantic", type=float, default=None)
+    parser.add_argument("--layer1-history-min-visual", type=float, default=None)
+    parser.add_argument("--layer1-history-min-size", type=float, default=None)
+    parser.add_argument("--layer2-history-identity-threshold", type=float, default=None)
+    parser.add_argument("--object-merge-threshold", type=float, default=None)
+    parser.add_argument("--object-merge-spatial-threshold", type=float, default=None)
     args = parser.parse_args()
     configure_profile(args)
     ROOT.mkdir(parents=True, exist_ok=True)
@@ -957,6 +992,7 @@ def main() -> None:
             "duograph_object_monitor": duograph_object_monitor,
             "conceptgraphs_baseline_object_monitor": baseline_object_monitor,
             "conceptgraphs_baseline_metrics": baseline_rows.get(scene),
+            "pipeline_gate_overrides": PIPELINE_GATE_OVERRIDES,
             "seconds_total": round(time.time() - scene_t0, 3),
         }
         scene_summaries.append(scene_summary)
@@ -1001,6 +1037,7 @@ def main() -> None:
             "duograph_pred_exp_name": DUOGRAPH_PRED_EXP_NAME,
             "clip_probability_logit_scale": round(logit_scale, 6),
             "excluded_eval_classes": sorted(exclude_names),
+            "pipeline_gate_overrides": PIPELINE_GATE_OVERRIDES,
         },
         "rollup": rollup,
         "scenes": scene_summaries,

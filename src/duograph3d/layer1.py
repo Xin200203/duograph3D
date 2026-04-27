@@ -32,6 +32,10 @@ class CurrentEvidenceGraphLayer:
             for candidate in item.history_candidates
             if candidate.affinity >= self.config.history_candidate_affinity_threshold
             and candidate.margin >= self.config.history_candidate_margin_threshold
+            and candidate.spatial_score >= self.config.layer1_history_min_spatial_score
+            and candidate.semantic_score >= self.config.layer1_history_min_semantic_score
+            and candidate.visual_score >= self.config.layer1_history_min_visual_score
+            and candidate.size_score >= self.config.layer1_history_min_size_score
         ]
         usable.sort(key=lambda candidate: candidate.affinity, reverse=True)
         return tuple(usable)
