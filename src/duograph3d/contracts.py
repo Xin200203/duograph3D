@@ -62,6 +62,7 @@ class HistoryCandidate:
     object_id: str
     affinity: float
     spatial_score: float = 0.0
+    point_overlap_score: float = 0.0
     visual_score: float = 0.0
     semantic_score: float = 0.0
     recency_score: float = 0.0
@@ -208,6 +209,13 @@ class PipelineConfig:
     layer1_history_min_visual_score: float = 0.0
     layer1_history_min_size_score: float = 0.0
     layer2_history_identity_threshold: float = 0.7
+    history_point_overlap_distance: float = 0.12
+    history_overlap_max_points: int = 48
+    history_point_overlap_affinity_weight: float = 0.0
+    layer2_enable_residual_absorption: bool = False
+    layer2_absorption_threshold: float = 1.68
+    layer2_absorption_min_point_overlap: float = 1.0
+    layer2_absorption_min_semantic_score: float = 1.0
     memory_max_points_per_object: int = 512
     enable_object_consolidation: bool = True
     object_merge_interval: int = 20

@@ -244,6 +244,7 @@ class CurrentEvidenceGraphLayer:
                     object_id=object_id,
                     affinity=best.affinity,
                     spatial_score=best.spatial_score,
+                    point_overlap_score=best.point_overlap_score,
                     visual_score=best.visual_score,
                     semantic_score=best.semantic_score,
                     recency_score=best.recency_score,
@@ -330,6 +331,7 @@ class CurrentEvidenceGraphLayer:
                         "history_affinity": top_history.affinity,
                         "history_margin": top_history.margin,
                         "history_spatial_score": top_history.spatial_score,
+                        "history_point_overlap_score": top_history.point_overlap_score,
                         "history_visual_score": top_history.visual_score,
                         "history_semantic_score": top_history.semantic_score,
                     }

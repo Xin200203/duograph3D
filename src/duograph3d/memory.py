@@ -229,6 +229,80 @@ class ObjectGraphMemory:
             return self._centroid_from_points(points)
         return ()
 
+    def _payload_points(self, payload: ObjectObservationPayload | None) -> tuple[tuple[float, float, float], ...]:
+        if payload is None:
+            return ()
+        return self._as_point_tuple(payload.points_sample)
+
+    @staticmethod
+    def _sample_points_evenly(
+        points: tuple[tuple[float, float, float], ...],
+        limit: int,
+    ) -> tuple[tuple[float, float, float], ...]:
+        if limit <= 0 or len(points) <= limit:
+            return points
+        if limit == 1:
+            return (points[0],)
+        keep_indices = [round(index * (len(points) - 1) / (limit - 1)) for index in range(limit)]
+        return tuple(points[index] for index in keep_indices)
+
+    @classmethod
+    def _point_overlap_fraction(
+        cls,
+        query_points: tuple[tuple[float, float, float], ...],
+        reference_points: tuple[tuple[float, float, float], ...],
+        *,
+        max_distance: float,
+        max_points: int,
+    ) -> float:
+        """Fraction of query points that land close to any reference point.
+
+        BBox and centroid gates are cheap but too coarse for SAM fragments:
+        two fragments from the same physical object can have different small
+        boxes, while their sampled 3D points still sit on the same surface.
+        This bounded nearest-neighbour check gives history/object matching a
+        direct object-overlap signal without adding a dependency.
+        """
+
+        if not query_points or not reference_points or max_distance <= 0:
+            return 0.0
+        query = cls._sample_points_evenly(query_points, max_points)
+        reference = cls._sample_points_evenly(reference_points, max_points)
+        if not query or not reference:
+            return 0.0
+        threshold_sq = max_distance * max_distance
+        matched = 0
+        for qx, qy, qz in query:
+            for rx, ry, rz in reference:
+                distance_sq = (qx - rx) * (qx - rx) + (qy - ry) * (qy - ry) + (qz - rz) * (qz - rz)
+                if distance_sq <= threshold_sq:
+                    matched += 1
+                    break
+        return round(matched / max(len(query), 1), 4)
+
+    def payload_point_overlap_score(
+        self,
+        payload: ObjectObservationPayload | None,
+        node: MemoryObjectNode,
+    ) -> float:
+        return self._point_overlap_fraction(
+            self._payload_points(payload),
+            node.sampled_points,
+            max_distance=self.config.history_point_overlap_distance,
+            max_points=self.config.history_overlap_max_points,
+        )
+
+    def hypothesis_point_overlap_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
+        return self.payload_point_overlap_score(hypothesis.object_payload, node)
+
+    def hypothesis_semantic_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
+        label = ""
+        if hypothesis.object_payload is not None:
+            label = hypothesis.object_payload.label
+        if not label:
+            label = str(hypothesis.support_signals.get("appearance_key") or "")
+        return self._semantic_score(label, hypothesis.descriptor, node)
+
     def _semantic_score(self, label: str, descriptor: str, node: MemoryObjectNode) -> float:
         if not label:
             label = descriptor
@@ -306,6 +380,7 @@ class ObjectGraphMemory:
             if node.status is ObjectStatus.RETIRED:
                 continue
             spatial_score = self._node_spatial_score(item, node)
+            point_overlap_score = self.payload_point_overlap_score(item.object_payload, node)
             visual_score = self._node_visual_score(item, node)
             semantic_score = self._semantic_score(label, item.descriptor, node)
             recency_score = self._node_recency_score(node)
@@ -318,6 +393,19 @@ class ObjectGraphMemory:
                 + 0.07 * size_score,
                 4,
             )
+            if self.config.history_point_overlap_affinity_weight > 0:
+                gated_overlap = (
+                    point_overlap_score
+                    if (
+                        semantic_score >= self.config.layer2_absorption_min_semantic_score
+                        and spatial_score >= self.config.layer1_history_min_spatial_score
+                    )
+                    else 0.0
+                )
+                affinity = round(
+                    min(affinity + self.config.history_point_overlap_affinity_weight * gated_overlap, 1.0),
+                    4,
+                )
             if affinity >= min_affinity:
                 raw_candidates.append(
                     (
@@ -325,6 +413,7 @@ class ObjectGraphMemory:
                         node.object_id,
                         {
                             "spatial_score": spatial_score,
+                            "point_overlap_score": point_overlap_score,
                             "visual_score": visual_score,
                             "semantic_score": semantic_score,
                             "recency_score": recency_score,
@@ -342,6 +431,7 @@ class ObjectGraphMemory:
                     object_id=object_id,
                     affinity=affinity,
                     spatial_score=components["spatial_score"],
+                    point_overlap_score=components["point_overlap_score"],
                     visual_score=components["visual_score"],
                     semantic_score=components["semantic_score"],
                     recency_score=components["recency_score"],
@@ -444,14 +534,33 @@ class ObjectGraphMemory:
         return overlap / denominator
 
     def object_affinity(self, left: MemoryObjectNode, right: MemoryObjectNode) -> tuple[float, dict[str, float]]:
+        semantic_score = self._object_semantic_score(left, right)
         spatial_score = self._bbox_overlap_score(left.bbox_min, left.bbox_max, right.bbox_min, right.bbox_max)
         spatial_score = max(spatial_score, self._centroid_distance_score(left.centroid, right.centroid) * 0.75)
+        point_overlap_score = max(
+            self._point_overlap_fraction(
+                left.sampled_points,
+                right.sampled_points,
+                max_distance=self.config.history_point_overlap_distance,
+                max_points=self.config.history_overlap_max_points,
+            ),
+            self._point_overlap_fraction(
+                right.sampled_points,
+                left.sampled_points,
+                max_distance=self.config.history_point_overlap_distance,
+                max_points=self.config.history_overlap_max_points,
+            ),
+        )
+        if (
+            self.config.history_point_overlap_affinity_weight > 0
+            and semantic_score >= self.config.layer2_absorption_min_semantic_score
+        ):
+            spatial_score = max(spatial_score, point_overlap_score)
         if left.geometry_key and left.geometry_key == right.geometry_key:
             spatial_score = max(spatial_score, 1.0)
         if left.continuity_key_recent and left.continuity_key_recent == right.continuity_key_recent:
             spatial_score = max(spatial_score, 0.9)
         visual_score = self._similarity_from_cosine(self._cosine(left.clip_feature, right.clip_feature))
-        semantic_score = self._object_semantic_score(left, right)
         size_score = round(
             (
                 self._compatibility(left.avg_support_size, right.avg_support_size, max_delta=0.2)
@@ -464,6 +573,7 @@ class ObjectGraphMemory:
         score = round(0.50 * spatial_score + 0.25 * visual_score + 0.20 * semantic_score + 0.05 * size_score, 4)
         return score, {
             "spatial": round(spatial_score, 4),
+            "point_overlap": round(point_overlap_score, 4),
             "visual": round(visual_score, 4),
             "semantic": round(semantic_score, 4),
             "size": round(size_score, 4),

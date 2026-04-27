@@ -581,6 +581,134 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual([decision.action for decision in decisions], ["associate", "associate"])
         self.assertEqual([decision.object_id for decision in decisions], [node.object_id, node.object_id])
 
+    def test_history_candidate_uses_object_point_overlap(self) -> None:
+        memory = ObjectGraphMemory(PipelineConfig(history_point_overlap_affinity_weight=0.2))
+        node = memory.create_node(descriptor="chair", geometry_key="g-old", step_id=1)
+        memory.fuse_hypothesis(
+            node,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-history",
+                descriptor="chair",
+                geometry_key="g-old",
+                confidence=0.9,
+                evidence_ids=("e-history",),
+                track_hint="history",
+                object_payload=ObjectObservationPayload(
+                    label="chair",
+                    points_sample=((0.0, 0.0, 0.0), (0.05, 0.0, 0.0), (0.0, 0.05, 0.0)),
+                    bbox_min=(0.0, 0.0, 0.0),
+                    bbox_max=(0.05, 0.05, 0.0),
+                    centroid=(0.02, 0.02, 0.0),
+                    detection_count=1,
+                ),
+            ),
+            step_id=1,
+        )
+        item = EvidenceItem(
+            evidence_id="e-overlap",
+            descriptor="chair",
+            geometry_key="g-fragment",
+            confidence=0.9,
+            provenance=EvidenceProvenance.CURRENT,
+            object_payload=ObjectObservationPayload(
+                label="chair",
+                points_sample=((0.01, 0.0, 0.0), (0.04, 0.0, 0.0), (0.0, 0.04, 0.0)),
+                centroid=(0.02, 0.01, 0.0),
+                detection_count=1,
+            ),
+        )
+
+        candidates = memory.history_candidates_for(item)
+
+        self.assertEqual(len(candidates), 1)
+        self.assertEqual(candidates[0].object_id, node.object_id)
+        self.assertGreaterEqual(candidates[0].point_overlap_score, 0.99)
+        self.assertGreaterEqual(candidates[0].affinity, 0.7)
+
+    def test_layer2_residual_absorbs_same_frame_point_fragment(self) -> None:
+        config = PipelineConfig(emit_association_diagnostics=True, layer2_enable_residual_absorption=True)
+        memory = ObjectGraphMemory(config)
+        node = memory.create_node(descriptor="chair", geometry_key="g-anchor", step_id=1)
+        node.appearance_key_recent = "chair"
+        hypotheses = [
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-anchor",
+                descriptor="chair",
+                geometry_key="g-anchor",
+                confidence=0.9,
+                evidence_ids=("e-anchor",),
+                track_hint="anchor",
+                support_signals={"appearance_key": "chair", "support_size": 0.4, "depth_scale": 1.0, "geometry_support": 0.5},
+                object_payload=ObjectObservationPayload(
+                    label="chair",
+                    points_sample=((0.0, 0.0, 0.0), (0.05, 0.0, 0.0), (0.0, 0.05, 0.0)),
+                    centroid=(0.02, 0.02, 0.0),
+                    detection_count=1,
+                ),
+            ),
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-fragment",
+                descriptor="chair",
+                geometry_key="g-fragment",
+                confidence=0.9,
+                evidence_ids=("e-fragment",),
+                track_hint="fragment",
+                support_signals={"appearance_key": "chair", "support_size": 0.48, "depth_scale": 1.0, "geometry_support": 0.7},
+                object_payload=ObjectObservationPayload(
+                    label="chair",
+                    points_sample=((0.01, 0.0, 0.0), (0.04, 0.0, 0.0), (0.0, 0.04, 0.0)),
+                    centroid=(0.02, 0.01, 0.0),
+                    detection_count=1,
+                ),
+            ),
+        ]
+        logger = EventLogger()
+
+        decisions = CurrentToMemoryAssociationLayer(config).update(
+            sequence_id="seq-residual",
+            step_id=2,
+            branch_id="duograph3d_full",
+            hypotheses=hypotheses,
+            memory=memory,
+            logger=logger,
+        )
+
+        self.assertEqual([decision.action for decision in decisions], ["associate", "absorb"])
+        self.assertEqual(decisions[1].object_id, node.object_id)
+        self.assertEqual(decisions[1].reason, "residual_absorption_above_threshold")
+        self.assertEqual(logger.count("residual_absorption_commit"), 1)
+
+    def test_birth_diagnostic_decomposes_failure_family(self) -> None:
+        config = PipelineConfig(emit_association_diagnostics=True)
+        memory = ObjectGraphMemory(config)
+        node = memory.create_node(descriptor="chair", geometry_key="g-old", step_id=1)
+        node.appearance_key_recent = "chair"
+        hypothesis = CurrentObjectHypothesis(
+            hypothesis_id="hyp-low-semantic",
+            descriptor="chair",
+            geometry_key="g-new",
+            confidence=0.9,
+            evidence_ids=("e-low-semantic",),
+            track_hint="fragment-low-semantic",
+            support_signals={"appearance_key": "table"},
+        )
+        logger = EventLogger()
+
+        decisions = CurrentToMemoryAssociationLayer(config).update(
+            sequence_id="seq-birth-family",
+            step_id=2,
+            branch_id="duograph3d_full",
+            hypotheses=[hypothesis],
+            memory=memory,
+            logger=logger,
+        )
+
+        self.assertEqual(decisions[0].action, "birth")
+        diagnostic = logger.filter(event_type="association_birth_diagnostic")[0]
+        self.assertEqual(diagnostic.payload["failure_family"], "semantic_gate_low")
+        self.assertTrue(diagnostic.payload["top_candidates"])
+        self.assertIn("point_overlap_score", diagnostic.payload["top_candidates"][0])
+
     def test_memory_fuses_payload_and_merges_duplicate_objects(self) -> None:
         memory = ObjectGraphMemory(PipelineConfig(object_merge_threshold=0.8))
         left = memory.create_node(descriptor="chair", geometry_key="g-left", step_id=1)

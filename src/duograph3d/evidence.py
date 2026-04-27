@@ -74,6 +74,7 @@ class EvidenceBuilder:
                                 object_id=node.object_id,
                                 affinity=1.0,
                                 spatial_score=1.0,
+                                point_overlap_score=1.0 if node.sampled_points else 0.0,
                                 visual_score=1.0 if node.clip_feature else 0.0,
                                 semantic_score=1.0,
                                 recency_score=1.0,

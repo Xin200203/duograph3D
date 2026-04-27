@@ -483,6 +483,17 @@ def aggregate_object_monitor(scene_summaries: list[dict[str, object]], key: str)
     }
 
 
+def aggregate_counter(scene_summaries: list[dict[str, object]], path: tuple[str, str]) -> dict[str, int]:
+    result: Counter[str] = Counter()
+    section, key = path
+    for item in scene_summaries:
+        values = (item.get(section, {}) or {}).get(key, {})  # type: ignore[union-attr]
+        if isinstance(values, dict):
+            for name, count in values.items():
+                result[str(name)] += int(count)
+    return dict(result)
+
+
 def summarize_init(obs_meta: list[ObservationMeta], obs_gt: dict[str, GTAssignment]) -> dict[str, object]:
     valid = [obs for obs in obs_meta if obs_gt[obs.evidence_id].eval_keep]
     semantic_correct = [obs_gt[obs.evidence_id].semantic_correct for obs in valid]
@@ -546,6 +557,12 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
     l2_id_switch_events = 0
     l2_target_revisits = 0
     l2_decision_samples = []
+    duplicate_birth_reason_counts = Counter()
+    duplicate_birth_failure_family_counts = Counter()
+    duplicate_birth_top_scores = []
+    duplicate_birth_top_overlaps = []
+    duplicate_birth_top_semantics = []
+    duplicate_birth_records = []
 
     for step_id, frame in enumerate(frames, start=1):
         logger.log(sequence_id=f"replica-{scene}-gt-layer-monitor", step_id=step_id, branch_id=BRANCH_DUOGRAPH3D, event_type="comparison_slice_start", owner_component="pipeline", frame_id=frame.frame_id, temporal_variant=TemporalVariant.NAIVE_FRAMEWISE.value)
@@ -594,6 +611,11 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
             })
         decisions = layer2.update(sequence_id=f"replica-{scene}-gt-layer-monitor", step_id=step_id, branch_id=BRANCH_DUOGRAPH3D, hypotheses=hypotheses, memory=memory, logger=logger)
         all_decisions.extend(decisions)
+        birth_diagnostics = {
+            (record.step_id, str(record.payload.get("hypothesis_id", ""))): record.payload
+            for record in logger.records
+            if record.event_type == "association_birth_diagnostic" and record.step_id == step_id
+        }
         for hyp, decision, hyp_info in zip(hypotheses, decisions, hyp_records[-len(hypotheses):]):
             if not hyp_info.get("valid"):
                 continue
@@ -611,6 +633,30 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
                 else:
                     l2["duplicate_birth"] += 1
                     correct = False
+                    diag = birth_diagnostics.get((step_id, hyp.hypothesis_id), {})
+                    failure_family = str(diag.get("failure_family") or "missing_diagnostic")
+                    duplicate_birth_reason_counts[decision.reason] += 1
+                    duplicate_birth_failure_family_counts[failure_family] += 1
+                    top_candidates = diag.get("top_candidates") or []
+                    if top_candidates:
+                        top = top_candidates[0]
+                        duplicate_birth_top_scores.append(float(top.get("score", 0.0) or 0.0))
+                        duplicate_birth_top_overlaps.append(float(top.get("point_overlap_score", 0.0) or 0.0))
+                        duplicate_birth_top_semantics.append(float(top.get("semantic_score", 0.0) or 0.0))
+                    duplicate_birth_records.append(
+                        {
+                            "step_id": step_id,
+                            "hypothesis_id": hyp.hypothesis_id,
+                            "object_id": object_id,
+                            "target_id": target_id,
+                            "previous_object": prev_last or "",
+                            "reason": decision.reason,
+                            "failure_family": failure_family,
+                            "best_object_id": str(diag.get("best_object_id", "")),
+                            "best_score": diag.get("best_score"),
+                            "best_has_strong_identity": diag.get("best_has_strong_identity"),
+                        }
+                    )
             else:
                 known_targets = object_targets.get(object_id, set())
                 if target_id in known_targets:
@@ -622,6 +668,12 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
                 else:
                     l2["false_association_wrong_object"] += 1
                     correct = False
+            if decision.action == "absorb":
+                l2["residual_absorption"] += 1
+                if correct:
+                    l2["correct_residual_absorption"] += 1
+                else:
+                    l2["false_residual_absorption"] += 1
             if prev_last is not None and object_id != prev_last:
                 l2_id_switch_events += 1
             target_objects[target_id].add(object_id)
@@ -649,6 +701,14 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
         relation_edges=memory.relation_snapshot(),
     )
     summary = summarize_run(result, logger)
+    duplicate_birth_repaired = 0
+    duplicate_birth_unrepaired = 0
+    for record in duplicate_birth_records:
+        node = result.memory_nodes.get(str(record["object_id"]))
+        if node is not None and "merged_into_duplicate_object" in node.failure_tags:
+            duplicate_birth_repaired += 1
+        else:
+            duplicate_birth_unrepaired += 1
     frame_dup_rates = [duplicate_stats(targets)["duplicate_rate"] for targets in layer1_hyp_targets_by_frame.values()]
     frame_overseg = [duplicate_stats(targets)["overseg_factor"] for targets in layer1_hyp_targets_by_frame.values()]
     layer1_summary = {
@@ -678,11 +738,23 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
         "correct_birth": l2["correct_birth"],
         "duplicate_birth": l2["duplicate_birth"],
         "duplicate_birth_rate": round(l2["duplicate_birth"] / max(birth_total, 1), 6),
+        "duplicate_birth_reason_counts": dict(duplicate_birth_reason_counts),
+        "duplicate_birth_failure_family_counts": dict(duplicate_birth_failure_family_counts),
+        "duplicate_birth_top_candidate_score": numeric_summary(duplicate_birth_top_scores),
+        "duplicate_birth_top_candidate_point_overlap": numeric_summary(duplicate_birth_top_overlaps),
+        "duplicate_birth_top_candidate_semantic": numeric_summary(duplicate_birth_top_semantics),
+        "duplicate_birth_repaired_by_object_merge": duplicate_birth_repaired,
+        "duplicate_birth_unrepaired_after_object_merge": duplicate_birth_unrepaired,
+        "duplicate_birth_repair_rate": round(duplicate_birth_repaired / max(len(duplicate_birth_records), 1), 6),
         "association_count_eval_keep": assoc_total,
         "correct_association": l2["correct_association"],
         "false_association_before_birth": l2["false_association_before_birth"],
         "false_association_wrong_object": l2["false_association_wrong_object"],
         "association_accuracy": round(l2["correct_association"] / max(assoc_total, 1), 6),
+        "residual_absorption_count": l2["residual_absorption"],
+        "correct_residual_absorption": l2["correct_residual_absorption"],
+        "false_residual_absorption": l2["false_residual_absorption"],
+        "residual_absorption_accuracy": round(l2["correct_residual_absorption"] / max(l2["residual_absorption"], 1), 6),
         "id_switch_events": l2_id_switch_events,
         "id_switch_rate_per_revisit": round(l2_id_switch_events / max(l2_target_revisits, 1), 6),
         "fragmented_gt_target_count": sum(1 for objects in target_objects.values() if len(objects) > 1),
@@ -690,6 +762,7 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
         "multi_target_memory_object_count": multi_target_objects,
         "multi_target_memory_object_rate": round(multi_target_objects / max(len(object_targets), 1), 6),
         "error_samples": l2_decision_samples,
+        "duplicate_birth_samples": duplicate_birth_records[:50],
         "reason_counts": dict(Counter(decision.reason for decision in all_decisions)),
     }
     return result, logger, summary, layer1_summary, layer2_summary
@@ -902,9 +975,17 @@ def configure_profile(args) -> None:
         "layer1_history_min_visual_score": args.layer1_history_min_visual,
         "layer1_history_min_size_score": args.layer1_history_min_size,
         "layer2_history_identity_threshold": args.layer2_history_identity_threshold,
+        "history_point_overlap_distance": args.history_point_overlap_distance,
+        "history_overlap_max_points": args.history_overlap_max_points,
+        "history_point_overlap_affinity_weight": args.history_point_overlap_affinity_weight,
+        "layer2_absorption_threshold": args.layer2_absorption_threshold,
+        "layer2_absorption_min_point_overlap": args.layer2_absorption_min_point_overlap,
+        "layer2_absorption_min_semantic_score": args.layer2_absorption_min_semantic_score,
         "object_merge_threshold": args.object_merge_threshold,
         "object_merge_spatial_threshold": args.object_merge_spatial_threshold,
     }
+    if args.layer2_enable_residual_absorption is not None:
+        gate_args["layer2_enable_residual_absorption"] = bool(args.layer2_enable_residual_absorption)
     PIPELINE_GATE_OVERRIDES = {key: value for key, value in gate_args.items() if value is not None}
 
 
@@ -926,6 +1007,13 @@ def main() -> None:
     parser.add_argument("--layer1-history-min-visual", type=float, default=None)
     parser.add_argument("--layer1-history-min-size", type=float, default=None)
     parser.add_argument("--layer2-history-identity-threshold", type=float, default=None)
+    parser.add_argument("--history-point-overlap-distance", type=float, default=None)
+    parser.add_argument("--history-overlap-max-points", type=int, default=None)
+    parser.add_argument("--history-point-overlap-affinity-weight", type=float, default=None)
+    parser.add_argument("--layer2-absorption-threshold", type=float, default=None)
+    parser.add_argument("--layer2-absorption-min-point-overlap", type=float, default=None)
+    parser.add_argument("--layer2-absorption-min-semantic-score", type=float, default=None)
+    parser.add_argument("--layer2-enable-residual-absorption", type=int, choices=[0, 1], default=None)
     parser.add_argument("--object-merge-threshold", type=float, default=None)
     parser.add_argument("--object-merge-spatial-threshold", type=float, default=None)
     args = parser.parse_args()
@@ -1014,9 +1102,16 @@ def main() -> None:
         "layer2_duplicate_birth": sum(item["layer2"]["duplicate_birth"] for item in scene_summaries),
         "layer2_id_switch_events": sum(item["layer2"]["id_switch_events"] for item in scene_summaries),
         "layer2_gt_target_fragmentation": sum(item["layer2"]["gt_target_fragmentation"] for item in scene_summaries),
+        "layer2_residual_absorption_count": sum(item["layer2"]["residual_absorption_count"] for item in scene_summaries),
+        "layer2_correct_residual_absorption": sum(item["layer2"]["correct_residual_absorption"] for item in scene_summaries),
+        "layer2_false_residual_absorption": sum(item["layer2"]["false_residual_absorption"] for item in scene_summaries),
+        "layer2_duplicate_birth_repaired_by_object_merge": sum(item["layer2"]["duplicate_birth_repaired_by_object_merge"] for item in scene_summaries),
     }
     rollup["layer2_decision_accuracy"] = round((rollup["layer2_correct_birth"] + rollup["layer2_correct_association"]) / max(rollup["layer2_valid_decisions"], 1), 6)
     rollup["layer2_duplicate_birth_rate"] = round(rollup["layer2_duplicate_birth"] / max(rollup["layer2_correct_birth"] + rollup["layer2_duplicate_birth"], 1), 6)
+    rollup["layer2_residual_absorption_accuracy"] = round(rollup["layer2_correct_residual_absorption"] / max(rollup["layer2_residual_absorption_count"], 1), 6)
+    rollup["layer2_duplicate_birth_failure_family_counts"] = aggregate_counter(scene_summaries, ("layer2", "duplicate_birth_failure_family_counts"))
+    rollup["layer2_duplicate_birth_reason_counts"] = aggregate_counter(scene_summaries, ("layer2", "duplicate_birth_reason_counts"))
     rollup["duograph_object_monitor"] = aggregate_object_monitor(scene_summaries, "duograph_object_monitor")
     rollup["conceptgraphs_baseline_object_monitor"] = aggregate_object_monitor(scene_summaries, "conceptgraphs_baseline_object_monitor")
 
@@ -1054,6 +1149,8 @@ def main() -> None:
         f"- Layer1 eval hypotheses: {rollup['layer1_eval_hypotheses']}",
         f"- Layer2 decision accuracy: {rollup['layer2_decision_accuracy']}",
         f"- Layer2 duplicate birth rate: {rollup['layer2_duplicate_birth_rate']}",
+        f"- Layer2 duplicate birth failure families: {rollup['layer2_duplicate_birth_failure_family_counts']}",
+        f"- Layer2 residual absorption: {rollup['layer2_residual_absorption_count']} (accuracy {rollup['layer2_residual_absorption_accuracy']})",
         f"- Layer2 ID switch events: {rollup['layer2_id_switch_events']}",
         f"- DuoGraph3D object monitor: {rollup['duograph_object_monitor']}",
         f"- ConceptGraphs object monitor: {rollup['conceptgraphs_baseline_object_monitor']}",
