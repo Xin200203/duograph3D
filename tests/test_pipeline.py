@@ -5,10 +5,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from duograph3d.contracts import (
+    CurrentObjectHypothesis,
     EvidenceProvenance,
     EvidenceItem,
     FrameInput,
+    HistoryCandidate,
     Observation,
+    ObjectObservationPayload,
     ObservationSupport,
     PipelineConfig,
     TemporalVariant,
@@ -478,6 +481,165 @@ class PipelineTests(unittest.TestCase):
         self.assertGreater(top_candidate["components"]["geometry_key"], 0.0)
         self.assertGreater(top_candidate["components"]["geometry_profile"], 0.0)
         self.assertIn("best_has_strong_identity", candidate_records[0].payload)
+
+    def test_layer1_shared_history_object_boost_merges_fragments(self) -> None:
+        shared_history = HistoryCandidate(
+            object_id="obj-history",
+            affinity=0.9,
+            spatial_score=0.7,
+            semantic_score=1.0,
+            recency_score=1.0,
+            size_score=0.5,
+            margin=0.3,
+            strong=True,
+        )
+        items = [
+            EvidenceItem(
+                evidence_id="e-history-a",
+                descriptor="chair",
+                geometry_key="g-a",
+                confidence=0.9,
+                provenance=EvidenceProvenance.CURRENT,
+                repair_group_id="fragment-a",
+                history_candidates=(shared_history,),
+                support=ObservationSupport(
+                    proposal_id="p-a",
+                    frame_token="f-history",
+                    support_size=0.1,
+                    depth_scale=0.6,
+                    appearance_key="chair",
+                    continuity_key="current-fragment-a",
+                    geometry_support=0.2,
+                ),
+            ),
+            EvidenceItem(
+                evidence_id="e-history-b",
+                descriptor="chair",
+                geometry_key="g-b",
+                confidence=0.88,
+                provenance=EvidenceProvenance.CURRENT,
+                repair_group_id="fragment-b",
+                history_candidates=(shared_history,),
+                support=ObservationSupport(
+                    proposal_id="p-b",
+                    frame_token="f-history",
+                    support_size=0.9,
+                    depth_scale=1.4,
+                    appearance_key="chair",
+                    continuity_key="current-fragment-b",
+                    geometry_support=1.2,
+                ),
+            ),
+        ]
+
+        hypotheses = CurrentEvidenceGraphLayer().repair(items)
+
+        self.assertEqual(len(hypotheses), 1)
+        self.assertIn("shared_history_object", hypotheses[0].support_signals["repair_reasons"])
+        self.assertEqual(hypotheses[0].support_signals["history_object_id"], "obj-history")
+
+    def test_layer2_greedy_many_to_one_history_association(self) -> None:
+        memory = ObjectGraphMemory()
+        node = memory.create_node(descriptor="chair", geometry_key="g-old", step_id=1)
+        node.appearance_key_recent = "chair"
+        node.avg_support_size = 0.4
+        node.avg_depth_scale = 1.0
+        node.avg_geometry_support = 0.5
+        history = HistoryCandidate(object_id=node.object_id, affinity=0.92, margin=0.4, strong=True)
+        hypotheses = [
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-a",
+                descriptor="chair",
+                geometry_key="g-new-a",
+                confidence=0.9,
+                evidence_ids=("e-a",),
+                track_hint="fragment-a",
+                history_candidates=(history,),
+                support_signals={"appearance_key": "chair", "support_size": 0.4, "depth_scale": 1.0, "geometry_support": 0.5},
+            ),
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-b",
+                descriptor="chair",
+                geometry_key="g-new-b",
+                confidence=0.91,
+                evidence_ids=("e-b",),
+                track_hint="fragment-b",
+                history_candidates=(history,),
+                support_signals={"appearance_key": "chair", "support_size": 0.4, "depth_scale": 1.0, "geometry_support": 0.5},
+            ),
+        ]
+
+        decisions = CurrentToMemoryAssociationLayer().update(
+            sequence_id="seq-many-to-one",
+            step_id=2,
+            branch_id="duograph3d_full",
+            hypotheses=hypotheses,
+            memory=memory,
+            logger=EventLogger(),
+        )
+
+        self.assertEqual([decision.action for decision in decisions], ["associate", "associate"])
+        self.assertEqual([decision.object_id for decision in decisions], [node.object_id, node.object_id])
+
+    def test_memory_fuses_payload_and_merges_duplicate_objects(self) -> None:
+        memory = ObjectGraphMemory(PipelineConfig(object_merge_threshold=0.8))
+        left = memory.create_node(descriptor="chair", geometry_key="g-left", step_id=1)
+        right = memory.create_node(descriptor="chair", geometry_key="g-right", step_id=2)
+        payload_left = ObjectObservationPayload(
+            label="chair",
+            points_sample=((0.0, 0.0, 0.0), (1.0, 1.0, 1.0)),
+            bbox_min=(0.0, 0.0, 0.0),
+            bbox_max=(1.0, 1.0, 1.0),
+            centroid=(0.5, 0.5, 0.5),
+            clip_feature=(1.0, 0.0),
+            detection_count=1,
+        )
+        payload_right = ObjectObservationPayload(
+            label="chair",
+            points_sample=((0.2, 0.2, 0.2), (0.8, 0.8, 0.8)),
+            bbox_min=(0.2, 0.2, 0.2),
+            bbox_max=(0.8, 0.8, 0.8),
+            centroid=(0.5, 0.5, 0.5),
+            clip_feature=(1.0, 0.0),
+            detection_count=1,
+        )
+        memory.fuse_hypothesis(
+            left,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-left",
+                descriptor="chair",
+                geometry_key="g-left",
+                confidence=0.9,
+                evidence_ids=("e-left",),
+                track_hint="left",
+                object_payload=payload_left,
+                support_signals={"appearance_key": "chair"},
+            ),
+            step_id=1,
+        )
+        memory.fuse_hypothesis(
+            right,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-right",
+                descriptor="chair",
+                geometry_key="g-right",
+                confidence=0.9,
+                evidence_ids=("e-right",),
+                track_hint="right",
+                object_payload=payload_right,
+                support_signals={"appearance_key": "chair"},
+            ),
+            step_id=2,
+        )
+
+        merges = memory.merge_duplicate_objects()
+
+        self.assertEqual(len(merges), 1)
+        self.assertEqual(right.status.value, "retired")
+        self.assertEqual(left.detection_count, 2)
+        self.assertEqual(left.class_counts["chair"], 2)
+        self.assertEqual(left.bbox_min, (0.0, 0.0, 0.0))
+        self.assertEqual(left.bbox_max, (1.0, 1.0, 1.0))
 
 
 if __name__ == "__main__":

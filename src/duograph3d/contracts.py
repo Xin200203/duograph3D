@@ -36,6 +36,41 @@ class ObservationSupport:
     geometry_support: float = 0.0
 
 
+@dataclass(frozen=True)
+class ObjectObservationPayload:
+    """Object-level evidence carried by one 2D/3D observation.
+
+    The core package keeps this representation dependency-free so runners can
+    pass sampled points/features as plain tuples or lists.  Memory code is
+    responsible for normalizing these values before fusion.
+    """
+
+    label: str = ""
+    points_sample: tuple[tuple[float, float, float], ...] = ()
+    colors_sample: tuple[tuple[float, float, float], ...] = ()
+    bbox_min: tuple[float, ...] = ()
+    bbox_max: tuple[float, ...] = ()
+    centroid: tuple[float, ...] = ()
+    clip_feature: tuple[float, ...] = ()
+    text_feature: tuple[float, ...] = ()
+    mask_area: float = 0.0
+    detection_count: int = 1
+
+
+@dataclass(frozen=True)
+class HistoryCandidate:
+    object_id: str
+    affinity: float
+    spatial_score: float = 0.0
+    visual_score: float = 0.0
+    semantic_score: float = 0.0
+    recency_score: float = 0.0
+    size_score: float = 0.0
+    margin: float = 0.0
+    source: str = "memory"
+    strong: bool = False
+
+
 @dataclass
 class Observation:
     observation_id: str
@@ -45,6 +80,7 @@ class Observation:
     repair_group_id: str | None = None
     support_tokens: tuple[str, ...] = ()
     support: ObservationSupport | None = None
+    object_payload: ObjectObservationPayload | None = None
 
 
 @dataclass
@@ -65,6 +101,8 @@ class EvidenceItem:
     repair_group_id: str | None = None
     memory_hint_id: str | None = None
     support: ObservationSupport | None = None
+    history_candidates: tuple[HistoryCandidate, ...] = ()
+    object_payload: ObjectObservationPayload | None = None
 
 
 @dataclass
@@ -78,6 +116,8 @@ class CurrentObjectHypothesis:
     ambiguity_flags: tuple[str, ...] = ()
     provenance_counts: dict[str, int] = field(default_factory=dict)
     support_signals: dict[str, object] = field(default_factory=dict)
+    history_candidates: tuple[HistoryCandidate, ...] = ()
+    object_payload: ObjectObservationPayload | None = None
 
 
 @dataclass
@@ -113,6 +153,18 @@ class MemoryObjectNode:
     avg_support_size: float = 0.0
     avg_depth_scale: float = 1.0
     avg_geometry_support: float = 0.0
+    detection_count: int = 0
+    confidence_sum: float = 0.0
+    mask_area_sum: float = 0.0
+    point_count: int = 0
+    sampled_points: tuple[tuple[float, float, float], ...] = ()
+    sampled_colors: tuple[tuple[float, float, float], ...] = ()
+    bbox_min: tuple[float, ...] = ()
+    bbox_max: tuple[float, ...] = ()
+    centroid: tuple[float, ...] = ()
+    clip_feature: tuple[float, ...] = ()
+    text_feature: tuple[float, ...] = ()
+    class_counts: dict[str, int] = field(default_factory=dict)
 
     def register_support(self, provenance: EvidenceProvenance) -> None:
         self.evidence_provenance_tail.append(provenance.value)
@@ -138,13 +190,26 @@ class AssociationDecision:
 @dataclass
 class PipelineConfig:
     candidate_budget: int = 5
-    association_threshold: float = 1.2
+    association_threshold: float = 1.55
     occluded_after_misses: int = 1
     dormant_after_misses: int = 2
     retire_after_misses: int = 4
     propagation_keepalive_misses: int = 2
     emit_association_diagnostics: bool = False
     association_diagnostics_top_k: int = 3
+    enable_history_candidates: bool = True
+    history_candidate_top_k: int = 5
+    history_candidate_affinity_threshold: float = 0.55
+    history_candidate_margin_threshold: float = 0.05
+    layer1_merge_threshold: float = 0.9
+    layer1_history_shared_boost: float = 0.45
+    layer2_history_identity_threshold: float = 0.62
+    memory_max_points_per_object: int = 512
+    enable_object_consolidation: bool = True
+    object_merge_interval: int = 20
+    object_merge_threshold: float = 0.88
+    object_merge_spatial_threshold: float = 0.15
+    object_filter_min_detections: int = 1
 
 
 @dataclass

@@ -22,7 +22,7 @@ import open3d as o3d
 sys.path.insert(0, "/home/nebula/xxy/DuoGraph3D/src")
 sys.path.insert(0, "/home/nebula/xxy/concept-graphs-main")
 
-from duograph3d.contracts import FrameInput, Observation, ObservationSupport, PipelineConfig, TemporalVariant
+from duograph3d.contracts import FrameInput, ObjectObservationPayload, Observation, ObservationSupport, PipelineConfig, TemporalVariant
 from duograph3d.events import BRANCH_DUOGRAPH3D
 from duograph3d.io_utils import write_json
 from duograph3d.metrics import summarize_run
@@ -77,6 +77,30 @@ def normalize_np(arr: np.ndarray) -> np.ndarray:
     norm = np.linalg.norm(arr, axis=-1, keepdims=True)
     norm[norm == 0] = 1.0
     return arr / norm
+
+
+def object_payload_from_arrays(
+    *,
+    label: str,
+    points: np.ndarray,
+    colors: np.ndarray,
+    centroid: np.ndarray,
+    clip_feature: np.ndarray,
+    text_feature: np.ndarray,
+    mask_area: int,
+) -> ObjectObservationPayload:
+    return ObjectObservationPayload(
+        label=label,
+        points_sample=tuple(tuple(float(value) for value in row[:3]) for row in np.asarray(points, dtype=np.float32)),
+        colors_sample=tuple(tuple(float(value) for value in row[:3]) for row in np.asarray(colors, dtype=np.float32)),
+        bbox_min=tuple(float(value) for value in np.asarray(points, dtype=np.float32).min(axis=0)[:3]),
+        bbox_max=tuple(float(value) for value in np.asarray(points, dtype=np.float32).max(axis=0)[:3]),
+        centroid=tuple(float(value) for value in np.asarray(centroid, dtype=np.float32)[:3]),
+        clip_feature=tuple(float(value) for value in np.asarray(clip_feature, dtype=np.float32).reshape(-1)),
+        text_feature=tuple(float(value) for value in np.asarray(text_feature, dtype=np.float32).reshape(-1)),
+        mask_area=float(mask_area),
+        detection_count=1,
+    )
 
 
 def to_builtin(value):
@@ -309,17 +333,26 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                 confidence=conf,
                 repair_group_id=key,
                 support_tokens=(frame_stem, label, key),
-                support=ObservationSupport(
-                    proposal_id=obs_id,
-                    frame_token=frame_stem,
-                    source_kind="conceptgraphs_gsa_none_engineered",
+                    support=ObservationSupport(
+                        proposal_id=obs_id,
+                        frame_token=frame_stem,
+                        source_kind="conceptgraphs_gsa_none_engineered",
                     support_size=support_size,
                     depth_scale=depth_scale,
                     appearance_key=label,
-                    continuity_key=key,
-                    geometry_support=geometry_support,
-                ),
-            ))
+                        continuity_key=key,
+                        geometry_support=geometry_support,
+                    ),
+                    object_payload=object_payload_from_arrays(
+                        label=label,
+                        points=world,
+                        colors=colors,
+                        centroid=centroid,
+                        clip_feature=image_feats[det_i],
+                        text_feature=text_anchor,
+                        mask_area=area,
+                    ),
+                ))
             bucket = key_data.setdefault(key, {
                 "label_counts": Counter(),
                 "clip_sum": np.zeros_like(class_feats_np[0], dtype=np.float64),
@@ -505,7 +538,7 @@ def write_report(scene: str, prep: dict, branch_summary: dict, logger) -> Path:
     outdir.mkdir(parents=True, exist_ok=True)
     diagnostic_sample = []
     for record in logger.records:
-        if record.event_type in {"association_candidate_diagnostic", "association_birth_diagnostic", "memory_relation_update"}:
+        if record.event_type in {"association_candidate_diagnostic", "association_birth_diagnostic", "memory_relation_update", "memory_object_consolidation"}:
             diagnostic_sample.append({
                 "sequence_id": record.sequence_id,
                 "step_id": record.step_id,
@@ -677,6 +710,76 @@ def build_initial_map_objects(
     return objects, export_debug, skipped_keys
 
 
+def build_memory_map_objects(result, label_to_index: dict[str, int], class_feats_np: np.ndarray):
+    cfg = conceptgraphs_postprocess_cfg()
+    objects = MapObjectList()
+    export_debug = []
+    skipped = []
+    for object_id, node in sorted(result.memory_nodes.items()):
+        if "merged_into_duplicate_object" in node.failure_tags or "filtered_low_detection_object" in node.failure_tags:
+            skipped.append(object_id)
+            continue
+        points = np.asarray(node.sampled_points, dtype=np.float32)
+        if len(points) < 4:
+            skipped.append(object_id)
+            continue
+        colors = np.asarray(node.sampled_colors, dtype=np.float32)
+        if colors.shape != points.shape:
+            colors = np.zeros_like(points)
+        if len(points) > MAX_POINTS_PER_OBJECT:
+            keep = sample_indices(len(points), MAX_POINTS_PER_OBJECT)
+            points = points[keep]
+            colors = colors[keep]
+        label = max(node.class_counts.items(), key=lambda item: item[1])[0] if node.class_counts else (node.appearance_key_recent or node.descriptor_recent)
+        label_index = int(label_to_index.get(label, -1))
+        if label_index >= 0:
+            text_ft = class_feats_np[label_index].astype(np.float32)
+        else:
+            text_ft = np.zeros_like(class_feats_np[0], dtype=np.float32)
+        clip_ft = np.asarray(node.clip_feature, dtype=np.float32)
+        if clip_ft.shape != text_ft.shape:
+            clip_ft = text_ft
+        pcd_original = make_open3d_pcd(points, colors)
+        pcd = process_pcd(pcd_original, cfg, run_dbscan=True)
+        if len(pcd.points) < 4:
+            pcd = pcd_original
+        obj = {
+            "image_idx": [],
+            "mask_idx": [],
+            "color_path": [],
+            "class_name": [label],
+            "class_id": [label_index],
+            "num_detections": max(int(node.detection_count), 1),
+            "conf": [float(node.confidence_sum / max(node.detection_count, 1)) if node.detection_count else 0.0],
+            "n_points": [len(pcd.points)],
+            "pixel_area": [int(node.mask_area_sum)],
+            "contain_number": [None],
+            "source_key": [object_id],
+            "base_geometry_key": [node.geometry_key],
+            "source_object_id": [object_id],
+            "inst_color": np.random.rand(3),
+            "is_background": [False],
+            "pcd": pcd,
+            "bbox": get_bounding_box(cfg, pcd),
+            "clip_ft": torch.from_numpy(clip_ft.astype(np.float32)),
+            "text_ft": torch.from_numpy(text_ft.astype(np.float32)),
+        }
+        objects.append(obj)
+        export_debug.append({
+            "track_hint": object_id,
+            "base_geometry_key": node.geometry_key,
+            "object_ids": [object_id],
+            "label": label,
+            "num_detections": max(int(node.detection_count), 1),
+            "point_count_before_postprocess": int(len(points)),
+            "point_count_after_key_denoise": int(len(pcd.points)),
+            "fragment_object_count": 1,
+            "mask_pixels": int(node.mask_area_sum),
+            "source": "online_memory_node",
+        })
+    return objects, export_debug, skipped
+
+
 def compute_shadow_undermerge(scene: str, key_data: dict[str, dict[str, object]], track_assignments: dict[str, list[str]]) -> dict[str, object]:
     groups: dict[str, list[dict[str, object]]] = defaultdict(list)
     for key, data in key_data.items():
@@ -738,16 +841,22 @@ def compute_shadow_undermerge(scene: str, key_data: dict[str, dict[str, object]]
 
 def write_conceptgraphs_payload(
     scene: str,
+    result,
     key_data: dict[str, dict[str, object]],
     track_assignments: dict[str, list[str]],
     branch_summary: dict,
     label_to_index: dict[str, int],
+    class_feats_np: np.ndarray,
 ):
     t0 = time.time()
     pcd_dir = REPLICA_ROOT / scene / "pcd_saves"
     pcd_dir.mkdir(parents=True, exist_ok=True)
     cfg = conceptgraphs_postprocess_cfg()
-    initial_objects, export_debug, skipped_keys = build_initial_map_objects(key_data, track_assignments, label_to_index)
+    initial_objects, export_debug, skipped_keys = build_memory_map_objects(result, label_to_index, class_feats_np)
+    export_source = "duograph3d_online_object_memory"
+    if len(initial_objects) == 0:
+        initial_objects, export_debug, skipped_keys = build_initial_map_objects(key_data, track_assignments, label_to_index)
+        export_source = "duograph3d_geometry_key_fallback"
     pre_postprocess_count = len(initial_objects)
     print(f"ConceptGraphs-style postprocess before denoise/filter/merge: {pre_postprocess_count}", flush=True)
     objects = denoise_objects(cfg, initial_objects)
@@ -784,6 +893,7 @@ def write_conceptgraphs_payload(
         "object_count": len(serializable_objects),
         "point_count": int(sum(len(obj["pcd_np"]) for obj in serializable_objects)),
         "source": "duograph3d_over_conceptgraphs_gsa_detections_none_engineered",
+        "object_source": export_source,
         "temporal_variant": TemporalVariant.NAIVE_FRAMEWISE.value,
         "readiness": {
             "same_replica_scene_list_as_conceptgraphs": True,
@@ -838,6 +948,7 @@ def write_conceptgraphs_payload(
             "memory_relation_edge_count": branch_summary.get("memory_relation_edge_count"),
         },
         "export_monitor": export_monitor,
+        "object_source": export_source,
         "seconds": round(time.time() - t0, 3),
     }
     write_json(to_builtin(manifest), pcd_dir / f"{PRED_EXP_NAME}_manifest.json")
@@ -1032,7 +1143,7 @@ def main() -> None:
         print(f"=== {scene}: export ===", flush=True)
         track_assignments = branch_summary.get("track_assignments", {}) or {}
         shadow_undermerge = compute_shadow_undermerge(scene, key_data, track_assignments)
-        manifest, export_debug, skipped_keys = write_conceptgraphs_payload(scene, key_data, track_assignments, branch_summary, label_to_index)
+        manifest, export_debug, skipped_keys = write_conceptgraphs_payload(scene, result, key_data, track_assignments, branch_summary, label_to_index, class_feats_np)
         manifests.append(manifest)
         scene_debug = {
             "scene": scene,

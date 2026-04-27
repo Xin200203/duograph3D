@@ -14,7 +14,7 @@ class DuoGraph3DPipeline:
     def __init__(self, config: PipelineConfig | None = None) -> None:
         self.config = config or PipelineConfig()
         self.evidence_builder = EvidenceBuilder(self.config)
-        self.layer1 = CurrentEvidenceGraphLayer()
+        self.layer1 = CurrentEvidenceGraphLayer(self.config)
         self.layer2 = CurrentToMemoryAssociationLayer(self.config)
 
     def run_sequence(
@@ -25,7 +25,7 @@ class DuoGraph3DPipeline:
         temporal_variant: TemporalVariant,
         branch_id: str = BRANCH_DUOGRAPH3D,
     ) -> tuple[SequenceRunResult, EventLogger]:
-        memory = ObjectGraphMemory()
+        memory = ObjectGraphMemory(self.config)
         logger = EventLogger()
         all_decisions = []
         for step_id, frame in enumerate(frames, start=1):
@@ -79,6 +79,17 @@ class DuoGraph3DPipeline:
                 owner_component="pipeline",
                 frame_id=frame.frame_id,
             )
+        if self.config.enable_object_consolidation:
+            consolidation = memory.consolidate_objects()
+            if consolidation["merges"] or consolidation["filtered_object_ids"] or consolidation["denoise"].get("objects_capped", 0):
+                logger.log(
+                    sequence_id=sequence_id,
+                    step_id=len(frames),
+                    branch_id=branch_id,
+                    event_type="memory_object_consolidation",
+                    owner_component="memory",
+                    **consolidation,
+                )
         result = SequenceRunResult(
             branch_id=branch_id,
             sequence_id=sequence_id,

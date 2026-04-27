@@ -128,7 +128,6 @@ class CurrentToMemoryAssociationLayer:
         node_depth_scale: float,
         node_geometry_support: float,
     ) -> tuple[float, bool, dict[str, object]]:
-        del object_id
         score = 0.0
         strong_identity_match = False
         geometry_key_score = 0.0
@@ -170,8 +169,20 @@ class CurrentToMemoryAssociationLayer:
             temporal_score = max(temporal_score - 0.2, 0.0)
             continuity_profile_penalty = round(old_temporal_score - temporal_score, 4)
             strong_identity_match = False
+        history_candidate_score = 0.0
+        history_candidate_affinity = 0.0
+        history_candidate_margin = 0.0
+        for candidate in hypothesis.history_candidates:
+            if candidate.object_id != object_id:
+                continue
+            history_candidate_affinity = max(history_candidate_affinity, candidate.affinity)
+            history_candidate_margin = max(history_candidate_margin, candidate.margin)
+            if candidate.affinity >= self.config.layer2_history_identity_threshold:
+                history_candidate_score = max(history_candidate_score, min(candidate.affinity * 0.65, 0.65))
+                strong_identity_match = True
         score += temporal_score
         score += geometry_profile_score
+        score += history_candidate_score
         components = {
             "geometry_key": geometry_key_score,
             "descriptor": descriptor_score,
@@ -182,6 +193,9 @@ class CurrentToMemoryAssociationLayer:
             "geometry_profile": geometry_profile_score,
             "continuity_profile_penalty": continuity_profile_penalty,
             "temporal_total": round(temporal_score, 4),
+            "history_candidate": round(history_candidate_score, 4),
+            "history_affinity": round(history_candidate_affinity, 4),
+            "history_margin": round(history_candidate_margin, 4),
         }
         return score, strong_identity_match, components
 
@@ -189,10 +203,10 @@ class CurrentToMemoryAssociationLayer:
     def _birth_reason(best_id: str | None, best_score: float, best_has_identity: bool, threshold: float) -> str:
         if best_id is None:
             return "no_candidate"
-        if not best_has_identity:
-            return "best_candidate_without_strong_identity"
         if best_score < threshold:
             return "best_candidate_below_threshold"
+        if not best_has_identity:
+            return "best_candidate_without_strong_identity"
         return "no_candidate_above_threshold"
 
     def update(
@@ -214,10 +228,18 @@ class CurrentToMemoryAssociationLayer:
             support_size = self._float_signal(hypothesis, "support_size", 0.0)
             depth_scale = self._float_signal(hypothesis, "depth_scale", 1.0)
             geometry_support = self._float_signal(hypothesis, "geometry_support", 0.0)
+            history_object_ids = tuple(
+                candidate.object_id
+                for candidate in hypothesis.history_candidates
+                if candidate.affinity >= self.config.history_candidate_affinity_threshold
+            )
             candidates = [
                 candidate
-                for candidate in memory.candidate_nodes(hypothesis.geometry_key, self.config.candidate_budget)
-                if candidate.object_id not in matched_ids
+                for candidate in memory.candidate_nodes(
+                    hypothesis.geometry_key,
+                    self.config.candidate_budget,
+                    history_object_ids=history_object_ids,
+                )
             ]
             best_id = None
             best_score = -1.0
@@ -285,7 +307,7 @@ class CurrentToMemoryAssociationLayer:
                     best_has_strong_identity=best_has_identity,
                     top_candidates=candidate_scores[: max(self.config.association_diagnostics_top_k, 0)],
                 )
-            if best_id is not None and best_score >= self.config.association_threshold and best_has_identity:
+            if best_id is not None and best_score >= self.config.association_threshold:
                 node = memory.nodes[best_id]
                 action = "associate"
                 if node.status in {ObjectStatus.OCCLUDED, ObjectStatus.DORMANT}:
@@ -304,9 +326,8 @@ class CurrentToMemoryAssociationLayer:
                 node.status = ObjectStatus.ACTIVE
                 node.last_seen_step = step_id
                 node.miss_count = 0
-                node.descriptor_recent = hypothesis.descriptor
-                node.descriptor_fused = hypothesis.descriptor
                 self._update_node_support(node, hypothesis)
+                memory.fuse_hypothesis(node, hypothesis, step_id=step_id)
                 node.register_support(
                     EvidenceProvenance.PROPAGATED
                     if hypothesis.provenance_counts.get(EvidenceProvenance.PROPAGATED.value)
@@ -335,7 +356,8 @@ class CurrentToMemoryAssociationLayer:
                     score=best_score,
                 )
                 matched_ids.add(node.object_id)
-                current_step_object_ids.append(node.object_id)
+                if node.object_id not in current_step_object_ids:
+                    current_step_object_ids.append(node.object_id)
                 decisions.append(
                     AssociationDecision(
                         hypothesis_id=hypothesis.hypothesis_id,
@@ -364,6 +386,7 @@ class CurrentToMemoryAssociationLayer:
                     else EvidenceProvenance.CURRENT
                 )
                 self._update_node_support(node, hypothesis)
+                memory.fuse_hypothesis(node, hypothesis, step_id=step_id)
                 if hypothesis.ambiguity_flags:
                     logger.log(
                         sequence_id=sequence_id,
@@ -403,7 +426,8 @@ class CurrentToMemoryAssociationLayer:
                         threshold=self.config.association_threshold,
                     )
                 matched_ids.add(node.object_id)
-                current_step_object_ids.append(node.object_id)
+                if node.object_id not in current_step_object_ids:
+                    current_step_object_ids.append(node.object_id)
                 decisions.append(
                     AssociationDecision(
                         hypothesis_id=hypothesis.hypothesis_id,
@@ -425,6 +449,21 @@ class CurrentToMemoryAssociationLayer:
                 owner_component="memory",
                 relation_edge_count=len(memory.relation_edges),
             )
+        if (
+            self.config.enable_object_consolidation
+            and self.config.object_merge_interval > 0
+            and step_id % self.config.object_merge_interval == 0
+        ):
+            consolidation = memory.consolidate_objects()
+            if consolidation["merges"] or consolidation["filtered_object_ids"] or consolidation["denoise"].get("objects_capped", 0):
+                logger.log(
+                    sequence_id=sequence_id,
+                    step_id=step_id,
+                    branch_id=branch_id,
+                    event_type="memory_object_consolidation",
+                    owner_component="memory",
+                    **consolidation,
+                )
         for node in memory.nodes.values():
             if node.object_id in matched_ids or node.status is ObjectStatus.RETIRED:
                 continue

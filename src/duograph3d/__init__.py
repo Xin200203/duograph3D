@@ -1,4 +1,4 @@
-from .contracts import FrameInput, Observation, PipelineConfig, TemporalVariant
+from .contracts import FrameInput, HistoryCandidate, ObjectObservationPayload, Observation, PipelineConfig, TemporalVariant
 from .pipeline import DuoGraph3DPipeline
 from .data import (
     BoundedSlice,
@@ -20,6 +20,8 @@ __all__ = [
     "build_replica_bounded_slice",
     "build_scannet_bounded_slice",
     "FrameInput",
+    "HistoryCandidate",
+    "ObjectObservationPayload",
     "Observation",
     "PipelineConfig",
     "TemporalVariant",

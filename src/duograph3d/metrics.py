@@ -25,12 +25,14 @@ def summarize_run(result: SequenceRunResult, logger: EventLogger) -> dict[str, o
     node_status_counts = Counter(node.status.value for node in result.memory_nodes.values())
     track_fragmentation, track_assignments = _track_fragmentation(logger)
     nodes = list(result.memory_nodes.values())
+    active_nodes = [node for node in nodes if node.status.value != "retired"]
     return {
         "branch_id": result.branch_id,
         "sequence_id": result.sequence_id,
         "event_count": len(logger.records),
         "decision_count": len(result.decisions),
         "memory_node_count": len(result.memory_nodes),
+        "active_memory_node_count": len(active_nodes),
         "memory_status_counts": dict(node_status_counts),
         "births": logger.count("birth_commit"),
         "deaths": logger.count("death_commit"),
@@ -46,6 +48,10 @@ def summarize_run(result: SequenceRunResult, logger: EventLogger) -> dict[str, o
         "track_fragmentation": track_fragmentation,
         "track_assignments": track_assignments,
         "memory_relation_edge_count": len(result.relation_edges),
+        "memory_object_consolidation_events": logger.count("memory_object_consolidation"),
+        "merged_memory_node_count": sum(1 for node in nodes if "merged_into_duplicate_object" in node.failure_tags),
+        "object_payload_node_count": sum(1 for node in nodes if node.point_count > 0 or node.clip_feature),
+        "avg_detection_count": round(mean(node.detection_count for node in active_nodes), 3) if active_nodes else 0.0,
         "avg_geometry_support": round(mean(node.avg_geometry_support for node in nodes), 3) if nodes else 0.0,
         "avg_support_size": round(mean(node.avg_support_size for node in nodes), 3) if nodes else 0.0,
         "avg_depth_scale": round(mean(node.avg_depth_scale for node in nodes), 3) if nodes else 0.0,

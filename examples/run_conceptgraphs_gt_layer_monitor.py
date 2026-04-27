@@ -23,7 +23,7 @@ from chamferdist.chamfer import knn_points
 sys.path.insert(0, "/home/nebula/xxy/DuoGraph3D/src")
 sys.path.insert(0, "/home/nebula/xxy/concept-graphs-main")
 
-from duograph3d.contracts import FrameInput, Observation, ObservationSupport, PipelineConfig, TemporalVariant
+from duograph3d.contracts import FrameInput, ObjectObservationPayload, Observation, ObservationSupport, PipelineConfig, TemporalVariant
 from duograph3d.events import BRANCH_DUOGRAPH3D, EventLogger
 from duograph3d.evidence import EvidenceBuilder
 from duograph3d.layer1 import CurrentEvidenceGraphLayer
@@ -61,6 +61,27 @@ MAX_BBOX_AREA_RATIO: float | None = None
 APPLY_MASK_SUBTRACT_CONTAINED = False
 CLASS_AGNOSTIC_IDENTITY = False
 CLASS_AGNOSTIC_TOKEN = "item"
+
+
+def object_payload_from_arrays(
+    *,
+    label: str,
+    points: np.ndarray,
+    centroid: np.ndarray,
+    clip_feature: np.ndarray,
+    mask_area: int,
+) -> ObjectObservationPayload:
+    points_np = np.asarray(points, dtype=np.float32)
+    return ObjectObservationPayload(
+        label=label,
+        points_sample=tuple(tuple(float(value) for value in row[:3]) for row in points_np),
+        bbox_min=tuple(float(value) for value in points_np.min(axis=0)[:3]),
+        bbox_max=tuple(float(value) for value in points_np.max(axis=0)[:3]),
+        centroid=tuple(float(value) for value in np.asarray(centroid, dtype=np.float32)[:3]),
+        clip_feature=tuple(float(value) for value in np.asarray(clip_feature, dtype=np.float32).reshape(-1)),
+        mask_area=float(mask_area),
+        detection_count=1,
+    )
 
 
 @dataclass
@@ -369,6 +390,13 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                         continuity_key=key,
                         geometry_support=geometry_support,
                     ),
+                    object_payload=object_payload_from_arrays(
+                        label=label,
+                        points=world,
+                        centroid=centroid,
+                        clip_feature=image_feats[det_i],
+                        mask_area=area,
+                    ),
                 )
             )
             obs_meta.append(
@@ -485,10 +513,10 @@ def majority(items: list[str]) -> tuple[str, int]:
 
 def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, GTAssignment]):
     config = PipelineConfig(emit_association_diagnostics=True, association_diagnostics_top_k=2)
-    memory = ObjectGraphMemory()
+    memory = ObjectGraphMemory(config)
     logger = EventLogger()
     builder = EvidenceBuilder(config)
-    layer1 = CurrentEvidenceGraphLayer()
+    layer1 = CurrentEvidenceGraphLayer(config)
     layer2 = CurrentToMemoryAssociationLayer(config)
     all_decisions = []
 
@@ -734,55 +762,87 @@ def object_probability_monitor(
 
 
 def write_duograph_payload(scene: str, result, logger, obs_meta: list[ObservationMeta], obs_gt: dict[str, GTAssignment], class_feats_np: np.ndarray):
-    # Minimal object export for object-level probability parity. Reuses track hints and aggregates observation points/features by key.
+    # Minimal object export for object-level probability parity. Prefer the
+    # online object memory; fall back to geometry-key aggregation for legacy
+    # runs that do not carry object payloads.
     t0 = time.time()
-    by_key: dict[str, dict[str, object]] = {}
     obs_by_eid = {obs.evidence_id: obs for obs in obs_meta}
-    for record in logger.records:
-        if record.event_type not in {"birth_commit", "association_commit", "reentry_commit"}:
-            continue
-        track_hint = str(record.payload.get("track_hint", ""))
-        object_id = str(record.payload.get("object_id", ""))
-        if not track_hint or not object_id:
-            continue
-        bucket = by_key.setdefault(track_hint, {"object_ids": [], "evidence_ids": []})
-        bucket["object_ids"].append(object_id)
-    # The monitor's layer keys equal observation geometry keys; aggregate all observations with the same key.
-    for obs in obs_meta:
-        bucket = by_key.setdefault(obs.geometry_key, {"object_ids": [obs.geometry_key], "evidence_ids": []})
-        bucket["evidence_ids"].append(obs.evidence_id)
+    label_to_index = {obs.label: int(obs.pred_class_index) for obs in obs_meta}
     objects = []
-    for key, bucket in sorted(by_key.items()):
-        eids = [eid for eid in bucket.get("evidence_ids", []) if eid in obs_by_eid]
-        if not eids:
+    for object_id, node in sorted(result.memory_nodes.items()):
+        if "merged_into_duplicate_object" in node.failure_tags or "filtered_low_detection_object" in node.failure_tags:
             continue
-        points = np.concatenate([obs_by_eid[eid].points for eid in eids], axis=0).astype(np.float32)
-        keep = sample_indices(len(points), MAX_POINTS_PER_OBJECT)
-        points = points[keep]
-        labels = [obs_by_eid[eid].label for eid in eids]
-        label = Counter(labels).most_common(1)[0][0]
-        clip_ft = normalize_np(np.mean([obs_by_eid[eid].clip_ft for eid in eids], axis=0, dtype=np.float64).reshape(1, -1))[0].astype(np.float32)
-        label_index = int(obs_by_eid[eids[0]].pred_class_index)
-        text_ft = class_feats_np[label_index].astype(np.float32)
+        points = np.asarray(node.sampled_points, dtype=np.float32)
+        if len(points) < 4:
+            continue
+        if len(points) > MAX_POINTS_PER_OBJECT:
+            points = points[sample_indices(len(points), MAX_POINTS_PER_OBJECT)]
+        label = max(node.class_counts.items(), key=lambda item: item[1])[0] if node.class_counts else (node.appearance_key_recent or node.descriptor_recent)
+        label_index = int(label_to_index.get(label, 0))
+        clip_ft = np.asarray(node.clip_feature, dtype=np.float32)
+        if clip_ft.shape != class_feats_np[0].shape:
+            clip_ft = class_feats_np[label_index].astype(np.float32)
         objects.append({
-            "object_id": str((bucket.get("object_ids") or [key])[0]),
-            "track_hint": key,
+            "object_id": object_id,
+            "track_hint": object_id,
             "class_name": [label],
             "class_id": [1],
-            "conf": [float(np.mean([obs_by_eid[eid].confidence for eid in eids]))],
-            "clip_ft": clip_ft,
-            "text_ft": text_ft,
+            "conf": [float(node.confidence_sum / max(node.detection_count, 1)) if node.detection_count else 0.0],
+            "clip_ft": normalize_np(clip_ft.reshape(1, -1))[0].astype(np.float32),
+            "text_ft": class_feats_np[label_index].astype(np.float32),
             "pcd_np": points,
-            "pcd_color_np": np.zeros_like(points),
+            "pcd_color_np": np.asarray(node.sampled_colors, dtype=np.float32) if len(node.sampled_colors) == len(points) else np.zeros_like(points),
             "bbox_np": np.zeros((8, 3), dtype=np.float32),
-            "num_detections": len(eids),
+            "num_detections": max(int(node.detection_count), 1),
         })
+    object_source = "online_memory_node"
+    if not objects:
+        by_key: dict[str, dict[str, object]] = {}
+        object_source = "geometry_key_fallback"
+        for record in logger.records:
+            if record.event_type not in {"birth_commit", "association_commit", "reentry_commit"}:
+                continue
+            track_hint = str(record.payload.get("track_hint", ""))
+            object_id = str(record.payload.get("object_id", ""))
+            if not track_hint or not object_id:
+                continue
+            bucket = by_key.setdefault(track_hint, {"object_ids": [], "evidence_ids": []})
+            bucket["object_ids"].append(object_id)
+        # The monitor's layer keys equal observation geometry keys; aggregate all observations with the same key.
+        for obs in obs_meta:
+            bucket = by_key.setdefault(obs.geometry_key, {"object_ids": [obs.geometry_key], "evidence_ids": []})
+            bucket["evidence_ids"].append(obs.evidence_id)
+        for key, bucket in sorted(by_key.items()):
+            eids = [eid for eid in bucket.get("evidence_ids", []) if eid in obs_by_eid]
+            if not eids:
+                continue
+            points = np.concatenate([obs_by_eid[eid].points for eid in eids], axis=0).astype(np.float32)
+            keep = sample_indices(len(points), MAX_POINTS_PER_OBJECT)
+            points = points[keep]
+            labels = [obs_by_eid[eid].label for eid in eids]
+            label = Counter(labels).most_common(1)[0][0]
+            clip_ft = normalize_np(np.mean([obs_by_eid[eid].clip_ft for eid in eids], axis=0, dtype=np.float64).reshape(1, -1))[0].astype(np.float32)
+            label_index = int(obs_by_eid[eids[0]].pred_class_index)
+            text_ft = class_feats_np[label_index].astype(np.float32)
+            objects.append({
+                "object_id": str((bucket.get("object_ids") or [key])[0]),
+                "track_hint": key,
+                "class_name": [label],
+                "class_id": [1],
+                "conf": [float(np.mean([obs_by_eid[eid].confidence for eid in eids]))],
+                "clip_ft": clip_ft,
+                "text_ft": text_ft,
+                "pcd_np": points,
+                "pcd_color_np": np.zeros_like(points),
+                "bbox_np": np.zeros((8, 3), dtype=np.float32),
+                "num_detections": len(eids),
+            })
     pcd_dir = REPLICA_ROOT / scene / "pcd_saves"
     pcd_dir.mkdir(parents=True, exist_ok=True)
     path = pcd_dir / f"full_pcd_{DUOGRAPH_PRED_EXP_NAME}.pkl.gz"
     with gzip.open(path, "wb") as handle:
         pickle.dump({"objects": objects, "bg_objects": None}, handle)
-    return {"path": str(path), "object_count": len(objects), "seconds": round(time.time() - t0, 3)}
+    return {"path": str(path), "object_count": len(objects), "object_source": object_source, "seconds": round(time.time() - t0, 3)}
 
 
 def load_baseline_rows() -> dict[str, dict[str, str]]:
