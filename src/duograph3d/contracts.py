@@ -216,6 +216,9 @@ class PipelineConfig:
     layer2_absorption_threshold: float = 1.68
     layer2_absorption_min_point_overlap: float = 1.0
     layer2_absorption_min_semantic_score: float = 1.0
+    layer2_visual_similarity_weight: float = 0.35
+    layer2_descriptor_match_weight: float = 0.55
+    layer2_appearance_match_weight: float = 0.3
     memory_max_points_per_object: int = 512
     enable_object_consolidation: bool = True
     object_merge_interval: int = 20

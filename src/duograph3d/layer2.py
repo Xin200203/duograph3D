@@ -91,6 +91,7 @@ class CurrentToMemoryAssociationLayer:
         node_support_size: float,
         node_depth_scale: float,
         node_geometry_support: float,
+        visual_similarity: float = 0.0,
     ) -> tuple[float, bool]:
         score, strong_identity_match, _components = self._score_with_components(
             hypothesis,
@@ -107,6 +108,7 @@ class CurrentToMemoryAssociationLayer:
             node_support_size=node_support_size,
             node_depth_scale=node_depth_scale,
             node_geometry_support=node_geometry_support,
+            visual_similarity=visual_similarity,
         )
         return score, strong_identity_match
 
@@ -127,6 +129,7 @@ class CurrentToMemoryAssociationLayer:
         node_support_size: float,
         node_depth_scale: float,
         node_geometry_support: float,
+        visual_similarity: float = 0.0,
     ) -> tuple[float, bool, dict[str, object]]:
         score = 0.0
         strong_identity_match = False
@@ -137,10 +140,13 @@ class CurrentToMemoryAssociationLayer:
             strong_identity_match = True
         descriptor_score = 0.0
         if hypothesis.descriptor == node_descriptor:
-            descriptor_score = 0.55
+            descriptor_score = self.config.layer2_descriptor_match_weight
             score += descriptor_score
         confidence_score = min(hypothesis.confidence, 1.0) * 0.2
         score += confidence_score
+        visual_similarity = max(0.0, min(float(visual_similarity or 0.0), 1.0))
+        visual_score = round(visual_similarity * self.config.layer2_visual_similarity_weight, 4)
+        score += visual_score
         temporal_score = 0.0
         propagation_score = 0.0
         if hypothesis.provenance_counts.get(EvidenceProvenance.PROPAGATED.value):
@@ -153,7 +159,7 @@ class CurrentToMemoryAssociationLayer:
             strong_identity_match = True
         appearance_score = 0.0
         if appearance_key and appearance_key == node_appearance_key:
-            appearance_score = 0.3
+            appearance_score = self.config.layer2_appearance_match_weight
             temporal_score += appearance_score
         geometry_profile_score = self._geometry_profile_consistency(
             support_size=support_size,
@@ -195,6 +201,8 @@ class CurrentToMemoryAssociationLayer:
             "geometry_key": geometry_key_score,
             "descriptor": descriptor_score,
             "confidence": round(confidence_score, 4),
+            "visual_similarity": round(visual_similarity, 4),
+            "visual": visual_score,
             "propagation": propagation_score,
             "continuity": continuity_score,
             "appearance": appearance_score,
@@ -270,6 +278,7 @@ class CurrentToMemoryAssociationLayer:
             node = memory.nodes.get(object_id)
             if node is None or node.status is ObjectStatus.RETIRED:
                 continue
+            visual_similarity = memory.hypothesis_visual_score(hypothesis, node)
             score, has_identity, components = self._score_with_components(
                 hypothesis,
                 node.object_id,
@@ -285,6 +294,7 @@ class CurrentToMemoryAssociationLayer:
                 node_support_size=node.avg_support_size,
                 node_depth_scale=node.avg_depth_scale,
                 node_geometry_support=node.avg_geometry_support,
+                visual_similarity=visual_similarity,
             )
             point_overlap_score = memory.hypothesis_point_overlap_score(hypothesis, node)
             semantic_score = memory.hypothesis_semantic_score(hypothesis, node)
@@ -351,6 +361,7 @@ class CurrentToMemoryAssociationLayer:
             best_has_identity = False
             candidate_scores: list[dict[str, object]] = []
             for candidate in candidates:
+                visual_similarity = memory.hypothesis_visual_score(hypothesis, candidate)
                 score, has_identity, components = self._score_with_components(
                     hypothesis,
                     candidate.object_id,
@@ -366,6 +377,7 @@ class CurrentToMemoryAssociationLayer:
                     node_support_size=candidate.avg_support_size,
                     node_depth_scale=candidate.avg_depth_scale,
                     node_geometry_support=candidate.avg_geometry_support,
+                    visual_similarity=visual_similarity,
                 )
                 relation_bonus = sum(
                     memory.relation_bonus(candidate.object_id, current_object_id) * 0.25

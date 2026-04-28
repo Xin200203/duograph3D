@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+import math
 
 from .contracts import CurrentObjectHypothesis, EvidenceItem, HistoryCandidate, ObjectObservationPayload, PipelineConfig, mean_confidence
 
@@ -154,7 +155,16 @@ class CurrentEvidenceGraphLayer:
         return tuple(result)
 
     @classmethod
-    def _feature_mean(cls, payloads: list[ObjectObservationPayload], key: str) -> tuple[float, ...]:
+    def _normalize_feature(cls, feature: tuple[float, ...]) -> tuple[float, ...]:
+        if not feature:
+            return ()
+        norm = math.sqrt(sum(value * value for value in feature))
+        if norm <= 0:
+            return ()
+        return tuple(round(value / norm, 6) for value in feature)
+
+    @classmethod
+    def _feature_mean(cls, payloads: list[ObjectObservationPayload], key: str, *, normalize: bool = False) -> tuple[float, ...]:
         features = [cls._as_float_tuple(getattr(payload, key, ())) for payload in payloads]
         features = [feature for feature in features if feature]
         if not features:
@@ -163,7 +173,13 @@ class CurrentEvidenceGraphLayer:
         compatible = [feature for feature in features if len(feature) == dim]
         if not compatible:
             return ()
-        return tuple(round(sum(feature[index] for feature in compatible) / len(compatible), 6) for index in range(dim))
+        if normalize:
+            compatible = [cls._normalize_feature(feature) for feature in compatible]
+            compatible = [feature for feature in compatible if feature]
+            if not compatible:
+                return ()
+        mean = tuple(round(sum(feature[index] for feature in compatible) / len(compatible), 6) for index in range(dim))
+        return cls._normalize_feature(mean) if normalize else mean
 
     @staticmethod
     def _bbox_from_points(points: tuple[tuple[float, float, float], ...]) -> tuple[tuple[float, float, float], tuple[float, float, float]]:
@@ -225,8 +241,8 @@ class CurrentEvidenceGraphLayer:
             bbox_min=bbox_min,
             bbox_max=bbox_max,
             centroid=centroid_out,
-            clip_feature=cls._feature_mean(payloads, "clip_feature"),
-            text_feature=cls._feature_mean(payloads, "text_feature"),
+            clip_feature=cls._feature_mean(payloads, "clip_feature", normalize=True),
+            text_feature=cls._feature_mean(payloads, "text_feature", normalize=True),
             mask_area=mask_area,
             detection_count=max(detection_count, 1),
         )

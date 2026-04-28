@@ -769,6 +769,124 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(left.bbox_min, (0.0, 0.0, 0.0))
         self.assertEqual(left.bbox_max, (1.0, 1.0, 1.0))
 
+    def test_memory_uses_conceptgraphs_style_feature_semantic_fusion(self) -> None:
+        memory = ObjectGraphMemory()
+        node = memory.create_node(descriptor="scene:chair", geometry_key="g-object", step_id=1)
+        memory.fuse_hypothesis(
+            node,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-chair",
+                descriptor="scene:chair",
+                geometry_key="g-object",
+                confidence=0.9,
+                evidence_ids=("e-chair",),
+                track_hint="chair-fragment",
+                object_payload=ObjectObservationPayload(
+                    label="chair",
+                    clip_feature=(1.0, 0.0),
+                    text_feature=(1.0, 0.0),
+                    detection_count=1,
+                ),
+            ),
+            step_id=1,
+        )
+        memory.fuse_hypothesis(
+            node,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-table-noisy",
+                descriptor="scene:table",
+                geometry_key="g-object",
+                confidence=0.8,
+                evidence_ids=("e-table",),
+                track_hint="same-object-noisy-label",
+                object_payload=ObjectObservationPayload(
+                    label="table",
+                    clip_feature=(0.0, 1.0),
+                    text_feature=(0.0, 1.0),
+                    detection_count=1,
+                ),
+            ),
+            step_id=2,
+        )
+
+        self.assertEqual(node.descriptor_recent, "scene:table")
+        self.assertEqual(node.descriptor_fused, "scene:chair")
+        self.assertEqual(node.class_counts, {"chair": 1, "table": 1})
+        self.assertAlmostEqual(node.clip_feature[0], 0.707107, places=5)
+        self.assertAlmostEqual(node.clip_feature[1], 0.707107, places=5)
+        self.assertAlmostEqual(node.text_feature[0], 0.707107, places=5)
+        self.assertAlmostEqual(node.text_feature[1], 0.707107, places=5)
+
+    def test_semantic_score_prefers_object_text_feature_over_noisy_top1_label(self) -> None:
+        memory = ObjectGraphMemory()
+        node = memory.create_node(descriptor="scene:chair", geometry_key="g-object", step_id=1)
+        node.class_counts["chair"] = 3
+        node.text_feature = (1.0, 0.0)
+        hypothesis = CurrentObjectHypothesis(
+            hypothesis_id="hyp-noisy-label",
+            descriptor="scene:table",
+            geometry_key="g-object",
+            confidence=0.9,
+            evidence_ids=("e-noisy-label",),
+            track_hint="same-object",
+            object_payload=ObjectObservationPayload(
+                label="table",
+                text_feature=(1.0, 0.0),
+                detection_count=1,
+            ),
+        )
+
+        self.assertEqual(memory.hypothesis_semantic_score(hypothesis, node), 1.0)
+
+    def test_layer2_can_use_visual_feature_when_descriptor_and_appearance_are_unreliable(self) -> None:
+        config = PipelineConfig(
+            emit_association_diagnostics=True,
+            layer2_descriptor_match_weight=0.0,
+            layer2_appearance_match_weight=0.0,
+            layer2_visual_similarity_weight=0.35,
+        )
+        memory = ObjectGraphMemory(config)
+        node = memory.create_node(descriptor="scene:chair", geometry_key="g-object", step_id=1)
+        node.clip_feature = (1.0, 0.0)
+        node.avg_support_size = 0.5
+        node.avg_depth_scale = 1.0
+        node.avg_geometry_support = 0.6
+        hypothesis = CurrentObjectHypothesis(
+            hypothesis_id="hyp-visual",
+            descriptor="scene:table",
+            geometry_key="g-object",
+            confidence=0.9,
+            evidence_ids=("e-visual",),
+            track_hint="visually-same-object",
+            support_signals={
+                "appearance_key": "table",
+                "support_size": 0.5,
+                "depth_scale": 1.0,
+                "geometry_support": 0.6,
+            },
+            object_payload=ObjectObservationPayload(
+                label="table",
+                clip_feature=(1.0, 0.0),
+                detection_count=1,
+            ),
+        )
+        logger = EventLogger()
+
+        decisions = CurrentToMemoryAssociationLayer(config).update(
+            sequence_id="seq-visual",
+            step_id=2,
+            branch_id="duograph3d_full",
+            hypotheses=[hypothesis],
+            memory=memory,
+            logger=logger,
+        )
+
+        self.assertEqual(decisions[0].action, "associate")
+        top_candidate = logger.filter(event_type="association_candidate_diagnostic")[0].payload["top_candidates"][0]
+        self.assertEqual(top_candidate["components"]["descriptor"], 0.0)
+        self.assertEqual(top_candidate["components"]["appearance"], 0.0)
+        self.assertGreater(top_candidate["components"]["visual"], 0.0)
+
 
 if __name__ == "__main__":
     unittest.main()

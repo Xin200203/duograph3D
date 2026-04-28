@@ -732,13 +732,17 @@ def build_memory_map_objects(result, label_to_index: dict[str, int], class_feats
             colors = colors[keep]
         label = max(node.class_counts.items(), key=lambda item: item[1])[0] if node.class_counts else (node.appearance_key_recent or node.descriptor_recent)
         label_index = int(label_to_index.get(label, -1))
-        if label_index >= 0:
-            text_ft = class_feats_np[label_index].astype(np.float32)
-        else:
-            text_ft = np.zeros_like(class_feats_np[0], dtype=np.float32)
+        text_ft = np.asarray(node.text_feature, dtype=np.float32)
+        if text_ft.shape != class_feats_np[0].shape:
+            if label_index >= 0:
+                text_ft = class_feats_np[label_index].astype(np.float32)
+            else:
+                text_ft = np.zeros_like(class_feats_np[0], dtype=np.float32)
         clip_ft = np.asarray(node.clip_feature, dtype=np.float32)
         if clip_ft.shape != text_ft.shape:
             clip_ft = text_ft
+        clip_ft = normalize_np(clip_ft.reshape(1, -1))[0].astype(np.float32)
+        text_ft = normalize_np(text_ft.reshape(1, -1))[0].astype(np.float32)
         pcd_original = make_open3d_pcd(points, colors)
         pcd = process_pcd(pcd_original, cfg, run_dbscan=True)
         if len(pcd.points) < 4:
@@ -761,8 +765,8 @@ def build_memory_map_objects(result, label_to_index: dict[str, int], class_feats
             "is_background": [False],
             "pcd": pcd,
             "bbox": get_bounding_box(cfg, pcd),
-            "clip_ft": torch.from_numpy(clip_ft.astype(np.float32)),
-            "text_ft": torch.from_numpy(text_ft.astype(np.float32)),
+            "clip_ft": torch.from_numpy(clip_ft),
+            "text_ft": torch.from_numpy(text_ft),
         }
         objects.append(obj)
         export_debug.append({

@@ -127,6 +127,72 @@ class ObjectGraphMemory:
         return max(0.0, min((value + 1.0) / 2.0, 1.0))
 
     @staticmethod
+    def _positive_cosine_similarity(value: float) -> float:
+        return max(0.0, min(value, 1.0))
+
+    @staticmethod
+    def _normalize_feature(feature: tuple[float, ...]) -> tuple[float, ...]:
+        if not feature:
+            return ()
+        norm = math.sqrt(sum(value * value for value in feature))
+        if norm <= 0:
+            return ()
+        return tuple(round(value / norm, 6) for value in feature)
+
+    @staticmethod
+    def _label_from_descriptor(descriptor: str) -> str:
+        if not descriptor:
+            return ""
+        return descriptor.rsplit(":", 1)[-1]
+
+    @classmethod
+    def _descriptor_with_label(cls, descriptor: str, label: str) -> str:
+        label = cls._label_from_descriptor(label)
+        if not label:
+            return descriptor
+        if ":" not in descriptor:
+            return label
+        prefix = descriptor.rsplit(":", 1)[0]
+        return f"{prefix}:{label}"
+
+    @classmethod
+    def _semantic_vote_score(cls, label: str, descriptor: str, node: MemoryObjectNode) -> float:
+        if label:
+            candidates = {value for value in (label, cls._label_from_descriptor(label)) if value}
+        else:
+            candidates = {value for value in (cls._label_from_descriptor(descriptor), descriptor) if value}
+        if node.class_counts:
+            total = sum(node.class_counts.values())
+            if total > 0:
+                return max((node.class_counts.get(candidate, 0) / total for candidate in candidates), default=0.0)
+        node_labels = {
+            node.appearance_key_recent,
+            node.descriptor_recent,
+            node.descriptor_fused,
+            cls._label_from_descriptor(node.descriptor_recent),
+            cls._label_from_descriptor(node.descriptor_fused),
+        }
+        if candidates.intersection(item for item in node_labels if item):
+            return 1.0
+        return 0.0
+
+    @classmethod
+    def _refresh_fused_descriptor(cls, node: MemoryObjectNode, fallback_descriptor: str = "") -> None:
+        if not node.class_counts:
+            if fallback_descriptor and not node.descriptor_fused:
+                node.descriptor_fused = fallback_descriptor
+            return
+        max_count = max(node.class_counts.values())
+        tied_labels = {label for label, count in node.class_counts.items() if count == max_count}
+        current_label = cls._label_from_descriptor(node.descriptor_fused)
+        if current_label in tied_labels:
+            label = current_label
+        else:
+            label = sorted(tied_labels)[0]
+        base_descriptor = node.descriptor_fused or fallback_descriptor or node.descriptor_recent or label
+        node.descriptor_fused = cls._descriptor_with_label(base_descriptor, label)
+
+    @staticmethod
     def _bbox_from_points(points: tuple[tuple[float, float, float], ...]) -> tuple[tuple[float, float, float], tuple[float, float, float]]:
         mins = tuple(min(point[index] for point in points) for index in range(3))
         maxs = tuple(max(point[index] for point in points) for index in range(3))
@@ -295,26 +361,46 @@ class ObjectGraphMemory:
     def hypothesis_point_overlap_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
         return self.payload_point_overlap_score(hypothesis.object_payload, node)
 
+    def hypothesis_visual_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
+        if hypothesis.object_payload is None:
+            return 0.0
+        feature = self._as_float_tuple(hypothesis.object_payload.clip_feature)
+        if not feature or not node.clip_feature:
+            return 0.0
+        return round(self._similarity_from_cosine(self._cosine(feature, node.clip_feature)), 4)
+
     def hypothesis_semantic_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
         label = ""
+        text_feature: tuple[float, ...] = ()
         if hypothesis.object_payload is not None:
             label = hypothesis.object_payload.label
+            text_feature = self._as_float_tuple(hypothesis.object_payload.text_feature)
         if not label:
             label = str(hypothesis.support_signals.get("appearance_key") or "")
-        return self._semantic_score(label, hypothesis.descriptor, node)
+        return self._semantic_score(label, hypothesis.descriptor, node, text_feature=text_feature)
 
-    def _semantic_score(self, label: str, descriptor: str, node: MemoryObjectNode) -> float:
-        if not label:
-            label = descriptor
-        if not label:
+    def _semantic_score(
+        self,
+        label: str,
+        descriptor: str,
+        node: MemoryObjectNode,
+        *,
+        text_feature: tuple[float, ...] = (),
+    ) -> float:
+        vote_score = self._semantic_vote_score(label, descriptor, node)
+        text_score: float | None = None
+        if text_feature and node.text_feature and len(text_feature) == len(node.text_feature):
+            text_score = self._positive_cosine_similarity(self._cosine(text_feature, node.text_feature))
+        if text_score is not None:
+            # ConceptGraphs keeps object-level CLIP/text embeddings and lets the
+            # accumulated feature be the semantic authority.  The top-1 class
+            # vote is only a weak tie-breaker when feature evidence exists, so
+            # one noisy SAM/GSA label cannot overwrite an otherwise stable
+            # object semantic state.
+            return round(max(text_score, 0.75 * text_score + 0.25 * vote_score), 4)
+        if not label and not descriptor:
             return 0.0
-        if node.class_counts:
-            total = sum(node.class_counts.values())
-            if total > 0:
-                return node.class_counts.get(label, 0) / total
-        if label and label in {node.appearance_key_recent, node.descriptor_recent, node.descriptor_fused}:
-            return 1.0
-        return 0.0
+        return round(vote_score, 4)
 
     def _node_spatial_score(self, item: EvidenceItem, node: MemoryObjectNode) -> float:
         score = 0.0
@@ -349,6 +435,11 @@ class ObjectGraphMemory:
             return 0.0
         return round(self._similarity_from_cosine(self._cosine(feature, node.clip_feature)), 4)
 
+    def _item_semantic_score(self, item: EvidenceItem, node: MemoryObjectNode) -> float:
+        label = item.object_payload.label if item.object_payload is not None else self._support_str(item, "appearance_key")
+        text_feature = self._as_float_tuple(item.object_payload.text_feature) if item.object_payload is not None else ()
+        return self._semantic_score(label, item.descriptor, node, text_feature=text_feature)
+
     @staticmethod
     def _node_recency_score(node: MemoryObjectNode) -> float:
         if node.status is ObjectStatus.ACTIVE:
@@ -375,14 +466,13 @@ class ObjectGraphMemory:
         if top_k <= 0:
             return ()
         raw_candidates: list[tuple[float, str, dict[str, float]]] = []
-        label = item.object_payload.label if item.object_payload is not None else self._support_str(item, "appearance_key")
         for node in self.nodes.values():
             if node.status is ObjectStatus.RETIRED:
                 continue
             spatial_score = self._node_spatial_score(item, node)
             point_overlap_score = self.payload_point_overlap_score(item.object_payload, node)
             visual_score = self._node_visual_score(item, node)
-            semantic_score = self._semantic_score(label, item.descriptor, node)
+            semantic_score = self._item_semantic_score(item, node)
             recency_score = self._node_recency_score(node)
             size_score = self._node_size_score(item, node)
             affinity = round(
@@ -442,13 +532,27 @@ class ObjectGraphMemory:
             )
         return tuple(candidates)
 
-    def _blend_feature(self, previous: tuple[float, ...], current: tuple[float, ...], previous_weight: int, current_weight: int) -> tuple[float, ...]:
+    def _blend_feature(
+        self,
+        previous: tuple[float, ...],
+        current: tuple[float, ...],
+        previous_weight: int,
+        current_weight: int,
+        *,
+        normalize: bool = False,
+    ) -> tuple[float, ...]:
         if not current:
             return previous
+        if normalize:
+            current = self._normalize_feature(current)
+            previous = self._normalize_feature(previous)
+            if not current:
+                return previous
         if not previous or len(previous) != len(current):
             return current
         total = max(previous_weight + current_weight, 1)
-        return tuple(round((pv * previous_weight + cv * current_weight) / total, 6) for pv, cv in zip(previous, current))
+        blended = tuple(round((pv * previous_weight + cv * current_weight) / total, 6) for pv, cv in zip(previous, current))
+        return self._normalize_feature(blended) if normalize else blended
 
     @staticmethod
     def _merge_bbox(
@@ -486,20 +590,23 @@ class ObjectGraphMemory:
         previous_count = max(node.detection_count, 0)
         payload = hypothesis.object_payload
         current_count = max(payload.detection_count if payload is not None else 1, 1)
+        previous_descriptor_fused = node.descriptor_fused
         node.descriptor_recent = hypothesis.descriptor
-        node.descriptor_fused = hypothesis.descriptor
+        if not node.descriptor_fused:
+            node.descriptor_fused = hypothesis.descriptor
         node.last_seen_step = step_id
         node.detection_count = previous_count + current_count
         node.confidence_sum += hypothesis.confidence * current_count
         if payload is not None:
             label = payload.label or str(hypothesis.support_signals.get("appearance_key") or hypothesis.descriptor)
+            label = self._label_from_descriptor(label)
             if label:
                 node.class_counts[label] = node.class_counts.get(label, 0) + current_count
             node.mask_area_sum += float(payload.mask_area or 0.0)
             current_clip = self._as_float_tuple(payload.clip_feature)
             current_text = self._as_float_tuple(payload.text_feature)
-            node.clip_feature = self._blend_feature(node.clip_feature, current_clip, previous_count, current_count)
-            node.text_feature = self._blend_feature(node.text_feature, current_text, previous_count, current_count)
+            node.clip_feature = self._blend_feature(node.clip_feature, current_clip, previous_count, current_count, normalize=True)
+            node.text_feature = self._blend_feature(node.text_feature, current_text, previous_count, current_count, normalize=True)
             payload_min, payload_max = self._payload_bbox(payload)
             node.bbox_min, node.bbox_max = self._merge_bbox(node.bbox_min, node.bbox_max, payload_min, payload_max)
             current_centroid = self._payload_centroid(payload)
@@ -518,20 +625,28 @@ class ObjectGraphMemory:
             node.point_count = max(node.point_count + len(points), len(node.sampled_points))
         else:
             label = str(hypothesis.support_signals.get("appearance_key") or hypothesis.descriptor)
+            label = self._label_from_descriptor(label)
             if label:
                 node.class_counts[label] = node.class_counts.get(label, 0) + current_count
+        self._refresh_fused_descriptor(node, previous_descriptor_fused or hypothesis.descriptor)
 
     def _object_semantic_score(self, left: MemoryObjectNode, right: MemoryObjectNode) -> float:
+        text_score: float | None = None
+        if left.text_feature and right.text_feature and len(left.text_feature) == len(right.text_feature):
+            text_score = self._positive_cosine_similarity(self._cosine(left.text_feature, right.text_feature))
+        vote_score = 0.0
         if not left.class_counts or not right.class_counts:
             if left.appearance_key_recent and left.appearance_key_recent == right.appearance_key_recent:
-                return 1.0
-            return 0.0
-        common = set(left.class_counts).intersection(right.class_counts)
-        if not common:
-            return 0.0
-        overlap = sum(min(left.class_counts[label], right.class_counts[label]) for label in common)
-        denominator = max(min(sum(left.class_counts.values()), sum(right.class_counts.values())), 1)
-        return overlap / denominator
+                vote_score = 1.0
+        else:
+            common = set(left.class_counts).intersection(right.class_counts)
+            if common:
+                overlap = sum(min(left.class_counts[label], right.class_counts[label]) for label in common)
+                denominator = max(min(sum(left.class_counts.values()), sum(right.class_counts.values())), 1)
+                vote_score = overlap / denominator
+        if text_score is None:
+            return round(vote_score, 4)
+        return round(max(text_score, 0.75 * text_score + 0.25 * vote_score), 4)
 
     def object_affinity(self, left: MemoryObjectNode, right: MemoryObjectNode) -> tuple[float, dict[str, float]]:
         semantic_score = self._object_semantic_score(left, right)
@@ -588,8 +703,8 @@ class ObjectGraphMemory:
         target.point_count += source.point_count
         for label, count in source.class_counts.items():
             target.class_counts[label] = target.class_counts.get(label, 0) + count
-        target.clip_feature = self._blend_feature(target.clip_feature, source.clip_feature, previous_count, source_count)
-        target.text_feature = self._blend_feature(target.text_feature, source.text_feature, previous_count, source_count)
+        target.clip_feature = self._blend_feature(target.clip_feature, source.clip_feature, previous_count, source_count, normalize=True)
+        target.text_feature = self._blend_feature(target.text_feature, source.text_feature, previous_count, source_count, normalize=True)
         target.bbox_min, target.bbox_max = self._merge_bbox(target.bbox_min, target.bbox_max, source.bbox_min, source.bbox_max)
         if len(source.centroid) == 3:
             if len(target.centroid) != 3 or previous_count == 0:
@@ -609,6 +724,7 @@ class ObjectGraphMemory:
         target.reentry_count += source.reentry_count
         target.ambiguity_flags.update(source.ambiguity_flags)
         target.failure_tags.update(source.failure_tags)
+        self._refresh_fused_descriptor(target, target.descriptor_fused or source.descriptor_fused)
         source.status = ObjectStatus.RETIRED
         source.failure_tags.add("merged_into_duplicate_object")
 

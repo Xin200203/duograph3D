@@ -70,9 +70,11 @@ def object_payload_from_arrays(
     points: np.ndarray,
     centroid: np.ndarray,
     clip_feature: np.ndarray,
+    text_feature: np.ndarray | None = None,
     mask_area: int,
 ) -> ObjectObservationPayload:
     points_np = np.asarray(points, dtype=np.float32)
+    text_feature_np = np.asarray(text_feature, dtype=np.float32).reshape(-1) if text_feature is not None else np.asarray((), dtype=np.float32)
     return ObjectObservationPayload(
         label=label,
         points_sample=tuple(tuple(float(value) for value in row[:3]) for row in points_np),
@@ -80,6 +82,7 @@ def object_payload_from_arrays(
         bbox_max=tuple(float(value) for value in points_np.max(axis=0)[:3]),
         centroid=tuple(float(value) for value in np.asarray(centroid, dtype=np.float32)[:3]),
         clip_feature=tuple(float(value) for value in np.asarray(clip_feature, dtype=np.float32).reshape(-1)),
+        text_feature=tuple(float(value) for value in text_feature_np),
         mask_area=float(mask_area),
         detection_count=1,
     )
@@ -396,6 +399,7 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                         points=world,
                         centroid=centroid,
                         clip_feature=image_feats[det_i],
+                        text_feature=class_feats_np[int(class_i)],
                         mask_area=area,
                     ),
                 )
@@ -863,6 +867,9 @@ def write_duograph_payload(scene: str, result, logger, obs_meta: list[Observatio
         clip_ft = np.asarray(node.clip_feature, dtype=np.float32)
         if clip_ft.shape != class_feats_np[0].shape:
             clip_ft = class_feats_np[label_index].astype(np.float32)
+        text_ft = np.asarray(node.text_feature, dtype=np.float32)
+        if text_ft.shape != class_feats_np[0].shape:
+            text_ft = class_feats_np[label_index].astype(np.float32)
         objects.append({
             "object_id": object_id,
             "track_hint": object_id,
@@ -870,7 +877,7 @@ def write_duograph_payload(scene: str, result, logger, obs_meta: list[Observatio
             "class_id": [1],
             "conf": [float(node.confidence_sum / max(node.detection_count, 1)) if node.detection_count else 0.0],
             "clip_ft": normalize_np(clip_ft.reshape(1, -1))[0].astype(np.float32),
-            "text_ft": class_feats_np[label_index].astype(np.float32),
+            "text_ft": normalize_np(text_ft.reshape(1, -1))[0].astype(np.float32),
             "pcd_np": points,
             "pcd_color_np": np.asarray(node.sampled_colors, dtype=np.float32) if len(node.sampled_colors) == len(points) else np.zeros_like(points),
             "bbox_np": np.zeros((8, 3), dtype=np.float32),
@@ -981,6 +988,9 @@ def configure_profile(args) -> None:
         "layer2_absorption_threshold": args.layer2_absorption_threshold,
         "layer2_absorption_min_point_overlap": args.layer2_absorption_min_point_overlap,
         "layer2_absorption_min_semantic_score": args.layer2_absorption_min_semantic_score,
+        "layer2_visual_similarity_weight": args.layer2_visual_similarity_weight,
+        "layer2_descriptor_match_weight": args.layer2_descriptor_match_weight,
+        "layer2_appearance_match_weight": args.layer2_appearance_match_weight,
         "object_merge_threshold": args.object_merge_threshold,
         "object_merge_spatial_threshold": args.object_merge_spatial_threshold,
     }
@@ -1013,6 +1023,9 @@ def main() -> None:
     parser.add_argument("--layer2-absorption-threshold", type=float, default=None)
     parser.add_argument("--layer2-absorption-min-point-overlap", type=float, default=None)
     parser.add_argument("--layer2-absorption-min-semantic-score", type=float, default=None)
+    parser.add_argument("--layer2-visual-similarity-weight", type=float, default=None)
+    parser.add_argument("--layer2-descriptor-match-weight", type=float, default=None)
+    parser.add_argument("--layer2-appearance-match-weight", type=float, default=None)
     parser.add_argument("--layer2-enable-residual-absorption", type=int, choices=[0, 1], default=None)
     parser.add_argument("--object-merge-threshold", type=float, default=None)
     parser.add_argument("--object-merge-spatial-threshold", type=float, default=None)
