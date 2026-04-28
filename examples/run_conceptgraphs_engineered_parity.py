@@ -62,7 +62,7 @@ LOW_VALID_DEPTH_RATIO = 0.25
 MASK_CONF_THRESHOLD = 0.95
 MAX_BBOX_AREA_RATIO = 0.50
 MIN_VALID_DEPTH_POINTS = 16
-MIN_OBJECT_DETECTIONS = 3
+MIN_OBJECT_DETECTIONS = 2
 CLASS_AGNOSTIC_TOKEN = "item"
 EXPORT_SPLIT_BY_LABEL = False
 CG_DOWNSAMPLE_VOXEL_SIZE = 0.025
@@ -1089,13 +1089,19 @@ def write_markdown_report(summary: dict[str, object], path: Path) -> None:
 
 
 def main() -> None:
-    global ROOT
+    global ROOT, PRED_EXP_NAME, MIN_OBJECT_DETECTIONS
     parser = argparse.ArgumentParser()
     parser.add_argument("--scenes", nargs="*", default=list(REPLICA_SCENE_IDS))
     parser.add_argument("--skip-eval", action="store_true")
     parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--pred-exp-name", default=None)
+    parser.add_argument("--min-object-detections", type=int, default=None)
     args = parser.parse_args()
     ROOT = args.root
+    if args.pred_exp_name:
+        PRED_EXP_NAME = args.pred_exp_name
+    if args.min_object_detections is not None:
+        MIN_OBJECT_DETECTIONS = max(int(args.min_object_detections), 1)
     torch.set_num_threads(4)
     ROOT.mkdir(parents=True, exist_ok=True)
     (ROOT / "logs").mkdir(exist_ok=True)
