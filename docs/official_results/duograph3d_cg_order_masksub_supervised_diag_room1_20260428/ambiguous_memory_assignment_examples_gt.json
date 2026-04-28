@@ -1,0 +1,885 @@
+[
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:3:-3",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-379",
+    "selected_root_share": 0.333333,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-614": 1,
+      "obj-629": 1,
+      "obj-379": 1
+    },
+    "assigned_object_counts": {
+      "obj-630": 1,
+      "obj-668": 1,
+      "obj-731": 1
+    },
+    "eval_keep_observation_count": 3,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "pillow",
+    "semantic_accuracy": 0.333333,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "pillow:-2:0:-1",
+    "gt_class_counts": {
+      "pillow": 3
+    },
+    "pred_label_counts": {
+      "comforter": 2,
+      "pillow": 1
+    },
+    "target_counts": {
+      "pillow:-2:0:-1": 3
+    },
+    "clip_margin": {
+      "count": 3,
+      "min": 0.007079,
+      "mean": 0.023973,
+      "p10": 0.011189,
+      "p50": 0.027632,
+      "p90": 0.035292,
+      "p99": 0.037015,
+      "max": 0.037207
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:3:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-143",
+    "selected_root_share": 0.375,
+    "resolved_root_count": 6,
+    "resolved_root_counts": {
+      "obj-143": 6,
+      "obj-334": 1,
+      "obj-690": 4,
+      "obj-379": 2,
+      "obj-978": 2,
+      "obj-1047": 1
+    },
+    "assigned_object_counts": {
+      "obj-143": 2,
+      "obj-150": 1,
+      "obj-248": 1,
+      "obj-334": 1,
+      "obj-499": 2,
+      "obj-690": 4,
+      "obj-678": 1,
+      "obj-733": 1,
+      "obj-1011": 1,
+      "obj-990": 1,
+      "obj-1047": 1
+    },
+    "eval_keep_observation_count": 16,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "bed",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "bed:-2:0:-1",
+    "gt_class_counts": {
+      "bed": 13,
+      "pillow": 3
+    },
+    "pred_label_counts": {
+      "comforter": 7,
+      "pillow": 7,
+      "vent": 1,
+      "other": 1
+    },
+    "target_counts": {
+      "bed:-2:0:-1": 13,
+      "pillow:-2:0:-1": 3
+    },
+    "clip_margin": {
+      "count": 16,
+      "min": 0.000423,
+      "mean": 0.011331,
+      "p10": 0.001201,
+      "p50": 0.011018,
+      "p90": 0.024162,
+      "p99": 0.025301,
+      "max": 0.025436
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:7:-2",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-143",
+    "selected_root_share": 0.4,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-143": 4,
+      "obj-689": 3,
+      "obj-595": 3
+    },
+    "assigned_object_counts": {
+      "obj-143": 4,
+      "obj-689": 3,
+      "obj-595": 3
+    },
+    "eval_keep_observation_count": 10,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "bed",
+    "semantic_accuracy": 0.2,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "bed:-2:1:-1",
+    "gt_class_counts": {
+      "bed": 10
+    },
+    "pred_label_counts": {
+      "comforter": 8,
+      "bed": 2
+    },
+    "target_counts": {
+      "bed:-2:1:-1": 10
+    },
+    "clip_margin": {
+      "count": 10,
+      "min": 0.001205,
+      "mean": 0.011778,
+      "p10": 0.003664,
+      "p50": 0.009526,
+      "p90": 0.022637,
+      "p99": 0.026153,
+      "max": 0.026543
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:7:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-379",
+    "selected_root_share": 0.5,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-706": 1,
+      "obj-379": 1
+    },
+    "assigned_object_counts": {
+      "obj-706": 1,
+      "obj-379": 1
+    },
+    "eval_keep_observation_count": 2,
+    "dominant_pred_label": "pillow",
+    "dominant_gt_class": "pillow",
+    "semantic_accuracy": 0.5,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "pillow:-2:1:-1",
+    "gt_class_counts": {
+      "pillow": 1,
+      "bed": 1
+    },
+    "pred_label_counts": {
+      "pillow": 1,
+      "comforter": 1
+    },
+    "target_counts": {
+      "pillow:-2:1:-1": 1,
+      "bed:-2:1:-1": 1
+    },
+    "clip_margin": {
+      "count": 2,
+      "min": 0.006666,
+      "mean": 0.0067,
+      "p10": 0.006673,
+      "p50": 0.0067,
+      "p90": 0.006728,
+      "p99": 0.006734,
+      "max": 0.006735
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-11:-11:1",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-23",
+    "selected_root_share": 0.571429,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-23": 4,
+      "obj-788": 3
+    },
+    "assigned_object_counts": {
+      "obj-48": 2,
+      "obj-49": 1,
+      "obj-23": 1,
+      "obj-788": 3
+    },
+    "eval_keep_observation_count": 7,
+    "dominant_pred_label": "blinds",
+    "dominant_gt_class": "blinds",
+    "semantic_accuracy": 1.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "blinds:-3:-3:0",
+    "gt_class_counts": {
+      "blinds": 7
+    },
+    "pred_label_counts": {
+      "blinds": 7
+    },
+    "target_counts": {
+      "blinds:-3:-3:0": 7
+    },
+    "clip_margin": {
+      "count": 7,
+      "min": 0.094632,
+      "mean": 0.101367,
+      "p10": 0.094644,
+      "p50": 0.101753,
+      "p90": 0.106841,
+      "p99": 0.10762,
+      "max": 0.107706
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:2:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-1047",
+    "selected_root_share": 0.583333,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-143": 1,
+      "obj-978": 4,
+      "obj-1047": 7
+    },
+    "assigned_object_counts": {
+      "obj-143": 1,
+      "obj-990": 1,
+      "obj-1011": 3,
+      "obj-1047": 7
+    },
+    "eval_keep_observation_count": 14,
+    "dominant_pred_label": "pillow",
+    "dominant_gt_class": "bed",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "bed:-2:0:-1",
+    "gt_class_counts": {
+      "bed": 12,
+      "pillow": 2
+    },
+    "pred_label_counts": {
+      "pillow": 6,
+      "comforter": 5,
+      "tissue-paper": 1,
+      "vent": 1,
+      "picture": 1
+    },
+    "target_counts": {
+      "bed:-2:0:-1": 12,
+      "pillow:-2:0:-1": 2
+    },
+    "clip_margin": {
+      "count": 14,
+      "min": 0.000249,
+      "mean": 0.007942,
+      "p10": 0.001354,
+      "p50": 0.004032,
+      "p90": 0.021043,
+      "p99": 0.027339,
+      "max": 0.028216
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:4:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-1009",
+    "selected_root_share": 0.6,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-690": 1,
+      "obj-1009": 6,
+      "obj-1026": 3
+    },
+    "assigned_object_counts": {
+      "obj-690": 1,
+      "obj-1009": 6,
+      "obj-1026": 3
+    },
+    "eval_keep_observation_count": 13,
+    "dominant_pred_label": "vent",
+    "dominant_gt_class": "bed",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "bed:-2:0:-1",
+    "gt_class_counts": {
+      "bed": 10,
+      "pillow": 3
+    },
+    "pred_label_counts": {
+      "vent": 7,
+      "comforter": 5,
+      "pillow": 1
+    },
+    "target_counts": {
+      "bed:-2:0:-1": 10,
+      "pillow:-2:0:-1": 3
+    },
+    "clip_margin": {
+      "count": 13,
+      "min": 0.000173,
+      "mean": 0.015592,
+      "p10": 0.002963,
+      "p50": 0.006885,
+      "p90": 0.039974,
+      "p99": 0.045873,
+      "max": 0.046175
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:6:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-978",
+    "selected_root_share": 0.666667,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-379": 1,
+      "obj-978": 2
+    },
+    "assigned_object_counts": {
+      "obj-667": 1,
+      "obj-990": 1,
+      "obj-978": 1
+    },
+    "eval_keep_observation_count": 3,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "pillow",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 3,
+    "dominant_target_id": "pillow:-2:1:-1",
+    "gt_class_counts": {
+      "pillow": 2,
+      "bed": 1
+    },
+    "pred_label_counts": {
+      "comforter": 3
+    },
+    "target_counts": {
+      "pillow:-2:1:-1": 1,
+      "pillow:-3:1:-1": 1,
+      "bed:-2:1:-1": 1
+    },
+    "clip_margin": {
+      "count": 3,
+      "min": 0.004588,
+      "mean": 0.015112,
+      "p10": 0.006499,
+      "p50": 0.014141,
+      "p90": 0.024115,
+      "p99": 0.026359,
+      "max": 0.026608
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-10:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-788",
+    "selected_root_share": 0.666667,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-136": 1,
+      "obj-788": 2
+    },
+    "assigned_object_counts": {
+      "obj-136": 1,
+      "obj-788": 2
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "blinds",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "blinds": 2,
+      "tv-stand": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 3,
+      "min": 0.012581,
+      "mean": 0.051583,
+      "p10": 0.024182,
+      "p50": 0.070585,
+      "p90": 0.071384,
+      "p99": 0.071563,
+      "max": 0.071583
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:3:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-441",
+    "selected_root_share": 0.666667,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-441": 2,
+      "obj-562": 1
+    },
+    "assigned_object_counts": {
+      "obj-441": 2,
+      "obj-562": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 3
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 3,
+      "min": 0.011564,
+      "mean": 0.01958,
+      "p10": 0.013285,
+      "p50": 0.020172,
+      "p90": 0.025639,
+      "p99": 0.026869,
+      "max": 0.027006
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-3:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-125",
+    "selected_root_share": 0.75,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-125": 6,
+      "obj-143": 1,
+      "obj-1000": 1
+    },
+    "assigned_object_counts": {
+      "obj-125": 6,
+      "obj-143": 1,
+      "obj-1000": 1
+    },
+    "eval_keep_observation_count": 8,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "blanket",
+    "semantic_accuracy": 0.125,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "blanket:-2:-1:-1",
+    "gt_class_counts": {
+      "blanket": 7,
+      "comforter": 1
+    },
+    "pred_label_counts": {
+      "comforter": 8
+    },
+    "target_counts": {
+      "blanket:-2:-1:-1": 7,
+      "comforter:-2:-1:-1": 1
+    },
+    "clip_margin": {
+      "count": 8,
+      "min": 0.002034,
+      "mean": 0.020435,
+      "p10": 0.004539,
+      "p50": 0.024956,
+      "p90": 0.02975,
+      "p99": 0.029994,
+      "max": 0.030021
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:8:3",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-551",
+    "selected_root_share": 0.75,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-425": 1,
+      "obj-551": 3
+    },
+    "assigned_object_counts": {
+      "obj-425": 1,
+      "obj-551": 3
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 3,
+      "monitor": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 4,
+      "min": 0.000118,
+      "mean": 0.006784,
+      "p10": 0.000972,
+      "p50": 0.005582,
+      "p90": 0.013557,
+      "p99": 0.015624,
+      "max": 0.015853
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-11:-10:-7",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-97",
+    "selected_root_share": 0.75,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-97": 3,
+      "obj-1029": 1
+    },
+    "assigned_object_counts": {
+      "obj-97": 3,
+      "obj-1029": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "floor",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "floor": 3,
+      "comforter": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 4,
+      "min": 0.000974,
+      "mean": 0.045931,
+      "p10": 0.017236,
+      "p50": 0.057716,
+      "p90": 0.065197,
+      "p99": 0.067104,
+      "max": 0.067316
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:0:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-338",
+    "selected_root_share": 0.777778,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-338": 14,
+      "obj-313": 1,
+      "obj-528": 3
+    },
+    "assigned_object_counts": {
+      "obj-338": 14,
+      "obj-313": 1,
+      "obj-528": 3
+    },
+    "eval_keep_observation_count": 18,
+    "dominant_pred_label": "vent",
+    "dominant_gt_class": "vent",
+    "semantic_accuracy": 0.944444,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "vent:-2:0:1",
+    "gt_class_counts": {
+      "vent": 18
+    },
+    "pred_label_counts": {
+      "vent": 17,
+      "blinds": 1
+    },
+    "target_counts": {
+      "vent:-2:0:1": 18
+    },
+    "clip_margin": {
+      "count": 18,
+      "min": 0.007572,
+      "mean": 0.032894,
+      "p10": 0.011513,
+      "p50": 0.028559,
+      "p90": 0.05896,
+      "p99": 0.062547,
+      "max": 0.063018
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-2:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-143",
+    "selected_root_share": 0.8,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-125": 2,
+      "obj-143": 12,
+      "obj-997": 1
+    },
+    "assigned_object_counts": {
+      "obj-125": 2,
+      "obj-143": 6,
+      "obj-150": 3,
+      "obj-171": 3,
+      "obj-997": 1
+    },
+    "eval_keep_observation_count": 15,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "blanket",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "blanket:-2:-1:-1",
+    "gt_class_counts": {
+      "blanket": 15
+    },
+    "pred_label_counts": {
+      "comforter": 14,
+      "vent": 1
+    },
+    "target_counts": {
+      "blanket:-2:-1:-1": 15
+    },
+    "clip_margin": {
+      "count": 15,
+      "min": 0.001772,
+      "mean": 0.0349,
+      "p10": 0.013233,
+      "p50": 0.032898,
+      "p90": 0.054352,
+      "p99": 0.061181,
+      "max": 0.061707
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-1:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-143",
+    "selected_root_share": 0.857143,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-143": 12,
+      "obj-997": 1,
+      "obj-1015": 1
+    },
+    "assigned_object_counts": {
+      "obj-143": 8,
+      "obj-150": 1,
+      "obj-167": 1,
+      "obj-270": 2,
+      "obj-997": 1,
+      "obj-1015": 1
+    },
+    "eval_keep_observation_count": 14,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "blanket",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "blanket:-2:-1:-1",
+    "gt_class_counts": {
+      "blanket": 14
+    },
+    "pred_label_counts": {
+      "comforter": 13,
+      "vent": 1
+    },
+    "target_counts": {
+      "blanket:-2:-1:-1": 14
+    },
+    "clip_margin": {
+      "count": 14,
+      "min": 0.003539,
+      "mean": 0.050833,
+      "p10": 0.027896,
+      "p50": 0.058238,
+      "p90": 0.063486,
+      "p99": 0.065187,
+      "max": 0.065341
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-6:-7",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-126",
+    "selected_root_share": 0.875,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-126": 7,
+      "obj-146": 1
+    },
+    "assigned_object_counts": {
+      "obj-126": 7,
+      "obj-146": 1
+    },
+    "eval_keep_observation_count": 8,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "rug",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "rug:-2:-2:-2",
+    "gt_class_counts": {
+      "rug": 8
+    },
+    "pred_label_counts": {
+      "comforter": 7,
+      "pillow": 1
+    },
+    "target_counts": {
+      "rug:-2:-2:-2": 8
+    },
+    "clip_margin": {
+      "count": 8,
+      "min": 0.000426,
+      "mean": 0.016934,
+      "p10": 0.007335,
+      "p50": 0.017631,
+      "p90": 0.025282,
+      "p99": 0.02689,
+      "max": 0.027069
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:7:-3",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-143",
+    "selected_root_share": 0.888889,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-143": 8,
+      "obj-196": 1
+    },
+    "assigned_object_counts": {
+      "obj-143": 5,
+      "obj-196": 1,
+      "obj-212": 2,
+      "obj-248": 1
+    },
+    "eval_keep_observation_count": 9,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "pillow",
+    "semantic_accuracy": 0.111111,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "pillow:-2:1:-1",
+    "gt_class_counts": {
+      "pillow": 9
+    },
+    "pred_label_counts": {
+      "comforter": 6,
+      "bed": 2,
+      "pillow": 1
+    },
+    "target_counts": {
+      "pillow:-2:1:-1": 9
+    },
+    "clip_margin": {
+      "count": 9,
+      "min": 0.000614,
+      "mean": 0.008529,
+      "p10": 0.001055,
+      "p50": 0.006706,
+      "p90": 0.018333,
+      "p99": 0.025712,
+      "max": 0.026532
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-11:-1:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-143",
+    "selected_root_share": 0.909091,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-143": 10,
+      "obj-997": 1
+    },
+    "assigned_object_counts": {
+      "obj-143": 9,
+      "obj-444": 1,
+      "obj-997": 1
+    },
+    "eval_keep_observation_count": 11,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "blanket",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "blanket:-3:-1:-1",
+    "gt_class_counts": {
+      "blanket": 11
+    },
+    "pred_label_counts": {
+      "comforter": 10,
+      "vent": 1
+    },
+    "target_counts": {
+      "blanket:-3:-1:-1": 11
+    },
+    "clip_margin": {
+      "count": 11,
+      "min": 0.033914,
+      "mean": 0.049048,
+      "p10": 0.035896,
+      "p50": 0.049803,
+      "p90": 0.056798,
+      "p99": 0.063449,
+      "max": 0.064189
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-11:-4:-5",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-125",
+    "selected_root_share": 0.916667,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-125": 11,
+      "obj-143": 1
+    },
+    "assigned_object_counts": {
+      "obj-125": 11,
+      "obj-175": 1
+    },
+    "eval_keep_observation_count": 12,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "comforter",
+    "semantic_accuracy": 0.75,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "comforter:-3:-1:-1",
+    "gt_class_counts": {
+      "comforter": 12
+    },
+    "pred_label_counts": {
+      "comforter": 9,
+      "pillow": 1,
+      "cloth": 1,
+      "vent": 1
+    },
+    "target_counts": {
+      "comforter:-3:-1:-1": 12
+    },
+    "clip_margin": {
+      "count": 12,
+      "min": 0.00145,
+      "mean": 0.016282,
+      "p10": 0.00185,
+      "p50": 0.018134,
+      "p90": 0.03121,
+      "p99": 0.034085,
+      "max": 0.034399
+    }
+  }
+]

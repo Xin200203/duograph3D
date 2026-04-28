@@ -1,0 +1,1731 @@
+[
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:-2:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-284",
+    "selected_root_share": 0.289474,
+    "resolved_root_count": 7,
+    "resolved_root_counts": {
+      "obj-48": 9,
+      "obj-44": 1,
+      "obj-171": 9,
+      "obj-221": 2,
+      "obj-222": 2,
+      "obj-164": 4,
+      "obj-284": 11
+    },
+    "assigned_object_counts": {
+      "obj-48": 8,
+      "obj-66": 1,
+      "obj-84": 1,
+      "obj-171": 1,
+      "obj-192": 1,
+      "obj-221": 2,
+      "obj-222": 2,
+      "obj-232": 7,
+      "obj-164": 4,
+      "obj-284": 11
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 24,
+      "blinds": 11,
+      "vent": 2,
+      "comforter": 1,
+      "picture": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 39,
+      "min": 0.000338,
+      "mean": 0.007528,
+      "p10": 0.000997,
+      "p50": 0.006089,
+      "p90": 0.014544,
+      "p99": 0.018557,
+      "max": 0.019139
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-1:3:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-41",
+    "selected_root_share": 0.333333,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-41": 1,
+      "obj-130": 1,
+      "obj-290": 1
+    },
+    "assigned_object_counts": {
+      "obj-41": 1,
+      "obj-130": 1,
+      "obj-290": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "vent",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "vent": 1,
+      "tissue-paper": 1,
+      "ceiling": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 3,
+      "min": 0.003064,
+      "mean": 0.01113,
+      "p10": 0.004708,
+      "p50": 0.011285,
+      "p90": 0.017489,
+      "p99": 0.018886,
+      "max": 0.019041
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:10:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-171",
+    "selected_root_share": 0.333333,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-50": 1,
+      "obj-173": 1,
+      "obj-171": 1
+    },
+    "assigned_object_counts": {
+      "obj-50": 1,
+      "obj-173": 1,
+      "obj-171": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "vent",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "vent": 2,
+      "blinds": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 3,
+      "min": 0.001598,
+      "mean": 0.008887,
+      "p10": 0.003433,
+      "p50": 0.010775,
+      "p90": 0.013586,
+      "p99": 0.014218,
+      "max": 0.014289
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:2:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-171",
+    "selected_root_share": 0.333333,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-171": 1,
+      "obj-236": 1,
+      "obj-280": 1
+    },
+    "assigned_object_counts": {
+      "obj-171": 1,
+      "obj-236": 1,
+      "obj-280": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 2,
+      "vent": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 3,
+      "min": 0.003458,
+      "mean": 0.004356,
+      "p10": 0.00356,
+      "p50": 0.003972,
+      "p90": 0.005305,
+      "p99": 0.005605,
+      "max": 0.005638
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:7:-6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-12",
+    "selected_root_share": 0.4,
+    "resolved_root_count": 4,
+    "resolved_root_counts": {
+      "obj-16": 1,
+      "obj-12": 2,
+      "obj-1635": 1,
+      "obj-1651": 1
+    },
+    "assigned_object_counts": {
+      "obj-16": 1,
+      "obj-12": 2,
+      "obj-1635": 1,
+      "obj-1651": 1
+    },
+    "eval_keep_observation_count": 5,
+    "dominant_pred_label": "tv-stand",
+    "dominant_gt_class": "cabinet",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "cabinet:-1:1:-2",
+    "gt_class_counts": {
+      "cabinet": 5
+    },
+    "pred_label_counts": {
+      "tv-stand": 4,
+      "nightstand": 1
+    },
+    "target_counts": {
+      "cabinet:-1:1:-2": 5
+    },
+    "clip_margin": {
+      "count": 5,
+      "min": 0.023061,
+      "mean": 0.050651,
+      "p10": 0.025893,
+      "p50": 0.048197,
+      "p90": 0.079785,
+      "p99": 0.093675,
+      "max": 0.095218
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:14:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-64",
+    "selected_root_share": 0.4,
+    "resolved_root_count": 4,
+    "resolved_root_counts": {
+      "obj-64": 2,
+      "obj-214": 1,
+      "obj-171": 1,
+      "obj-407": 1
+    },
+    "assigned_object_counts": {
+      "obj-64": 2,
+      "obj-214": 1,
+      "obj-171": 1,
+      "obj-1662": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 5
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 5,
+      "min": 0.002811,
+      "mean": 0.014943,
+      "p10": 0.004588,
+      "p50": 0.0182,
+      "p90": 0.023232,
+      "p99": 0.023252,
+      "max": 0.023255
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:3:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-222",
+    "selected_root_share": 0.4,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-222": 4,
+      "obj-171": 2,
+      "obj-291": 4
+    },
+    "assigned_object_counts": {
+      "obj-222": 4,
+      "obj-252": 2,
+      "obj-291": 4
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 5,
+      "vent": 4,
+      "comforter": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 10,
+      "min": 0.000569,
+      "mean": 0.009868,
+      "p10": 0.001651,
+      "p50": 0.012289,
+      "p90": 0.015399,
+      "p99": 0.016385,
+      "max": 0.016494
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:6:-6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-164",
+    "selected_root_share": 0.470588,
+    "resolved_root_count": 5,
+    "resolved_root_counts": {
+      "obj-17": 2,
+      "obj-12": 28,
+      "obj-164": 40,
+      "obj-1651": 7,
+      "obj-1660": 8
+    },
+    "assigned_object_counts": {
+      "obj-17": 2,
+      "obj-12": 21,
+      "obj-27": 7,
+      "obj-164": 28,
+      "obj-180": 4,
+      "obj-228": 8,
+      "obj-1651": 7,
+      "obj-1660": 8
+    },
+    "eval_keep_observation_count": 88,
+    "dominant_pred_label": "tv-stand",
+    "dominant_gt_class": "cabinet",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "cabinet:-1:1:-2",
+    "gt_class_counts": {
+      "cabinet": 88
+    },
+    "pred_label_counts": {
+      "tv-stand": 88
+    },
+    "target_counts": {
+      "cabinet:-1:1:-2": 88
+    },
+    "clip_margin": {
+      "count": 88,
+      "min": 0.003814,
+      "mean": 0.043218,
+      "p10": 0.014465,
+      "p50": 0.04569,
+      "p90": 0.06614,
+      "p99": 0.088113,
+      "max": 0.095246
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:4:-6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-164",
+    "selected_root_share": 0.476744,
+    "resolved_root_count": 6,
+    "resolved_root_counts": {
+      "obj-16": 1,
+      "obj-12": 28,
+      "obj-17": 2,
+      "obj-164": 41,
+      "obj-1660": 13,
+      "obj-1651": 1
+    },
+    "assigned_object_counts": {
+      "obj-16": 1,
+      "obj-12": 23,
+      "obj-17": 2,
+      "obj-27": 5,
+      "obj-180": 4,
+      "obj-164": 33,
+      "obj-228": 4,
+      "obj-1660": 13,
+      "obj-1651": 1
+    },
+    "eval_keep_observation_count": 87,
+    "dominant_pred_label": "tv-stand",
+    "dominant_gt_class": "cabinet",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "cabinet:-1:0:-2",
+    "gt_class_counts": {
+      "cabinet": 87
+    },
+    "pred_label_counts": {
+      "tv-stand": 85,
+      "nightstand": 2
+    },
+    "target_counts": {
+      "cabinet:-1:0:-2": 87
+    },
+    "clip_margin": {
+      "count": 87,
+      "min": 0.005404,
+      "mean": 0.050594,
+      "p10": 0.018815,
+      "p50": 0.056289,
+      "p90": 0.074185,
+      "p99": 0.08665,
+      "max": 0.087282
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-1:10:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-50",
+    "selected_root_share": 0.5,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-50": 3,
+      "obj-44": 1,
+      "obj-171": 2
+    },
+    "assigned_object_counts": {
+      "obj-50": 3,
+      "obj-79": 1,
+      "obj-187": 2
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "blinds",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "blinds": 3,
+      "vent": 2,
+      "ceiling": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 6,
+      "min": 0.0009,
+      "mean": 0.008143,
+      "p10": 0.002423,
+      "p50": 0.008347,
+      "p90": 0.013659,
+      "p99": 0.014642,
+      "max": 0.014751
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-1:15:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-48",
+    "selected_root_share": 0.5,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-64": 1,
+      "obj-48": 1
+    },
+    "assigned_object_counts": {
+      "obj-64": 1,
+      "obj-66": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 2
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 2,
+      "min": 0.017612,
+      "mean": 0.02132,
+      "p10": 0.018354,
+      "p50": 0.02132,
+      "p90": 0.024287,
+      "p99": 0.024954,
+      "max": 0.025028
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-1:1:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-41",
+    "selected_root_share": 0.5,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-41": 1,
+      "obj-288": 1
+    },
+    "assigned_object_counts": {
+      "obj-41": 1,
+      "obj-288": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 2
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 2,
+      "min": 0.005473,
+      "mean": 0.007056,
+      "p10": 0.005789,
+      "p50": 0.007056,
+      "p90": 0.008322,
+      "p99": 0.008607,
+      "max": 0.008639
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:16:-2",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-97",
+    "selected_root_share": 0.5,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-97": 1,
+      "obj-206": 1
+    },
+    "assigned_object_counts": {
+      "obj-97": 1,
+      "obj-206": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "vent",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "vent": 1,
+      "pillar": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 2,
+      "min": 0.011823,
+      "mean": 0.01257,
+      "p10": 0.011972,
+      "p50": 0.01257,
+      "p90": 0.013168,
+      "p99": 0.013302,
+      "max": 0.013317
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:5:-6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-164",
+    "selected_root_share": 0.555556,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-12": 7,
+      "obj-164": 10,
+      "obj-1660": 1
+    },
+    "assigned_object_counts": {
+      "obj-27": 3,
+      "obj-12": 4,
+      "obj-164": 8,
+      "obj-228": 2,
+      "obj-1660": 1
+    },
+    "eval_keep_observation_count": 18,
+    "dominant_pred_label": "tv-stand",
+    "dominant_gt_class": "cabinet",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "cabinet:-1:1:-2",
+    "gt_class_counts": {
+      "cabinet": 18
+    },
+    "pred_label_counts": {
+      "tv-stand": 17,
+      "nightstand": 1
+    },
+    "target_counts": {
+      "cabinet:-1:1:-2": 18
+    },
+    "clip_margin": {
+      "count": 18,
+      "min": 0.009532,
+      "mean": 0.052875,
+      "p10": 0.02537,
+      "p50": 0.054187,
+      "p90": 0.071652,
+      "p99": 0.080535,
+      "max": 0.081154
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:1:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-171",
+    "selected_root_share": 0.6,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-41": 1,
+      "obj-171": 3,
+      "obj-270": 1
+    },
+    "assigned_object_counts": {
+      "obj-41": 1,
+      "obj-240": 3,
+      "obj-270": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 4,
+      "blinds": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 5,
+      "min": 0.000737,
+      "mean": 0.00725,
+      "p10": 0.002404,
+      "p50": 0.007773,
+      "p90": 0.01169,
+      "p99": 0.012671,
+      "max": 0.01278
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:1:-6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-164",
+    "selected_root_share": 0.614458,
+    "resolved_root_count": 4,
+    "resolved_root_counts": {
+      "obj-12": 29,
+      "obj-16": 1,
+      "obj-17": 2,
+      "obj-164": 51
+    },
+    "assigned_object_counts": {
+      "obj-12": 27,
+      "obj-16": 1,
+      "obj-17": 2,
+      "obj-27": 2,
+      "obj-164": 47,
+      "obj-180": 2,
+      "obj-228": 2
+    },
+    "eval_keep_observation_count": 83,
+    "dominant_pred_label": "tv-stand",
+    "dominant_gt_class": "cabinet",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "cabinet:-1:0:-2",
+    "gt_class_counts": {
+      "cabinet": 83
+    },
+    "pred_label_counts": {
+      "tv-stand": 55,
+      "nightstand": 28
+    },
+    "target_counts": {
+      "cabinet:-1:0:-2": 83
+    },
+    "clip_margin": {
+      "count": 83,
+      "min": 0.000155,
+      "mean": 0.018269,
+      "p10": 0.00382,
+      "p50": 0.016357,
+      "p90": 0.032572,
+      "p99": 0.053351,
+      "max": 0.058778
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-1:2:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-275",
+    "selected_root_share": 0.75,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-164": 1,
+      "obj-275": 3
+    },
+    "assigned_object_counts": {
+      "obj-164": 1,
+      "obj-275": 3
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 2,
+      "vent": 2
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 4,
+      "min": 0.001256,
+      "mean": 0.005496,
+      "p10": 0.001763,
+      "p50": 0.004997,
+      "p90": 0.009628,
+      "p99": 0.010624,
+      "max": 0.010735
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:4:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-171",
+    "selected_root_share": 0.75,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-48": 1,
+      "obj-171": 3
+    },
+    "assigned_object_counts": {
+      "obj-48": 1,
+      "obj-171": 3
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 1,
+      "vent": 1,
+      "comforter": 1,
+      "picture": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 4,
+      "min": 0.00123,
+      "mean": 0.009846,
+      "p10": 0.002337,
+      "p50": 0.006722,
+      "p90": 0.019853,
+      "p99": 0.024223,
+      "max": 0.024708
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:8:-6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-285",
+    "selected_root_share": 0.8,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-285": 4,
+      "obj-1651": 1
+    },
+    "assigned_object_counts": {
+      "obj-285": 4,
+      "obj-1651": 1
+    },
+    "eval_keep_observation_count": 5,
+    "dominant_pred_label": "nightstand",
+    "dominant_gt_class": "cabinet",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "cabinet:-1:1:-2",
+    "gt_class_counts": {
+      "cabinet": 5
+    },
+    "pred_label_counts": {
+      "nightstand": 4,
+      "tv-stand": 1
+    },
+    "target_counts": {
+      "cabinet:-1:1:-2": 5
+    },
+    "clip_margin": {
+      "count": 5,
+      "min": 0.019783,
+      "mean": 0.029798,
+      "p10": 0.021197,
+      "p50": 0.033779,
+      "p90": 0.036279,
+      "p99": 0.037085,
+      "max": 0.037175
+    }
+  },
+  {
+    "scene": "room0",
+    "base_geometry_key": "room0:gsa:item:-2:8:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-278",
+    "selected_root_share": 0.833333,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-41": 1,
+      "obj-278": 5
+    },
+    "assigned_object_counts": {
+      "obj-41": 1,
+      "obj-278": 5
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "vent",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "vent": 2,
+      "comforter": 2,
+      "blinds": 1,
+      "ceiling": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 6,
+      "min": 0.001073,
+      "mean": 0.006932,
+      "p10": 0.002095,
+      "p50": 0.006185,
+      "p90": 0.012515,
+      "p99": 0.014473,
+      "max": 0.014691
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:6:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-144",
+    "selected_root_share": 0.333333,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-144": 1,
+      "obj-904": 1,
+      "obj-927": 1
+    },
+    "assigned_object_counts": {
+      "obj-144": 1,
+      "obj-913": 1,
+      "obj-927": 1
+    },
+    "eval_keep_observation_count": 3,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "pillow",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 3,
+    "dominant_target_id": "pillow:-2:1:-1",
+    "gt_class_counts": {
+      "pillow": 2,
+      "bed": 1
+    },
+    "pred_label_counts": {
+      "comforter": 3
+    },
+    "target_counts": {
+      "pillow:-2:1:-1": 1,
+      "pillow:-3:1:-1": 1,
+      "bed:-2:1:-1": 1
+    },
+    "clip_margin": {
+      "count": 3,
+      "min": 0.004588,
+      "mean": 0.015112,
+      "p10": 0.006499,
+      "p50": 0.014141,
+      "p90": 0.024115,
+      "p99": 0.026359,
+      "max": 0.026608
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:7:-3",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-144",
+    "selected_root_share": 0.416667,
+    "resolved_root_count": 5,
+    "resolved_root_counts": {
+      "obj-144": 5,
+      "obj-188": 2,
+      "obj-208": 1,
+      "obj-270": 2,
+      "obj-350": 2
+    },
+    "assigned_object_counts": {
+      "obj-144": 2,
+      "obj-188": 2,
+      "obj-208": 1,
+      "obj-212": 1,
+      "obj-270": 2,
+      "obj-279": 1,
+      "obj-283": 1,
+      "obj-350": 2
+    },
+    "eval_keep_observation_count": 12,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "pillow",
+    "semantic_accuracy": 0.083333,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "pillow:-2:1:-1",
+    "gt_class_counts": {
+      "pillow": 12
+    },
+    "pred_label_counts": {
+      "comforter": 10,
+      "pillow": 1,
+      "bed": 1
+    },
+    "target_counts": {
+      "pillow:-2:1:-1": 12
+    },
+    "clip_margin": {
+      "count": 12,
+      "min": 0.000614,
+      "mean": 0.010387,
+      "p10": 0.001297,
+      "p50": 0.008997,
+      "p90": 0.018596,
+      "p99": 0.025664,
+      "max": 0.026532
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:4:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-931",
+    "selected_root_share": 0.5,
+    "resolved_root_count": 5,
+    "resolved_root_counts": {
+      "obj-144": 1,
+      "obj-927": 1,
+      "obj-928": 1,
+      "obj-931": 5,
+      "obj-945": 2
+    },
+    "assigned_object_counts": {
+      "obj-623": 1,
+      "obj-927": 1,
+      "obj-928": 1,
+      "obj-931": 5,
+      "obj-945": 2
+    },
+    "eval_keep_observation_count": 13,
+    "dominant_pred_label": "vent",
+    "dominant_gt_class": "bed",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "bed:-2:0:-1",
+    "gt_class_counts": {
+      "bed": 10,
+      "pillow": 3
+    },
+    "pred_label_counts": {
+      "vent": 7,
+      "comforter": 5,
+      "pillow": 1
+    },
+    "target_counts": {
+      "bed:-2:0:-1": 10,
+      "pillow:-2:0:-1": 3
+    },
+    "clip_margin": {
+      "count": 13,
+      "min": 0.000173,
+      "mean": 0.015592,
+      "p10": 0.002963,
+      "p50": 0.006885,
+      "p90": 0.039974,
+      "p99": 0.045873,
+      "max": 0.046175
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-5:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-735",
+    "selected_root_share": 0.5,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-738": 1,
+      "obj-735": 1
+    },
+    "assigned_object_counts": {
+      "obj-738": 1,
+      "obj-735": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "clock",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "clock": 1,
+      "vent": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 2,
+      "min": 0.002679,
+      "mean": 0.005771,
+      "p10": 0.003298,
+      "p50": 0.005771,
+      "p90": 0.008244,
+      "p99": 0.0088,
+      "max": 0.008862
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-11:-11:1",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-23",
+    "selected_root_share": 0.571429,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-23": 4,
+      "obj-717": 3
+    },
+    "assigned_object_counts": {
+      "obj-48": 2,
+      "obj-49": 1,
+      "obj-23": 1,
+      "obj-717": 3
+    },
+    "eval_keep_observation_count": 7,
+    "dominant_pred_label": "blinds",
+    "dominant_gt_class": "blinds",
+    "semantic_accuracy": 1.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "blinds:-3:-3:0",
+    "gt_class_counts": {
+      "blinds": 7
+    },
+    "pred_label_counts": {
+      "blinds": 7
+    },
+    "target_counts": {
+      "blinds:-3:-3:0": 7
+    },
+    "clip_margin": {
+      "count": 7,
+      "min": 0.094632,
+      "mean": 0.101367,
+      "p10": 0.094644,
+      "p50": 0.101753,
+      "p90": 0.106841,
+      "p99": 0.10762,
+      "max": 0.107706
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:2:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-963",
+    "selected_root_share": 0.636364,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-928": 4,
+      "obj-963": 7
+    },
+    "assigned_object_counts": {
+      "obj-928": 4,
+      "obj-963": 7
+    },
+    "eval_keep_observation_count": 13,
+    "dominant_pred_label": "pillow",
+    "dominant_gt_class": "bed",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "bed:-2:0:-1",
+    "gt_class_counts": {
+      "bed": 11,
+      "pillow": 2
+    },
+    "pred_label_counts": {
+      "pillow": 6,
+      "comforter": 4,
+      "tissue-paper": 1,
+      "vent": 1,
+      "picture": 1
+    },
+    "target_counts": {
+      "bed:-2:0:-1": 11,
+      "pillow:-2:0:-1": 2
+    },
+    "clip_margin": {
+      "count": 13,
+      "min": 0.000249,
+      "mean": 0.008385,
+      "p10": 0.001265,
+      "p50": 0.005548,
+      "p90": 0.021185,
+      "p99": 0.027406,
+      "max": 0.028216
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:7:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-144",
+    "selected_root_share": 0.666667,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-144": 4,
+      "obj-638": 2
+    },
+    "assigned_object_counts": {
+      "obj-144": 1,
+      "obj-638": 2,
+      "obj-636": 3
+    },
+    "eval_keep_observation_count": 6,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "pillow",
+    "semantic_accuracy": 0.333333,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "pillow:-2:1:-1",
+    "gt_class_counts": {
+      "pillow": 5,
+      "bed": 1
+    },
+    "pred_label_counts": {
+      "comforter": 4,
+      "pillow": 2
+    },
+    "target_counts": {
+      "pillow:-2:1:-1": 5,
+      "bed:-2:1:-1": 1
+    },
+    "clip_margin": {
+      "count": 6,
+      "min": 0.004246,
+      "mean": 0.006917,
+      "p10": 0.005364,
+      "p50": 0.0067,
+      "p90": 0.008688,
+      "p99": 0.009966,
+      "max": 0.010108
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-10:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-717",
+    "selected_root_share": 0.666667,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-141": 1,
+      "obj-717": 2
+    },
+    "assigned_object_counts": {
+      "obj-141": 1,
+      "obj-717": 2
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "blinds",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "blinds": 2,
+      "tv-stand": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 3,
+      "min": 0.012581,
+      "mean": 0.051583,
+      "p10": 0.024182,
+      "p50": 0.070585,
+      "p90": 0.071384,
+      "p99": 0.071563,
+      "max": 0.071583
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:3:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-297",
+    "selected_root_share": 0.666667,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-297": 2,
+      "obj-517": 1
+    },
+    "assigned_object_counts": {
+      "obj-297": 2,
+      "obj-517": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 3
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 3,
+      "min": 0.011564,
+      "mean": 0.01958,
+      "p10": 0.013285,
+      "p50": 0.020172,
+      "p90": 0.025639,
+      "p99": 0.026869,
+      "max": 0.027006
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:8:3",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-490",
+    "selected_root_share": 0.666667,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-384": 1,
+      "obj-490": 2
+    },
+    "assigned_object_counts": {
+      "obj-384": 1,
+      "obj-490": 2
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "ceiling",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "ceiling": 2,
+      "monitor": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 3,
+      "min": 0.002965,
+      "mean": 0.009006,
+      "p10": 0.004011,
+      "p50": 0.008199,
+      "p90": 0.014322,
+      "p99": 0.0157,
+      "max": 0.015853
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:3:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-144",
+    "selected_root_share": 0.727273,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-144": 8,
+      "obj-929": 2,
+      "obj-928": 1
+    },
+    "assigned_object_counts": {
+      "obj-244": 1,
+      "obj-283": 1,
+      "obj-402": 1,
+      "obj-486": 1,
+      "obj-619": 1,
+      "obj-640": 2,
+      "obj-661": 1,
+      "obj-929": 2,
+      "obj-955": 1
+    },
+    "eval_keep_observation_count": 11,
+    "dominant_pred_label": "pillow",
+    "dominant_gt_class": "bed",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "bed:-2:0:-1",
+    "gt_class_counts": {
+      "bed": 10,
+      "pillow": 1
+    },
+    "pred_label_counts": {
+      "pillow": 5,
+      "comforter": 5,
+      "other": 1
+    },
+    "target_counts": {
+      "bed:-2:0:-1": 10,
+      "pillow:-2:0:-1": 1
+    },
+    "clip_margin": {
+      "count": 11,
+      "min": 0.000423,
+      "mean": 0.009723,
+      "p10": 0.001696,
+      "p50": 0.010173,
+      "p90": 0.018337,
+      "p99": 0.023241,
+      "max": 0.023786
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-3:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-127",
+    "selected_root_share": 0.75,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-127": 6,
+      "obj-144": 1,
+      "obj-920": 1
+    },
+    "assigned_object_counts": {
+      "obj-127": 6,
+      "obj-144": 1,
+      "obj-920": 1
+    },
+    "eval_keep_observation_count": 8,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "blanket",
+    "semantic_accuracy": 0.125,
+    "unique_gt_target_count": 2,
+    "dominant_target_id": "blanket:-2:-1:-1",
+    "gt_class_counts": {
+      "blanket": 7,
+      "comforter": 1
+    },
+    "pred_label_counts": {
+      "comforter": 8
+    },
+    "target_counts": {
+      "blanket:-2:-1:-1": 7,
+      "comforter:-2:-1:-1": 1
+    },
+    "clip_margin": {
+      "count": 8,
+      "min": 0.002034,
+      "mean": 0.020435,
+      "p10": 0.004539,
+      "p50": 0.024956,
+      "p90": 0.02975,
+      "p99": 0.029994,
+      "max": 0.030021
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-11:-10:-7",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-101",
+    "selected_root_share": 0.75,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-101": 3,
+      "obj-754": 1
+    },
+    "assigned_object_counts": {
+      "obj-101": 3,
+      "obj-952": 1
+    },
+    "eval_keep_observation_count": 0,
+    "dominant_pred_label": "floor",
+    "dominant_gt_class": "",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 0,
+    "dominant_target_id": "",
+    "gt_class_counts": {},
+    "pred_label_counts": {
+      "floor": 3,
+      "comforter": 1
+    },
+    "target_counts": {},
+    "clip_margin": {
+      "count": 4,
+      "min": 0.000974,
+      "mean": 0.045931,
+      "p10": 0.017236,
+      "p50": 0.057716,
+      "p90": 0.065197,
+      "p99": 0.067104,
+      "max": 0.067316
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-2:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-144",
+    "selected_root_share": 0.769231,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-127": 2,
+      "obj-144": 10,
+      "obj-918": 1
+    },
+    "assigned_object_counts": {
+      "obj-127": 2,
+      "obj-144": 10,
+      "obj-918": 1
+    },
+    "eval_keep_observation_count": 13,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "blanket",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "blanket:-2:-1:-1",
+    "gt_class_counts": {
+      "blanket": 13
+    },
+    "pred_label_counts": {
+      "comforter": 12,
+      "vent": 1
+    },
+    "target_counts": {
+      "blanket:-2:-1:-1": 13
+    },
+    "clip_margin": {
+      "count": 13,
+      "min": 0.001772,
+      "mean": 0.034484,
+      "p10": 0.011242,
+      "p50": 0.032329,
+      "p90": 0.056149,
+      "p99": 0.061256,
+      "max": 0.061707
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:0:6",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-309",
+    "selected_root_share": 0.8,
+    "resolved_root_count": 4,
+    "resolved_root_counts": {
+      "obj-309": 12,
+      "obj-298": 1,
+      "obj-344": 1,
+      "obj-467": 1
+    },
+    "assigned_object_counts": {
+      "obj-309": 12,
+      "obj-330": 1,
+      "obj-344": 1,
+      "obj-467": 1
+    },
+    "eval_keep_observation_count": 15,
+    "dominant_pred_label": "vent",
+    "dominant_gt_class": "vent",
+    "semantic_accuracy": 0.933333,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "vent:-2:0:1",
+    "gt_class_counts": {
+      "vent": 15
+    },
+    "pred_label_counts": {
+      "vent": 14,
+      "blinds": 1
+    },
+    "target_counts": {
+      "vent:-2:0:1": 15
+    },
+    "clip_margin": {
+      "count": 15,
+      "min": 0.007572,
+      "mean": 0.036533,
+      "p10": 0.011417,
+      "p50": 0.034518,
+      "p90": 0.059514,
+      "p99": 0.06263,
+      "max": 0.063018
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-1:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-144",
+    "selected_root_share": 0.846154,
+    "resolved_root_count": 3,
+    "resolved_root_counts": {
+      "obj-144": 11,
+      "obj-918": 1,
+      "obj-932": 1
+    },
+    "assigned_object_counts": {
+      "obj-144": 11,
+      "obj-918": 1,
+      "obj-932": 1
+    },
+    "eval_keep_observation_count": 13,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "blanket",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "blanket:-2:-1:-1",
+    "gt_class_counts": {
+      "blanket": 13
+    },
+    "pred_label_counts": {
+      "comforter": 12,
+      "vent": 1
+    },
+    "target_counts": {
+      "blanket:-2:-1:-1": 13
+    },
+    "clip_margin": {
+      "count": 13,
+      "min": 0.003539,
+      "mean": 0.051496,
+      "p10": 0.025163,
+      "p50": 0.059288,
+      "p90": 0.063734,
+      "p99": 0.065199,
+      "max": 0.065341
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:-6:-7",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-128",
+    "selected_root_share": 0.875,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-128": 7,
+      "obj-151": 1
+    },
+    "assigned_object_counts": {
+      "obj-128": 7,
+      "obj-151": 1
+    },
+    "eval_keep_observation_count": 8,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "rug",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "rug:-2:-2:-2",
+    "gt_class_counts": {
+      "rug": 8
+    },
+    "pred_label_counts": {
+      "comforter": 7,
+      "pillow": 1
+    },
+    "target_counts": {
+      "rug:-2:-2:-2": 8
+    },
+    "clip_margin": {
+      "count": 8,
+      "min": 0.000426,
+      "mean": 0.016934,
+      "p10": 0.007335,
+      "p50": 0.017631,
+      "p90": 0.025282,
+      "p99": 0.02689,
+      "max": 0.027069
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-10:7:-2",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-144",
+    "selected_root_share": 0.9,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-181": 1,
+      "obj-144": 9
+    },
+    "assigned_object_counts": {
+      "obj-181": 1,
+      "obj-144": 8,
+      "obj-652": 1
+    },
+    "eval_keep_observation_count": 10,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "bed",
+    "semantic_accuracy": 0.2,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "bed:-2:1:-1",
+    "gt_class_counts": {
+      "bed": 10
+    },
+    "pred_label_counts": {
+      "comforter": 8,
+      "bed": 2
+    },
+    "target_counts": {
+      "bed:-2:1:-1": 10
+    },
+    "clip_margin": {
+      "count": 10,
+      "min": 0.001205,
+      "mean": 0.011778,
+      "p10": 0.003664,
+      "p50": 0.009526,
+      "p90": 0.022637,
+      "p99": 0.026153,
+      "max": 0.026543
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-11:-1:-4",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-144",
+    "selected_root_share": 0.909091,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-144": 10,
+      "obj-918": 1
+    },
+    "assigned_object_counts": {
+      "obj-144": 10,
+      "obj-918": 1
+    },
+    "eval_keep_observation_count": 11,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "blanket",
+    "semantic_accuracy": 0.0,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "blanket:-3:-1:-1",
+    "gt_class_counts": {
+      "blanket": 11
+    },
+    "pred_label_counts": {
+      "comforter": 10,
+      "vent": 1
+    },
+    "target_counts": {
+      "blanket:-3:-1:-1": 11
+    },
+    "clip_margin": {
+      "count": 11,
+      "min": 0.033914,
+      "mean": 0.049048,
+      "p10": 0.035896,
+      "p50": 0.049803,
+      "p90": 0.056798,
+      "p99": 0.063449,
+      "max": 0.064189
+    }
+  },
+  {
+    "scene": "room1",
+    "base_geometry_key": "room1:gsa:item:-11:-4:-5",
+    "assignment_status": "ambiguous_memory_assignment",
+    "selected_root_id": "obj-127",
+    "selected_root_share": 0.909091,
+    "resolved_root_count": 2,
+    "resolved_root_counts": {
+      "obj-127": 10,
+      "obj-144": 1
+    },
+    "assigned_object_counts": {
+      "obj-127": 10,
+      "obj-175": 1
+    },
+    "eval_keep_observation_count": 11,
+    "dominant_pred_label": "comforter",
+    "dominant_gt_class": "comforter",
+    "semantic_accuracy": 0.818182,
+    "unique_gt_target_count": 1,
+    "dominant_target_id": "comforter:-3:-1:-1",
+    "gt_class_counts": {
+      "comforter": 11
+    },
+    "pred_label_counts": {
+      "comforter": 9,
+      "cloth": 1,
+      "vent": 1
+    },
+    "target_counts": {
+      "comforter:-3:-1:-1": 11
+    },
+    "clip_margin": {
+      "count": 11,
+      "min": 0.00145,
+      "mean": 0.01761,
+      "p10": 0.003379,
+      "p50": 0.020026,
+      "p90": 0.031546,
+      "p99": 0.034113,
+      "max": 0.034399
+    }
+  }
+]

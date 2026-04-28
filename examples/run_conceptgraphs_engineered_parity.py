@@ -261,6 +261,8 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
     total_kept = 0
     monitor = {
         "raw_mask_pixels": [],
+        "pre_subtract_kept_mask_pixels": [],
+        "post_subtract_candidate_mask_pixels": [],
         "kept_mask_pixels": [],
         "confidence": [],
         "valid_depth_ratio": [],
@@ -275,6 +277,8 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
         "low_clip_margin_count": 0,
         "low_valid_depth_count": 0,
         "mask_pixels_subtracted": 0,
+        "post_subtract_empty_mask_count": 0,
+        "post_subtract_tiny_mask_count": 0,
         "label_counts": Counter(),
     }
     for det_path in sorted(gsa_dir.glob("frame*.pkl.gz")):
@@ -291,17 +295,13 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
         label_idx = sims.argmax(axis=1)
         masks = np.asarray(det["mask"]).astype(bool)
         xyxy = np.asarray(det.get("xyxy", np.zeros((len(masks), 4), dtype=np.float32)))
-        if len(masks) and len(xyxy) == len(masks):
-            before_pixels = int(masks.sum())
-            masks = mask_subtract_contained(xyxy, masks).astype(bool)
-            monitor["mask_pixels_subtracted"] += max(before_pixels - int(masks.sum()), 0)
         confidences = det.get("confidence", np.ones(len(masks), dtype=np.float32))
         total_raw_dets += int(len(masks))
-        for det_i, class_i in enumerate(label_idx):
-            mask = masks[det_i]
-            area = int(mask.sum())
-            monitor["raw_mask_pixels"].append(area)
-            if area < MIN_MASK_PIXELS:
+        pre_keep_indices = []
+        for det_i in range(len(masks)):
+            raw_area = int(masks[det_i].sum())
+            monitor["raw_mask_pixels"].append(raw_area)
+            if raw_area < MIN_MASK_PIXELS:
                 monitor["too_small_mask_count"] += 1
                 continue
             raw_conf = float(confidences[det_i])
@@ -314,6 +314,29 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                 if bbox_area > MAX_BBOX_AREA_RATIO * float(rgb_image.shape[0] * rgb_image.shape[1]):
                     monitor["large_bbox_mask_count"] += 1
                     continue
+            pre_keep_indices.append(det_i)
+
+        if pre_keep_indices:
+            frame_masks = masks[pre_keep_indices]
+            monitor["pre_subtract_kept_mask_pixels"].extend(int(mask.sum()) for mask in frame_masks)
+            if len(xyxy) == len(masks):
+                before_pixels = int(frame_masks.sum())
+                frame_masks = mask_subtract_contained(xyxy[pre_keep_indices], frame_masks).astype(bool)
+                monitor["mask_pixels_subtracted"] += max(before_pixels - int(frame_masks.sum()), 0)
+            else:
+                frame_masks = frame_masks.astype(bool)
+        else:
+            frame_masks = np.zeros((0,) + masks.shape[1:], dtype=bool) if masks.ndim == 3 else np.zeros((0, 0, 0), dtype=bool)
+
+        for local_i, det_i in enumerate(pre_keep_indices):
+            class_i = int(label_idx[det_i])
+            mask = frame_masks[local_i]
+            area = int(mask.sum())
+            monitor["post_subtract_candidate_mask_pixels"].append(area)
+            if area == 0:
+                monitor["post_subtract_empty_mask_count"] += 1
+            elif area < MIN_MASK_PIXELS:
+                monitor["post_subtract_tiny_mask_count"] += 1
             world, colors, centroid, projection_stats = world_points_from_mask_arrays(mask, depth, rgb_image, pose)
             if world is None:
                 if int(projection_stats.get("valid_depth_pixels", 0)) == 0:
@@ -323,13 +346,14 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                 continue
             valid_ratio = float(projection_stats["valid_depth_ratio"])
             margin = clip_margin(sims[det_i])
-            top1 = float(sims[det_i, int(class_i)])
+            top1 = float(sims[det_i, class_i])
             if margin < LOW_CLIP_MARGIN:
                 monitor["low_clip_margin_count"] += 1
             if valid_ratio < LOW_VALID_DEPTH_RATIO:
                 monitor["low_valid_depth_count"] += 1
             label = class_names[int(class_i)]
             key = quant_key(scene, label, centroid)
+            raw_conf = float(confidences[det_i])
             conf = float(np.clip(raw_conf, 0.0, 1.0))
             support_size = round(area / 1_000_000.0, 4)
             depth_scale = round(float(np.linalg.norm(centroid)), 4)
@@ -425,6 +449,8 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
     entropy_by_key = [label_entropy(data["label_counts"]) for data in key_data.values()]
     prep_monitor = {
         "mask_pixels_raw": numeric_summary(monitor["raw_mask_pixels"]),
+        "mask_pixels_pre_subtract_kept": numeric_summary(monitor["pre_subtract_kept_mask_pixels"]),
+        "mask_pixels_post_subtract_candidate": numeric_summary(monitor["post_subtract_candidate_mask_pixels"]),
         "mask_pixels_kept": numeric_summary(monitor["kept_mask_pixels"]),
         "confidence": numeric_summary(monitor["confidence"]),
         "valid_depth_ratio": numeric_summary(monitor["valid_depth_ratio"]),
@@ -443,6 +469,8 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
         "low_valid_depth_count": int(monitor["low_valid_depth_count"]),
         "low_valid_depth_rate": round(int(monitor["low_valid_depth_count"]) / max(total_kept, 1), 6),
         "mask_pixels_subtracted": int(monitor["mask_pixels_subtracted"]),
+        "post_subtract_empty_mask_count": int(monitor["post_subtract_empty_mask_count"]),
+        "post_subtract_tiny_mask_count": int(monitor["post_subtract_tiny_mask_count"]),
         "singleton_key_count": sum(1 for value in obs_per_key if value == 1),
         "singleton_key_rate": round(sum(1 for value in obs_per_key if value == 1) / max(len(obs_per_key), 1), 6),
         "top_labels": monitor["label_counts"].most_common(15),
@@ -465,6 +493,7 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
             "max_points_per_obs": MAX_POINTS_PER_OBS,
             "max_points_per_object": MAX_POINTS_PER_OBJECT,
             "temporal_variant": TemporalVariant.NAIVE_FRAMEWISE.value,
+            "mask_subtract_order": "conceptgraphs_filter_then_subtract",
         },
         "monitor": prep_monitor,
     }
@@ -579,6 +608,7 @@ def write_report(scene: str, prep: dict, branch_summary: dict, logger) -> Path:
             "max_points_per_obs": MAX_POINTS_PER_OBS,
             "max_points_per_object": MAX_POINTS_PER_OBJECT,
             "temporal_variant": TemporalVariant.NAIVE_FRAMEWISE.value,
+            "mask_subtract_order": "conceptgraphs_filter_then_subtract",
             "association_diagnostics_top_k": ASSOCIATION_DIAGNOSTICS_TOP_K,
         },
         "preparation_monitor": prep.get("monitor", {}),

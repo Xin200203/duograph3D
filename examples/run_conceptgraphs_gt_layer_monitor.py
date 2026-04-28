@@ -32,6 +32,7 @@ from duograph3d.memory import ObjectGraphMemory
 from duograph3d.io_utils import write_json
 from duograph3d.metrics import summarize_run
 from duograph3d.contracts import SequenceRunResult
+from duograph3d.supervised_diagnosis import summarize_stage_coverage
 from conceptgraph.dataset.replica_constants import REPLICA_CLASSES, REPLICA_EXISTING_CLASSES, REPLICA_SCENE_IDS, REPLICA_SCENE_IDS_
 from conceptgraph.utils.ious import mask_subtract_contained
 
@@ -325,6 +326,10 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
     low_confidence = 0
     large_bbox = 0
     mask_pixels_subtracted = 0
+    post_subtract_empty = 0
+    post_subtract_tiny = 0
+    pre_subtract_kept_mask_pixels: list[int] = []
+    post_subtract_candidate_mask_pixels: list[int] = []
     for det_path in sorted(gsa_dir.glob("frame*.pkl.gz")):
         frame_stem = det_path.name.split(".")[0]
         frame_idx = int(frame_stem[len("frame"):])
@@ -339,16 +344,12 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
         label_idx = sims.argmax(axis=1)
         masks = np.asarray(det["mask"]).astype(bool)
         xyxy = np.asarray(det.get("xyxy", np.zeros((len(masks), 4), dtype=np.float32)))
-        if APPLY_MASK_SUBTRACT_CONTAINED and len(masks) and len(xyxy) == len(masks):
-            before_pixels = int(masks.sum())
-            masks = mask_subtract_contained(xyxy, masks).astype(bool)
-            mask_pixels_subtracted += max(before_pixels - int(masks.sum()), 0)
         confidences = det.get("confidence", np.ones(len(masks), dtype=np.float32))
         raw_count += int(len(masks))
-        for det_i, class_i in enumerate(label_idx):
-            mask = masks[det_i]
-            area = int(mask.sum())
-            if area < MIN_MASK_PIXELS:
+        pre_keep_indices = []
+        for det_i in range(len(masks)):
+            raw_area = int(masks[det_i].sum())
+            if raw_area < MIN_MASK_PIXELS:
                 too_small += 1
                 continue
             raw_conf = float(confidences[det_i])
@@ -361,6 +362,29 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                 if bbox_area > MAX_BBOX_AREA_RATIO * float(depth.shape[0] * depth.shape[1]):
                     large_bbox += 1
                     continue
+            pre_keep_indices.append(det_i)
+
+        if pre_keep_indices:
+            frame_masks = masks[pre_keep_indices]
+            pre_subtract_kept_mask_pixels.extend(int(mask.sum()) for mask in frame_masks)
+            if APPLY_MASK_SUBTRACT_CONTAINED and len(xyxy) == len(masks):
+                before_pixels = int(frame_masks.sum())
+                frame_masks = mask_subtract_contained(xyxy[pre_keep_indices], frame_masks).astype(bool)
+                mask_pixels_subtracted += max(before_pixels - int(frame_masks.sum()), 0)
+            else:
+                frame_masks = frame_masks.astype(bool)
+        else:
+            frame_masks = np.zeros((0,) + masks.shape[1:], dtype=bool) if masks.ndim == 3 else np.zeros((0, 0, 0), dtype=bool)
+
+        for local_i, det_i in enumerate(pre_keep_indices):
+            class_i = int(label_idx[det_i])
+            mask = frame_masks[local_i]
+            area = int(mask.sum())
+            post_subtract_candidate_mask_pixels.append(area)
+            if area == 0:
+                post_subtract_empty += 1
+            elif area < MIN_MASK_PIXELS:
+                post_subtract_tiny += 1
             world, centroid = world_points_from_mask_arrays(mask, depth, pose)
             if world is None:
                 valid_pixels = int((mask & (depth > 1e-6)).sum())
@@ -371,6 +395,7 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                 continue
             label = class_names[int(class_i)]
             key = quant_key(scene, label, centroid)
+            raw_conf = float(confidences[det_i])
             conf = float(np.clip(raw_conf, 0.0, 1.0))
             probs = softmax(sims[det_i] * logit_scale)
             obs_id = f"{frame_stem}:gsa-{det_i:03d}"
@@ -441,6 +466,10 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
         "too_few_valid_points_count": too_few_valid_points,
         "zero_valid_depth_count": zero_depth,
         "mask_pixels_subtracted": mask_pixels_subtracted,
+        "post_subtract_empty_mask_count": post_subtract_empty,
+        "post_subtract_tiny_mask_count": post_subtract_tiny,
+        "pre_subtract_kept_mask_pixels": numeric_summary(pre_subtract_kept_mask_pixels),
+        "post_subtract_candidate_mask_pixels": numeric_summary(post_subtract_candidate_mask_pixels),
         "parameters": {
             "profile": PROFILE,
             "voxel_size": VOXEL_SIZE,
@@ -450,6 +479,7 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
             "min_valid_depth_points": MIN_VALID_DEPTH_POINTS,
             "max_points_per_obs": MAX_POINTS_PER_OBS,
             "class_agnostic_identity": CLASS_AGNOSTIC_IDENTITY,
+            "mask_subtract_order": "conceptgraphs_filter_then_subtract",
         },
         "seconds": round(time.time() - t0, 3),
     }
@@ -471,6 +501,64 @@ def duplicate_stats(target_ids: list[str]) -> dict[str, object]:
         "targets_with_duplicates": sum(1 for c in counts.values() if c > 1),
         "max_items_per_target": max(counts.values()) if counts else 0,
     }
+
+
+def class_from_target_id(target_id: str) -> str:
+    if not target_id:
+        return ""
+    parts = target_id.rsplit(":", 3)
+    return parts[0] if parts else target_id
+
+
+def confusion_records(counter: Counter[tuple[str, str]], limit: int = 12) -> list[dict[str, object]]:
+    return [
+        {"pred": pred, "gt": gt, "count": int(count)}
+        for (pred, gt), count in counter.most_common(limit)
+    ]
+
+
+def per_class_accuracy_records(total: Counter[str], correct: Counter[str]) -> list[dict[str, object]]:
+    rows = []
+    for gt_class, count in total.most_common():
+        rows.append(
+            {
+                "gt_class": gt_class,
+                "count": int(count),
+                "correct": int(correct.get(gt_class, 0)),
+                "accuracy": round(correct.get(gt_class, 0) / max(count, 1), 6),
+            }
+        )
+    return rows
+
+
+def summarize_geometry_keys(obs_meta: list[ObservationMeta], obs_gt: dict[str, GTAssignment]) -> dict[str, dict[str, object]]:
+    buckets: dict[str, list[ObservationMeta]] = defaultdict(list)
+    for obs in obs_meta:
+        buckets[obs.geometry_key].append(obs)
+    summaries: dict[str, dict[str, object]] = {}
+    for key, items in buckets.items():
+        valid = [obs for obs in items if obs_gt[obs.evidence_id].eval_keep]
+        pred_counts = Counter(obs.label for obs in items)
+        gt_counts = Counter(obs_gt[obs.evidence_id].gt_class_name for obs in valid)
+        target_counts = Counter(obs_gt[obs.evidence_id].target_id for obs in valid)
+        dominant_pred, _ = majority(list(pred_counts.elements()))
+        dominant_gt, _ = majority(list(gt_counts.elements()))
+        correct = sum(1 for obs in valid if obs_gt[obs.evidence_id].semantic_correct)
+        summaries[key] = {
+            "observation_count": len(items),
+            "eval_keep_observation_count": len(valid),
+            "dominant_pred_label": dominant_pred,
+            "dominant_gt_class": dominant_gt,
+            "semantic_accuracy": round(correct / max(len(valid), 1), 6),
+            "unique_gt_target_count": len(target_counts),
+            "dominant_target_id": target_counts.most_common(1)[0][0] if target_counts else "",
+            "gt_purity": numeric_summary(obs_gt[obs.evidence_id].purity for obs in valid),
+            "clip_margin": numeric_summary(obs.clip_margin for obs in items),
+            "pred_label_counts": dict(pred_counts.most_common(8)),
+            "gt_class_counts": dict(gt_counts.most_common(8)),
+            "target_counts": dict(target_counts.most_common(8)),
+        }
+    return summaries
 
 
 def aggregate_object_monitor(scene_summaries: list[dict[str, object]], key: str) -> dict[str, object]:
@@ -513,9 +601,22 @@ def summarize_init(obs_meta: list[ObservationMeta], obs_gt: dict[str, GTAssignme
     frame_dup_rates = [duplicate_stats(targets)["duplicate_rate"] for targets in frame_targets.values()]
     frame_overseg = [duplicate_stats(targets)["overseg_factor"] for targets in frame_targets.values()]
     all_dup = duplicate_stats([obs_gt[obs.evidence_id].target_id for obs in valid])
+    gt_class_counts = Counter(obs_gt[obs.evidence_id].gt_class_name for obs in valid)
+    gt_class_correct = Counter(obs_gt[obs.evidence_id].gt_class_name for obs in valid if obs_gt[obs.evidence_id].semantic_correct)
+    pred_label_counts = Counter(obs.label for obs in valid)
+    semantic_confusions = Counter(
+        (obs.label, obs_gt[obs.evidence_id].gt_class_name)
+        for obs in valid
+        if not obs_gt[obs.evidence_id].semantic_correct
+    )
     return {
         "valid_eval_observations": len(valid),
+        "unique_gt_target_count": all_dup["unique_targets"],
         "semantic_accuracy": round(sum(semantic_correct) / max(len(semantic_correct), 1), 6),
+        "top_semantic_confusions": confusion_records(semantic_confusions),
+        "per_class_semantic_accuracy": per_class_accuracy_records(gt_class_counts, gt_class_correct),
+        "gt_class_counts": dict(gt_class_counts.most_common(20)),
+        "pred_label_counts": dict(pred_label_counts.most_common(20)),
         "gt_purity": numeric_summary(obs_gt[obs.evidence_id].purity for obs in valid),
         "clip_margin": numeric_summary(obs.clip_margin for obs in valid),
         "clip_top1_probability": numeric_summary(obs.clip_top1_probability for obs in valid),
@@ -531,6 +632,15 @@ def majority(items: list[str]) -> tuple[str, int]:
     if not items:
         return "", 0
     return Counter(items).most_common(1)[0]
+
+
+def hypothesis_semantic_label(hypothesis) -> str:
+    payload = getattr(hypothesis, "object_payload", None)
+    label = getattr(payload, "label", "") if payload is not None else ""
+    if label:
+        return str(label)
+    descriptor = str(getattr(hypothesis, "descriptor", ""))
+    return descriptor.split(":")[-1] if descriptor else ""
 
 
 def build_pipeline_config() -> PipelineConfig:
@@ -549,9 +659,14 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
     layer2 = CurrentToMemoryAssociationLayer(config)
     all_decisions = []
 
+    init_eval_targets = {item.target_id for item in obs_gt.values() if item.eval_keep}
     layer1_hyp_targets_by_frame: dict[str, list[str]] = defaultdict(list)
     layer1_purities = []
     layer1_semantic_correct = []
+    layer1_gt_class_counts: Counter[str] = Counter()
+    layer1_gt_class_correct: Counter[str] = Counter()
+    layer1_pred_label_counts: Counter[str] = Counter()
+    layer1_semantic_confusions: Counter[tuple[str, str]] = Counter()
     false_merge_hypotheses = 0
     multi_class_hypotheses = 0
     merged_pair_total = 0
@@ -564,6 +679,11 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
     object_targets: dict[str, set[str]] = defaultdict(set)
     l2 = Counter()
     l2_valid_decisions = 0
+    l2_semantic_correct = 0
+    l2_gt_class_counts: Counter[str] = Counter()
+    l2_gt_class_correct: Counter[str] = Counter()
+    l2_pred_label_counts: Counter[str] = Counter()
+    l2_semantic_confusions: Counter[tuple[str, str]] = Counter()
     l2_id_switch_events = 0
     l2_target_revisits = 0
     l2_decision_samples = []
@@ -588,8 +708,14 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
             target_id, target_count = majority(target_list)
             gt_class_name, _ = majority(class_list)
             purity = target_count / max(len(gt_items), 1)
-            pred_label = hyp.descriptor.split(":")[-1]
+            pred_label = hypothesis_semantic_label(hyp)
             semantic_ok = pred_label == gt_class_name
+            layer1_gt_class_counts[gt_class_name] += 1
+            layer1_pred_label_counts[pred_label] += 1
+            if semantic_ok:
+                layer1_gt_class_correct[gt_class_name] += 1
+            else:
+                layer1_semantic_confusions[(pred_label, gt_class_name)] += 1
             unique_targets = set(target_list)
             unique_classes = set(class_list)
             false_merge = len(unique_targets) > 1
@@ -631,6 +757,16 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
                 continue
             l2_valid_decisions += 1
             target_id = str(hyp_info["target_id"])
+            gt_class_name = str(hyp_info.get("gt_class_name", ""))
+            pred_label = str(hyp_info.get("pred_label", ""))
+            semantic_ok = bool(hyp_info.get("semantic_correct", False))
+            l2_gt_class_counts[gt_class_name] += 1
+            l2_pred_label_counts[pred_label] += 1
+            l2_semantic_correct += int(semantic_ok)
+            if semantic_ok:
+                l2_gt_class_correct[gt_class_name] += 1
+            else:
+                l2_semantic_confusions[(pred_label, gt_class_name)] += 1
             object_id = decision.object_id
             prev_last = target_last_object.get(target_id)
             prev_objects = target_objects[target_id]
@@ -721,9 +857,16 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
             duplicate_birth_unrepaired += 1
     frame_dup_rates = [duplicate_stats(targets)["duplicate_rate"] for targets in layer1_hyp_targets_by_frame.values()]
     frame_overseg = [duplicate_stats(targets)["overseg_factor"] for targets in layer1_hyp_targets_by_frame.values()]
+    layer1_targets = {target for targets in layer1_hyp_targets_by_frame.values() for target in targets}
     layer1_summary = {
         "hypothesis_count_eval_keep": sum(len(v) for v in layer1_hyp_targets_by_frame.values()),
+        "unique_gt_target_count": len(layer1_targets),
+        "coverage_vs_init": round(len(layer1_targets) / max(len(init_eval_targets), 1), 6),
         "semantic_accuracy": round(sum(layer1_semantic_correct) / max(len(layer1_semantic_correct), 1), 6),
+        "top_semantic_confusions": confusion_records(layer1_semantic_confusions),
+        "per_class_semantic_accuracy": per_class_accuracy_records(layer1_gt_class_counts, layer1_gt_class_correct),
+        "gt_class_counts": dict(layer1_gt_class_counts.most_common(20)),
+        "pred_label_counts": dict(layer1_pred_label_counts.most_common(20)),
         "hypothesis_target_purity": numeric_summary(layer1_purities),
         "false_merge_hypothesis_count": false_merge_hypotheses,
         "false_merge_hypothesis_rate": round(false_merge_hypotheses / max(len(layer1_purities), 1), 6),
@@ -740,10 +883,25 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
     assoc_total = l2["correct_association"] + l2["false_association_before_birth"] + l2["false_association_wrong_object"]
     birth_total = l2["correct_birth"] + l2["duplicate_birth"]
     multi_target_objects = sum(1 for targets in object_targets.values() if len(targets) > 1)
+    layer2_targets = set(target_objects)
+    stage_coverage = summarize_stage_coverage(
+        init_unique_targets=len(init_eval_targets),
+        layer1_unique_targets=len(layer1_targets),
+        layer2_unique_targets=len(layer2_targets),
+    )
     layer2_summary = {
         "valid_decision_count": l2_valid_decisions,
         "decision_accuracy": round(correct_total / max(l2_valid_decisions, 1), 6),
+        "decision_accuracy_after_object_merge": round((correct_total + duplicate_birth_repaired) / max(l2_valid_decisions, 1), 6),
         "decision_error_rate": round(1.0 - correct_total / max(l2_valid_decisions, 1), 6),
+        "decision_semantic_accuracy": round(l2_semantic_correct / max(l2_valid_decisions, 1), 6),
+        "top_semantic_confusions": confusion_records(l2_semantic_confusions),
+        "per_class_semantic_accuracy": per_class_accuracy_records(l2_gt_class_counts, l2_gt_class_correct),
+        "gt_class_counts": dict(l2_gt_class_counts.most_common(20)),
+        "pred_label_counts": dict(l2_pred_label_counts.most_common(20)),
+        "unique_gt_target_count": len(layer2_targets),
+        "coverage_vs_init": stage_coverage["layer2_coverage_vs_init"],
+        "coverage_vs_layer1": stage_coverage["layer2_coverage_vs_layer1"],
         "birth_count_eval_keep": birth_total,
         "correct_birth": l2["correct_birth"],
         "duplicate_birth": l2["duplicate_birth"],
@@ -768,6 +926,7 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
         "id_switch_events": l2_id_switch_events,
         "id_switch_rate_per_revisit": round(l2_id_switch_events / max(l2_target_revisits, 1), 6),
         "fragmented_gt_target_count": sum(1 for objects in target_objects.values() if len(objects) > 1),
+        "fragmented_gt_target_rate": round(sum(1 for objects in target_objects.values() if len(objects) > 1) / max(len(target_objects), 1), 6),
         "gt_target_fragmentation": sum(max(len(objects) - 1, 0) for objects in target_objects.values()),
         "multi_target_memory_object_count": multi_target_objects,
         "multi_target_memory_object_rate": round(multi_target_objects / max(len(object_targets), 1), 6),
@@ -1101,6 +1260,7 @@ def main() -> None:
         )
         obs_gt = {obs.evidence_id: assignment for obs, assignment in zip(obs_meta, assignments)}
         init_summary = summarize_init(obs_meta, obs_gt)
+        geometry_key_gt_monitor = summarize_geometry_keys(obs_meta, obs_gt)
         print(json.dumps({"scene": scene, "init": init_summary}, ensure_ascii=False), flush=True)
         print(f"=== {scene}: run DuoGraph3D with layer monitors ===", flush=True)
         result, logger, run_summary, layer1_summary, layer2_summary = run_layer_monitors(scene, frames, obs_gt)
@@ -1115,6 +1275,12 @@ def main() -> None:
             "init": init_summary,
             "layer1": layer1_summary,
             "layer2": layer2_summary,
+            "stage_coverage": summarize_stage_coverage(
+                init_unique_targets=int(init_summary["unique_gt_target_count"]),
+                layer1_unique_targets=int(layer1_summary["unique_gt_target_count"]),
+                layer2_unique_targets=int(layer2_summary["unique_gt_target_count"]),
+            ),
+            "geometry_key_gt_monitor": geometry_key_gt_monitor,
             "duograph_run_summary": run_summary,
             "duograph_object_export": export_summary,
             "duograph_object_monitor": duograph_object_monitor,
@@ -1148,6 +1314,12 @@ def main() -> None:
         "layer2_duplicate_birth_repaired_by_object_merge": sum(item["layer2"]["duplicate_birth_repaired_by_object_merge"] for item in scene_summaries),
     }
     rollup["layer2_decision_accuracy"] = round((rollup["layer2_correct_birth"] + rollup["layer2_correct_association"]) / max(rollup["layer2_valid_decisions"], 1), 6)
+    rollup["init_unique_gt_targets"] = sum(item["init"]["unique_gt_target_count"] for item in scene_summaries)
+    rollup["layer1_unique_gt_targets"] = sum(item["layer1"]["unique_gt_target_count"] for item in scene_summaries)
+    rollup["layer2_unique_gt_targets"] = sum(item["layer2"]["unique_gt_target_count"] for item in scene_summaries)
+    rollup["layer1_coverage_vs_init_micro"] = round(rollup["layer1_unique_gt_targets"] / max(rollup["init_unique_gt_targets"], 1), 6)
+    rollup["layer2_coverage_vs_init_micro"] = round(rollup["layer2_unique_gt_targets"] / max(rollup["init_unique_gt_targets"], 1), 6)
+    rollup["layer2_coverage_vs_layer1_micro"] = round(rollup["layer2_unique_gt_targets"] / max(rollup["layer1_unique_gt_targets"], 1), 6)
     rollup["layer2_duplicate_birth_rate"] = round(rollup["layer2_duplicate_birth"] / max(rollup["layer2_correct_birth"] + rollup["layer2_duplicate_birth"], 1), 6)
     rollup["layer2_residual_absorption_accuracy"] = round(rollup["layer2_correct_residual_absorption"] / max(rollup["layer2_residual_absorption_count"], 1), 6)
     rollup["layer2_duplicate_birth_failure_family_counts"] = aggregate_counter(scene_summaries, ("layer2", "duplicate_birth_failure_family_counts"))
@@ -1189,6 +1361,7 @@ def main() -> None:
         f"- valid eval observations: {rollup['valid_eval_observations']}",
         f"- Layer1 eval hypotheses: {rollup['layer1_eval_hypotheses']}",
         f"- Layer2 decision accuracy: {rollup['layer2_decision_accuracy']}",
+        f"- Stage target coverage (micro): init {rollup['init_unique_gt_targets']} -> L1 {rollup['layer1_unique_gt_targets']} ({rollup['layer1_coverage_vs_init_micro']}) -> L2 {rollup['layer2_unique_gt_targets']} ({rollup['layer2_coverage_vs_init_micro']})",
         f"- Layer2 duplicate birth rate: {rollup['layer2_duplicate_birth_rate']}",
         f"- Layer2 duplicate birth failure families: {rollup['layer2_duplicate_birth_failure_family_counts']}",
         f"- Layer2 residual absorption: {rollup['layer2_residual_absorption_count']} (accuracy {rollup['layer2_residual_absorption_accuracy']})",
@@ -1198,14 +1371,16 @@ def main() -> None:
         "",
         "## Per scene",
         "",
-        "| scene | init dup p50 | layer1 dup p50 | layer1 false merge | layer2 acc | duplicate birth rate | id switch rate | Duo obj count | Duo obj acc | Duo obj dup | CG obj count | CG obj acc | CG obj dup |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "| scene | init targets | L1 cov | L2 cov | init dup p50 | layer1 dup p50 | layer1 false merge | layer2 acc | duplicate birth rate | id switch rate | Duo obj count | Duo obj acc | Duo obj dup | CG obj count | CG obj acc | CG obj dup |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for item in scene_summaries:
         duo_obj = item.get("duograph_object_monitor", {})
         cg_obj = item.get("conceptgraphs_baseline_object_monitor", {})
         lines.append(
-            f"| {item['scene']} | {item['init']['per_frame_duplicate_rate'].get('p50', 0):.3f} | "
+            f"| {item['scene']} | {int(item['init']['unique_gt_target_count'])} | "
+            f"{item['stage_coverage']['layer1_coverage_vs_init']:.3f} | {item['stage_coverage']['layer2_coverage_vs_init']:.3f} | "
+            f"{item['init']['per_frame_duplicate_rate'].get('p50', 0):.3f} | "
             f"{item['layer1']['per_frame_duplicate_rate'].get('p50', 0):.3f} | {item['layer1']['false_merge_hypothesis_rate']:.3f} | "
             f"{item['layer2']['decision_accuracy']:.3f} | {item['layer2']['duplicate_birth_rate']:.3f} | "
             f"{item['layer2']['id_switch_rate_per_revisit']:.3f} | "
