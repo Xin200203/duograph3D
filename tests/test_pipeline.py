@@ -546,7 +546,14 @@ class PipelineTests(unittest.TestCase):
         node.avg_support_size = 0.4
         node.avg_depth_scale = 1.0
         node.avg_geometry_support = 0.5
-        history = HistoryCandidate(object_id=node.object_id, affinity=0.92, margin=0.4, strong=True)
+        history = HistoryCandidate(
+            object_id=node.object_id,
+            affinity=0.92,
+            spatial_score=0.72,
+            semantic_score=1.0,
+            margin=0.4,
+            strong=True,
+        )
         hypotheses = [
             CurrentObjectHypothesis(
                 hypothesis_id="hyp-a",
@@ -581,6 +588,110 @@ class PipelineTests(unittest.TestCase):
 
         self.assertEqual([decision.action for decision in decisions], ["associate", "associate"])
         self.assertEqual([decision.object_id for decision in decisions], [node.object_id, node.object_id])
+
+    def test_layer2_history_identity_requires_context_gate(self) -> None:
+        config = PipelineConfig(emit_association_diagnostics=True)
+        memory = ObjectGraphMemory(config)
+        node = memory.create_node(descriptor="chair", geometry_key="g-old", step_id=1)
+        node.appearance_key_recent = "chair"
+        node.avg_support_size = 0.4
+        node.avg_depth_scale = 1.0
+        node.avg_geometry_support = 0.5
+        weak_history = HistoryCandidate(
+            object_id=node.object_id,
+            affinity=0.95,
+            spatial_score=0.9,
+            semantic_score=0.0,
+            point_overlap_score=0.0,
+            margin=0.4,
+            strong=True,
+        )
+        hypothesis = CurrentObjectHypothesis(
+            hypothesis_id="hyp-low-semantic-history",
+            descriptor="chair",
+            geometry_key="g-new",
+            confidence=0.9,
+            evidence_ids=("e-low-semantic-history",),
+            track_hint="fragment-low-semantic-history",
+            history_candidates=(weak_history,),
+            support_signals={"appearance_key": "chair", "support_size": 0.4, "depth_scale": 1.0, "geometry_support": 0.5},
+        )
+        logger = EventLogger()
+
+        decisions = CurrentToMemoryAssociationLayer(config).update(
+            sequence_id="seq-history-gate",
+            step_id=2,
+            branch_id="duograph3d_full",
+            hypotheses=[hypothesis],
+            memory=memory,
+            logger=logger,
+        )
+
+        self.assertEqual(decisions[0].action, "birth")
+        diagnostic = logger.filter(event_type="association_candidate_diagnostic")[0]
+        top_candidate = diagnostic.payload["top_candidates"][0]
+        self.assertFalse(top_candidate["components"]["history_identity_gate_passed"])
+        self.assertEqual(top_candidate["components"]["history_candidate"], 0.0)
+
+    def test_layer2_relation_bonus_is_capped_and_diagnostic(self) -> None:
+        config = PipelineConfig(emit_association_diagnostics=True, association_diagnostics_top_k=5, layer2_relation_bonus_cap=0.3)
+        memory = ObjectGraphMemory(config)
+        anchor_a = memory.create_node(descriptor="anchor", geometry_key="g-anchor-a", step_id=1)
+        anchor_b = memory.create_node(descriptor="anchor", geometry_key="g-anchor-b", step_id=1)
+        related = memory.create_node(descriptor="lamp", geometry_key="g-related-old", step_id=1)
+        related.class_counts["table"] = 1
+        for _ in range(5):
+            memory.register_co_visibility([anchor_a.object_id, related.object_id], step_id=1)
+            memory.register_co_visibility([anchor_b.object_id, related.object_id], step_id=1)
+        hypotheses = [
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-anchor-a",
+                descriptor="anchor",
+                geometry_key="g-anchor-a",
+                confidence=0.9,
+                evidence_ids=("e-anchor-a",),
+                track_hint="anchor-a",
+            ),
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-anchor-b",
+                descriptor="anchor",
+                geometry_key="g-anchor-b",
+                confidence=0.9,
+                evidence_ids=("e-anchor-b",),
+                track_hint="anchor-b",
+            ),
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-related",
+                descriptor="unmatched",
+                geometry_key="g-new-related",
+                confidence=0.9,
+                evidence_ids=("e-related",),
+                track_hint="related",
+                object_payload=ObjectObservationPayload(label="table", detection_count=1),
+            ),
+        ]
+        logger = EventLogger()
+
+        CurrentToMemoryAssociationLayer(config).update(
+            sequence_id="seq-relation-cap",
+            step_id=2,
+            branch_id="duograph3d_full",
+            hypotheses=hypotheses,
+            memory=memory,
+            logger=logger,
+        )
+
+        related_diag = [
+            record
+            for record in logger.filter(event_type="association_candidate_diagnostic")
+            if record.payload["hypothesis_id"] == "hyp-related"
+        ][0]
+        related_candidate = next(
+            item for item in related_diag.payload["top_candidates"] if item["object_id"] == related.object_id
+        )
+        self.assertEqual(related_candidate["relation_bonus_raw"], 0.5)
+        self.assertEqual(related_candidate["relation_bonus"], 0.3)
+        self.assertTrue(related_candidate["relation_bonus_allowed"])
 
     def test_history_candidate_uses_object_point_overlap(self) -> None:
         memory = ObjectGraphMemory(PipelineConfig(history_point_overlap_affinity_weight=0.2))
@@ -765,6 +876,7 @@ class PipelineTests(unittest.TestCase):
 
         self.assertEqual(len(merges), 1)
         self.assertEqual(right.status.value, "retired")
+        self.assertEqual(right.merge_target_id, left.object_id)
         self.assertEqual(left.detection_count, 2)
         self.assertEqual(left.class_counts["chair"], 2)
         self.assertEqual(left.bbox_min, (0.0, 0.0, 0.0))

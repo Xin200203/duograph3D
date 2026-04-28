@@ -24,6 +24,7 @@ sys.path.insert(0, "/home/nebula/xxy/concept-graphs-main")
 
 from duograph3d.contracts import FrameInput, ObjectObservationPayload, Observation, ObservationSupport, PipelineConfig, TemporalVariant
 from duograph3d.events import BRANCH_DUOGRAPH3D
+from duograph3d.export_policy import GEOMETRY_EXPORT_SOURCE, MEMORY_DENSE_EXPORT_SOURCE, ExportCoveragePolicy, choose_export_source
 from duograph3d.io_utils import write_json
 from duograph3d.memory import ObjectGraphMemory
 from duograph3d.metrics import summarize_run
@@ -63,6 +64,12 @@ MASK_CONF_THRESHOLD = 0.95
 MAX_BBOX_AREA_RATIO = 0.50
 MIN_VALID_DEPTH_POINTS = 16
 MIN_OBJECT_DETECTIONS = 2
+EXPORT_SOURCE_STRATEGY = "auto"
+MIN_MEMORY_EXPORT_OBJECTS = 100
+MIN_MEMORY_EXPORT_KEY_RATIO = 0.10
+MIN_MEMORY_EXPORT_POINT_RATIO = 0.05
+MEMORY_DENSE_MIN_ROOT_SHARE = 0.60
+MEMORY_DENSE_GEOMETRY_FALLBACK = True
 CLASS_AGNOSTIC_TOKEN = "item"
 EXPORT_SPLIT_BY_LABEL = False
 CG_DOWNSAMPLE_VOXEL_SIZE = 0.025
@@ -627,15 +634,9 @@ def cap_object_points(objects: MapObjectList, cfg) -> None:
         obj["bbox"] = get_bounding_box(cfg, obj["pcd"])
 
 
-def build_initial_map_objects(
+def iter_key_export_items(
     key_data: dict[str, dict[str, object]],
-    track_assignments: dict[str, list[str]],
-    label_to_index: dict[str, int],
-) -> tuple[MapObjectList, list[dict[str, object]], list[str]]:
-    cfg = conceptgraphs_postprocess_cfg()
-    objects = MapObjectList()
-    export_debug = []
-    skipped_keys = []
+) -> list[tuple[str, str, dict[str, object], str]]:
     export_items: list[tuple[str, str, dict[str, object], str]] = []
     for key, data in sorted(key_data.items()):
         label_buckets = data.get("label_buckets") or {}
@@ -645,6 +646,31 @@ def build_initial_map_objects(
         else:
             label = str(data["label_counts"].most_common(1)[0][0])
             export_items.append((key, key, data, label))
+    return export_items
+
+
+def estimate_key_point_budget(key_data: dict[str, dict[str, object]]) -> int:
+    """Estimate dense geometry points available before ConceptGraphs postprocess."""
+
+    total = 0
+    for _base_key, _export_key, data, _label in iter_key_export_items(key_data):
+        point_count = sum(len(chunk) for chunk in data.get("points", []))
+        if point_count < 4:
+            continue
+        total += min(point_count, MAX_POINTS_PER_OBJECT * 2)
+    return int(total)
+
+
+def build_initial_map_objects(
+    key_data: dict[str, dict[str, object]],
+    track_assignments: dict[str, list[str]],
+    label_to_index: dict[str, int],
+) -> tuple[MapObjectList, list[dict[str, object]], list[str]]:
+    cfg = conceptgraphs_postprocess_cfg()
+    objects = MapObjectList()
+    export_debug = []
+    skipped_keys = []
+    export_items = iter_key_export_items(key_data)
 
     for base_key, export_key, data, label in export_items:
         pts_chunks = data["points"]
@@ -788,6 +814,255 @@ def build_memory_map_objects(result, label_to_index: dict[str, int], class_feats
     return objects, export_debug, skipped
 
 
+def resolve_memory_root(object_id: str, memory_nodes: dict[str, object]) -> str:
+    """Follow merge aliases so retired duplicate nodes still export through root."""
+
+    current = str(object_id or "")
+    seen: set[str] = set()
+    while current and current in memory_nodes and current not in seen:
+        seen.add(current)
+        target = str(getattr(memory_nodes[current], "merge_target_id", "") or "")
+        if not target:
+            return current
+        current = target
+    return current if current in memory_nodes else ""
+
+
+def dominant_memory_root_for_key(
+    base_key: str,
+    track_assignments: dict[str, object],
+    memory_nodes: dict[str, object],
+) -> tuple[str, dict[str, object]]:
+    raw_assignment = track_assignments.get(base_key) or {}
+    if isinstance(raw_assignment, dict):
+        raw_counts = Counter({str(object_id): int(count) for object_id, count in raw_assignment.items() if str(object_id)})
+    else:
+        raw_counts = Counter(str(object_id) for object_id in raw_assignment if str(object_id))
+    root_counts: Counter[str] = Counter()
+    for object_id, count in raw_counts.items():
+        root_id = resolve_memory_root(object_id, memory_nodes)
+        if root_id:
+            root_counts[root_id] += max(int(count), 1)
+    if not root_counts:
+        return "", {
+            "base_geometry_key": base_key,
+            "assigned_object_counts": dict(raw_counts),
+            "resolved_root_counts": {},
+            "assignment_status": "no_memory_assignment",
+        }
+    ranked_roots = sorted(
+        root_counts,
+        key=lambda root_id: (
+            -root_counts[root_id],
+            -int(getattr(memory_nodes[root_id], "detection_count", 0) or 0),
+            -int(getattr(memory_nodes[root_id], "last_seen_step", 0) or 0),
+            str(root_id),
+        ),
+    )
+    root_id = ranked_roots[0]
+    root_total = max(sum(root_counts.values()), 1)
+    return root_id, {
+        "base_geometry_key": base_key,
+        "assigned_object_counts": dict(raw_counts),
+        "resolved_root_counts": dict(root_counts),
+        "selected_root_id": root_id,
+        "selected_root_share": round(root_counts[root_id] / root_total, 6),
+        "assignment_status": "ambiguous_memory_assignment" if len(root_counts) > 1 else "single_memory_assignment",
+    }
+
+
+def build_memory_dense_map_objects(
+    result,
+    key_data: dict[str, dict[str, object]],
+    track_assignments: dict[str, object],
+    label_to_index: dict[str, int],
+) -> tuple[MapObjectList, list[dict[str, object]], list[str], dict[str, object]]:
+    """Export online memory IDs with dense ConceptGraphs-style geometry.
+
+    The online memory node is the object authority, but its `sampled_points` are
+    intentionally capped for matching speed.  For official mIoU, reuse the dense
+    per-geometry-key points staged from GSA masks and group those keys by the
+    memory root selected by Layer2/merge aliases.
+    """
+
+    cfg = conceptgraphs_postprocess_cfg()
+    root_buckets: dict[str, dict[str, object]] = {}
+    skipped: list[str] = []
+    assignment_status_counts: Counter[str] = Counter()
+    raw_assignment_status_counts: Counter[str] = Counter()
+    root_share_values = []
+    ambiguous_examples = []
+    export_items = iter_key_export_items(key_data)
+    for base_key, export_key, data, label in export_items:
+        root_id, assignment_debug = dominant_memory_root_for_key(base_key, track_assignments, result.memory_nodes)
+        status = str(assignment_debug["assignment_status"])
+        selected_root_share = float(assignment_debug.get("selected_root_share", 0.0) or 0.0)
+        if selected_root_share > 0.0:
+            root_share_values.append(selected_root_share)
+        raw_assignment_status_counts[status] += 1
+        if status == "ambiguous_memory_assignment" and len(ambiguous_examples) < 20:
+            ambiguous_examples.append(assignment_debug)
+        use_geometry_fallback = False
+        if MEMORY_DENSE_GEOMETRY_FALLBACK and not root_id:
+            use_geometry_fallback = True
+            status = "unassigned_geometry_fallback"
+        elif (
+            MEMORY_DENSE_GEOMETRY_FALLBACK
+            and status == "ambiguous_memory_assignment"
+            and selected_root_share < MEMORY_DENSE_MIN_ROOT_SHARE
+        ):
+            use_geometry_fallback = True
+            status = "ambiguous_geometry_fallback"
+        assignment_status_counts[status] += 1
+        if not root_id and not use_geometry_fallback:
+            skipped.append(f"{export_key}:no_memory_assignment")
+            continue
+        node = result.memory_nodes.get(root_id) if root_id else None
+        if not use_geometry_fallback:
+            if node is None:
+                skipped.append(f"{export_key}:missing_memory_root")
+                continue
+            skip_reason = ObjectGraphMemory.export_skip_reason(
+                node,
+                min_points=0,
+                min_detections=MIN_OBJECT_DETECTIONS,
+            )
+            if skip_reason:
+                skipped.append(f"{export_key}:{skip_reason}")
+                continue
+        bucket_id = f"geometry:{export_key}" if use_geometry_fallback else root_id
+        bucket = root_buckets.setdefault(
+            bucket_id,
+            {
+                "label_counts": Counter(),
+                "clip_sum": np.zeros_like(np.asarray(data["clip_sum"], dtype=np.float64), dtype=np.float64),
+                "text_sum": np.zeros_like(np.asarray(data["text_sum"], dtype=np.float64), dtype=np.float64),
+                "feature_count": 0,
+                "points": [],
+                "colors": [],
+                "mask_pixels": 0,
+                "confidence_sum": 0.0,
+                "valid_depth_ratio_sum": 0.0,
+                "clip_margin_sum": 0.0,
+                "geometry_keys": set(),
+                "export_keys": [],
+                "memory_root_ids": set(),
+                "source_types": Counter(),
+                "assignment_status_counts": Counter(),
+            },
+        )
+        bucket["label_counts"].update(data["label_counts"])
+        bucket["clip_sum"] += np.asarray(data["clip_sum"], dtype=np.float64)
+        bucket["text_sum"] += np.asarray(data["text_sum"], dtype=np.float64)
+        bucket["feature_count"] += int(data["feature_count"])
+        bucket["points"].extend(data["points"])
+        bucket["colors"].extend(data["colors"])
+        bucket["mask_pixels"] += int(data["mask_pixels"])
+        bucket["confidence_sum"] += float(data["confidence_sum"])
+        bucket["valid_depth_ratio_sum"] += float(data["valid_depth_ratio_sum"])
+        bucket["clip_margin_sum"] += float(data["clip_margin_sum"])
+        bucket["geometry_keys"].add(base_key)
+        bucket["export_keys"].append(export_key)
+        if root_id:
+            bucket["memory_root_ids"].add(root_id)
+        bucket["source_types"]["geometry_fallback" if use_geometry_fallback else "memory_root"] += 1
+        bucket["assignment_status_counts"][status] += 1
+
+    objects = MapObjectList()
+    export_debug = []
+    for bucket_id, data in sorted(root_buckets.items()):
+        pts_chunks = data["points"]
+        col_chunks = data["colors"]
+        if not pts_chunks:
+            skipped.append(f"{bucket_id}:no_dense_points")
+            continue
+        pts = np.concatenate(pts_chunks, axis=0).astype(np.float32)
+        cols = np.concatenate(col_chunks, axis=0).astype(np.float32)
+        if len(pts) < 4:
+            skipped.append(f"{bucket_id}:too_few_dense_points")
+            continue
+        pre_keep = sample_indices(len(pts), MAX_POINTS_PER_OBJECT * 2)
+        pts = pts[pre_keep]
+        cols = cols[pre_keep]
+        pcd_original = make_open3d_pcd(pts, cols)
+        pcd = process_pcd(pcd_original, cfg, run_dbscan=True)
+        if len(pcd.points) < 4:
+            pcd = pcd_original
+        if len(pcd.points) < 4:
+            skipped.append(f"{bucket_id}:too_few_postprocess_points")
+            continue
+        memory_root_ids = sorted(data["memory_root_ids"])
+        primary_root_id = memory_root_ids[0] if memory_root_ids else ""
+        node = result.memory_nodes.get(primary_root_id) if primary_root_id else None
+        label_counts = data["label_counts"]
+        label = str(label_counts.most_common(1)[0][0]) if label_counts else (ObjectGraphMemory.dominant_semantic_label(node) if node else "")
+        label_index = int(label_to_index.get(label, -1))
+        count = max(int(data["feature_count"]), 1)
+        clip_ft = normalize_np((data["clip_sum"] / count).reshape(1, -1))[0].astype(np.float32)
+        text_ft = normalize_np((data["text_sum"] / count).reshape(1, -1))[0].astype(np.float32)
+        geometry_keys = sorted(data["geometry_keys"])
+        export_keys = sorted(data["export_keys"])
+        conf = float(data["confidence_sum"] / count)
+        obj = {
+            "image_idx": [],
+            "mask_idx": [],
+            "color_path": [],
+            "class_name": [label],
+            "class_id": [label_index],
+            "num_detections": count,
+            "conf": [conf],
+            "n_points": [len(pcd.points)],
+            "pixel_area": [int(data["mask_pixels"])],
+            "contain_number": [None],
+            "source_key": [f"memory:{bucket_id}" if primary_root_id else f"geometry-fallback:{bucket_id}"],
+            "base_geometry_key": geometry_keys,
+            "source_object_id": memory_root_ids,
+            "inst_color": np.random.rand(3),
+            "is_background": [False],
+            "pcd": pcd,
+            "bbox": get_bounding_box(cfg, pcd),
+            "clip_ft": torch.from_numpy(clip_ft),
+            "text_ft": torch.from_numpy(text_ft),
+        }
+        objects.append(obj)
+        export_debug.append({
+            "track_hint": f"memory:{bucket_id}" if primary_root_id else f"geometry-fallback:{bucket_id}",
+            "base_geometry_key": geometry_keys,
+            "export_keys": export_keys,
+            "object_ids": memory_root_ids,
+            "label": label,
+            "num_detections": count,
+            "point_count_before_postprocess": int(len(pts)),
+            "point_count_after_key_denoise": int(len(pcd.points)),
+            "fragment_object_count": len(geometry_keys),
+            "mask_pixels": int(data["mask_pixels"]),
+            "avg_valid_depth_ratio": round(float(data["valid_depth_ratio_sum"] / count), 6),
+            "avg_clip_margin": round(float(data["clip_margin_sum"] / count), 6),
+            "source": "online_memory_dense_geometry",
+            "source_types": dict(data["source_types"]),
+            "assignment_status_counts": dict(data["assignment_status_counts"]),
+            "memory_detection_count": int(getattr(node, "detection_count", 0) or 0) if node else 0,
+            "memory_status": str(getattr(getattr(node, "status", ""), "value", getattr(node, "status", ""))) if node else "",
+        })
+    diagnostics = {
+        "candidate_key_object_count": len(export_items),
+        "assigned_key_count": sum(1 for item in export_debug for _key in item.get("base_geometry_key", [])),
+        "initial_object_count": len(objects),
+        "skipped_key_count": len(skipped),
+        "assignment_status_counts": dict(assignment_status_counts),
+        "raw_assignment_status_counts": dict(raw_assignment_status_counts),
+        "selected_root_share": numeric_summary(root_share_values),
+        "memory_dense_min_root_share": MEMORY_DENSE_MIN_ROOT_SHARE,
+        "memory_dense_geometry_fallback": MEMORY_DENSE_GEOMETRY_FALLBACK,
+        "ambiguous_assignment_examples": ambiguous_examples,
+    }
+    return objects, export_debug, skipped, diagnostics
+
+
+def point_count_from_export_debug(export_debug: list[dict[str, object]]) -> int:
+    return int(sum(int(item.get("point_count_before_postprocess", 0) or 0) for item in export_debug))
+
+
 def compute_shadow_undermerge(scene: str, key_data: dict[str, dict[str, object]], track_assignments: dict[str, list[str]]) -> dict[str, object]:
     groups: dict[str, list[dict[str, object]]] = defaultdict(list)
     for key, data in key_data.items():
@@ -860,13 +1135,43 @@ def write_conceptgraphs_payload(
     pcd_dir = REPLICA_ROOT / scene / "pcd_saves"
     pcd_dir.mkdir(parents=True, exist_ok=True)
     cfg = conceptgraphs_postprocess_cfg()
-    initial_objects, export_debug, skipped_keys = build_memory_map_objects(result, label_to_index, class_feats_np)
-    export_source = "duograph3d_online_object_memory"
-    if len(initial_objects) == 0:
+
+    memory_objects, memory_export_debug, memory_skipped_keys = build_memory_map_objects(result, label_to_index, class_feats_np)
+    (
+        memory_dense_objects,
+        memory_dense_export_debug,
+        memory_dense_skipped_keys,
+        memory_dense_diagnostics,
+    ) = build_memory_dense_map_objects(result, key_data, track_assignments, label_to_index)
+    requested_source = str(EXPORT_SOURCE_STRATEGY or "auto").lower().replace("_", "-")
+    selection_objects = memory_dense_objects if requested_source == "memory-dense" else memory_objects
+    selection_debug = memory_dense_export_debug if requested_source == "memory-dense" else memory_export_debug
+    export_policy = ExportCoveragePolicy(
+        min_memory_objects=MIN_MEMORY_EXPORT_OBJECTS,
+        min_memory_key_ratio=MIN_MEMORY_EXPORT_KEY_RATIO,
+        min_memory_point_ratio=MIN_MEMORY_EXPORT_POINT_RATIO,
+    )
+    export_selection = choose_export_source(
+        strategy=EXPORT_SOURCE_STRATEGY,
+        memory_object_count=len(selection_objects),
+        key_object_count=len(iter_key_export_items(key_data)),
+        memory_point_count=point_count_from_export_debug(selection_debug),
+        key_point_budget=estimate_key_point_budget(key_data),
+        policy=export_policy,
+    )
+    export_source = str(export_selection["selected_source"])
+    if export_source == GEOMETRY_EXPORT_SOURCE:
         initial_objects, export_debug, skipped_keys = build_initial_map_objects(key_data, track_assignments, label_to_index)
-        export_source = "duograph3d_geometry_key_fallback"
+    elif export_source == MEMORY_DENSE_EXPORT_SOURCE:
+        initial_objects, export_debug, skipped_keys = memory_dense_objects, memory_dense_export_debug, memory_dense_skipped_keys
+    else:
+        initial_objects, export_debug, skipped_keys = memory_objects, memory_export_debug, memory_skipped_keys
     pre_postprocess_count = len(initial_objects)
-    print(f"ConceptGraphs-style postprocess before denoise/filter/merge: {pre_postprocess_count}", flush=True)
+    print(
+        f"ConceptGraphs-style postprocess before denoise/filter/merge: {pre_postprocess_count} "
+        f"(source={export_source}, reason={export_selection['fallback_reason']})",
+        flush=True,
+    )
     objects = denoise_objects(cfg, initial_objects)
     post_denoise_count = len(objects)
     objects = filter_objects(cfg, objects)
@@ -883,6 +1188,22 @@ def write_conceptgraphs_payload(
     detection_counts = [int(item["num_detections"]) for item in export_debug]
     fragment_counts = [int(item["fragment_object_count"]) for item in export_debug]
     export_monitor = {
+        "export_selection": export_selection,
+        "memory_export_probe": {
+            "initial_object_count": len(memory_objects),
+            "skipped_object_count": len(memory_skipped_keys),
+            "point_count_before_postprocess": point_count_from_export_debug(memory_export_debug),
+            "sample": memory_export_debug[:10],
+        },
+        "memory_dense_export_probe": {
+            **memory_dense_diagnostics,
+            "point_count_before_postprocess": point_count_from_export_debug(memory_dense_export_debug),
+            "sample": memory_dense_export_debug[:10],
+        },
+        "geometry_export_probe": {
+            "candidate_key_object_count": len(iter_key_export_items(key_data)),
+            "estimated_point_budget": estimate_key_point_budget(key_data),
+        },
         "initial_key_object_count": pre_postprocess_count,
         "post_denoise_object_count": post_denoise_count,
         "post_filter_object_count": post_filter_count,
@@ -932,11 +1253,24 @@ def write_conceptgraphs_payload(
             "max_bbox_area_ratio": MAX_BBOX_AREA_RATIO,
             "min_valid_depth_points": MIN_VALID_DEPTH_POINTS,
             "min_object_detections": MIN_OBJECT_DETECTIONS,
+            "export_source_strategy": EXPORT_SOURCE_STRATEGY,
+            "memory_coverage_gate": {
+                "min_memory_objects": MIN_MEMORY_EXPORT_OBJECTS,
+                "min_memory_key_ratio": MIN_MEMORY_EXPORT_KEY_RATIO,
+                "min_memory_point_ratio": MIN_MEMORY_EXPORT_POINT_RATIO,
+                "memory_dense_min_root_share": MEMORY_DENSE_MIN_ROOT_SHARE,
+                "memory_dense_geometry_fallback": MEMORY_DENSE_GEOMETRY_FALLBACK,
+            },
             "max_points_per_obs": MAX_POINTS_PER_OBS,
             "max_points_per_object": MAX_POINTS_PER_OBJECT,
             "export_split_by_label": EXPORT_SPLIT_BY_LABEL,
             "temporal_variant": TemporalVariant.NAIVE_FRAMEWISE.value,
-            "fragmentation_policy": "class-agnostic key objects are denoised, support-filtered, and overlap-merged with ConceptGraphs-style post-processing before export",
+            "fragmentation_policy": (
+                "coverage-preserving export: auto uses online memory only when it passes object/key/point coverage gates; "
+                "otherwise class-agnostic geometry-key objects are denoised, support-filtered, and overlap-merged "
+                "with ConceptGraphs-style post-processing before official mIoU export; memory-dense keeps online memory root IDs "
+                "but exports dense key geometry assigned to each root"
+            ),
             "conceptgraphs_engineering": {
                 "class_agnostic_identity_token": CLASS_AGNOSTIC_TOKEN,
                 "export_split_by_label": EXPORT_SPLIT_BY_LABEL,
@@ -1004,11 +1338,18 @@ def monitor_rollup(scene_debug: list[dict[str, object]], gap_rows: list[dict[str
     prep = [item["prep"] for item in scene_debug]
     branch = [item["duograph_summary"] for item in scene_debug]
     shadows = [item["shadow_undermerge"] for item in scene_debug]
+    export_sources = Counter(str(item.get("manifest", {}).get("object_source", "")) for item in scene_debug)
+    fallback_reasons = Counter(
+        str(item.get("export_monitor", {}).get("export_selection", {}).get("fallback_reason", ""))
+        for item in scene_debug
+    )
     return {
         "raw_detection_count": sum(int(item["raw_detection_count"]) for item in prep),
         "kept_observation_count": sum(int(item["kept_observation_count"]) for item in prep),
         "key_count": sum(int(item["key_count"]) for item in prep),
         "export_object_count": sum(int(item.get("export_object_count", 0)) for item in scene_debug),
+        "export_sources": dict(export_sources),
+        "export_fallback_reasons": dict(fallback_reasons),
         "memory_node_count": sum(int(item["memory_node_count"]) for item in branch),
         "track_fragmentation": sum(int(item["track_fragmentation"]) for item in branch),
         "shadow_undermerge_candidate_pairs": sum(int(item["candidate_pair_count"]) for item in shadows),
@@ -1051,6 +1392,7 @@ def write_markdown_report(summary: dict[str, object], path: Path) -> None:
         f"- raw detections / kept observations / track keys: {rollup.get('raw_detection_count')} / {rollup.get('kept_observation_count')} / {rollup.get('key_count')}",
         f"- memory nodes / track fragmentation: {rollup.get('memory_node_count')} / {rollup.get('track_fragmentation')}",
         f"- exported objects after ConceptGraphs-style postprocess: {rollup.get('export_object_count')}",
+        f"- export sources: `{rollup.get('export_sources')}`; fallback reasons: `{rollup.get('export_fallback_reasons')}`",
         f"- shadow under-merge candidate pairs: {rollup.get('shadow_undermerge_candidate_pairs')}",
         f"- low CLIP-margin observations: {rollup.get('low_clip_margin_count')}; low valid-depth observations: {rollup.get('low_valid_depth_count')}",
         f"- birth reasons: `{rollup.get('birth_reasons')}`",
@@ -1058,8 +1400,8 @@ def write_markdown_report(summary: dict[str, object], path: Path) -> None:
         "",
         "## Per-scene merge monitors",
         "",
-        "| scene | keys | export objs | memory nodes | fragmentation | singleton-key rate | shadow pairs | no-candidate births | weak-identity births | p50 best score | eval mIoU | ΔmIoU |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "| scene | source | fallback | keys | export objs | memory nodes | fragmentation | singleton-key rate | shadow pairs | no-candidate births | weak-identity births | p50 best score | eval mIoU | ΔmIoU |",
+        "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ])
     gap_by_scene = {row["scene_id"]: row for row in gap_rows}
     for item in scene_debug:
@@ -1069,8 +1411,10 @@ def write_markdown_report(summary: dict[str, object], path: Path) -> None:
         reasons = Counter(diag.get("birth_reasons", {}))
         eval_row = item.get("eval_row") or {}
         gap = gap_by_scene.get(scene, {})
+        export_selection = item.get("export_monitor", {}).get("export_selection", {})
         lines.append(
-            f"| {scene} | {prep['key_count']} | {item.get('export_object_count', 0)} | {item['duograph_summary']['memory_node_count']} | "
+            f"| {scene} | {item.get('manifest', {}).get('object_source', '')} | {export_selection.get('fallback_reason', '')} | "
+            f"{prep['key_count']} | {item.get('export_object_count', 0)} | {item['duograph_summary']['memory_node_count']} | "
             f"{item['duograph_summary']['track_fragmentation']} | {prep['monitor']['singleton_key_rate']:.3f} | "
             f"{item['shadow_undermerge']['candidate_pair_count']} | {reasons.get('no_candidate', 0)} | "
             f"{reasons.get('best_candidate_without_strong_identity', 0)} | "
@@ -1089,19 +1433,37 @@ def write_markdown_report(summary: dict[str, object], path: Path) -> None:
 
 
 def main() -> None:
-    global ROOT, PRED_EXP_NAME, MIN_OBJECT_DETECTIONS
+    global ROOT, PRED_EXP_NAME, MIN_OBJECT_DETECTIONS, EXPORT_SOURCE_STRATEGY
+    global MIN_MEMORY_EXPORT_OBJECTS, MIN_MEMORY_EXPORT_KEY_RATIO, MIN_MEMORY_EXPORT_POINT_RATIO
     parser = argparse.ArgumentParser()
     parser.add_argument("--scenes", nargs="*", default=list(REPLICA_SCENE_IDS))
     parser.add_argument("--skip-eval", action="store_true")
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--pred-exp-name", default=None)
     parser.add_argument("--min-object-detections", type=int, default=None)
+    parser.add_argument(
+        "--export-source",
+        choices=["auto", "geometry", "memory", "memory-dense"],
+        default=EXPORT_SOURCE_STRATEGY,
+        help=(
+            "Object source for official ConceptGraphs-format export. "
+            "`auto` keeps mIoU coverage by falling back to geometry keys when online memory is too sparse; "
+            "`memory-dense` groups dense key geometry by online-memory root IDs."
+        ),
+    )
+    parser.add_argument("--min-memory-export-objects", type=int, default=MIN_MEMORY_EXPORT_OBJECTS)
+    parser.add_argument("--min-memory-export-key-ratio", type=float, default=MIN_MEMORY_EXPORT_KEY_RATIO)
+    parser.add_argument("--min-memory-export-point-ratio", type=float, default=MIN_MEMORY_EXPORT_POINT_RATIO)
     args = parser.parse_args()
     ROOT = args.root
     if args.pred_exp_name:
         PRED_EXP_NAME = args.pred_exp_name
     if args.min_object_detections is not None:
         MIN_OBJECT_DETECTIONS = max(int(args.min_object_detections), 1)
+    EXPORT_SOURCE_STRATEGY = args.export_source
+    MIN_MEMORY_EXPORT_OBJECTS = max(int(args.min_memory_export_objects), 0)
+    MIN_MEMORY_EXPORT_KEY_RATIO = max(float(args.min_memory_export_key_ratio), 0.0)
+    MIN_MEMORY_EXPORT_POINT_RATIO = max(float(args.min_memory_export_point_ratio), 0.0)
     torch.set_num_threads(4)
     ROOT.mkdir(parents=True, exist_ok=True)
     (ROOT / "logs").mkdir(exist_ok=True)
@@ -1155,7 +1517,12 @@ def main() -> None:
             "birth_reasons": branch_summary["association_diagnostics"].get("birth_reasons"),
         })), flush=True)
         print(f"=== {scene}: export ===", flush=True)
-        track_assignments = branch_summary.get("track_assignments", {}) or {}
+        track_assignments = (
+            branch_summary.get("geometry_key_assignment_counts", {})
+            or branch_summary.get("geometry_key_assignments", {})
+            or branch_summary.get("track_assignments", {})
+            or {}
+        )
         shadow_undermerge = compute_shadow_undermerge(scene, key_data, track_assignments)
         manifest, export_debug, skipped_keys = write_conceptgraphs_payload(scene, result, key_data, track_assignments, branch_summary, label_to_index, class_feats_np)
         manifests.append(manifest)

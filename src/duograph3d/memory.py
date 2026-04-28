@@ -741,7 +741,9 @@ class ObjectGraphMemory:
         target.ambiguity_flags.update(source.ambiguity_flags)
         target.failure_tags.update(source.failure_tags)
         self._refresh_fused_descriptor(target, target.descriptor_fused or source.descriptor_fused)
+        self._redirect_relation_edges(source.object_id, target.object_id)
         source.status = ObjectStatus.RETIRED
+        source.merge_target_id = target.object_id
         source.failure_tags.add("merged_into_duplicate_object")
 
     def merge_duplicate_objects(self) -> list[dict[str, object]]:
@@ -854,6 +856,34 @@ class ObjectGraphMemory:
                 edge.last_seen_step = step_id
                 edge.strength = round(min(edge.co_visibility_count / 5.0, 1.0), 3)
                 self.relation_edges[relation_key] = edge
+
+    def _redirect_relation_edges(self, source_object_id: str, target_object_id: str) -> None:
+        """Move co-visibility evidence from a merged source node to its target."""
+
+        if not source_object_id or not target_object_id or source_object_id == target_object_id:
+            return
+        rewritten: dict[tuple[str, str], MemoryRelationEdge] = {}
+        for _old_key, edge in self.relation_edges.items():
+            left = target_object_id if edge.source_object_id == source_object_id else edge.source_object_id
+            right = target_object_id if edge.target_object_id == source_object_id else edge.target_object_id
+            if left == right:
+                continue
+            key = self._relation_key(left, right)
+            existing = rewritten.get(key)
+            if existing is None:
+                rewritten[key] = MemoryRelationEdge(
+                    source_object_id=key[0],
+                    target_object_id=key[1],
+                    relation_type=edge.relation_type,
+                    co_visibility_count=edge.co_visibility_count,
+                    last_seen_step=edge.last_seen_step,
+                    strength=edge.strength,
+                )
+            else:
+                existing.co_visibility_count += edge.co_visibility_count
+                existing.last_seen_step = max(existing.last_seen_step, edge.last_seen_step)
+                existing.strength = round(min(existing.co_visibility_count / 5.0, 1.0), 3)
+        self.relation_edges = rewritten
 
     def relation_bonus(self, source_object_id: str, target_object_id: str) -> float:
         edge = self.relation_edges.get(self._relation_key(source_object_id, target_object_id))

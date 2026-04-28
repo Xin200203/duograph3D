@@ -21,9 +21,49 @@ def _track_fragmentation(logger: EventLogger) -> tuple[int, dict[str, list[str]]
     return fragmentation, {track: sorted(object_ids) for track, object_ids in track_to_objects.items()}
 
 
+def _geometry_key_assignments(logger: EventLogger) -> dict[str, list[str]]:
+    key_to_objects: dict[str, set[str]] = defaultdict(set)
+    for record in logger.records:
+        if record.event_type not in {"birth_commit", "association_commit", "reentry_commit"}:
+            continue
+        object_id = str(record.payload.get("object_id", ""))
+        if not object_id:
+            continue
+        geometry_keys = record.payload.get("geometry_keys")
+        if isinstance(geometry_keys, (list, tuple)):
+            keys = [str(key) for key in geometry_keys if str(key)]
+        else:
+            geometry_key = str(record.payload.get("geometry_key", ""))
+            keys = [geometry_key] if geometry_key else []
+        for key in keys:
+            key_to_objects[key].add(object_id)
+    return {key: sorted(object_ids) for key, object_ids in key_to_objects.items()}
+
+
+def _geometry_key_assignment_counts(logger: EventLogger) -> dict[str, dict[str, int]]:
+    key_to_object_counts: dict[str, Counter[str]] = defaultdict(Counter)
+    for record in logger.records:
+        if record.event_type not in {"birth_commit", "association_commit", "reentry_commit"}:
+            continue
+        object_id = str(record.payload.get("object_id", ""))
+        if not object_id:
+            continue
+        geometry_keys = record.payload.get("geometry_keys")
+        if isinstance(geometry_keys, (list, tuple)):
+            keys = [str(key) for key in geometry_keys if str(key)]
+        else:
+            geometry_key = str(record.payload.get("geometry_key", ""))
+            keys = [geometry_key] if geometry_key else []
+        for key in keys:
+            key_to_object_counts[key][object_id] += 1
+    return {key: dict(counter) for key, counter in key_to_object_counts.items()}
+
+
 def summarize_run(result: SequenceRunResult, logger: EventLogger) -> dict[str, object]:
     node_status_counts = Counter(node.status.value for node in result.memory_nodes.values())
     track_fragmentation, track_assignments = _track_fragmentation(logger)
+    geometry_key_assignments = _geometry_key_assignments(logger)
+    geometry_key_assignment_counts = _geometry_key_assignment_counts(logger)
     nodes = list(result.memory_nodes.values())
     active_nodes = [node for node in nodes if node.status.value != "retired"]
     return {
@@ -47,6 +87,8 @@ def summarize_run(result: SequenceRunResult, logger: EventLogger) -> dict[str, o
         ),
         "track_fragmentation": track_fragmentation,
         "track_assignments": track_assignments,
+        "geometry_key_assignments": geometry_key_assignments,
+        "geometry_key_assignment_counts": geometry_key_assignment_counts,
         "memory_relation_edge_count": len(result.relation_edges),
         "memory_object_consolidation_events": logger.count("memory_object_consolidation"),
         "merged_memory_node_count": sum(1 for node in nodes if "merged_into_duplicate_object" in node.failure_tags),

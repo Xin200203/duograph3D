@@ -339,6 +339,7 @@ class CurrentEvidenceGraphLayer:
                 "appearance_key": appearance_keys[0] if appearance_keys else representative.descriptor,
                 "repair_edge_count": max(len(items) - 1, 0),
                 "repair_reasons": tuple(repair_reasons),
+                "component_geometry_keys": tuple(sorted(geometries)),
             }
             if top_history is not None:
                 support_signals.update(

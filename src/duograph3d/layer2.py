@@ -182,6 +182,7 @@ class CurrentToMemoryAssociationLayer:
         history_point_overlap_score = 0.0
         history_visual_score = 0.0
         history_semantic_score = 0.0
+        history_identity_gate_passed = False
         for candidate in hypothesis.history_candidates:
             if candidate.object_id != object_id:
                 continue
@@ -191,9 +192,20 @@ class CurrentToMemoryAssociationLayer:
             history_point_overlap_score = max(history_point_overlap_score, candidate.point_overlap_score)
             history_visual_score = max(history_visual_score, candidate.visual_score)
             history_semantic_score = max(history_semantic_score, candidate.semantic_score)
-            if candidate.affinity >= self.config.layer2_history_identity_threshold:
+            has_history_identity = (
+                candidate.affinity >= self.config.layer2_history_identity_threshold
+                and candidate.margin >= self.config.history_candidate_margin_threshold
+                and candidate.spatial_score >= self.config.layer2_history_min_spatial_score
+                and (
+                    candidate.semantic_score >= self.config.layer2_history_min_semantic_score
+                    or candidate.point_overlap_score >= self.config.layer2_history_min_point_overlap
+                    or (hypothesis.geometry_key and hypothesis.geometry_key == node_geometry)
+                )
+            )
+            if has_history_identity:
                 history_candidate_score = max(history_candidate_score, min(candidate.affinity * 0.65, 0.65))
                 strong_identity_match = True
+                history_identity_gate_passed = True
         score += temporal_score
         score += geometry_profile_score
         score += history_candidate_score
@@ -216,6 +228,7 @@ class CurrentToMemoryAssociationLayer:
             "history_point_overlap": round(history_point_overlap_score, 4),
             "history_visual": round(history_visual_score, 4),
             "history_semantic": round(history_semantic_score, 4),
+            "history_identity_gate_passed": history_identity_gate_passed,
         }
         return score, strong_identity_match, components
 
@@ -228,6 +241,18 @@ class CurrentToMemoryAssociationLayer:
         if not best_has_identity:
             return "best_candidate_without_strong_identity"
         return "no_candidate_above_threshold"
+
+    @staticmethod
+    def _component_geometry_keys(hypothesis: CurrentObjectHypothesis) -> tuple[str, ...]:
+        raw_keys = hypothesis.support_signals.get("component_geometry_keys")
+        keys: list[str] = []
+        if isinstance(raw_keys, (list, tuple)):
+            keys.extend(str(key) for key in raw_keys if str(key))
+        elif isinstance(raw_keys, str) and raw_keys:
+            keys.append(raw_keys)
+        if hypothesis.geometry_key:
+            keys.append(hypothesis.geometry_key)
+        return tuple(sorted(set(keys)))
 
     def _birth_failure_family(
         self,
@@ -338,6 +363,7 @@ class CurrentToMemoryAssociationLayer:
         matched_ids: set[str] = set()
         current_step_object_ids: list[str] = []
         for hypothesis in hypotheses:
+            component_geometry_keys = self._component_geometry_keys(hypothesis)
             continuity_key = self._str_signal(hypothesis, "continuity_key")
             appearance_key = self._str_signal(hypothesis, "appearance_key")
             support_size = self._float_signal(hypothesis, "support_size", 0.0)
@@ -379,13 +405,20 @@ class CurrentToMemoryAssociationLayer:
                     node_geometry_support=candidate.avg_geometry_support,
                     visual_similarity=visual_similarity,
                 )
-                relation_bonus = sum(
-                    memory.relation_bonus(candidate.object_id, current_object_id) * 0.25
-                    for current_object_id in current_step_object_ids
-                )
-                score += relation_bonus
                 point_overlap_score = memory.hypothesis_point_overlap_score(hypothesis, candidate)
                 semantic_score = memory.hypothesis_semantic_score(hypothesis, candidate)
+                relation_raw = sum(
+                    memory.relation_bonus(candidate.object_id, current_object_id) * self.config.layer2_relation_bonus_weight
+                    for current_object_id in current_step_object_ids
+                )
+                relation_allowed = (
+                    has_identity
+                    or semantic_score >= self.config.layer2_relation_bonus_min_semantic_score
+                    or point_overlap_score >= self.config.layer2_history_min_point_overlap
+                    or (hypothesis.geometry_key and hypothesis.geometry_key == candidate.geometry_key)
+                )
+                relation_bonus = min(relation_raw, self.config.layer2_relation_bonus_cap) if relation_allowed else 0.0
+                score += relation_bonus
                 if self.config.emit_association_diagnostics:
                     candidate_scores.append(
                         {
@@ -398,6 +431,8 @@ class CurrentToMemoryAssociationLayer:
                             "node_continuity_key": candidate.continuity_key_recent,
                             "node_appearance_key": candidate.appearance_key_recent,
                             "relation_bonus": round(relation_bonus, 4),
+                            "relation_bonus_raw": round(relation_raw, 4),
+                            "relation_bonus_allowed": relation_allowed,
                             "point_overlap_score": round(point_overlap_score, 4),
                             "semantic_score": round(semantic_score, 4),
                             "components": components,
@@ -427,9 +462,15 @@ class CurrentToMemoryAssociationLayer:
                     second_score=second_score,
                     score_margin=round(best_score - second_score, 4) if second_score is not None else None,
                     best_has_strong_identity=best_has_identity,
+                    requires_strong_identity=self.config.layer2_require_strong_identity,
                     top_candidates=diagnostic_top_candidates,
                 )
-            if best_id is not None and best_score >= self.config.association_threshold:
+            should_associate = (
+                best_id is not None
+                and best_score >= self.config.association_threshold
+                and (best_has_identity or not self.config.layer2_require_strong_identity)
+            )
+            if should_associate:
                 node = memory.nodes[best_id]
                 action = "associate"
                 if node.status in {ObjectStatus.OCCLUDED, ObjectStatus.DORMANT}:
@@ -475,6 +516,8 @@ class CurrentToMemoryAssociationLayer:
                     object_id=node.object_id,
                     hypothesis_id=hypothesis.hypothesis_id,
                     track_hint=hypothesis.track_hint,
+                    geometry_key=hypothesis.geometry_key,
+                    geometry_keys=component_geometry_keys,
                     score=best_score,
                     action=action,
                     reason="best_candidate_above_threshold",
@@ -543,6 +586,8 @@ class CurrentToMemoryAssociationLayer:
                         object_id=node.object_id,
                         hypothesis_id=hypothesis.hypothesis_id,
                         track_hint=hypothesis.track_hint,
+                        geometry_key=hypothesis.geometry_key,
+                        geometry_keys=component_geometry_keys,
                         score=absorb_score,
                         action="absorb",
                         reason="residual_absorption_above_threshold",
@@ -599,6 +644,8 @@ class CurrentToMemoryAssociationLayer:
                     object_id=node.object_id,
                     hypothesis_id=hypothesis.hypothesis_id,
                     track_hint=hypothesis.track_hint,
+                    geometry_key=hypothesis.geometry_key,
+                    geometry_keys=component_geometry_keys,
                 )
                 if self.config.emit_association_diagnostics:
                     logger.log(

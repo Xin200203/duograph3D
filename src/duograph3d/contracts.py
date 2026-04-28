@@ -149,6 +149,7 @@ class MemoryObjectNode:
     evidence_provenance_tail: list[str] = field(default_factory=list)
     ambiguity_flags: set[str] = field(default_factory=set)
     failure_tags: set[str] = field(default_factory=set)
+    merge_target_id: str = ""
     continuity_key_recent: str = ""
     appearance_key_recent: str = ""
     avg_support_size: float = 0.0
@@ -216,6 +217,13 @@ class PipelineConfig:
     layer2_absorption_threshold: float = 1.68
     layer2_absorption_min_point_overlap: float = 1.0
     layer2_absorption_min_semantic_score: float = 1.0
+    layer2_require_strong_identity: bool = True
+    layer2_history_min_spatial_score: float = 0.45
+    layer2_history_min_semantic_score: float = 0.55
+    layer2_history_min_point_overlap: float = 0.15
+    layer2_relation_bonus_weight: float = 0.25
+    layer2_relation_bonus_cap: float = 0.35
+    layer2_relation_bonus_min_semantic_score: float = 0.55
     layer2_visual_similarity_weight: float = 0.35
     layer2_descriptor_match_weight: float = 0.55
     layer2_appearance_match_weight: float = 0.3
