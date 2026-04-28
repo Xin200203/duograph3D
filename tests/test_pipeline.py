@@ -12,6 +12,7 @@ from duograph3d.contracts import (
     HistoryCandidate,
     Observation,
     ObjectObservationPayload,
+    ObjectStatus,
     ObservationSupport,
     PipelineConfig,
     TemporalVariant,
@@ -817,6 +818,34 @@ class PipelineTests(unittest.TestCase):
         self.assertAlmostEqual(node.text_feature[0], 0.707107, places=5)
         self.assertAlmostEqual(node.text_feature[1], 0.707107, places=5)
 
+    def test_class_agnostic_identity_descriptor_survives_semantic_fusion(self) -> None:
+        memory = ObjectGraphMemory()
+        node = memory.create_node(descriptor="room0:item", geometry_key="g-object", step_id=1)
+
+        memory.fuse_hypothesis(
+            node,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-chair-fragment",
+                descriptor="room0:item",
+                geometry_key="g-object",
+                confidence=0.9,
+                evidence_ids=("e-chair",),
+                track_hint="chair-fragment",
+                object_payload=ObjectObservationPayload(
+                    label="chair",
+                    clip_feature=(1.0, 0.0),
+                    text_feature=(1.0, 0.0),
+                    detection_count=1,
+                ),
+            ),
+            step_id=1,
+        )
+
+        self.assertEqual(node.descriptor_fused, "room0:item")
+        self.assertEqual(node.descriptor_recent, "room0:item")
+        self.assertEqual(node.class_counts, {"chair": 1})
+        self.assertEqual(ObjectGraphMemory.dominant_semantic_label(node), "chair")
+
     def test_semantic_score_prefers_object_text_feature_over_noisy_top1_label(self) -> None:
         memory = ObjectGraphMemory()
         node = memory.create_node(descriptor="scene:chair", geometry_key="g-object", step_id=1)
@@ -886,6 +915,29 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(top_candidate["components"]["descriptor"], 0.0)
         self.assertEqual(top_candidate["components"]["appearance"], 0.0)
         self.assertGreater(top_candidate["components"]["visual"], 0.0)
+
+    def test_export_gate_filters_short_lived_retired_fragments(self) -> None:
+        memory = ObjectGraphMemory()
+        stable = memory.create_node(descriptor="room0:item", geometry_key="stable", step_id=1)
+        stable.status = ObjectStatus.RETIRED
+        stable.detection_count = 3
+        stable.point_count = 6
+        stable.sampled_points = tuple((float(i), 0.0, 0.0) for i in range(6))
+
+        fragment = memory.create_node(descriptor="room0:item", geometry_key="fragment", step_id=2)
+        fragment.status = ObjectStatus.RETIRED
+        fragment.detection_count = 1
+        fragment.point_count = 6
+        fragment.sampled_points = tuple((float(i), 1.0, 0.0) for i in range(6))
+
+        self.assertEqual(
+            ObjectGraphMemory.export_skip_reason(stable, min_points=4, min_detections=3),
+            "",
+        )
+        self.assertEqual(
+            ObjectGraphMemory.export_skip_reason(fragment, min_points=4, min_detections=3),
+            "too_few_detections",
+        )
 
 
 if __name__ == "__main__":

@@ -156,6 +156,29 @@ class ObjectGraphMemory:
         return f"{prefix}:{label}"
 
     @classmethod
+    def dominant_semantic_label(cls, node: MemoryObjectNode) -> str:
+        """Return the stable object-level semantic label without changing identity.
+
+        `descriptor_fused` is an identity descriptor used by Layer2 matching.  In
+        the ConceptGraphs-style class-agnostic setting it is intentionally a
+        token such as `room0:item`, while the object's semantic state lives in
+        `class_counts` / CLIP features.  Keeping this helper separate prevents
+        one noisy SAM/GSA label from rewriting the identity channel.
+        """
+
+        if node.class_counts:
+            max_count = max(node.class_counts.values())
+            tied_labels = {label for label, count in node.class_counts.items() if count == max_count}
+            fused_label = cls._label_from_descriptor(node.descriptor_fused)
+            if fused_label in tied_labels:
+                return fused_label
+            recent_label = cls._label_from_descriptor(node.descriptor_recent)
+            if recent_label in tied_labels:
+                return recent_label
+            return sorted(tied_labels)[0]
+        return cls._label_from_descriptor(node.appearance_key_recent or node.descriptor_recent or node.descriptor_fused)
+
+    @classmethod
     def _semantic_vote_score(cls, label: str, descriptor: str, node: MemoryObjectNode) -> float:
         if label:
             candidates = {value for value in (label, cls._label_from_descriptor(label)) if value}
@@ -178,19 +201,12 @@ class ObjectGraphMemory:
 
     @classmethod
     def _refresh_fused_descriptor(cls, node: MemoryObjectNode, fallback_descriptor: str = "") -> None:
-        if not node.class_counts:
-            if fallback_descriptor and not node.descriptor_fused:
-                node.descriptor_fused = fallback_descriptor
-            return
-        max_count = max(node.class_counts.values())
-        tied_labels = {label for label, count in node.class_counts.items() if count == max_count}
-        current_label = cls._label_from_descriptor(node.descriptor_fused)
-        if current_label in tied_labels:
-            label = current_label
-        else:
-            label = sorted(tied_labels)[0]
-        base_descriptor = node.descriptor_fused or fallback_descriptor or node.descriptor_recent or label
-        node.descriptor_fused = cls._descriptor_with_label(base_descriptor, label)
+        # Do not rewrite `descriptor_fused` with a semantic class label.  Layer2
+        # uses this field as an identity descriptor; class-agnostic experiments
+        # rely on it staying at values such as `room0:item` while semantics are
+        # maintained separately in class_counts/feature embeddings.
+        if fallback_descriptor and not node.descriptor_fused:
+            node.descriptor_fused = fallback_descriptor
 
     @staticmethod
     def _bbox_from_points(points: tuple[tuple[float, float, float], ...]) -> tuple[tuple[float, float, float], tuple[float, float, float]]:
@@ -767,6 +783,33 @@ class ObjectGraphMemory:
                 node.failure_tags.add("filtered_low_detection_object")
                 retired.append(node.object_id)
         return retired
+
+    @staticmethod
+    def export_skip_reason(
+        node: MemoryObjectNode,
+        *,
+        min_points: int = 4,
+        min_detections: int = 1,
+    ) -> str:
+        if "merged_into_duplicate_object" in node.failure_tags:
+            return "merged_into_duplicate_object"
+        if "filtered_low_detection_object" in node.failure_tags:
+            return "filtered_low_detection_object"
+        if max(int(node.detection_count), 0) < max(int(min_detections), 1):
+            return "too_few_detections"
+        if max(int(node.point_count), len(node.sampled_points)) < max(int(min_points), 0):
+            return "too_few_points"
+        return ""
+
+    @classmethod
+    def is_exportable_node(
+        cls,
+        node: MemoryObjectNode,
+        *,
+        min_points: int = 4,
+        min_detections: int = 1,
+    ) -> bool:
+        return cls.export_skip_reason(node, min_points=min_points, min_detections=min_detections) == ""
 
     def denoise_objects(self) -> dict[str, int]:
         changed = 0

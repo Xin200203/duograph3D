@@ -1,0 +1,5262 @@
+{
+  "protocol": "GT-aware layer monitor for DuoGraph3D over ConceptGraphs GSA detections; GT target is semantic class + 1m GT cell proxy, not true instance id.",
+  "parameters": {
+    "profile": "engineered",
+    "voxel_size": 0.2,
+    "gt_target_voxel_size": 1.0,
+    "min_mask_pixels": 300,
+    "mask_conf_threshold": 0.95,
+    "max_bbox_area_ratio": 0.5,
+    "min_valid_depth_points": 16,
+    "max_points_per_obs": 160,
+    "apply_mask_subtract_contained": true,
+    "class_agnostic_identity": true,
+    "export_min_detections": 2,
+    "baseline_pred_exp_name": "none_overlap_maskconf0.95_simsum1.2_dbscan.1_merge20_masksub",
+    "duograph_pred_exp_name": "duograph3d_repair_assoc165_room1_20260428",
+    "clip_probability_logit_scale": 100.0,
+    "excluded_eval_classes": [
+      "ceiling",
+      "door",
+      "floor",
+      "other",
+      "wall",
+      "window"
+    ],
+    "pipeline_gate_overrides": {
+      "association_threshold": 1.65
+    }
+  },
+  "rollup": {
+    "valid_eval_observations": 4640,
+    "layer1_eval_hypotheses": 4393,
+    "layer2_valid_decisions": 4393,
+    "layer2_correct_birth": 4,
+    "layer2_correct_association": 4148,
+    "layer2_duplicate_birth": 15,
+    "layer2_id_switch_events": 459,
+    "layer2_gt_target_fragmentation": 163,
+    "layer2_residual_absorption_count": 0,
+    "layer2_correct_residual_absorption": 0,
+    "layer2_false_residual_absorption": 0,
+    "layer2_duplicate_birth_repaired_by_object_merge": 13,
+    "layer2_decision_accuracy": 0.94514,
+    "layer2_duplicate_birth_rate": 0.789474,
+    "layer2_residual_absorption_accuracy": 0.0,
+    "layer2_duplicate_birth_failure_family_counts": {
+      "semantic_gate_low": 15
+    },
+    "layer2_duplicate_birth_reason_counts": {
+      "best_candidate_below_threshold": 15
+    },
+    "duograph_object_monitor": {
+      "available_scene_count": 1,
+      "object_count": 14,
+      "valid_eval_object_count": 5,
+      "semantic_accuracy_weighted": 0.6,
+      "semantic_cell_duplicate_count": 0,
+      "semantic_cell_duplicate_rate_micro": 0.0
+    },
+    "conceptgraphs_baseline_object_monitor": {
+      "available_scene_count": 1,
+      "object_count": 67,
+      "valid_eval_object_count": 37,
+      "semantic_accuracy_weighted": 0.432432,
+      "semantic_cell_duplicate_count": 7,
+      "semantic_cell_duplicate_rate_micro": 0.189189
+    }
+  },
+  "scenes": [
+    {
+      "scene": "room1",
+      "prep": {
+        "scene": "room1",
+        "frame_count": 400,
+        "frames_with_observations": 400,
+        "raw_detection_count": 10649,
+        "kept_observation_count": 8054,
+        "too_small_mask_count": 382,
+        "low_confidence_mask_count": 1623,
+        "large_bbox_mask_count": 590,
+        "too_few_valid_points_count": 0,
+        "zero_valid_depth_count": 0,
+        "mask_pixels_subtracted": 201243028,
+        "parameters": {
+          "profile": "engineered",
+          "voxel_size": 0.2,
+          "min_mask_pixels": 300,
+          "mask_conf_threshold": 0.95,
+          "max_bbox_area_ratio": 0.5,
+          "min_valid_depth_points": 16,
+          "max_points_per_obs": 160,
+          "class_agnostic_identity": true
+        },
+        "seconds": 42.093
+      },
+      "init": {
+        "valid_eval_observations": 4640,
+        "semantic_accuracy": 0.414655,
+        "gt_purity": {
+          "count": 4640,
+          "min": 0.4625,
+          "mean": 0.978665,
+          "p10": 0.95,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "clip_margin": {
+          "count": 4640,
+          "min": 5e-06,
+          "mean": 0.028228,
+          "p10": 0.003049,
+          "p50": 0.0186,
+          "p90": 0.07419,
+          "p99": 0.107672,
+          "max": 0.119561
+        },
+        "clip_top1_probability": {
+          "count": 4640,
+          "min": 0.138085,
+          "mean": 0.75139,
+          "p10": 0.435541,
+          "p50": 0.791567,
+          "p90": 0.999032,
+          "p99": 0.999952,
+          "max": 0.999983
+        },
+        "clip_entropy": {
+          "count": 4640,
+          "min": 0.000328,
+          "mean": 1.066975,
+          "p10": 0.012765,
+          "p50": 1.007685,
+          "p90": 2.283617,
+          "p99": 3.474999,
+          "max": 4.248637
+        },
+        "low_clip_margin_rate": 0.661207,
+        "per_frame_duplicate_rate": {
+          "count": 400,
+          "min": 0.0,
+          "mean": 0.221032,
+          "p10": 0.076374,
+          "p50": 0.222222,
+          "p90": 0.363636,
+          "p99": 0.5,
+          "max": 0.555556
+        },
+        "per_frame_overseg_factor": {
+          "count": 400,
+          "min": 1.0,
+          "mean": 1.314729,
+          "p10": 1.082692,
+          "p50": 1.285714,
+          "p90": 1.571429,
+          "p99": 2.0,
+          "max": 2.25
+        },
+        "global_semantic_cell_duplicates": {
+          "total": 4640,
+          "unique_targets": 82,
+          "duplicate_count": 4558,
+          "duplicate_rate": 0.982328,
+          "overseg_factor": 56.585366,
+          "targets_with_duplicates": 79,
+          "max_items_per_target": 386
+        }
+      },
+      "layer1": {
+        "hypothesis_count_eval_keep": 4393,
+        "semantic_accuracy": 0.0,
+        "hypothesis_target_purity": {
+          "count": 4393,
+          "min": 0.333333,
+          "mean": 0.98998,
+          "p10": 1.0,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "false_merge_hypothesis_count": 85,
+        "false_merge_hypothesis_rate": 0.019349,
+        "multi_class_hypothesis_count": 28,
+        "multi_class_hypothesis_rate": 0.006374,
+        "merged_pair_total": 311,
+        "merge_pair_precision": 0.463023,
+        "merge_pair_error_rate": 0.536977,
+        "per_frame_duplicate_rate": {
+          "count": 400,
+          "min": 0.0,
+          "mean": 0.191126,
+          "p10": 0.0,
+          "p50": 0.2,
+          "p90": 0.333333,
+          "p99": 0.5,
+          "max": 0.6
+        },
+        "per_frame_overseg_factor": {
+          "count": 400,
+          "min": 1.0,
+          "mean": 1.268066,
+          "p10": 1.0,
+          "p50": 1.25,
+          "p90": 1.5,
+          "p99": 2.0,
+          "max": 2.5
+        },
+        "global_semantic_cell_duplicates": {
+          "total": 4393,
+          "unique_targets": 82,
+          "duplicate_count": 4311,
+          "duplicate_rate": 0.981334,
+          "overseg_factor": 53.573171,
+          "targets_with_duplicates": 77,
+          "max_items_per_target": 356
+        }
+      },
+      "layer2": {
+        "valid_decision_count": 4393,
+        "decision_accuracy": 0.94514,
+        "decision_error_rate": 0.05486,
+        "birth_count_eval_keep": 19,
+        "correct_birth": 4,
+        "duplicate_birth": 15,
+        "duplicate_birth_rate": 0.789474,
+        "duplicate_birth_reason_counts": {
+          "best_candidate_below_threshold": 15
+        },
+        "duplicate_birth_failure_family_counts": {
+          "semantic_gate_low": 15
+        },
+        "duplicate_birth_top_candidate_score": {
+          "count": 15,
+          "min": 1.3941,
+          "mean": 1.59768,
+          "p10": 1.58518,
+          "p50": 1.6106,
+          "p90": 1.63248,
+          "p99": 1.636664,
+          "max": 1.637
+        },
+        "duplicate_birth_top_candidate_point_overlap": {
+          "count": 15,
+          "min": 0.0,
+          "mean": 0.106947,
+          "p10": 0.0,
+          "p50": 0.0417,
+          "p90": 0.31252,
+          "p99": 0.372088,
+          "max": 0.375
+        },
+        "duplicate_birth_top_candidate_semantic": {
+          "count": 15,
+          "min": 0.0007,
+          "mean": 0.09966,
+          "p10": 0.05662,
+          "p50": 0.1047,
+          "p90": 0.17072,
+          "p99": 0.182516,
+          "max": 0.1826
+        },
+        "duplicate_birth_repaired_by_object_merge": 13,
+        "duplicate_birth_unrepaired_after_object_merge": 2,
+        "duplicate_birth_repair_rate": 0.866667,
+        "association_count_eval_keep": 4374,
+        "correct_association": 4148,
+        "false_association_before_birth": 78,
+        "false_association_wrong_object": 148,
+        "association_accuracy": 0.948331,
+        "residual_absorption_count": 0,
+        "correct_residual_absorption": 0,
+        "false_residual_absorption": 0,
+        "residual_absorption_accuracy": 0.0,
+        "id_switch_events": 459,
+        "id_switch_rate_per_revisit": 0.106472,
+        "fragmented_gt_target_count": 55,
+        "gt_target_fragmentation": 163,
+        "multi_target_memory_object_count": 30,
+        "multi_target_memory_object_rate": 0.75,
+        "error_samples": [
+          {
+            "step_id": 2,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "lamp:-4:-2:1",
+            "previous_object": "obj-3",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 3,
+            "hypothesis_id": "hyp-7",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "blinds:-4:-3:0",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:-4:-3:0",
+              "lamp:-4:-2:1"
+            ]
+          },
+          {
+            "step_id": 3,
+            "hypothesis_id": "hyp-9",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "switch:-5:-1:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:-4:-3:0",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 3,
+            "hypothesis_id": "hyp-11",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "book:-5:-2:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:-4:-3:0",
+              "book:-5:-2:-1",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 3,
+            "hypothesis_id": "hyp-14",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "cabinet:-5:-2:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:-4:-3:0",
+              "book:-5:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 4,
+            "hypothesis_id": "hyp-4",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "lamp:-4:-1:1",
+            "previous_object": "obj-12",
+            "object_known_targets": [
+              "blinds:-4:-3:0",
+              "book:-5:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 5,
+            "hypothesis_id": "hyp-4",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "cabinet:-4:-2:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:-4:-3:0",
+              "book:-5:-2:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 6,
+            "hypothesis_id": "hyp-4",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-6",
+            "target_id": "vent:-5:-1:1",
+            "previous_object": "",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 6,
+            "hypothesis_id": "hyp-7",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-4",
+            "target_id": "blanket:-4:-3:-1",
+            "previous_object": "",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 7,
+            "hypothesis_id": "hyp-2",
+            "action": "birth",
+            "reason": "best_candidate_below_threshold",
+            "object_id": "obj-17",
+            "target_id": "blinds:-4:-3:0",
+            "previous_object": "obj-5",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 7,
+            "hypothesis_id": "hyp-14",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "blanket:-4:-3:-1",
+            "previous_object": "obj-4",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 7,
+            "hypothesis_id": "hyp-16",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "cabinet:-5:-2:-1",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "cabinet:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 8,
+            "hypothesis_id": "hyp-6",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "cabinet:-4:-2:-1",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 9,
+            "hypothesis_id": "hyp-5",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "blinds:-3:-3:0",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "book:-5:-2:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 9,
+            "hypothesis_id": "hyp-13",
+            "action": "reentry",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-15",
+            "target_id": "indoor-plant:-5:-2:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "indoor-plant:-5:-2:-1",
+              "indoor-plant:-5:-2:0"
+            ]
+          },
+          {
+            "step_id": 9,
+            "hypothesis_id": "hyp-18",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "basket:-4:-3:-2",
+            "previous_object": "",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 11,
+            "hypothesis_id": "hyp-7",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "cabinet:-5:-2:-1",
+            "previous_object": "obj-14",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 11,
+            "hypothesis_id": "hyp-9",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "basket:-4:-3:-2",
+            "previous_object": "obj-14",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "book:-5:-2:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 11,
+            "hypothesis_id": "hyp-17",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "blanket:-4:-3:-1",
+            "previous_object": "obj-14",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "book:-5:-2:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 12,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-17",
+            "target_id": "blinds:-3:-3:0",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0"
+            ]
+          },
+          {
+            "step_id": 12,
+            "hypothesis_id": "hyp-11",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "blinds:-3:-3:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:-3:-3:-1",
+              "cabinet:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 13,
+            "hypothesis_id": "hyp-11",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-17",
+            "target_id": "blinds:-3:-3:-1",
+            "previous_object": "obj-13",
+            "object_known_targets": [
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0"
+            ]
+          },
+          {
+            "step_id": 18,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "lamp:-4:-2:1",
+            "previous_object": "obj-3",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-2:1"
+            ]
+          },
+          {
+            "step_id": 18,
+            "hypothesis_id": "hyp-5",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "switch:-5:-1:-1",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "blinds:-3:-3:-1",
+              "cabinet:-5:-2:-1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 18,
+            "hypothesis_id": "hyp-10",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "vase:-5:-2:-1",
+            "previous_object": "obj-16",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "book:-5:-2:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1",
+              "vase:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 18,
+            "hypothesis_id": "hyp-18",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "vent:-5:-1:1",
+            "previous_object": "obj-6",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "book:-5:-2:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "switch:-5:-1:-1",
+              "vase:-5:-2:-1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 19,
+            "hypothesis_id": "hyp-11",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "vent:-5:-1:1",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-2:1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 19,
+            "hypothesis_id": "hyp-22",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-6",
+            "target_id": "lamp:-4:-1:1",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "lamp:-4:-1:1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 19,
+            "hypothesis_id": "hyp-23",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "vase:-5:-2:-1",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "lamp:-4:-2:1",
+              "vase:-5:-2:-1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 20,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-6",
+            "target_id": "lamp:-4:-2:1",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 20,
+            "hypothesis_id": "hyp-5",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "blinds:-3:-3:0",
+            "previous_object": "obj-17",
+            "object_known_targets": [
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "cabinet:-5:-2:-1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 20,
+            "hypothesis_id": "hyp-13",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "indoor-plant:-5:-2:0",
+            "previous_object": "obj-15",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:0",
+              "lamp:-4:-2:1",
+              "vase:-5:-2:-1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 21,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "blinds:-4:-3:0",
+            "previous_object": "obj-17",
+            "object_known_targets": [
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "cabinet:-5:-2:-1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 21,
+            "hypothesis_id": "hyp-7",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "lamp:-4:-1:1",
+            "previous_object": "obj-6",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:0",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "vase:-5:-2:-1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 21,
+            "hypothesis_id": "hyp-13",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-4",
+            "target_id": "indoor-plant:-5:-2:0",
+            "previous_object": "obj-14",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "indoor-plant:-5:-2:0"
+            ]
+          },
+          {
+            "step_id": 21,
+            "hypothesis_id": "hyp-14",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-4",
+            "target_id": "book:-5:-2:-1",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "book:-5:-2:-1",
+              "indoor-plant:-5:-2:0"
+            ]
+          },
+          {
+            "step_id": 22,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "lamp:-3:-2:1",
+            "previous_object": "",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:0",
+              "lamp:-3:-2:1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "vase:-5:-2:-1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 25,
+            "hypothesis_id": "hyp-15",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "blinds:-3:-3:0",
+            "previous_object": "obj-13",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:0",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:0",
+              "lamp:-3:-2:1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "vase:-5:-2:-1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 30,
+            "hypothesis_id": "hyp-13",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-4",
+            "target_id": "vase:-5:-2:-1",
+            "previous_object": "obj-14",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "book:-5:-2:-1",
+              "indoor-plant:-5:-2:0",
+              "vase:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 30,
+            "hypothesis_id": "hyp-21",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "blanket:-4:-3:-1",
+            "previous_object": "obj-14",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "cabinet:-5:-2:-1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 31,
+            "hypothesis_id": "hyp-9",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "cabinet:-4:-2:-1",
+            "previous_object": "obj-14",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "switch:-5:-1:-1"
+            ]
+          },
+          {
+            "step_id": 31,
+            "hypothesis_id": "hyp-15",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "vase:-5:-2:-1",
+            "previous_object": "obj-4",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "switch:-5:-1:-1",
+              "vase:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 32,
+            "hypothesis_id": "hyp-9",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "indoor-plant:-5:-2:-1",
+            "previous_object": "obj-15",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:-1",
+              "switch:-5:-1:-1",
+              "vase:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 32,
+            "hypothesis_id": "hyp-10",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "basket:-4:-3:-2",
+            "previous_object": "obj-14",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:0",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:-1",
+              "switch:-5:-1:-1",
+              "vase:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 32,
+            "hypothesis_id": "hyp-18",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "blinds:-4:-3:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:-1",
+              "blinds:-4:-3:0",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:-1",
+              "switch:-5:-1:-1",
+              "vase:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 33,
+            "hypothesis_id": "hyp-6",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-13",
+            "target_id": "rug:-3:-2:-2",
+            "previous_object": "",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:-1",
+              "blinds:-3:-3:0",
+              "blinds:-4:-3:-1",
+              "blinds:-4:-3:0",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:-1",
+              "rug:-3:-2:-2",
+              "switch:-5:-1:-1",
+              "vase:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 34,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-14",
+            "target_id": "nightstand:-4:0:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "basket:-4:-3:-2",
+              "blanket:-4:-3:-1",
+              "blinds:-3:-3:0",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:0",
+              "lamp:-3:-2:1",
+              "lamp:-4:-1:1",
+              "lamp:-4:-2:1",
+              "nightstand:-4:0:-1",
+              "vase:-5:-2:-1",
+              "vent:-5:-1:1"
+            ]
+          },
+          {
+            "step_id": 35,
+            "hypothesis_id": "hyp-3",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-4",
+            "target_id": "nightstand:-4:0:-1",
+            "previous_object": "obj-14",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "book:-5:-2:-1",
+              "indoor-plant:-5:-2:0",
+              "nightstand:-4:0:-1",
+              "vase:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 36,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-4",
+            "target_id": "cabinet:-5:-2:-1",
+            "previous_object": "obj-14",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "book:-5:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:0",
+              "nightstand:-4:0:-1",
+              "vase:-5:-2:-1"
+            ]
+          },
+          {
+            "step_id": 36,
+            "hypothesis_id": "hyp-4",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-4",
+            "target_id": "cabinet:-4:-2:-1",
+            "previous_object": "obj-13",
+            "object_known_targets": [
+              "blanket:-4:-3:-1",
+              "book:-5:-2:-1",
+              "cabinet:-4:-2:-1",
+              "cabinet:-5:-2:-1",
+              "indoor-plant:-5:-2:0",
+              "nightstand:-4:0:-1",
+              "vase:-5:-2:-1"
+            ]
+          }
+        ],
+        "duplicate_birth_samples": [
+          {
+            "step_id": 7,
+            "hypothesis_id": "hyp-2",
+            "object_id": "obj-17",
+            "target_id": "blinds:-4:-3:0",
+            "previous_object": "obj-5",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-5",
+            "best_score": 1.3941,
+            "best_has_strong_identity": false
+          },
+          {
+            "step_id": 52,
+            "hypothesis_id": "hyp-4",
+            "object_id": "obj-18",
+            "target_id": "comforter:-2:0:-1",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-14",
+            "best_score": 1.5847,
+            "best_has_strong_identity": false
+          },
+          {
+            "step_id": 84,
+            "hypothesis_id": "hyp-1",
+            "object_id": "obj-22",
+            "target_id": "picture:-1:-2:0",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.6276,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 245,
+            "hypothesis_id": "hyp-3",
+            "object_id": "obj-33",
+            "target_id": "blinds:0:2:0",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.6109,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 245,
+            "hypothesis_id": "hyp-8",
+            "object_id": "obj-34",
+            "target_id": "picture:-1:-2:0",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.6027,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 255,
+            "hypothesis_id": "hyp-1",
+            "object_id": "obj-35",
+            "target_id": "blinds:-2:-2:0",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.6346,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 258,
+            "hypothesis_id": "hyp-2",
+            "object_id": "obj-36",
+            "target_id": "lamp:-3:-2:1",
+            "previous_object": "obj-14",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-34",
+            "best_score": 1.6106,
+            "best_has_strong_identity": false
+          },
+          {
+            "step_id": 268,
+            "hypothesis_id": "hyp-7",
+            "object_id": "obj-38",
+            "target_id": "blinds:-2:-2:0",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.6092,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 281,
+            "hypothesis_id": "hyp-1",
+            "object_id": "obj-39",
+            "target_id": "blinds:-2:-2:0",
+            "previous_object": "obj-38",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.5947,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 302,
+            "hypothesis_id": "hyp-13",
+            "object_id": "obj-43",
+            "target_id": "blinds:-2:-2:0",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.5955,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 356,
+            "hypothesis_id": "hyp-1",
+            "object_id": "obj-50",
+            "target_id": "blanket:-2:-1:-1",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.6238,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 361,
+            "hypothesis_id": "hyp-3",
+            "object_id": "obj-51",
+            "target_id": "lamp:-4:0:-1",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.6293,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 362,
+            "hypothesis_id": "hyp-1",
+            "object_id": "obj-52",
+            "target_id": "blanket:-2:-1:-1",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.5859,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 378,
+            "hypothesis_id": "hyp-1",
+            "object_id": "obj-53",
+            "target_id": "picture:-1:-1:-1",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.6246,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 389,
+            "hypothesis_id": "hyp-9",
+            "object_id": "obj-55",
+            "target_id": "picture:-1:-2:0",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "semantic_gate_low",
+            "best_object_id": "obj-13",
+            "best_score": 1.637,
+            "best_has_strong_identity": true
+          }
+        ],
+        "reason_counts": {
+          "no_candidate": 1,
+          "best_candidate_below_threshold": 54,
+          "best_candidate_above_threshold": 7562
+        }
+      },
+      "duograph_run_summary": {
+        "branch_id": "duograph3d_full",
+        "sequence_id": "replica-room1-gt-layer-monitor",
+        "event_count": 16286,
+        "decision_count": 7617,
+        "memory_node_count": 55,
+        "active_memory_node_count": 1,
+        "memory_status_counts": {
+          "retired": 54,
+          "active": 1
+        },
+        "births": 55,
+        "deaths": 18,
+        "reentries": 17,
+        "temporal_events": 0,
+        "memory_authority_events": 104,
+        "fairness_exceptions": 0,
+        "hypotheses_with_ambiguity": 0,
+        "track_fragmentation": 538,
+        "track_assignments": {
+          "room1:gsa:item:-21:3:1": [
+            "obj-1"
+          ],
+          "room1:gsa:item:-25:1:0": [
+            "obj-2"
+          ],
+          "room1:gsa:item:-17:-7:6": [
+            "obj-13",
+            "obj-14",
+            "obj-3",
+            "obj-5"
+          ],
+          "room1:gsa:item:-23:-9:0": [
+            "obj-13",
+            "obj-4",
+            "obj-41",
+            "obj-42",
+            "obj-46",
+            "obj-47",
+            "obj-48"
+          ],
+          "room1:gsa:item:-24:-1:6": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-24:-4:6": [
+            "obj-13",
+            "obj-14",
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-21:-6:6": [
+            "obj-13",
+            "obj-14",
+            "obj-6"
+          ],
+          "room1:gsa:item:-18:-4:6": [
+            "obj-13",
+            "obj-14",
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-17:-9:6": [
+            "obj-7"
+          ],
+          "room1:gsa:item:-21:3:-1": [
+            "obj-13",
+            "obj-8"
+          ],
+          "room1:gsa:item:-23:-8:1": [
+            "obj-9"
+          ],
+          "room1:gsa:item:-19:-8:6": [
+            "obj-13",
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-21:2:4": [
+            "obj-10"
+          ],
+          "room1:gsa:item:-24:-8:2": [
+            "obj-11",
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-1:6": [
+            "obj-12",
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:2:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:2:6": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-19:-11:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-20:-9:6": [
+            "obj-13",
+            "obj-14",
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-21:-10:-1": [
+            "obj-13",
+            "obj-14",
+            "obj-15",
+            "obj-45"
+          ],
+          "room1:gsa:item:-22:2:4": [
+            "obj-2"
+          ],
+          "room1:gsa:item:-18:-7:6": [
+            "obj-3",
+            "obj-5"
+          ],
+          "room1:gsa:item:-24:1:0": [
+            "obj-2"
+          ],
+          "room1:gsa:item:-21:3:0": [
+            "obj-1"
+          ],
+          "room1:gsa:item:-21:-10:-2": [
+            "obj-13",
+            "obj-14",
+            "obj-16",
+            "obj-4",
+            "obj-45",
+            "obj-48",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:-11:0": [
+            "obj-15"
+          ],
+          "room1:gsa:item:-17:-10:6": [
+            "obj-7"
+          ],
+          "room1:gsa:item:-24:-9:1": [
+            "obj-11",
+            "obj-45"
+          ],
+          "room1:gsa:item:-27:0:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:3:1": [
+            "obj-1"
+          ],
+          "room1:gsa:item:-19:-15:2": [
+            "obj-5"
+          ],
+          "room1:gsa:item:-25:-5:-2": [
+            "obj-13",
+            "obj-42",
+            "obj-45",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:2:5": [
+            "obj-2"
+          ],
+          "room1:gsa:item:-22:-9:-3": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-5"
+          ],
+          "room1:gsa:item:-19:-4:6": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:-7:-3": [
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:-10:0": [
+            "obj-13",
+            "obj-14",
+            "obj-15",
+            "obj-4",
+            "obj-45",
+            "obj-48"
+          ],
+          "room1:gsa:item:-19:-14:6": [
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-20:-2:6": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:3:0": [
+            "obj-2"
+          ],
+          "room1:gsa:item:-21:1:6": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-19:-5:6": [
+            "obj-14",
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-18:-14:6": [
+            "obj-13",
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-24:1:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:2:5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-8:1": [
+            "obj-11",
+            "obj-13",
+            "obj-41",
+            "obj-42",
+            "obj-45"
+          ],
+          "room1:gsa:item:-22:-8:-3": [
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-19:-14:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:-6:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-41",
+            "obj-42",
+            "obj-45",
+            "obj-48",
+            "obj-5"
+          ],
+          "room1:gsa:item:-18:-14:2": [
+            "obj-5"
+          ],
+          "room1:gsa:item:-20:-10:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:2:0": [
+            "obj-13",
+            "obj-2"
+          ],
+          "room1:gsa:item:-22:1:6": [
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:-9:-2": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-45",
+            "obj-5"
+          ],
+          "room1:gsa:item:-20:-6:6": [
+            "obj-6"
+          ],
+          "room1:gsa:item:-23:1:4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-8:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-45",
+            "obj-5"
+          ],
+          "room1:gsa:item:-25:1:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-4:6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-17:-14:1": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-21:-2:6": [
+            "obj-13",
+            "obj-6"
+          ],
+          "room1:gsa:item:-20:-13:-5": [
+            "obj-13",
+            "obj-4"
+          ],
+          "room1:gsa:item:-22:-6:-5": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-41",
+            "obj-42",
+            "obj-45",
+            "obj-48",
+            "obj-5"
+          ],
+          "room1:gsa:item:-17:-14:6": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-18:-13:6": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-17:-14:-3": [
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-24:1:5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-8:-5": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-42",
+            "obj-45",
+            "obj-48",
+            "obj-5"
+          ],
+          "room1:gsa:item:-16:-14:1": [
+            "obj-13",
+            "obj-17"
+          ],
+          "room1:gsa:item:-17:-13:-4": [
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:-3:6": [
+            "obj-6"
+          ],
+          "room1:gsa:item:-22:-6:6": [
+            "obj-13",
+            "obj-14",
+            "obj-6"
+          ],
+          "room1:gsa:item:-19:-12:-5": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-48",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:-8:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-45",
+            "obj-5"
+          ],
+          "room1:gsa:item:-20:-10:6": [
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-16:-13:1": [
+            "obj-17"
+          ],
+          "room1:gsa:item:-25:-1:6": [
+            "obj-13",
+            "obj-6"
+          ],
+          "room1:gsa:item:-16:-13:-4": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-20:-10:-5": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-42",
+            "obj-45",
+            "obj-48",
+            "obj-5"
+          ],
+          "room1:gsa:item:-26:-3:-7": [
+            "obj-13",
+            "obj-14",
+            "obj-42",
+            "obj-45",
+            "obj-5"
+          ],
+          "room1:gsa:item:-25:1:-1": [
+            "obj-13",
+            "obj-2"
+          ],
+          "room1:gsa:item:-23:-9:-7": [
+            "obj-5"
+          ],
+          "room1:gsa:item:-20:-9:-4": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-25:1:-2": [
+            "obj-13",
+            "obj-2"
+          ],
+          "room1:gsa:item:-15:-12:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:-12:0": [
+            "obj-13",
+            "obj-38",
+            "obj-5"
+          ],
+          "room1:gsa:item:-13:-12:1": [
+            "obj-13",
+            "obj-17",
+            "obj-38",
+            "obj-43",
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:-7:6": [
+            "obj-13",
+            "obj-6"
+          ],
+          "room1:gsa:item:-20:-12:-5": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-22:-11:-1": [
+            "obj-13",
+            "obj-15",
+            "obj-45"
+          ],
+          "room1:gsa:item:-19:-13:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-7:-7": [
+            "obj-5"
+          ],
+          "room1:gsa:item:-26:-1:6": [
+            "obj-6"
+          ],
+          "room1:gsa:item:-19:-12:-7": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-48",
+            "obj-5"
+          ],
+          "room1:gsa:item:-21:-9:6": [
+            "obj-13",
+            "obj-14",
+            "obj-6"
+          ],
+          "room1:gsa:item:-20:-12:6": [
+            "obj-13",
+            "obj-6"
+          ],
+          "room1:gsa:item:-26:0:-2": [
+            "obj-2"
+          ],
+          "room1:gsa:item:-22:-9:6": [
+            "obj-13",
+            "obj-6"
+          ],
+          "room1:gsa:item:-17:-13:-7": [
+            "obj-13",
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-21:-9:-5": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-45",
+            "obj-48"
+          ],
+          "room1:gsa:item:-23:-7:6": [
+            "obj-13",
+            "obj-14",
+            "obj-6"
+          ],
+          "room1:gsa:item:-22:-7:-7": [
+            "obj-5"
+          ],
+          "room1:gsa:item:-22:-7:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-42",
+            "obj-45",
+            "obj-48",
+            "obj-5"
+          ],
+          "room1:gsa:item:-26:0:-4": [
+            "obj-2"
+          ],
+          "room1:gsa:item:-22:-11:6": [
+            "obj-13",
+            "obj-6"
+          ],
+          "room1:gsa:item:-14:-12:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:-11:0": [
+            "obj-17"
+          ],
+          "room1:gsa:item:-14:-13:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-7:-7": [
+            "obj-13",
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-13:-12:-2": [
+            "obj-13",
+            "obj-14",
+            "obj-17",
+            "obj-43"
+          ],
+          "room1:gsa:item:-16:-13:-7": [
+            "obj-13",
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-11:-11:1": [
+            "obj-17"
+          ],
+          "room1:gsa:item:-14:-12:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-8:-7": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-16:-14:2": [
+            "obj-13",
+            "obj-17",
+            "obj-38",
+            "obj-39",
+            "obj-43"
+          ],
+          "room1:gsa:item:-22:-10:6": [
+            "obj-6"
+          ],
+          "room1:gsa:item:-20:-9:-5": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-42",
+            "obj-45",
+            "obj-48"
+          ],
+          "room1:gsa:item:-26:-4:-7": [
+            "obj-13",
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-14:-13:1": [
+            "obj-13",
+            "obj-38"
+          ],
+          "room1:gsa:item:-21:-9:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-14:-13:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:-12:6": [
+            "obj-6"
+          ],
+          "room1:gsa:item:-16:-10:6": [
+            "obj-13",
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-21:-11:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-20:-8:6": [
+            "obj-13",
+            "obj-14",
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-11:-11:2": [
+            "obj-13",
+            "obj-17"
+          ],
+          "room1:gsa:item:-21:-3:6": [
+            "obj-13",
+            "obj-14",
+            "obj-5",
+            "obj-6"
+          ],
+          "room1:gsa:item:-13:-12:2": [
+            "obj-13",
+            "obj-14",
+            "obj-17",
+            "obj-43"
+          ],
+          "room1:gsa:item:-15:-10:6": [
+            "obj-13",
+            "obj-14",
+            "obj-6"
+          ],
+          "room1:gsa:item:-18:-5:6": [
+            "obj-5"
+          ],
+          "room1:gsa:item:-20:-3:6": [
+            "obj-14",
+            "obj-6"
+          ],
+          "room1:gsa:item:-16:-7:6": [
+            "obj-14",
+            "obj-6"
+          ],
+          "room1:gsa:item:-14:-10:6": [
+            "obj-13",
+            "obj-5"
+          ],
+          "room1:gsa:item:-18:-14:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-5"
+          ],
+          "room1:gsa:item:-21:-9:-4": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-16:-6:6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-19:-3:6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-13:-11:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-6:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-19:-2:6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-14:-8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:-12:4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-9:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-8:0": [
+            "obj-13",
+            "obj-4",
+            "obj-41",
+            "obj-46",
+            "obj-48"
+          ],
+          "room1:gsa:item:-14:-13:4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-7:6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-24:-9:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-12:4": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-14:-9:6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-14:-12:2": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-21:-9:-3": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-19:-13:-5": [
+            "obj-13",
+            "obj-14",
+            "obj-4"
+          ],
+          "room1:gsa:item:-17:-11:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-25:-4:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-20:-11:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-15:-13:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-13:-2": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-19:-6:-7": [
+            "obj-13",
+            "obj-14",
+            "obj-44"
+          ],
+          "room1:gsa:item:-26:0:-6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-14:-12:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-27:0:-5": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-23:-9:1": [
+            "obj-13",
+            "obj-4",
+            "obj-41",
+            "obj-42",
+            "obj-45"
+          ],
+          "room1:gsa:item:-25:-6:-1": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-12:-12:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-5:-7": [
+            "obj-13",
+            "obj-14",
+            "obj-44"
+          ],
+          "room1:gsa:item:-25:1:-5": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-22:2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-9:-1": [
+            "obj-13",
+            "obj-4",
+            "obj-48"
+          ],
+          "room1:gsa:item:-13:-12:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-26:-4:-2": [
+            "obj-14",
+            "obj-48"
+          ],
+          "room1:gsa:item:-15:-13:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-4:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-26:-4:-3": [
+            "obj-14",
+            "obj-48"
+          ],
+          "room1:gsa:item:-13:-12:-1": [
+            "obj-13",
+            "obj-43"
+          ],
+          "room1:gsa:item:-13:-11:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-21:3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-12:-5": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-16:-13:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-9:-2": [
+            "obj-4"
+          ],
+          "room1:gsa:item:-12:-7:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:3:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-13:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-13:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:-6:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-17:2:-5": [
+            "obj-14",
+            "obj-4"
+          ],
+          "room1:gsa:item:-21:-13:-4": [
+            "obj-13",
+            "obj-48"
+          ],
+          "room1:gsa:item:-26:-4:-4": [
+            "obj-14",
+            "obj-48"
+          ],
+          "room1:gsa:item:-22:2:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-25:1:-6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-25:-5:-5": [
+            "obj-13",
+            "obj-4"
+          ],
+          "room1:gsa:item:-12:-11:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-26:-3:-4": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-14:-12:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-14:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-4"
+          ],
+          "room1:gsa:item:-13:-11:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-13:-3": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-21:2:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-27:0:-6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-21:-14:-5": [
+            "obj-13",
+            "obj-14",
+            "obj-4",
+            "obj-48"
+          ],
+          "room1:gsa:item:-26:-4:-5": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-26:-4:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:-12:-2": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-11:-10:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-13:-12:-3": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-11:-6:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:-11:-2": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-23:-7:-3": [
+            "obj-13",
+            "obj-4",
+            "obj-45"
+          ],
+          "room1:gsa:item:-12:-11:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-11:-2": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-11:-4:-5": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-10:-6:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-11:-4:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-8:-3": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-25:-5:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-22:-7:-5": [
+            "obj-4"
+          ],
+          "room1:gsa:item:-9:-10:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-10:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-21:-10:-3": [
+            "obj-4"
+          ],
+          "room1:gsa:item:-10:-4:-4": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-11:-10:-5": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-9:-10:-3": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-10:-11:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-14:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:-7:-5": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-10:-3:-4": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-21:-14:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:-10:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-20:-15:-3": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-9:-9:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-4:-7:-3": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-19:-12:-6": [
+            "obj-13",
+            "obj-4"
+          ],
+          "room1:gsa:item:-4:-7:-2": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-12:-12:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-10:-4": [
+            "obj-14",
+            "obj-43"
+          ],
+          "room1:gsa:item:-12:-11:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:-10:-5": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-10:-2:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-18"
+          ],
+          "room1:gsa:item:-7:-3:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-52"
+          ],
+          "room1:gsa:item:-9:-9:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:-11:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:-2:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-48",
+            "obj-52"
+          ],
+          "room1:gsa:item:-11:-5:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-10:-10:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:-1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-9:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:0:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:-8:-5": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-7:-8:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:1:-4": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:5:-1:-5": [
+            "obj-13",
+            "obj-19",
+            "obj-32"
+          ],
+          "room1:gsa:item:-6:1:-4": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:3:4:-4": [
+            "obj-20"
+          ],
+          "room1:gsa:item:-9:-6:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-7:-9:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:-3:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-7:-9:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-2:-5": [
+            "obj-13",
+            "obj-19",
+            "obj-32"
+          ],
+          "room1:gsa:item:-9:-1:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-50",
+            "obj-52"
+          ],
+          "room1:gsa:item:5:-2:-3": [
+            "obj-13",
+            "obj-19"
+          ],
+          "room1:gsa:item:3:7:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:-6:-1": [
+            "obj-13",
+            "obj-53"
+          ],
+          "room1:gsa:item:0:-5:-1": [
+            "obj-13",
+            "obj-32",
+            "obj-53"
+          ],
+          "room1:gsa:item:4:3:-3": [
+            "obj-20"
+          ],
+          "room1:gsa:item:-5:-6:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-1:-5:-1": [
+            "obj-13",
+            "obj-55"
+          ],
+          "room1:gsa:item:-1:-3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-6:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-8:-2:-4": [
+            "obj-13",
+            "obj-18",
+            "obj-52"
+          ],
+          "room1:gsa:item:-1:-5:0": [
+            "obj-13",
+            "obj-14",
+            "obj-22",
+            "obj-30",
+            "obj-31",
+            "obj-32",
+            "obj-34",
+            "obj-55"
+          ],
+          "room1:gsa:item:-8:-9:-3": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-8:-9:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:3:-1": [
+            "obj-13",
+            "obj-19",
+            "obj-21",
+            "obj-24",
+            "obj-25",
+            "obj-28",
+            "obj-54"
+          ],
+          "room1:gsa:item:-3:-6:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-8:0:-4": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-1:-6:1": [
+            "obj-13",
+            "obj-14",
+            "obj-22",
+            "obj-31",
+            "obj-34",
+            "obj-55"
+          ],
+          "room1:gsa:item:-5:0:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-18"
+          ],
+          "room1:gsa:item:5:-2:0": [
+            "obj-13",
+            "obj-19",
+            "obj-24"
+          ],
+          "room1:gsa:item:-8:-10:0": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-4:-2:-6": [
+            "obj-18"
+          ],
+          "room1:gsa:item:-2:-5:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-7:-1:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-18",
+            "obj-52"
+          ],
+          "room1:gsa:item:0:-4:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-1:-5:1": [
+            "obj-13",
+            "obj-14",
+            "obj-22",
+            "obj-31",
+            "obj-34",
+            "obj-55"
+          ],
+          "room1:gsa:item:0:-5:0": [
+            "obj-13",
+            "obj-14",
+            "obj-22",
+            "obj-28",
+            "obj-32",
+            "obj-34",
+            "obj-55"
+          ],
+          "room1:gsa:item:-1:-6:0": [
+            "obj-13",
+            "obj-14",
+            "obj-22",
+            "obj-30",
+            "obj-31",
+            "obj-32",
+            "obj-34",
+            "obj-55"
+          ],
+          "room1:gsa:item:-9:-9:-3": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:4:3:0": [
+            "obj-13",
+            "obj-21",
+            "obj-24",
+            "obj-25",
+            "obj-28",
+            "obj-54"
+          ],
+          "room1:gsa:item:3:-1:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-8:-3:-4": [
+            "obj-13",
+            "obj-18",
+            "obj-52"
+          ],
+          "room1:gsa:item:4:2:0": [
+            "obj-21",
+            "obj-24"
+          ],
+          "room1:gsa:item:1:-3:6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:3:2:6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:2:-1:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-1:-5:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:2:-3:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-9:-10:1": [
+            "obj-13",
+            "obj-14",
+            "obj-38",
+            "obj-39",
+            "obj-43"
+          ],
+          "room1:gsa:item:1:-4:-7": [
+            "obj-14",
+            "obj-18"
+          ],
+          "room1:gsa:item:0:-3:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:2:2:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:4:1:0": [
+            "obj-21"
+          ],
+          "room1:gsa:item:3:-3:6": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:0:-5:-7": [
+            "obj-18"
+          ],
+          "room1:gsa:item:-5:1:-4": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:3:1:6": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-1:-6:-7": [
+            "obj-18"
+          ],
+          "room1:gsa:item:3:7:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-1:-4": [
+            "obj-13",
+            "obj-18",
+            "obj-52"
+          ],
+          "room1:gsa:item:-1:-5:-7": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:-2:-6:-7": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:-9:-2:-4": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:0:-5:1": [
+            "obj-13",
+            "obj-14",
+            "obj-32",
+            "obj-34"
+          ],
+          "room1:gsa:item:-8:-9:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:4:-1": [
+            "obj-13",
+            "obj-19",
+            "obj-21",
+            "obj-23",
+            "obj-24",
+            "obj-25"
+          ],
+          "room1:gsa:item:-4:-6:-7": [
+            "obj-18"
+          ],
+          "room1:gsa:item:2:8:0": [
+            "obj-13",
+            "obj-21"
+          ],
+          "room1:gsa:item:5:-2:-1": [
+            "obj-13",
+            "obj-19",
+            "obj-25",
+            "obj-32"
+          ],
+          "room1:gsa:item:-5:-7:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-8:3:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-18"
+          ],
+          "room1:gsa:item:-8:-10:-1": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-6:-7:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:4:-4": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-9:-7:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:3:4:-2": [
+            "obj-21"
+          ],
+          "room1:gsa:item:-7:-7:-7": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-10:-4:-5": [
+            "obj-18"
+          ],
+          "room1:gsa:item:-9:3:-4": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:5:-2:-2": [
+            "obj-13",
+            "obj-19",
+            "obj-32"
+          ],
+          "room1:gsa:item:-8:-8:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-11:2:-4": [
+            "obj-13",
+            "obj-14",
+            "obj-18"
+          ],
+          "room1:gsa:item:-7:5:-4": [
+            "obj-18"
+          ],
+          "room1:gsa:item:3:5:-5": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:-7:5:-3": [
+            "obj-13",
+            "obj-14",
+            "obj-18",
+            "obj-22"
+          ],
+          "room1:gsa:item:-8:4:-3": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:2:9:0": [
+            "obj-13",
+            "obj-21"
+          ],
+          "room1:gsa:item:-9:4:-4": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:-7:-8:-7": [
+            "obj-14"
+          ],
+          "room1:gsa:item:-10:-1:-4": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:-4:9:-1": [
+            "obj-13",
+            "obj-19",
+            "obj-27"
+          ],
+          "room1:gsa:item:-4:9:-3": [
+            "obj-13",
+            "obj-19"
+          ],
+          "room1:gsa:item:2:9:1": [
+            "obj-13",
+            "obj-19",
+            "obj-25",
+            "obj-28",
+            "obj-33"
+          ],
+          "room1:gsa:item:-7:-9:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:-7:-3": [
+            "obj-14"
+          ],
+          "room1:gsa:item:1:10:1": [
+            "obj-13",
+            "obj-21",
+            "obj-33"
+          ],
+          "room1:gsa:item:-11:3:-3": [
+            "obj-13",
+            "obj-18",
+            "obj-22"
+          ],
+          "room1:gsa:item:-2:-6:1": [
+            "obj-13",
+            "obj-22",
+            "obj-30",
+            "obj-31",
+            "obj-34"
+          ],
+          "room1:gsa:item:-1:12:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:5:-3": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:-7:-9:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:11:-3": [
+            "obj-13",
+            "obj-19"
+          ],
+          "room1:gsa:item:-7:8:-3": [
+            "obj-13",
+            "obj-18"
+          ],
+          "room1:gsa:item:-3:12:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:10:2": [
+            "obj-13",
+            "obj-19",
+            "obj-21"
+          ],
+          "room1:gsa:item:-3:-7:-2": [
+            "obj-13",
+            "obj-14"
+          ],
+          "room1:gsa:item:3:4:0": [
+            "obj-19",
+            "obj-21"
+          ],
+          "room1:gsa:item:-9:4:-3": [
+            "obj-13",
+            "obj-18",
+            "obj-22"
+          ],
+          "room1:gsa:item:2:4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:9:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:11:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:3:-3": [
+            "obj-13",
+            "obj-14",
+            "obj-18"
+          ],
+          "room1:gsa:item:-4:-7:-1": [
+            "obj-13",
+            "obj-14",
+            "obj-31"
+          ],
+          "room1:gsa:item:0:8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:11:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:8:-2": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:1:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:8:1": [
+            "obj-21"
+          ],
+          "room1:gsa:item:0:9:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:6:-3": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-5:9:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:6:-3": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:-10:7:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:10:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:5:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:9:2": [
+            "obj-13",
+            "obj-19",
+            "obj-23",
+            "obj-24",
+            "obj-25",
+            "obj-28"
+          ],
+          "room1:gsa:item:-9:8:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:10:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-6:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:5:-3": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-3:-7:-1": [
+            "obj-13",
+            "obj-31"
+          ],
+          "room1:gsa:item:-10:7:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:7:-2": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-8:8:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:9:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-6:-1": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-8:9:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:4:-3": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-13:5:-3": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-9:9:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:-5:-2": [
+            "obj-13",
+            "obj-22",
+            "obj-32",
+            "obj-53"
+          ],
+          "room1:gsa:item:-4:11:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:4:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:5:-3": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-12:6:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:-5:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:8:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:-4:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:6:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-4:0": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-15:3:-1": [
+            "obj-13",
+            "obj-46",
+            "obj-48"
+          ],
+          "room1:gsa:item:-11:8:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:-3:-4": [
+            "obj-22"
+          ],
+          "room1:gsa:item:-15:4:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:6:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:7:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:-3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:4:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:-1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:3:-1": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-8:7:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:5:0": [
+            "obj-13",
+            "obj-27"
+          ],
+          "room1:gsa:item:-2:10:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:0:-4": [
+            "obj-13",
+            "obj-52"
+          ],
+          "room1:gsa:item:3:5:-1": [
+            "obj-19"
+          ],
+          "room1:gsa:item:-6:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:4:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:6:-1": [
+            "obj-19"
+          ],
+          "room1:gsa:item:-5:2:-4": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:0:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:5:0": [
+            "obj-13",
+            "obj-26",
+            "obj-27"
+          ],
+          "room1:gsa:item:-8:8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:10:6": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:-5:6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:7:6": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:2:6:-5": [
+            "obj-13",
+            "obj-19"
+          ],
+          "room1:gsa:item:-3:7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:6:-2": [
+            "obj-19"
+          ],
+          "room1:gsa:item:-8:7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:4:-1": [
+            "obj-13",
+            "obj-46"
+          ],
+          "room1:gsa:item:-6:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:9:6": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:-5:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:4:6": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:-4:3:-4": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-7:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:5:-4": [
+            "obj-13",
+            "obj-22"
+          ],
+          "room1:gsa:item:-12:6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:7:6": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:-5:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:7:-2": [
+            "obj-19"
+          ],
+          "room1:gsa:item:-8:4:6": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:-12:7:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:8:-3": [
+            "obj-19"
+          ],
+          "room1:gsa:item:-4:5:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:9:-4": [
+            "obj-13",
+            "obj-19"
+          ],
+          "room1:gsa:item:-6:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:9:2": [
+            "obj-13",
+            "obj-19"
+          ],
+          "room1:gsa:item:-1:10:-3": [
+            "obj-19"
+          ],
+          "room1:gsa:item:-18:4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:6:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:6:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:9:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:4:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:12:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:9:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:4:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:3:-3": [
+            "obj-13",
+            "obj-48",
+            "obj-51"
+          ],
+          "room1:gsa:item:-19:3:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:3:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:9:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:3:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:10:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:3:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:6:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:3:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:0:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:8:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:9:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:3:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:3:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:3:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:0:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:9:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:3:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:7:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:8:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:3:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:6:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:3:-3": [
+            "obj-13",
+            "obj-48"
+          ],
+          "room1:gsa:item:-14:2:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:3:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:5:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:5:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:0:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:-1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:0:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:-2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:0:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:-2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:9:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:3:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:2:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:0:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:-2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:8:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-1:-4": [
+            "obj-13",
+            "obj-24",
+            "obj-32"
+          ],
+          "room1:gsa:item:5:-1:-3": [
+            "obj-13",
+            "obj-32"
+          ],
+          "room1:gsa:item:-11:2:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-1:-1": [
+            "obj-13",
+            "obj-32"
+          ],
+          "room1:gsa:item:-3:4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:3:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:-1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:-2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:4:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:-1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:2:-1": [
+            "obj-24",
+            "obj-25",
+            "obj-28"
+          ],
+          "room1:gsa:item:-17:4:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:-2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:-1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:-3:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:-4:6": [
+            "obj-13",
+            "obj-36"
+          ],
+          "room1:gsa:item:-15:6:3": [
+            "obj-26"
+          ],
+          "room1:gsa:item:-14:6:3": [
+            "obj-13",
+            "obj-26"
+          ],
+          "room1:gsa:item:-4:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:4:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:-3:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:1:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-2:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-1:1": [
+            "obj-25",
+            "obj-34"
+          ],
+          "room1:gsa:item:-11:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:4:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:3:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:4:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-2:1": [
+            "obj-13",
+            "obj-34"
+          ],
+          "room1:gsa:item:-14:4:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:3:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:-3:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-4:1": [
+            "obj-13",
+            "obj-34"
+          ],
+          "room1:gsa:item:5:-2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:-4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:6:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:5:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:-4:0": [
+            "obj-13",
+            "obj-55"
+          ],
+          "room1:gsa:item:-12:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:6:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:6:2": [
+            "obj-13",
+            "obj-27"
+          ],
+          "room1:gsa:item:-9:6:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-6:0": [
+            "obj-13",
+            "obj-30",
+            "obj-31",
+            "obj-34"
+          ],
+          "room1:gsa:item:-16:2:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:7:2": [
+            "obj-27"
+          ],
+          "room1:gsa:item:-10:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:2:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:-3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:7:2": [
+            "obj-27"
+          ],
+          "room1:gsa:item:-11:-1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:5:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:5:-3": [
+            "obj-13",
+            "obj-27"
+          ],
+          "room1:gsa:item:-15:4:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-5:-1": [
+            "obj-13",
+            "obj-32"
+          ],
+          "room1:gsa:item:0:-2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:-5:3": [
+            "obj-13",
+            "obj-55"
+          ],
+          "room1:gsa:item:-15:6:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:8:3": [
+            "obj-27",
+            "obj-29"
+          ],
+          "room1:gsa:item:-3:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:-1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:-3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:-1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:-4:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:-4:-1": [
+            "obj-13",
+            "obj-32"
+          ],
+          "room1:gsa:item:-1:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:2:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:5:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:-4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:1:0": [
+            "obj-28"
+          ],
+          "room1:gsa:item:0:-5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:-3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:8:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-5:0": [
+            "obj-13",
+            "obj-34",
+            "obj-55"
+          ],
+          "room1:gsa:item:-13:7:3": [
+            "obj-27"
+          ],
+          "room1:gsa:item:-5:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:5:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:6:3": [
+            "obj-27"
+          ],
+          "room1:gsa:item:-11:1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:7:3": [
+            "obj-29"
+          ],
+          "room1:gsa:item:-14:6:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:4:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:7:3": [
+            "obj-29"
+          ],
+          "room1:gsa:item:-11:8:3": [
+            "obj-29"
+          ],
+          "room1:gsa:item:-3:-6:1": [
+            "obj-13",
+            "obj-30",
+            "obj-31"
+          ],
+          "room1:gsa:item:1:9:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:7:2": [
+            "obj-29"
+          ],
+          "room1:gsa:item:-9:8:3": [
+            "obj-29"
+          ],
+          "room1:gsa:item:-7:9:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-7:0": [
+            "obj-30",
+            "obj-31"
+          ],
+          "room1:gsa:item:-4:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-6:0": [
+            "obj-13",
+            "obj-30",
+            "obj-31"
+          ],
+          "room1:gsa:item:-9:9:3": [
+            "obj-29"
+          ],
+          "room1:gsa:item:-3:-7:1": [
+            "obj-30"
+          ],
+          "room1:gsa:item:-2:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:9:3": [
+            "obj-29"
+          ],
+          "room1:gsa:item:-7:9:3": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:-3:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:10:3": [
+            "obj-13",
+            "obj-29"
+          ],
+          "room1:gsa:item:-1:-6:2": [
+            "obj-30",
+            "obj-31"
+          ],
+          "room1:gsa:item:-1:-5:2": [
+            "obj-30",
+            "obj-34"
+          ],
+          "room1:gsa:item:-3:9:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:11:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:10:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-6:2": [
+            "obj-13",
+            "obj-31",
+            "obj-34"
+          ],
+          "room1:gsa:item:-2:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:11:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:9:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:11:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:10:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:11:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:4:6": [
+            "obj-13",
+            "obj-33"
+          ],
+          "room1:gsa:item:-4:-7:0": [
+            "obj-31"
+          ],
+          "room1:gsa:item:-3:12:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:7:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:12:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:5:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:8:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:5:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:9:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:3:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:-8:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:11:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:6:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:-7:3": [
+            "obj-13",
+            "obj-37"
+          ],
+          "room1:gsa:item:-5:10:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-6:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:0:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:11:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-6:-3": [
+            "obj-32"
+          ],
+          "room1:gsa:item:-6:10:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:7:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:-5:-3": [
+            "obj-32"
+          ],
+          "room1:gsa:item:-13:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:9:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:4:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:-5:-3": [
+            "obj-32"
+          ],
+          "room1:gsa:item:1:-5:-3": [
+            "obj-32"
+          ],
+          "room1:gsa:item:-2:-2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:10:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:9:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-4:-3": [
+            "obj-32"
+          ],
+          "room1:gsa:item:0:-5:-2": [
+            "obj-13",
+            "obj-32"
+          ],
+          "room1:gsa:item:2:-4:-4": [
+            "obj-32"
+          ],
+          "room1:gsa:item:-4:10:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:9:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:-4:-5": [
+            "obj-32"
+          ],
+          "room1:gsa:item:-9:9:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:-3:-5": [
+            "obj-32"
+          ],
+          "room1:gsa:item:5:-1:-2": [
+            "obj-13",
+            "obj-32"
+          ],
+          "room1:gsa:item:4:3:-2": [
+            "obj-13",
+            "obj-54"
+          ],
+          "room1:gsa:item:4:3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-2:-6": [
+            "obj-13",
+            "obj-32"
+          ],
+          "room1:gsa:item:4:4:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:-1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:-3:-6": [
+            "obj-32"
+          ],
+          "room1:gsa:item:4:1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:-3:-5": [
+            "obj-32"
+          ],
+          "room1:gsa:item:-10:5:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:10:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:-3:-3": [
+            "obj-32"
+          ],
+          "room1:gsa:item:3:1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:5:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:-4:-2": [
+            "obj-13",
+            "obj-32"
+          ],
+          "room1:gsa:item:-6:5:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:7:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:-4:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-5:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:5:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:12:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:9:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:10:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:10:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:-3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:-3:-1": [
+            "obj-34"
+          ],
+          "room1:gsa:item:-3:1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:8:1": [
+            "obj-33"
+          ],
+          "room1:gsa:item:2:8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:7:2": [
+            "obj-33"
+          ],
+          "room1:gsa:item:1:7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:3:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:7:3": [
+            "obj-33"
+          ],
+          "room1:gsa:item:2:7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:2:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-1:-4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:2:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:3:6": [
+            "obj-33"
+          ],
+          "room1:gsa:item:-7:-9:5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:1:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-2:2": [
+            "obj-34"
+          ],
+          "room1:gsa:item:-5:-7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-1:2": [
+            "obj-13",
+            "obj-34"
+          ],
+          "room1:gsa:item:-3:-1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:-9:4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:0:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-9:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:-6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-10:5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-10:3": [
+            "obj-13",
+            "obj-35"
+          ],
+          "room1:gsa:item:5:0:4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-1:4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:-9:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-5:1": [
+            "obj-34"
+          ],
+          "room1:gsa:item:-10:-11:5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-6:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:-10:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:-10:3": [
+            "obj-35"
+          ],
+          "room1:gsa:item:-4:-2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-10:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:-6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-7:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:-6:6": [
+            "obj-36"
+          ],
+          "room1:gsa:item:-5:-3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:-8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:-10:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-13:5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-11:3": [
+            "obj-13",
+            "obj-35"
+          ],
+          "room1:gsa:item:-11:-11:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-13:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:-11:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:-12:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-13:5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-14:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-11:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-13:4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-6:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-11:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-15:4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:-5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-13:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-15:3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-14:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:-7:2": [
+            "obj-37"
+          ],
+          "room1:gsa:item:-8:-7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-10:1": [
+            "obj-13",
+            "obj-39",
+            "obj-43"
+          ],
+          "room1:gsa:item:-11:-8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:-9:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-15:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-12:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-6:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:-12:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-13:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-12:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-11:1": [
+            "obj-38",
+            "obj-39",
+            "obj-43"
+          ],
+          "room1:gsa:item:-16:-13:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:-15:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:-13:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:-12:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-12:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-12:0": [
+            "obj-38"
+          ],
+          "room1:gsa:item:-21:-15:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-12:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-6:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-14:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:-11:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:-7:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:-14:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-14:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:-11:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-14:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-11:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-13:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-11:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-12:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-10:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-12:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-10:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-12:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-11:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-11:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-13:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-12:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:-8:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-9:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:-8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-10:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:-11:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-11:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:-8:1": [
+            "obj-13",
+            "obj-40"
+          ],
+          "room1:gsa:item:-22:-11:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-11:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-10:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-10:2": [
+            "obj-41"
+          ],
+          "room1:gsa:item:-21:-10:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:-10:2": [
+            "obj-39"
+          ],
+          "room1:gsa:item:-13:-12:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-11:2": [
+            "obj-41"
+          ],
+          "room1:gsa:item:-20:-10:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-11:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:-9:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-12:-11:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-9:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-9:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:-8:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:-8:1": [
+            "obj-40"
+          ],
+          "room1:gsa:item:-24:-7:1": [
+            "obj-13",
+            "obj-41",
+            "obj-42",
+            "obj-45",
+            "obj-48"
+          ],
+          "room1:gsa:item:-25:-6:1": [
+            "obj-41",
+            "obj-42",
+            "obj-45",
+            "obj-48"
+          ],
+          "room1:gsa:item:-24:-3:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-25:-7:1": [
+            "obj-13",
+            "obj-42",
+            "obj-48"
+          ],
+          "room1:gsa:item:-20:-7:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:-8:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-7:-7": [
+            "obj-13",
+            "obj-44"
+          ],
+          "room1:gsa:item:-21:-11:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:-14:2": [
+            "obj-43"
+          ],
+          "room1:gsa:item:-20:-13:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-7:-7": [
+            "obj-44"
+          ],
+          "room1:gsa:item:-24:-7:0": [
+            "obj-42"
+          ],
+          "room1:gsa:item:-25:0:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-25:1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:2:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:2:-4": [
+            "obj-13",
+            "obj-48"
+          ],
+          "room1:gsa:item:-26:0:5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:3:-4": [
+            "obj-13",
+            "obj-48"
+          ],
+          "room1:gsa:item:-22:2:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-25:1:5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:3:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:2:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:2:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:3:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-13:0": [
+            "obj-43"
+          ],
+          "room1:gsa:item:-22:2:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:-12:-2": [
+            "obj-43"
+          ],
+          "room1:gsa:item:-21:3:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-13:2": [
+            "obj-43"
+          ],
+          "room1:gsa:item:-20:-5:-7": [
+            "obj-13",
+            "obj-44",
+            "obj-47"
+          ],
+          "room1:gsa:item:-20:3:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-6:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-13:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:-6:-7": [
+            "obj-13",
+            "obj-47"
+          ],
+          "room1:gsa:item:-18:-14:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-15:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:4:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-15:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:4:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:3:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:-13:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:-15:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:4:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-14:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-14:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-14:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:5:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-4:-7": [
+            "obj-47"
+          ],
+          "room1:gsa:item:-19:4:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:4:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-11:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-5:-7": [
+            "obj-13",
+            "obj-47"
+          ],
+          "room1:gsa:item:-19:4:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:4:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:5:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-3:-7": [
+            "obj-47"
+          ],
+          "room1:gsa:item:-20:-11:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:5:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-4:-7": [
+            "obj-13",
+            "obj-47"
+          ],
+          "room1:gsa:item:-24:1:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-7:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-4:-7": [
+            "obj-13",
+            "obj-47"
+          ],
+          "room1:gsa:item:-16:5:4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-10:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:2:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-25:-5:1": [
+            "obj-13",
+            "obj-45"
+          ],
+          "room1:gsa:item:-21:-5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-2:-7": [
+            "obj-47"
+          ],
+          "room1:gsa:item:-21:-8:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-9:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:-1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-25:-2:-7": [
+            "obj-13",
+            "obj-47"
+          ],
+          "room1:gsa:item:-18:-6:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:0:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:6:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:2:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-4:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-14:5:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:-5:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:4:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:4:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:1:6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:5:2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:6:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:5:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-4:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:2:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-13:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-5:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:5:1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-8:0": [
+            "obj-48"
+          ],
+          "room1:gsa:item:-18:-6:-7": [
+            "obj-13",
+            "obj-49"
+          ],
+          "room1:gsa:item:-24:-9:-1": [
+            "obj-48"
+          ],
+          "room1:gsa:item:-15:5:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-21:-13:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-26:-4:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:6:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-11:4:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-15:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:3:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-8:-2": [
+            "obj-48"
+          ],
+          "room1:gsa:item:-11:-8:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-23:-9:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:-8:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:-6:-7": [
+            "obj-49"
+          ],
+          "room1:gsa:item:-16:5:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-25:1:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-18:-15:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-9:-2": [
+            "obj-48"
+          ],
+          "room1:gsa:item:-10:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:-14:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:-12:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-20:-13:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:-7:-3": [
+            "obj-48"
+          ],
+          "room1:gsa:item:-16:-14:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-15:4:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:1:-5": [
+            "obj-48"
+          ],
+          "room1:gsa:item:-26:-3:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-26:-3:-6": [
+            "obj-13",
+            "obj-48"
+          ],
+          "room1:gsa:item:-15:3:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:2:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-6:-2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-24:1:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-19:-11:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-10:-10:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:-9:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-22:3:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-16:2:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-17:2:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-9:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-8:-9:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-27:-1:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-7:-8:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:-8:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:-7:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:-4:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:-7:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-4:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-9:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-7:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-6:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-6:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:0:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-1:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:-3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:2:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:0:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-2:-6:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-4:-3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:1:-6": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:1:-5": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-5:-7:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:0:3:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:1:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:-3:0:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:1:-4:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:2:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:2:-3": [
+            "obj-13",
+            "obj-54"
+          ],
+          "room1:gsa:item:-2:0:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:2:-2": [
+            "obj-54"
+          ],
+          "room1:gsa:item:-1:0:-4": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:6:-2": [
+            "obj-13"
+          ],
+          "room1:gsa:item:2:7:-3": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:0:-7": [
+            "obj-13"
+          ],
+          "room1:gsa:item:3:7:-1": [
+            "obj-13"
+          ],
+          "room1:gsa:item:4:4:0": [
+            "obj-54"
+          ],
+          "room1:gsa:item:3:7:0": [
+            "obj-13"
+          ],
+          "room1:gsa:item:5:-1:0": [
+            "obj-13"
+          ]
+        },
+        "memory_relation_edge_count": 193,
+        "memory_object_consolidation_events": 18,
+        "merged_memory_node_count": 36,
+        "object_payload_node_count": 55,
+        "avg_detection_count": 7855,
+        "avg_geometry_support": 0.425,
+        "avg_support_size": 0.07,
+        "avg_depth_scale": 2.711
+      },
+      "duograph_object_export": {
+        "path": "/home/nebula/xxy/dataset/Replica/room1/pcd_saves/full_pcd_duograph3d_repair_assoc165_room1_20260428.pkl.gz",
+        "object_count": 14,
+        "object_source": "online_memory_node",
+        "export_min_detections": 2,
+        "skipped_object_counts": {
+          "too_few_detections": 5,
+          "merged_into_duplicate_object": 36
+        },
+        "seconds": 0.008
+      },
+      "duograph_object_monitor": {
+        "available": true,
+        "pred_exp_name": "duograph3d_repair_assoc165_room1_20260428",
+        "probability_logit_scale": 100.0,
+        "path": "/home/nebula/xxy/dataset/Replica/room1/pcd_saves/full_pcd_duograph3d_repair_assoc165_room1_20260428.pkl.gz",
+        "object_count": 14,
+        "valid_eval_object_count": 5,
+        "semantic_accuracy": 0.6,
+        "gt_purity": {
+          "count": 5,
+          "min": 0.458984,
+          "mean": 0.751328,
+          "p10": 0.501172,
+          "p50": 0.769531,
+          "p90": 0.984844,
+          "p99": 0.995672,
+          "max": 0.996875
+        },
+        "top1_probability": {
+          "count": 5,
+          "min": 0.296334,
+          "mean": 0.696844,
+          "p10": 0.379965,
+          "p50": 0.683895,
+          "p90": 0.999317,
+          "p99": 0.999416,
+          "max": 0.999427
+        },
+        "top1_similarity": {
+          "count": 5,
+          "min": 0.237941,
+          "mean": 0.28363,
+          "p10": 0.244437,
+          "p50": 0.257213,
+          "p90": 0.335902,
+          "p99": 0.341277,
+          "max": 0.341874
+        },
+        "class_margin": {
+          "count": 5,
+          "min": 0.004101,
+          "mean": 0.035791,
+          "p10": 0.006246,
+          "p50": 0.01466,
+          "p90": 0.075472,
+          "p99": 0.075862,
+          "max": 0.075905
+        },
+        "class_entropy": {
+          "count": 5,
+          "min": 0.007091,
+          "mean": 1.296603,
+          "p10": 0.008611,
+          "p50": 1.353785,
+          "p90": 2.588967,
+          "p99": 2.709004,
+          "max": 2.722341
+        },
+        "semantic_cell_duplicates": {
+          "total": 5,
+          "unique_targets": 5,
+          "duplicate_count": 0,
+          "duplicate_rate": 0.0,
+          "overseg_factor": 1.0,
+          "targets_with_duplicates": 0,
+          "max_items_per_target": 1
+        },
+        "top_pred_to_gt_errors": [
+          {
+            "pred": "monitor",
+            "gt": "lamp",
+            "count": 1
+          },
+          {
+            "pred": "vent",
+            "gt": "basket",
+            "count": 1
+          }
+        ]
+      },
+      "conceptgraphs_baseline_object_monitor": {
+        "available": true,
+        "pred_exp_name": "none_overlap_maskconf0.95_simsum1.2_dbscan.1_merge20_masksub",
+        "probability_logit_scale": 100.0,
+        "path": "/home/nebula/xxy/dataset/Replica/room1/pcd_saves/full_pcd_none_overlap_maskconf0.95_simsum1.2_dbscan.1_merge20_masksub_post.pkl.gz",
+        "object_count": 67,
+        "valid_eval_object_count": 37,
+        "semantic_accuracy": 0.432432,
+        "gt_purity": {
+          "count": 37,
+          "min": 0.498695,
+          "mean": 0.879978,
+          "p10": 0.69225,
+          "p50": 0.913094,
+          "p90": 0.97996,
+          "p99": 0.995531,
+          "max": 1.0
+        },
+        "top1_probability": {
+          "count": 37,
+          "min": 0.359711,
+          "mean": 0.81765,
+          "p10": 0.486772,
+          "p50": 0.849666,
+          "p90": 0.998894,
+          "p99": 0.99991,
+          "max": 0.999934
+        },
+        "top1_similarity": {
+          "count": 37,
+          "min": 0.231083,
+          "mean": 0.301739,
+          "p10": 0.269288,
+          "p50": 0.305602,
+          "p90": 0.342998,
+          "p99": 0.352059,
+          "max": 0.352169
+        },
+        "class_margin": {
+          "count": 37,
+          "min": 0.000566,
+          "mean": 0.032769,
+          "p10": 0.005476,
+          "p50": 0.020826,
+          "p90": 0.072499,
+          "p99": 0.097947,
+          "max": 0.10066
+        },
+        "class_entropy": {
+          "count": 37,
+          "min": 0.001086,
+          "mean": 0.772211,
+          "p10": 0.01459,
+          "p50": 0.84051,
+          "p90": 1.616015,
+          "p99": 2.508449,
+          "max": 2.704071
+        },
+        "semantic_cell_duplicates": {
+          "total": 37,
+          "unique_targets": 30,
+          "duplicate_count": 7,
+          "duplicate_rate": 0.189189,
+          "overseg_factor": 1.233333,
+          "targets_with_duplicates": 6,
+          "max_items_per_target": 3
+        },
+        "top_pred_to_gt_errors": [
+          {
+            "pred": "vent",
+            "gt": "lamp",
+            "count": 4
+          },
+          {
+            "pred": "comforter",
+            "gt": "bed",
+            "count": 4
+          },
+          {
+            "pred": "nightstand",
+            "gt": "lamp",
+            "count": 3
+          },
+          {
+            "pred": "comforter",
+            "gt": "blanket",
+            "count": 2
+          },
+          {
+            "pred": "comforter",
+            "gt": "rug",
+            "count": 2
+          },
+          {
+            "pred": "comforter",
+            "gt": "pillow",
+            "count": 2
+          },
+          {
+            "pred": "tv-stand",
+            "gt": "cabinet",
+            "count": 1
+          },
+          {
+            "pred": "switch",
+            "gt": "wall-plug",
+            "count": 1
+          },
+          {
+            "pred": "monitor",
+            "gt": "panel",
+            "count": 1
+          },
+          {
+            "pred": "vent",
+            "gt": "bed",
+            "count": 1
+          }
+        ]
+      },
+      "conceptgraphs_baseline_metrics": {
+        "scene_id": "room1",
+        "miou": "24.476757331898337",
+        "mrecall": "38.326937979773476",
+        "mprecision": "32.62922395216791",
+        "mf1score": "29.23641697435178",
+        "fmiou": "42.9567639961548"
+      },
+      "pipeline_gate_overrides": {
+        "association_threshold": 1.65
+      },
+      "seconds_total": 84.581
+    }
+  ]
+}

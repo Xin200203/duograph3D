@@ -25,6 +25,7 @@ sys.path.insert(0, "/home/nebula/xxy/concept-graphs-main")
 from duograph3d.contracts import FrameInput, ObjectObservationPayload, Observation, ObservationSupport, PipelineConfig, TemporalVariant
 from duograph3d.events import BRANCH_DUOGRAPH3D
 from duograph3d.io_utils import write_json
+from duograph3d.memory import ObjectGraphMemory
 from duograph3d.metrics import summarize_run
 from duograph3d.pipeline import DuoGraph3DPipeline
 from conceptgraph.dataset.replica_constants import REPLICA_CLASSES, REPLICA_EXISTING_CLASSES, REPLICA_SCENE_IDS, REPLICA_SCENE_IDS_
@@ -245,6 +246,7 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
     gsa_dir = REPLICA_ROOT / scene / "gsa_detections_none"
     poses = np.loadtxt(REPLICA_ROOT / scene / "traj.txt", dtype=np.float32).reshape(-1, 4, 4)
     text_anchor = class_agnostic_text_anchor(class_feats_np.shape[1]).astype(np.float64)
+    online_matching_text_feature = np.asarray((), dtype=np.float32)
     key_data: dict[str, dict[str, object]] = {}
     frames: list[FrameInput] = []
     frame_debug = []
@@ -349,7 +351,7 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                         colors=colors,
                         centroid=centroid,
                         clip_feature=image_feats[det_i],
-                        text_feature=text_anchor,
+                        text_feature=online_matching_text_feature,
                         mask_area=area,
                     ),
                 ))
@@ -716,13 +718,15 @@ def build_memory_map_objects(result, label_to_index: dict[str, int], class_feats
     export_debug = []
     skipped = []
     for object_id, node in sorted(result.memory_nodes.items()):
-        if "merged_into_duplicate_object" in node.failure_tags or "filtered_low_detection_object" in node.failure_tags:
-            skipped.append(object_id)
+        skip_reason = ObjectGraphMemory.export_skip_reason(
+            node,
+            min_points=4,
+            min_detections=MIN_OBJECT_DETECTIONS,
+        )
+        if skip_reason:
+            skipped.append(f"{object_id}:{skip_reason}")
             continue
         points = np.asarray(node.sampled_points, dtype=np.float32)
-        if len(points) < 4:
-            skipped.append(object_id)
-            continue
         colors = np.asarray(node.sampled_colors, dtype=np.float32)
         if colors.shape != points.shape:
             colors = np.zeros_like(points)
@@ -730,7 +734,7 @@ def build_memory_map_objects(result, label_to_index: dict[str, int], class_feats
             keep = sample_indices(len(points), MAX_POINTS_PER_OBJECT)
             points = points[keep]
             colors = colors[keep]
-        label = max(node.class_counts.items(), key=lambda item: item[1])[0] if node.class_counts else (node.appearance_key_recent or node.descriptor_recent)
+        label = ObjectGraphMemory.dominant_semantic_label(node) or node.appearance_key_recent or node.descriptor_recent
         label_index = int(label_to_index.get(label, -1))
         text_ft = np.asarray(node.text_feature, dtype=np.float32)
         if text_ft.shape != class_feats_np[0].shape:

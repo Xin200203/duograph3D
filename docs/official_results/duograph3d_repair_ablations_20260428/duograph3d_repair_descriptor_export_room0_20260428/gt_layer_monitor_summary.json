@@ -1,0 +1,2538 @@
+{
+  "protocol": "GT-aware layer monitor for DuoGraph3D over ConceptGraphs GSA detections; GT target is semantic class + 1m GT cell proxy, not true instance id.",
+  "parameters": {
+    "profile": "engineered",
+    "voxel_size": 0.2,
+    "gt_target_voxel_size": 1.0,
+    "min_mask_pixels": 300,
+    "mask_conf_threshold": 0.95,
+    "max_bbox_area_ratio": 0.5,
+    "min_valid_depth_points": 16,
+    "max_points_per_obs": 160,
+    "apply_mask_subtract_contained": true,
+    "class_agnostic_identity": true,
+    "export_min_detections": 3,
+    "baseline_pred_exp_name": "none_overlap_maskconf0.95_simsum1.2_dbscan.1_merge20_masksub",
+    "duograph_pred_exp_name": "duograph3d_repair_descriptor_export_room0_20260428",
+    "clip_probability_logit_scale": 100.0,
+    "excluded_eval_classes": [
+      "ceiling",
+      "door",
+      "floor",
+      "other",
+      "wall",
+      "window"
+    ],
+    "pipeline_gate_overrides": {}
+  },
+  "rollup": {
+    "valid_eval_observations": 8741,
+    "layer1_eval_hypotheses": 686,
+    "layer2_valid_decisions": 686,
+    "layer2_correct_birth": 14,
+    "layer2_correct_association": 560,
+    "layer2_duplicate_birth": 8,
+    "layer2_id_switch_events": 136,
+    "layer2_gt_target_fragmentation": 64,
+    "layer2_residual_absorption_count": 0,
+    "layer2_correct_residual_absorption": 0,
+    "layer2_false_residual_absorption": 0,
+    "layer2_duplicate_birth_repaired_by_object_merge": 4,
+    "layer2_decision_accuracy": 0.836735,
+    "layer2_duplicate_birth_rate": 0.363636,
+    "layer2_residual_absorption_accuracy": 0.0,
+    "layer2_duplicate_birth_failure_family_counts": {
+      "spatial_overlap_gate_low": 6,
+      "association_score_below_threshold": 2
+    },
+    "layer2_duplicate_birth_reason_counts": {
+      "best_candidate_below_threshold": 8
+    },
+    "duograph_object_monitor": {
+      "available_scene_count": 1,
+      "object_count": 9,
+      "valid_eval_object_count": 6,
+      "semantic_accuracy_weighted": 0.0,
+      "semantic_cell_duplicate_count": 0,
+      "semantic_cell_duplicate_rate_micro": 0.0
+    },
+    "conceptgraphs_baseline_object_monitor": {
+      "available_scene_count": 1,
+      "object_count": 76,
+      "valid_eval_object_count": 46,
+      "semantic_accuracy_weighted": 0.326087,
+      "semantic_cell_duplicate_count": 4,
+      "semantic_cell_duplicate_rate_micro": 0.086957
+    }
+  },
+  "scenes": [
+    {
+      "scene": "room0",
+      "prep": {
+        "scene": "room0",
+        "frame_count": 400,
+        "frames_with_observations": 400,
+        "raw_detection_count": 17601,
+        "kept_observation_count": 12835,
+        "too_small_mask_count": 572,
+        "low_confidence_mask_count": 3787,
+        "large_bbox_mask_count": 407,
+        "too_few_valid_points_count": 0,
+        "zero_valid_depth_count": 0,
+        "mask_pixels_subtracted": 201255545,
+        "parameters": {
+          "profile": "engineered",
+          "voxel_size": 0.2,
+          "min_mask_pixels": 300,
+          "mask_conf_threshold": 0.95,
+          "max_bbox_area_ratio": 0.5,
+          "min_valid_depth_points": 16,
+          "max_points_per_obs": 160,
+          "class_agnostic_identity": true
+        },
+        "seconds": 67.362
+      },
+      "init": {
+        "valid_eval_observations": 8741,
+        "semantic_accuracy": 0.340693,
+        "gt_purity": {
+          "count": 8741,
+          "min": 0.375,
+          "mean": 0.980027,
+          "p10": 0.95,
+          "p50": 0.99375,
+          "p90": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "clip_margin": {
+          "count": 8741,
+          "min": 4e-06,
+          "mean": 0.027936,
+          "p10": 0.002933,
+          "p50": 0.017893,
+          "p90": 0.077338,
+          "p99": 0.105562,
+          "max": 0.129944
+        },
+        "clip_top1_probability": {
+          "count": 8741,
+          "min": 0.12791,
+          "mean": 0.731707,
+          "p10": 0.382953,
+          "p50": 0.78315,
+          "p90": 0.99925,
+          "p99": 0.999947,
+          "max": 0.999992
+        },
+        "clip_entropy": {
+          "count": 8741,
+          "min": 0.000159,
+          "mean": 1.179424,
+          "p10": 0.010022,
+          "p50": 1.023926,
+          "p90": 2.59875,
+          "p99": 3.509031,
+          "max": 4.105623
+        },
+        "low_clip_margin_rate": 0.686306,
+        "per_frame_duplicate_rate": {
+          "count": 400,
+          "min": 0.0,
+          "mean": 0.195267,
+          "p10": 0.076923,
+          "p50": 0.192308,
+          "p90": 0.333333,
+          "p99": 0.388913,
+          "max": 0.444444
+        },
+        "per_frame_overseg_factor": {
+          "count": 400,
+          "min": 1.0,
+          "mean": 1.259709,
+          "p10": 1.083333,
+          "p50": 1.238095,
+          "p90": 1.5,
+          "p99": 1.636429,
+          "max": 1.8
+        },
+        "global_semantic_cell_duplicates": {
+          "total": 8741,
+          "unique_targets": 128,
+          "duplicate_count": 8613,
+          "duplicate_rate": 0.985356,
+          "overseg_factor": 68.289062,
+          "targets_with_duplicates": 120,
+          "max_items_per_target": 388
+        }
+      },
+      "layer1": {
+        "hypothesis_count_eval_keep": 686,
+        "semantic_accuracy": 0.0,
+        "hypothesis_target_purity": {
+          "count": 686,
+          "min": 0.043478,
+          "mean": 0.471771,
+          "p10": 0.08,
+          "p50": 0.222222,
+          "p90": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "false_merge_hypothesis_count": 436,
+        "false_merge_hypothesis_rate": 0.635569,
+        "multi_class_hypothesis_count": 410,
+        "multi_class_hypothesis_rate": 0.597668,
+        "merged_pair_total": 96742,
+        "merge_pair_precision": 0.020146,
+        "merge_pair_error_rate": 0.979854,
+        "per_frame_duplicate_rate": {
+          "count": 400,
+          "min": 0.0,
+          "mean": 0.008786,
+          "p10": 0.0,
+          "p50": 0.0,
+          "p90": 0.0,
+          "p99": 0.230961,
+          "max": 0.333333
+        },
+        "per_frame_overseg_factor": {
+          "count": 400,
+          "min": 1.0,
+          "mean": 1.011471,
+          "p10": 1.0,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p99": 1.300333,
+          "max": 1.5
+        },
+        "global_semantic_cell_duplicates": {
+          "total": 686,
+          "unique_targets": 62,
+          "duplicate_count": 624,
+          "duplicate_rate": 0.909621,
+          "overseg_factor": 11.064516,
+          "targets_with_duplicates": 49,
+          "max_items_per_target": 50
+        }
+      },
+      "layer2": {
+        "valid_decision_count": 686,
+        "decision_accuracy": 0.836735,
+        "decision_error_rate": 0.163265,
+        "birth_count_eval_keep": 22,
+        "correct_birth": 14,
+        "duplicate_birth": 8,
+        "duplicate_birth_rate": 0.363636,
+        "duplicate_birth_reason_counts": {
+          "best_candidate_below_threshold": 8
+        },
+        "duplicate_birth_failure_family_counts": {
+          "spatial_overlap_gate_low": 6,
+          "association_score_below_threshold": 2
+        },
+        "duplicate_birth_top_candidate_score": {
+          "count": 8,
+          "min": 1.3312,
+          "mean": 1.535438,
+          "p10": 1.34177,
+          "p50": 1.6063,
+          "p90": 1.68969,
+          "p99": 1.698699,
+          "max": 1.6997
+        },
+        "duplicate_birth_top_candidate_point_overlap": {
+          "count": 8,
+          "min": 0.0,
+          "mean": 0.072912,
+          "p10": 0.0,
+          "p50": 0.0,
+          "p90": 0.1958,
+          "p99": 0.43205,
+          "max": 0.4583
+        },
+        "duplicate_birth_top_candidate_semantic": {
+          "count": 8,
+          "min": 1.0,
+          "mean": 1.0,
+          "p10": 1.0,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "duplicate_birth_repaired_by_object_merge": 4,
+        "duplicate_birth_unrepaired_after_object_merge": 4,
+        "duplicate_birth_repair_rate": 0.5,
+        "association_count_eval_keep": 664,
+        "correct_association": 560,
+        "false_association_before_birth": 48,
+        "false_association_wrong_object": 56,
+        "association_accuracy": 0.843373,
+        "residual_absorption_count": 0,
+        "correct_residual_absorption": 0,
+        "false_residual_absorption": 0,
+        "residual_absorption_accuracy": 0.0,
+        "id_switch_events": 136,
+        "id_switch_rate_per_revisit": 0.217949,
+        "fragmented_gt_target_count": 32,
+        "gt_target_fragmentation": 64,
+        "multi_target_memory_object_count": 17,
+        "multi_target_memory_object_rate": 0.586207,
+        "error_samples": [
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-5",
+            "action": "birth",
+            "reason": "best_candidate_below_threshold",
+            "object_id": "obj-5",
+            "target_id": "picture:2:-2:-1",
+            "previous_object": "obj-4",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-15",
+            "action": "birth",
+            "reason": "best_candidate_below_threshold",
+            "object_id": "obj-15",
+            "target_id": "sofa:2:-1:-1",
+            "previous_object": "obj-13",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-18",
+            "action": "birth",
+            "reason": "best_candidate_below_threshold",
+            "object_id": "obj-18",
+            "target_id": "lamp:2:-1:-1",
+            "previous_object": "obj-3",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-25",
+            "action": "birth",
+            "reason": "best_candidate_below_threshold",
+            "object_id": "obj-25",
+            "target_id": "sofa:2:-1:-1",
+            "previous_object": "obj-15",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-26",
+            "action": "birth",
+            "reason": "best_candidate_below_threshold",
+            "object_id": "obj-26",
+            "target_id": "table:2:-1:-1",
+            "previous_object": "obj-9",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-27",
+            "action": "birth",
+            "reason": "best_candidate_below_threshold",
+            "object_id": "obj-27",
+            "target_id": "cabinet:-1:1:-2",
+            "previous_object": "obj-17",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 2,
+            "hypothesis_id": "hyp-18",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-12",
+            "target_id": "cabinet:-1:1:-2",
+            "previous_object": "obj-27",
+            "object_known_targets": [
+              "cabinet:-1:1:-1",
+              "cabinet:-1:1:-2"
+            ]
+          },
+          {
+            "step_id": 3,
+            "hypothesis_id": "hyp-5",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-20",
+            "target_id": "lamp:2:-1:-1",
+            "previous_object": "obj-18",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 4,
+            "hypothesis_id": "hyp-11",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-8",
+            "target_id": "lamp:2:-1:-1",
+            "previous_object": "obj-20",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 4,
+            "hypothesis_id": "hyp-12",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-23",
+            "target_id": "rug:1:1:-2",
+            "previous_object": "",
+            "object_known_targets": [
+              "rug:1:0:-2",
+              "rug:1:1:-2"
+            ]
+          },
+          {
+            "step_id": 4,
+            "hypothesis_id": "hyp-20",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-15",
+            "target_id": "sofa:2:-1:-2",
+            "previous_object": "",
+            "object_known_targets": [
+              "sofa:2:-1:-1",
+              "sofa:2:-1:-2"
+            ]
+          },
+          {
+            "step_id": 4,
+            "hypothesis_id": "hyp-22",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-22",
+            "target_id": "sofa:2:-1:-1",
+            "previous_object": "obj-25",
+            "object_known_targets": [
+              "cushion:2:-1:-1",
+              "sofa:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 5,
+            "hypothesis_id": "hyp-8",
+            "action": "reentry",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-17",
+            "target_id": "cabinet:-1:0:-2",
+            "previous_object": "obj-16",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2"
+            ]
+          },
+          {
+            "step_id": 5,
+            "hypothesis_id": "hyp-19",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-23",
+            "target_id": "rug:1:-1:-2",
+            "previous_object": "",
+            "object_known_targets": [
+              "rug:1:-1:-2",
+              "rug:1:0:-2",
+              "rug:1:1:-2"
+            ]
+          },
+          {
+            "step_id": 6,
+            "hypothesis_id": "hyp-7",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-12",
+            "target_id": "vase:-1:1:-1",
+            "previous_object": "obj-7",
+            "object_known_targets": [
+              "cabinet:-1:1:-1",
+              "cabinet:-1:1:-2",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 6,
+            "hypothesis_id": "hyp-11",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-20",
+            "target_id": "sofa:2:-1:-1",
+            "previous_object": "obj-22",
+            "object_known_targets": [
+              "lamp:2:-1:-1",
+              "sofa:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 7,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "picture:2:-2:0",
+            "previous_object": "",
+            "object_known_targets": [
+              "picture:2:-2:-1",
+              "picture:2:-2:0"
+            ]
+          },
+          {
+            "step_id": 7,
+            "hypothesis_id": "hyp-6",
+            "action": "reentry",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-16",
+            "target_id": "cabinet:-1:1:-2",
+            "previous_object": "obj-12",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2"
+            ]
+          },
+          {
+            "step_id": 8,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-12",
+            "target_id": "stool:1:0:-2",
+            "previous_object": "obj-1",
+            "object_known_targets": [
+              "cabinet:-1:1:-1",
+              "cabinet:-1:1:-2",
+              "stool:1:0:-2",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 9,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-2",
+            "target_id": "table:2:-1:-1",
+            "previous_object": "obj-9",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 10,
+            "hypothesis_id": "hyp-6",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "vase:-1:1:-1",
+            "previous_object": "obj-12",
+            "object_known_targets": [
+              "picture:2:-2:-1",
+              "picture:2:-2:0",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 10,
+            "hypothesis_id": "hyp-14",
+            "action": "reentry",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-20",
+            "target_id": "switch:1:-2:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "lamp:2:-1:-1",
+              "sofa:2:-1:-1",
+              "switch:1:-2:-1"
+            ]
+          },
+          {
+            "step_id": 13,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-25",
+            "target_id": "cushion:2:-1:-1",
+            "previous_object": "obj-22",
+            "object_known_targets": [
+              "cushion:2:-1:-1",
+              "sofa:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 13,
+            "hypothesis_id": "hyp-7",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "switch:1:-2:-1",
+            "previous_object": "obj-20",
+            "object_known_targets": [
+              "picture:2:-2:-1",
+              "picture:2:-2:0",
+              "switch:1:-2:-1",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 14,
+            "hypothesis_id": "hyp-1",
+            "action": "reentry",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-16",
+            "target_id": "stool:1:1:-2",
+            "previous_object": "obj-21",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "stool:1:1:-2"
+            ]
+          },
+          {
+            "step_id": 14,
+            "hypothesis_id": "hyp-5",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-12",
+            "target_id": "cabinet:-1:0:-2",
+            "previous_object": "obj-16",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-1",
+              "cabinet:-1:1:-2",
+              "stool:1:0:-2",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 14,
+            "hypothesis_id": "hyp-10",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-12",
+            "target_id": "pillar:-1:3:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-1",
+              "cabinet:-1:1:-2",
+              "pillar:-1:3:-1",
+              "stool:1:0:-2",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 15,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "cabinet:-1:0:-2",
+            "previous_object": "obj-12",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "picture:2:-2:-1",
+              "picture:2:-2:0",
+              "switch:1:-2:-1",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 15,
+            "hypothesis_id": "hyp-17",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "cabinet:-1:1:-2",
+            "previous_object": "obj-12",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "picture:2:-2:-1",
+              "picture:2:-2:0",
+              "switch:1:-2:-1",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 16,
+            "hypothesis_id": "hyp-6",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-22",
+            "target_id": "table:2:-1:-1",
+            "previous_object": "obj-26",
+            "object_known_targets": [
+              "cushion:2:-1:-1",
+              "sofa:2:-1:-1",
+              "table:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 17,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-16",
+            "target_id": "lamp:0:0:1",
+            "previous_object": "",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "lamp:0:0:1",
+              "stool:1:1:-2"
+            ]
+          },
+          {
+            "step_id": 18,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-24",
+            "target_id": "lamp:0:0:1",
+            "previous_object": "obj-16",
+            "object_known_targets": []
+          },
+          {
+            "step_id": 18,
+            "hypothesis_id": "hyp-10",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-25",
+            "target_id": "vase:-1:1:-1",
+            "previous_object": "obj-12",
+            "object_known_targets": [
+              "cushion:2:-1:-1",
+              "sofa:2:-1:-1",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 18,
+            "hypothesis_id": "hyp-11",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-2",
+            "target_id": "cabinet:-1:1:-2",
+            "previous_object": "obj-12",
+            "object_known_targets": [
+              "cabinet:-1:1:-2",
+              "table:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 18,
+            "hypothesis_id": "hyp-14",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-1",
+            "target_id": "cabinet:-1:1:-2",
+            "previous_object": "obj-2",
+            "object_known_targets": [
+              "cabinet:-1:1:-2",
+              "stool:1:0:-2"
+            ]
+          },
+          {
+            "step_id": 19,
+            "hypothesis_id": "hyp-8",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-5",
+            "target_id": "pillar:-1:3:-1",
+            "previous_object": "obj-12",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "picture:2:-2:-1",
+              "picture:2:-2:0",
+              "pillar:-1:3:-1",
+              "switch:1:-2:-1",
+              "vase:-1:1:-1"
+            ]
+          },
+          {
+            "step_id": 22,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-1",
+            "target_id": "cabinet:-1:0:-2",
+            "previous_object": "obj-16",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "stool:1:0:-2"
+            ]
+          },
+          {
+            "step_id": 23,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-1",
+            "target_id": "table:2:-1:-1",
+            "previous_object": "obj-26",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "stool:1:0:-2",
+              "table:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 34,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-28",
+            "target_id": "blinds:1:3:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:0:3:0",
+              "blinds:1:3:-1"
+            ]
+          },
+          {
+            "step_id": 35,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-28",
+            "target_id": "blinds:1:3:0",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:0:3:0",
+              "blinds:1:3:-1",
+              "blinds:1:3:0"
+            ]
+          },
+          {
+            "step_id": 39,
+            "hypothesis_id": "hyp-3",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-1",
+            "target_id": "rug:2:0:-2",
+            "previous_object": "",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "rug:2:0:-2",
+              "stool:1:0:-2",
+              "table:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 44,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-28",
+            "target_id": "cabinet:-1:0:-2",
+            "previous_object": "obj-1",
+            "object_known_targets": [
+              "blinds:0:3:0",
+              "blinds:1:3:-1",
+              "blinds:1:3:0",
+              "cabinet:-1:0:-2"
+            ]
+          },
+          {
+            "step_id": 44,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-1",
+            "target_id": "pillar:-1:3:-1",
+            "previous_object": "obj-5",
+            "object_known_targets": [
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "pillar:-1:3:-1",
+              "rug:2:0:-2",
+              "stool:1:0:-2",
+              "table:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 45,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-28",
+            "target_id": "sofa:3:2:-1",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:0:3:0",
+              "blinds:1:3:-1",
+              "blinds:1:3:0",
+              "cabinet:-1:0:-2",
+              "sofa:3:2:-1"
+            ]
+          },
+          {
+            "step_id": 45,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-1",
+            "target_id": "blinds:1:3:-1",
+            "previous_object": "obj-28",
+            "object_known_targets": [
+              "blinds:1:3:-1",
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "pillar:-1:3:-1",
+              "rug:2:0:-2",
+              "stool:1:0:-2",
+              "table:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 46,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-28",
+            "target_id": "rug:2:1:-2",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:0:3:0",
+              "blinds:1:3:-1",
+              "blinds:1:3:0",
+              "cabinet:-1:0:-2",
+              "rug:2:1:-2",
+              "sofa:3:2:-1"
+            ]
+          },
+          {
+            "step_id": 48,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-28",
+            "target_id": "stool:1:0:-2",
+            "previous_object": "obj-1",
+            "object_known_targets": [
+              "blinds:0:3:0",
+              "blinds:1:3:-1",
+              "blinds:1:3:0",
+              "cabinet:-1:0:-2",
+              "rug:2:1:-2",
+              "sofa:3:2:-1",
+              "stool:1:0:-2"
+            ]
+          },
+          {
+            "step_id": 49,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-1",
+            "target_id": "sofa:3:2:-1",
+            "previous_object": "obj-28",
+            "object_known_targets": [
+              "blinds:1:3:-1",
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "pillar:-1:3:-1",
+              "rug:2:0:-2",
+              "sofa:3:2:-1",
+              "stool:1:0:-2",
+              "table:2:-1:-1"
+            ]
+          },
+          {
+            "step_id": 51,
+            "hypothesis_id": "hyp-1",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-28",
+            "target_id": "cabinet:-1:1:-2",
+            "previous_object": "obj-1",
+            "object_known_targets": [
+              "blinds:0:3:0",
+              "blinds:1:3:-1",
+              "blinds:1:3:0",
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "rug:2:1:-2",
+              "sofa:3:2:-1",
+              "stool:1:0:-2"
+            ]
+          },
+          {
+            "step_id": 53,
+            "hypothesis_id": "hyp-2",
+            "action": "associate",
+            "reason": "best_candidate_above_threshold",
+            "object_id": "obj-1",
+            "target_id": "stool:2:1:-2",
+            "previous_object": "",
+            "object_known_targets": [
+              "blinds:1:3:-1",
+              "cabinet:-1:0:-2",
+              "cabinet:-1:1:-2",
+              "pillar:-1:3:-1",
+              "rug:2:0:-2",
+              "sofa:3:2:-1",
+              "stool:1:0:-2",
+              "stool:2:1:-2",
+              "table:2:-1:-1"
+            ]
+          }
+        ],
+        "duplicate_birth_samples": [
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-5",
+            "object_id": "obj-5",
+            "target_id": "picture:2:-2:-1",
+            "previous_object": "obj-4",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "spatial_overlap_gate_low",
+            "best_object_id": "obj-4",
+            "best_score": 1.6854,
+            "best_has_strong_identity": false
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-15",
+            "object_id": "obj-15",
+            "target_id": "sofa:2:-1:-1",
+            "previous_object": "obj-13",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "spatial_overlap_gate_low",
+            "best_object_id": "obj-4",
+            "best_score": 1.3463,
+            "best_has_strong_identity": false
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-18",
+            "object_id": "obj-18",
+            "target_id": "lamp:2:-1:-1",
+            "previous_object": "obj-3",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "spatial_overlap_gate_low",
+            "best_object_id": "obj-3",
+            "best_score": 1.3465,
+            "best_has_strong_identity": false
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-25",
+            "object_id": "obj-25",
+            "target_id": "sofa:2:-1:-1",
+            "previous_object": "obj-15",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "spatial_overlap_gate_low",
+            "best_object_id": "obj-3",
+            "best_score": 1.6618,
+            "best_has_strong_identity": false
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-26",
+            "object_id": "obj-26",
+            "target_id": "table:2:-1:-1",
+            "previous_object": "obj-9",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "spatial_overlap_gate_low",
+            "best_object_id": "obj-3",
+            "best_score": 1.3312,
+            "best_has_strong_identity": false
+          },
+          {
+            "step_id": 1,
+            "hypothesis_id": "hyp-27",
+            "object_id": "obj-27",
+            "target_id": "cabinet:-1:1:-2",
+            "previous_object": "obj-17",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "spatial_overlap_gate_low",
+            "best_object_id": "obj-3",
+            "best_score": 1.594,
+            "best_has_strong_identity": false
+          },
+          {
+            "step_id": 323,
+            "hypothesis_id": "hyp-2",
+            "object_id": "obj-36",
+            "target_id": "rug:3:1:-2",
+            "previous_object": "obj-1",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "association_score_below_threshold",
+            "best_object_id": "obj-1",
+            "best_score": 1.6997,
+            "best_has_strong_identity": true
+          },
+          {
+            "step_id": 341,
+            "hypothesis_id": "hyp-2",
+            "object_id": "obj-37",
+            "target_id": "rug:3:0:-2",
+            "previous_object": "obj-36",
+            "reason": "best_candidate_below_threshold",
+            "failure_family": "association_score_below_threshold",
+            "best_object_id": "obj-1",
+            "best_score": 1.6186,
+            "best_has_strong_identity": true
+          }
+        ],
+        "reason_counts": {
+          "no_candidate": 1,
+          "best_candidate_below_threshold": 37,
+          "best_candidate_above_threshold": 976
+        }
+      },
+      "duograph_run_summary": {
+        "branch_id": "duograph3d_full",
+        "sequence_id": "replica-room0-gt-layer-monitor",
+        "event_count": 3444,
+        "decision_count": 1014,
+        "memory_node_count": 38,
+        "active_memory_node_count": 1,
+        "memory_status_counts": {
+          "active": 1,
+          "retired": 37
+        },
+        "births": 38,
+        "deaths": 14,
+        "reentries": 56,
+        "temporal_events": 0,
+        "memory_authority_events": 486,
+        "fairness_exceptions": 0,
+        "hypotheses_with_ambiguity": 0,
+        "track_fragmentation": 119,
+        "track_assignments": {
+          "room0:gsa:item:9:3:-6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:2:4:-8": [
+            "obj-1",
+            "obj-2"
+          ],
+          "room0:gsa:item:12:-4:-2": [
+            "obj-3"
+          ],
+          "room0:gsa:item:14:-6:-1": [
+            "obj-4",
+            "obj-5"
+          ],
+          "room0:gsa:item:14:-6:-2": [
+            "obj-5"
+          ],
+          "room0:gsa:item:-1:-6:-2": [
+            "obj-1",
+            "obj-24",
+            "obj-6"
+          ],
+          "room0:gsa:item:-3:8:-4": [
+            "obj-12",
+            "obj-5",
+            "obj-7"
+          ],
+          "room0:gsa:item:11:-6:1": [
+            "obj-1",
+            "obj-8"
+          ],
+          "room0:gsa:item:11:-2:-5": [
+            "obj-1",
+            "obj-30",
+            "obj-9"
+          ],
+          "room0:gsa:item:-5:3:-1": [
+            "obj-1",
+            "obj-10",
+            "obj-11"
+          ],
+          "room0:gsa:item:-5:6:-1": [
+            "obj-11"
+          ],
+          "room0:gsa:item:-3:5:-5": [
+            "obj-12"
+          ],
+          "room0:gsa:item:14:-5:-4": [
+            "obj-13",
+            "obj-20"
+          ],
+          "room0:gsa:item:-5:5:0": [
+            "obj-1",
+            "obj-10",
+            "obj-11",
+            "obj-12",
+            "obj-14",
+            "obj-16"
+          ],
+          "room0:gsa:item:12:-3:-5": [
+            "obj-15"
+          ],
+          "room0:gsa:item:-2:4:-6": [
+            "obj-16"
+          ],
+          "room0:gsa:item:-2:6:-6": [
+            "obj-1",
+            "obj-12",
+            "obj-16",
+            "obj-17",
+            "obj-2"
+          ],
+          "room0:gsa:item:10:-4:-2": [
+            "obj-1",
+            "obj-18"
+          ],
+          "room0:gsa:item:-5:13:-8": [
+            "obj-19"
+          ],
+          "room0:gsa:item:10:-6:-1": [
+            "obj-20"
+          ],
+          "room0:gsa:item:9:7:-6": [
+            "obj-1",
+            "obj-21"
+          ],
+          "room0:gsa:item:13:-2:-4": [
+            "obj-1",
+            "obj-22",
+            "obj-30"
+          ],
+          "room0:gsa:item:9:0:-8": [
+            "obj-23"
+          ],
+          "room0:gsa:item:2:-6:-2": [
+            "obj-1",
+            "obj-24"
+          ],
+          "room0:gsa:item:14:-4:-4": [
+            "obj-25"
+          ],
+          "room0:gsa:item:11:-4:-5": [
+            "obj-26"
+          ],
+          "room0:gsa:item:-2:9:-6": [
+            "obj-1",
+            "obj-12",
+            "obj-16",
+            "obj-27"
+          ],
+          "room0:gsa:item:-2:-6:-2": [
+            "obj-1",
+            "obj-24",
+            "obj-28",
+            "obj-6"
+          ],
+          "room0:gsa:item:11:-4:-2": [
+            "obj-1",
+            "obj-3",
+            "obj-8"
+          ],
+          "room0:gsa:item:-5:6:0": [
+            "obj-1",
+            "obj-10",
+            "obj-11",
+            "obj-12",
+            "obj-14"
+          ],
+          "room0:gsa:item:11:-5:-2": [
+            "obj-18"
+          ],
+          "room0:gsa:item:-5:3:0": [
+            "obj-1",
+            "obj-11",
+            "obj-14"
+          ],
+          "room0:gsa:item:-2:1:-6": [
+            "obj-1",
+            "obj-16"
+          ],
+          "room0:gsa:item:10:-6:-2": [
+            "obj-20"
+          ],
+          "room0:gsa:item:-5:5:-2": [
+            "obj-10",
+            "obj-16"
+          ],
+          "room0:gsa:item:9:1:-8": [
+            "obj-23"
+          ],
+          "room0:gsa:item:-2:7:-6": [
+            "obj-12",
+            "obj-5"
+          ],
+          "room0:gsa:item:13:-1:-5": [
+            "obj-1",
+            "obj-15"
+          ],
+          "room0:gsa:item:14:-2:-4": [
+            "obj-22"
+          ],
+          "room0:gsa:item:-3:6:-5": [
+            "obj-12"
+          ],
+          "room0:gsa:item:-5:4:0": [
+            "obj-1",
+            "obj-10",
+            "obj-11",
+            "obj-28"
+          ],
+          "room0:gsa:item:-5:7:0": [
+            "obj-10",
+            "obj-12",
+            "obj-14"
+          ],
+          "room0:gsa:item:-1:-6:0": [
+            "obj-24"
+          ],
+          "room0:gsa:item:2:5:-8": [
+            "obj-1",
+            "obj-2"
+          ],
+          "room0:gsa:item:-5:5:-1": [
+            "obj-1",
+            "obj-10",
+            "obj-11"
+          ],
+          "room0:gsa:item:13:-6:-1": [
+            "obj-5"
+          ],
+          "room0:gsa:item:-5:7:-2": [
+            "obj-11",
+            "obj-14"
+          ],
+          "room0:gsa:item:-3:6:-6": [
+            "obj-12"
+          ],
+          "room0:gsa:item:10:-5:-2": [
+            "obj-8"
+          ],
+          "room0:gsa:item:9:5:-8": [
+            "obj-1",
+            "obj-23"
+          ],
+          "room0:gsa:item:1:-6:-1": [
+            "obj-24"
+          ],
+          "room0:gsa:item:12:-1:-6": [
+            "obj-15"
+          ],
+          "room0:gsa:item:13:-3:-5": [
+            "obj-15",
+            "obj-22"
+          ],
+          "room0:gsa:item:3:3:-8": [
+            "obj-2"
+          ],
+          "room0:gsa:item:9:-1:-8": [
+            "obj-23"
+          ],
+          "room0:gsa:item:8:7:-6": [
+            "obj-1",
+            "obj-21"
+          ],
+          "room0:gsa:item:13:-2:-5": [
+            "obj-1",
+            "obj-22",
+            "obj-25"
+          ],
+          "room0:gsa:item:-5:6:-2": [
+            "obj-11"
+          ],
+          "room0:gsa:item:2:3:-8": [
+            "obj-1",
+            "obj-2"
+          ],
+          "room0:gsa:item:6:-6:0": [
+            "obj-20",
+            "obj-5"
+          ],
+          "room0:gsa:item:-5:12:-8": [
+            "obj-5"
+          ],
+          "room0:gsa:item:-5:-3:-8": [
+            "obj-12"
+          ],
+          "room0:gsa:item:-2:1:6": [
+            "obj-1",
+            "obj-5"
+          ],
+          "room0:gsa:item:8:3:-6": [
+            "obj-1",
+            "obj-12"
+          ],
+          "room0:gsa:item:2:2:-8": [
+            "obj-1",
+            "obj-2"
+          ],
+          "room0:gsa:item:14:-6:2": [
+            "obj-5"
+          ],
+          "room0:gsa:item:8:-1:-8": [
+            "obj-23"
+          ],
+          "room0:gsa:item:-5:5:1": [
+            "obj-1",
+            "obj-11",
+            "obj-14"
+          ],
+          "room0:gsa:item:8:-2:-8": [
+            "obj-23"
+          ],
+          "room0:gsa:item:-1:3:6": [
+            "obj-1",
+            "obj-2"
+          ],
+          "room0:gsa:item:0:2:6": [
+            "obj-12",
+            "obj-2"
+          ],
+          "room0:gsa:item:2:4:6": [
+            "obj-1",
+            "obj-12",
+            "obj-16",
+            "obj-24",
+            "obj-28"
+          ],
+          "room0:gsa:item:-5:3:-2": [
+            "obj-11"
+          ],
+          "room0:gsa:item:6:-6:-2": [
+            "obj-20",
+            "obj-5"
+          ],
+          "room0:gsa:item:9:-6:0": [
+            "obj-20"
+          ],
+          "room0:gsa:item:-5:7:-1": [
+            "obj-11",
+            "obj-5"
+          ],
+          "room0:gsa:item:-2:9:6": [
+            "obj-2"
+          ],
+          "room0:gsa:item:14:-6:-3": [
+            "obj-5"
+          ],
+          "room0:gsa:item:0:3:6": [
+            "obj-16"
+          ],
+          "room0:gsa:item:13:-4:-4": [
+            "obj-1",
+            "obj-25"
+          ],
+          "room0:gsa:item:1:-6:-2": [
+            "obj-1",
+            "obj-24"
+          ],
+          "room0:gsa:item:-2:5:-6": [
+            "obj-12",
+            "obj-2"
+          ],
+          "room0:gsa:item:-2:10:6": [
+            "obj-5"
+          ],
+          "room0:gsa:item:12:-2:-5": [
+            "obj-22"
+          ],
+          "room0:gsa:item:0:1:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:8:-6:0": [
+            "obj-20"
+          ],
+          "room0:gsa:item:11:-3:-5": [
+            "obj-26"
+          ],
+          "room0:gsa:item:1:-1:6": [
+            "obj-16"
+          ],
+          "room0:gsa:item:-4:16:-2": [
+            "obj-1",
+            "obj-12"
+          ],
+          "room0:gsa:item:-5:7:1": [
+            "obj-11"
+          ],
+          "room0:gsa:item:-5:3:1": [
+            "obj-5"
+          ],
+          "room0:gsa:item:-4:14:6": [
+            "obj-5"
+          ],
+          "room0:gsa:item:11:-4:-6": [
+            "obj-26"
+          ],
+          "room0:gsa:item:7:-6:0": [
+            "obj-20"
+          ],
+          "room0:gsa:item:1:5:-8": [
+            "obj-2"
+          ],
+          "room0:gsa:item:1:4:6": [
+            "obj-1",
+            "obj-5"
+          ],
+          "room0:gsa:item:10:-6:1": [
+            "obj-25",
+            "obj-5",
+            "obj-8"
+          ],
+          "room0:gsa:item:-5:4:1": [
+            "obj-11"
+          ],
+          "room0:gsa:item:7:-6:6": [
+            "obj-5"
+          ],
+          "room0:gsa:item:4:9:6": [
+            "obj-12"
+          ],
+          "room0:gsa:item:-2:14:6": [
+            "obj-5"
+          ],
+          "room0:gsa:item:-5:4:-2": [
+            "obj-11"
+          ],
+          "room0:gsa:item:-4:-2:6": [
+            "obj-16"
+          ],
+          "room0:gsa:item:-1:-6:-3": [
+            "obj-6"
+          ],
+          "room0:gsa:item:10:-2:-5": [
+            "obj-22"
+          ],
+          "room0:gsa:item:-3:16:-1": [
+            "obj-12"
+          ],
+          "room0:gsa:item:4:10:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:10:-6:0": [
+            "obj-8"
+          ],
+          "room0:gsa:item:-4:10:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:1:4:-8": [
+            "obj-1",
+            "obj-2"
+          ],
+          "room0:gsa:item:10:-4:-4": [
+            "obj-26"
+          ],
+          "room0:gsa:item:5:-2:6": [
+            "obj-12",
+            "obj-24",
+            "obj-5"
+          ],
+          "room0:gsa:item:7:5:6": [
+            "obj-1",
+            "obj-12",
+            "obj-24"
+          ],
+          "room0:gsa:item:7:2:6": [
+            "obj-1",
+            "obj-25"
+          ],
+          "room0:gsa:item:1:14:6": [
+            "obj-24",
+            "obj-5"
+          ],
+          "room0:gsa:item:5:10:6": [
+            "obj-1",
+            "obj-25",
+            "obj-5"
+          ],
+          "room0:gsa:item:-1:10:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:2:10:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:4:0:6": [
+            "obj-2"
+          ],
+          "room0:gsa:item:0:4:-8": [
+            "obj-2"
+          ],
+          "room0:gsa:item:-2:16:-1": [
+            "obj-5"
+          ],
+          "room0:gsa:item:-3:9:-4": [
+            "obj-12",
+            "obj-25"
+          ],
+          "room0:gsa:item:11:-3:-2": [
+            "obj-8"
+          ],
+          "room0:gsa:item:7:9:6": [
+            "obj-1",
+            "obj-25"
+          ],
+          "room0:gsa:item:-5:6:1": [
+            "obj-16",
+            "obj-28"
+          ],
+          "room0:gsa:item:9:-3:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:-2:-2:6": [
+            "obj-12",
+            "obj-16"
+          ],
+          "room0:gsa:item:-3:15:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-4:4:6": [
+            "obj-12"
+          ],
+          "room0:gsa:item:0:5:-8": [
+            "obj-2"
+          ],
+          "room0:gsa:item:8:2:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:9:-6:1": [
+            "obj-25"
+          ],
+          "room0:gsa:item:0:-6:-2": [
+            "obj-1",
+            "obj-6"
+          ],
+          "room0:gsa:item:-4:16:-1": [
+            "obj-5"
+          ],
+          "room0:gsa:item:10:-3:6": [
+            "obj-2"
+          ],
+          "room0:gsa:item:10:-6:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:8:-2:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:2:5:6": [
+            "obj-24"
+          ],
+          "room0:gsa:item:-1:4:-8": [
+            "obj-12"
+          ],
+          "room0:gsa:item:7:10:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:5:-6:6": [
+            "obj-25"
+          ],
+          "room0:gsa:item:2:7:6": [
+            "obj-24"
+          ],
+          "room0:gsa:item:-1:5:-8": [
+            "obj-12"
+          ],
+          "room0:gsa:item:-1:16:-1": [
+            "obj-5"
+          ],
+          "room0:gsa:item:1:17:1": [
+            "obj-28"
+          ],
+          "room0:gsa:item:2:6:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:2:17:1": [
+            "obj-28"
+          ],
+          "room0:gsa:item:3:6:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:2:3:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:3:6:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:1:16:-2": [
+            "obj-28"
+          ],
+          "room0:gsa:item:2:17:0": [
+            "obj-28"
+          ],
+          "room0:gsa:item:3:5:-8": [
+            "obj-1",
+            "obj-28"
+          ],
+          "room0:gsa:item:3:17:0": [
+            "obj-28"
+          ],
+          "room0:gsa:item:-2:4:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:2:16:-3": [
+            "obj-28"
+          ],
+          "room0:gsa:item:4:6:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:4:17:0": [
+            "obj-28"
+          ],
+          "room0:gsa:item:3:16:-3": [
+            "obj-28"
+          ],
+          "room0:gsa:item:4:16:-3": [
+            "obj-28"
+          ],
+          "room0:gsa:item:4:17:-1": [
+            "obj-28"
+          ],
+          "room0:gsa:item:4:16:-4": [
+            "obj-28"
+          ],
+          "room0:gsa:item:10:4:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:10:3:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:4:17:-3": [
+            "obj-28"
+          ],
+          "room0:gsa:item:10:5:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:6:17:-1": [
+            "obj-28"
+          ],
+          "room0:gsa:item:5:16:-4": [
+            "obj-28"
+          ],
+          "room0:gsa:item:11:5:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:8:17:-1": [
+            "obj-28"
+          ],
+          "room0:gsa:item:14:12:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:10:6:-8": [
+            "obj-28"
+          ],
+          "room0:gsa:item:15:13:-4": [
+            "obj-1",
+            "obj-28"
+          ],
+          "room0:gsa:item:-2:5:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-1:6:6": [
+            "obj-28"
+          ],
+          "room0:gsa:item:-4:3:0": [
+            "obj-1",
+            "obj-28"
+          ],
+          "room0:gsa:item:1:7:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:1:6:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:14:13:-4": [
+            "obj-28"
+          ],
+          "room0:gsa:item:-2:-6:-3": [
+            "obj-1"
+          ],
+          "room0:gsa:item:9:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:7:17:1": [
+            "obj-1",
+            "obj-28"
+          ],
+          "room0:gsa:item:3:4:-8": [
+            "obj-28"
+          ],
+          "room0:gsa:item:8:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:4:5:-8": [
+            "obj-28"
+          ],
+          "room0:gsa:item:4:4:-8": [
+            "obj-28"
+          ],
+          "room0:gsa:item:-3:4:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-2:3:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-2:2:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-3:5:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-1:16:-2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:1:2:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:1:3:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:1:1:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:0:2:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-1:2:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:0:0:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-1:1:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:0:-1:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-5:1:0": [
+            "obj-1",
+            "obj-29"
+          ],
+          "room0:gsa:item:-3:1:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-5:2:0": [
+            "obj-29"
+          ],
+          "room0:gsa:item:1:0:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-5:0:0": [
+            "obj-29"
+          ],
+          "room0:gsa:item:2:-1:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:12:-4:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:8:2:-6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:4:-3:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:3:-3:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:19:-4:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:20:-2:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:0:-6:-3": [
+            "obj-1"
+          ],
+          "room0:gsa:item:30:-5:-8": [
+            "obj-30"
+          ],
+          "room0:gsa:item:0:-6:-5": [
+            "obj-1"
+          ],
+          "room0:gsa:item:33:-6:-6": [
+            "obj-31"
+          ],
+          "room0:gsa:item:30:-4:-8": [
+            "obj-30"
+          ],
+          "room0:gsa:item:2:-6:-3": [
+            "obj-1"
+          ],
+          "room0:gsa:item:34:-6:0": [
+            "obj-32"
+          ],
+          "room0:gsa:item:33:-5:-5": [
+            "obj-31"
+          ],
+          "room0:gsa:item:34:-5:1": [
+            "obj-32"
+          ],
+          "room0:gsa:item:33:-4:-5": [
+            "obj-31"
+          ],
+          "room0:gsa:item:3:-6:-3": [
+            "obj-1"
+          ],
+          "room0:gsa:item:34:-4:1": [
+            "obj-32"
+          ],
+          "room0:gsa:item:34:-3:1": [
+            "obj-1",
+            "obj-32"
+          ],
+          "room0:gsa:item:23:-4:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:22:-2:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:34:-2:1": [
+            "obj-1",
+            "obj-32"
+          ],
+          "room0:gsa:item:20:2:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:20:3:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:-2:-4": [
+            "obj-1",
+            "obj-30"
+          ],
+          "room0:gsa:item:20:4:6": [
+            "obj-1",
+            "obj-32",
+            "obj-33"
+          ],
+          "room0:gsa:item:34:2:1": [
+            "obj-32"
+          ],
+          "room0:gsa:item:34:1:2": [
+            "obj-1",
+            "obj-32"
+          ],
+          "room0:gsa:item:17:-6:2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:33:-1:-5": [
+            "obj-31"
+          ],
+          "room0:gsa:item:33:3:-5": [
+            "obj-31"
+          ],
+          "room0:gsa:item:29:3:-4": [
+            "obj-30"
+          ],
+          "room0:gsa:item:29:0:-3": [
+            "obj-1"
+          ],
+          "room0:gsa:item:34:5:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:19:4:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:18:-6:1": [
+            "obj-33"
+          ],
+          "room0:gsa:item:16:-6:0": [
+            "obj-1"
+          ],
+          "room0:gsa:item:21:-6:2": [
+            "obj-1",
+            "obj-33"
+          ],
+          "room0:gsa:item:28:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:22:-6:2": [
+            "obj-33"
+          ],
+          "room0:gsa:item:23:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:23:-6:1": [
+            "obj-33",
+            "obj-34"
+          ],
+          "room0:gsa:item:34:11:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:24:-6:1": [
+            "obj-1",
+            "obj-34"
+          ],
+          "room0:gsa:item:17:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:16:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:24:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:14:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:10:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:11:13:-7": [
+            "obj-1"
+          ],
+          "room0:gsa:item:18:5:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:12:14:-7": [
+            "obj-1"
+          ],
+          "room0:gsa:item:34:3:2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:16:17:0": [
+            "obj-1"
+          ],
+          "room0:gsa:item:20:-2:-5": [
+            "obj-1"
+          ],
+          "room0:gsa:item:13:11:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:34:1:3": [
+            "obj-1"
+          ],
+          "room0:gsa:item:28:6:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:21:17:2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:24:6:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:16:13:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:18:17:1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:20:5:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:34:8:2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:17:17:2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:14:11:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:20:11:-6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:17:13:-4": [
+            "obj-1",
+            "obj-35"
+          ],
+          "room0:gsa:item:18:13:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:29:10:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:27:17:0": [
+            "obj-1"
+          ],
+          "room0:gsa:item:24:4:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:25:13:-2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:27:17:-2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:23:11:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:26:-6:0": [
+            "obj-1",
+            "obj-35"
+          ],
+          "room0:gsa:item:20:-6:-2": [
+            "obj-1",
+            "obj-35"
+          ],
+          "room0:gsa:item:30:3:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:25:-6:0": [
+            "obj-1",
+            "obj-34",
+            "obj-35"
+          ],
+          "room0:gsa:item:30:4:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:29:3:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:25:-6:1": [
+            "obj-34"
+          ],
+          "room0:gsa:item:29:8:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:30:0:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:-6:-2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:18:-6:2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:34:2:0": [
+            "obj-1"
+          ],
+          "room0:gsa:item:21:12:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:17:-3:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:17:-3:-5": [
+            "obj-1"
+          ],
+          "room0:gsa:item:27:-6:0": [
+            "obj-1",
+            "obj-35"
+          ],
+          "room0:gsa:item:29:17:0": [
+            "obj-1"
+          ],
+          "room0:gsa:item:31:4:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:31:5:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:29:4:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:26:-6:1": [
+            "obj-35"
+          ],
+          "room0:gsa:item:29:2:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:26:-6:-1": [
+            "obj-35"
+          ],
+          "room0:gsa:item:20:-6:2": [
+            "obj-35"
+          ],
+          "room0:gsa:item:19:-6:-2": [
+            "obj-1",
+            "obj-35"
+          ],
+          "room0:gsa:item:19:5:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:29:17:-1": [
+            "obj-35"
+          ],
+          "room0:gsa:item:18:4:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:17:5:-8": [
+            "obj-1",
+            "obj-36"
+          ],
+          "room0:gsa:item:34:-2:-2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:21:-6:-1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:21:-6:-2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:25:17:-1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:16:5:-8": [
+            "obj-36"
+          ],
+          "room0:gsa:item:34:-3:-1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:5:-8": [
+            "obj-36"
+          ],
+          "room0:gsa:item:34:-2:-1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:4:-8": [
+            "obj-36",
+            "obj-37"
+          ],
+          "room0:gsa:item:27:17:-1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:29:17:-2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:16:-6:-1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:-6:-1": [
+            "obj-1"
+          ],
+          "room0:gsa:item:16:-6:-2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:6:10:-8": [
+            "obj-1",
+            "obj-38"
+          ],
+          "room0:gsa:item:4:10:-8": [
+            "obj-38"
+          ],
+          "room0:gsa:item:8:6:-7": [
+            "obj-1"
+          ],
+          "room0:gsa:item:16:4:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:17:-2": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:6:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:9:4:-6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:4:11:-8": [
+            "obj-1",
+            "obj-38"
+          ],
+          "room0:gsa:item:14:7:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:17:0": [
+            "obj-1"
+          ],
+          "room0:gsa:item:9:6:-6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:15:7:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:14:8:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:4:12:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:8:17:0": [
+            "obj-1"
+          ],
+          "room0:gsa:item:8:4:-6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:19:13:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:20:13:-4": [
+            "obj-1"
+          ],
+          "room0:gsa:item:12:9:-8": [
+            "obj-1"
+          ],
+          "room0:gsa:item:-1:13:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:0:12:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:3:11:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:10:11:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:10:10:6": [
+            "obj-1"
+          ],
+          "room0:gsa:item:11:10:6": [
+            "obj-1"
+          ]
+        },
+        "memory_relation_edge_count": 365,
+        "memory_object_consolidation_events": 9,
+        "merged_memory_node_count": 23,
+        "object_payload_node_count": 38,
+        "avg_detection_count": 12749,
+        "avg_geometry_support": 0.337,
+        "avg_support_size": 0.044,
+        "avg_depth_scale": 2.57
+      },
+      "duograph_object_export": {
+        "path": "/home/nebula/xxy/dataset/Replica/room0/pcd_saves/full_pcd_duograph3d_repair_descriptor_export_room0_20260428.pkl.gz",
+        "object_count": 9,
+        "object_source": "online_memory_node",
+        "export_min_detections": 3,
+        "skipped_object_counts": {
+          "merged_into_duplicate_object": 23,
+          "too_few_detections": 6
+        },
+        "seconds": 0.006
+      },
+      "duograph_object_monitor": {
+        "available": true,
+        "pred_exp_name": "duograph3d_repair_descriptor_export_room0_20260428",
+        "probability_logit_scale": 100.0,
+        "path": "/home/nebula/xxy/dataset/Replica/room0/pcd_saves/full_pcd_duograph3d_repair_descriptor_export_room0_20260428.pkl.gz",
+        "object_count": 9,
+        "valid_eval_object_count": 6,
+        "semantic_accuracy": 0.0,
+        "gt_purity": {
+          "count": 6,
+          "min": 0.980469,
+          "mean": 0.99056,
+          "p10": 0.981445,
+          "p50": 0.992188,
+          "p90": 0.998047,
+          "p99": 0.999805,
+          "max": 1.0
+        },
+        "top1_probability": {
+          "count": 6,
+          "min": 0.246679,
+          "mean": 0.576395,
+          "p10": 0.36864,
+          "p50": 0.572115,
+          "p90": 0.78843,
+          "p99": 0.975982,
+          "max": 0.996821
+        },
+        "top1_similarity": {
+          "count": 6,
+          "min": 0.242499,
+          "mean": 0.263611,
+          "p10": 0.247627,
+          "p50": 0.255196,
+          "p90": 0.288011,
+          "p99": 0.294446,
+          "max": 0.295161
+        },
+        "class_margin": {
+          "count": 6,
+          "min": 0.001795,
+          "mean": 0.015796,
+          "p10": 0.003653,
+          "p50": 0.006968,
+          "p90": 0.036766,
+          "p99": 0.057298,
+          "max": 0.05958
+        },
+        "class_entropy": {
+          "count": 6,
+          "min": 0.034997,
+          "mean": 1.844496,
+          "p10": 0.782251,
+          "p50": 1.835304,
+          "p90": 2.915934,
+          "p99": 3.106113,
+          "max": 3.127244
+        },
+        "semantic_cell_duplicates": {
+          "total": 6,
+          "unique_targets": 6,
+          "duplicate_count": 0,
+          "duplicate_rate": 0.0,
+          "overseg_factor": 1.0,
+          "targets_with_duplicates": 0,
+          "max_items_per_target": 1
+        },
+        "top_pred_to_gt_errors": [
+          {
+            "pred": "pillow",
+            "gt": "sofa",
+            "count": 1
+          },
+          {
+            "pred": "tv-stand",
+            "gt": "cabinet",
+            "count": 1
+          },
+          {
+            "pred": "vent",
+            "gt": "stool",
+            "count": 1
+          },
+          {
+            "pred": "comforter",
+            "gt": "rug",
+            "count": 1
+          },
+          {
+            "pred": "nightstand",
+            "gt": "lamp",
+            "count": 1
+          },
+          {
+            "pred": "plant-stand",
+            "gt": "table",
+            "count": 1
+          }
+        ]
+      },
+      "conceptgraphs_baseline_object_monitor": {
+        "available": true,
+        "pred_exp_name": "none_overlap_maskconf0.95_simsum1.2_dbscan.1_merge20_masksub",
+        "probability_logit_scale": 100.0,
+        "path": "/home/nebula/xxy/dataset/Replica/room0/pcd_saves/full_pcd_none_overlap_maskconf0.95_simsum1.2_dbscan.1_merge20_masksub_post.pkl.gz",
+        "object_count": 76,
+        "valid_eval_object_count": 46,
+        "semantic_accuracy": 0.326087,
+        "gt_purity": {
+          "count": 46,
+          "min": 0.520214,
+          "mean": 0.902204,
+          "p10": 0.804953,
+          "p50": 0.927339,
+          "p90": 0.997615,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "top1_probability": {
+          "count": 46,
+          "min": 0.249399,
+          "mean": 0.709725,
+          "p10": 0.412336,
+          "p50": 0.771924,
+          "p90": 0.985383,
+          "p99": 0.999918,
+          "max": 0.999933
+        },
+        "top1_similarity": {
+          "count": 46,
+          "min": 0.213342,
+          "mean": 0.282125,
+          "p10": 0.23316,
+          "p50": 0.275841,
+          "p90": 0.335754,
+          "p99": 0.358431,
+          "max": 0.359671
+        },
+        "class_margin": {
+          "count": 46,
+          "min": 0.000133,
+          "mean": 0.024739,
+          "p10": 0.005217,
+          "p50": 0.017368,
+          "p90": 0.061283,
+          "p99": 0.099002,
+          "max": 0.10121
+        },
+        "class_entropy": {
+          "count": 46,
+          "min": 0.001114,
+          "mean": 1.324048,
+          "p10": 0.100012,
+          "p50": 1.212366,
+          "p90": 2.580559,
+          "p99": 3.03561,
+          "max": 3.087705
+        },
+        "semantic_cell_duplicates": {
+          "total": 46,
+          "unique_targets": 42,
+          "duplicate_count": 4,
+          "duplicate_rate": 0.086957,
+          "overseg_factor": 1.095238,
+          "targets_with_duplicates": 4,
+          "max_items_per_target": 2
+        },
+        "top_pred_to_gt_errors": [
+          {
+            "pred": "pillow",
+            "gt": "cushion",
+            "count": 6
+          },
+          {
+            "pred": "vent",
+            "gt": "lamp",
+            "count": 3
+          },
+          {
+            "pred": "pillow",
+            "gt": "sofa",
+            "count": 3
+          },
+          {
+            "pred": "plant-stand",
+            "gt": "table",
+            "count": 2
+          },
+          {
+            "pred": "comforter",
+            "gt": "blanket",
+            "count": 2
+          },
+          {
+            "pred": "pillow",
+            "gt": "chair",
+            "count": 2
+          },
+          {
+            "pred": "comforter",
+            "gt": "sofa",
+            "count": 2
+          },
+          {
+            "pred": "pot",
+            "gt": "vase",
+            "count": 1
+          },
+          {
+            "pred": "tv-stand",
+            "gt": "cabinet",
+            "count": 1
+          },
+          {
+            "pred": "comforter",
+            "gt": "cushion",
+            "count": 1
+          },
+          {
+            "pred": "nightstand",
+            "gt": "book",
+            "count": 1
+          },
+          {
+            "pred": "lamp",
+            "gt": "candle",
+            "count": 1
+          }
+        ]
+      },
+      "conceptgraphs_baseline_metrics": {
+        "scene_id": "room0",
+        "miou": "21.3348021857319",
+        "mrecall": "38.33523945953778",
+        "mprecision": "29.432649671545498",
+        "mf1score": "25.27255634427201",
+        "fmiou": "50.03472116567874"
+      },
+      "pipeline_gate_overrides": {},
+      "seconds_total": 113.533
+    }
+  ]
+}

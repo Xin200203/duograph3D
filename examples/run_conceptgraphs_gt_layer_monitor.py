@@ -61,6 +61,7 @@ MAX_BBOX_AREA_RATIO: float | None = None
 APPLY_MASK_SUBTRACT_CONTAINED = False
 CLASS_AGNOSTIC_IDENTITY = False
 CLASS_AGNOSTIC_TOKEN = "item"
+EXPORT_MIN_DETECTIONS = 1
 PIPELINE_GATE_OVERRIDES: dict[str, float] = {}
 
 
@@ -399,7 +400,12 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                         points=world,
                         centroid=centroid,
                         clip_feature=image_feats[det_i],
-                        text_feature=class_feats_np[int(class_i)],
+                        # In the class-agnostic identity setting, a generic
+                        # `item` text embedding would make every object
+                        # semantically identical inside DuoGraph3D's gates.  Keep
+                        # online matching semantics in accumulated class votes
+                        # and object-level visual CLIP instead.
+                        text_feature=None if CLASS_AGNOSTIC_IDENTITY else class_feats_np[int(class_i)],
                         mask_area=area,
                     ),
                 )
@@ -854,15 +860,22 @@ def write_duograph_payload(scene: str, result, logger, obs_meta: list[Observatio
     obs_by_eid = {obs.evidence_id: obs for obs in obs_meta}
     label_to_index = {obs.label: int(obs.pred_class_index) for obs in obs_meta}
     objects = []
+    skip_counts: Counter[str] = Counter()
     for object_id, node in sorted(result.memory_nodes.items()):
-        if "merged_into_duplicate_object" in node.failure_tags or "filtered_low_detection_object" in node.failure_tags:
+        skip_reason = ObjectGraphMemory.export_skip_reason(
+            node,
+            min_points=4,
+            min_detections=EXPORT_MIN_DETECTIONS,
+        )
+        if skip_reason:
+            skip_counts[skip_reason] += 1
             continue
         points = np.asarray(node.sampled_points, dtype=np.float32)
-        if len(points) < 4:
-            continue
         if len(points) > MAX_POINTS_PER_OBJECT:
             points = points[sample_indices(len(points), MAX_POINTS_PER_OBJECT)]
-        label = max(node.class_counts.items(), key=lambda item: item[1])[0] if node.class_counts else (node.appearance_key_recent or node.descriptor_recent)
+        label = ObjectGraphMemory.dominant_semantic_label(node)
+        if not label:
+            label = node.appearance_key_recent or node.descriptor_recent
         label_index = int(label_to_index.get(label, 0))
         clip_ft = np.asarray(node.clip_feature, dtype=np.float32)
         if clip_ft.shape != class_feats_np[0].shape:
@@ -884,7 +897,8 @@ def write_duograph_payload(scene: str, result, logger, obs_meta: list[Observatio
             "num_detections": max(int(node.detection_count), 1),
         })
     object_source = "online_memory_node"
-    if not objects:
+    has_memory_payload_nodes = any(node.sampled_points for node in result.memory_nodes.values())
+    if not objects and not has_memory_payload_nodes:
         by_key: dict[str, dict[str, object]] = {}
         object_source = "geometry_key_fallback"
         for record in logger.records:
@@ -930,7 +944,14 @@ def write_duograph_payload(scene: str, result, logger, obs_meta: list[Observatio
     path = pcd_dir / f"full_pcd_{DUOGRAPH_PRED_EXP_NAME}.pkl.gz"
     with gzip.open(path, "wb") as handle:
         pickle.dump({"objects": objects, "bg_objects": None}, handle)
-    return {"path": str(path), "object_count": len(objects), "object_source": object_source, "seconds": round(time.time() - t0, 3)}
+    return {
+        "path": str(path),
+        "object_count": len(objects),
+        "object_source": object_source,
+        "export_min_detections": EXPORT_MIN_DETECTIONS,
+        "skipped_object_counts": dict(skip_counts),
+        "seconds": round(time.time() - t0, 3),
+    }
 
 
 def load_baseline_rows() -> dict[str, dict[str, str]]:
@@ -944,6 +965,7 @@ def configure_profile(args) -> None:
     global ROOT, BASELINE_PRED_EXP_NAME, DUOGRAPH_PRED_EXP_NAME, PROFILE, PIPELINE_GATE_OVERRIDES
     global VOXEL_SIZE, MIN_VALID_DEPTH_POINTS, MAX_POINTS_PER_OBS
     global MASK_CONF_THRESHOLD, MAX_BBOX_AREA_RATIO, APPLY_MASK_SUBTRACT_CONTAINED, CLASS_AGNOSTIC_IDENTITY
+    global EXPORT_MIN_DETECTIONS
 
     PROFILE = args.profile
     if PROFILE == "engineered":
@@ -955,6 +977,7 @@ def configure_profile(args) -> None:
         MAX_BBOX_AREA_RATIO = 0.50
         APPLY_MASK_SUBTRACT_CONTAINED = True
         CLASS_AGNOSTIC_IDENTITY = True
+        EXPORT_MIN_DETECTIONS = 2
         DUOGRAPH_PRED_EXP_NAME = "duograph3d_gsa_engineered_monitor"
     else:
         ROOT = args.root or ROOT
@@ -965,12 +988,15 @@ def configure_profile(args) -> None:
         MAX_BBOX_AREA_RATIO = None
         APPLY_MASK_SUBTRACT_CONTAINED = False
         CLASS_AGNOSTIC_IDENTITY = False
+        EXPORT_MIN_DETECTIONS = 1
         DUOGRAPH_PRED_EXP_NAME = "duograph3d_gt_layer_monitor"
 
     if args.duograph_pred_exp_name:
         DUOGRAPH_PRED_EXP_NAME = args.duograph_pred_exp_name
     if args.baseline_pred_exp_name:
         BASELINE_PRED_EXP_NAME = args.baseline_pred_exp_name
+    if args.export_min_detections is not None:
+        EXPORT_MIN_DETECTIONS = max(int(args.export_min_detections), 1)
     gate_args = {
         "association_threshold": args.association_threshold,
         "history_candidate_affinity_threshold": args.history_affinity_threshold,
@@ -1007,6 +1033,7 @@ def main() -> None:
     parser.add_argument("--skip-object-export", action="store_true")
     parser.add_argument("--duograph-pred-exp-name", default=None)
     parser.add_argument("--baseline-pred-exp-name", default=None)
+    parser.add_argument("--export-min-detections", type=int, default=None)
     parser.add_argument("--association-threshold", type=float, default=None)
     parser.add_argument("--history-affinity-threshold", type=float, default=None)
     parser.add_argument("--history-margin-threshold", type=float, default=None)
@@ -1141,6 +1168,7 @@ def main() -> None:
             "max_points_per_obs": MAX_POINTS_PER_OBS,
             "apply_mask_subtract_contained": APPLY_MASK_SUBTRACT_CONTAINED,
             "class_agnostic_identity": CLASS_AGNOSTIC_IDENTITY,
+            "export_min_detections": EXPORT_MIN_DETECTIONS,
             "baseline_pred_exp_name": BASELINE_PRED_EXP_NAME,
             "duograph_pred_exp_name": DUOGRAPH_PRED_EXP_NAME,
             "clip_probability_logit_scale": round(logit_scale, 6),
