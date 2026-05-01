@@ -23,6 +23,55 @@ class ObjectStatus(str, Enum):
     RETIRED = "retired"
 
 
+class FragmentStatus(str, Enum):
+    TENTATIVE = "tentative"
+    CONFIRMED = "confirmed"
+    RETIRED = "retired"
+
+
+@dataclass
+class TentativeFragment:
+    """Phase 丙: unconfirmed object fragment awaiting promotion.
+
+    An unmatched hypothesis spawns a tentative fragment instead of directly
+    creating a confirmed MemoryObjectNode.  After accumulating enough evidence
+    (hits, self-consistency, geometry-consistency, low conflict rate), the
+    fragment is promoted to a confirmed node.
+
+    Tentative fragments participate in candidate retrieval at lower priority
+    so they can absorb subsequent observations while awaiting promotion.
+    """
+    fragment_id: str
+    birth_step: int
+    hits: int = 1
+    last_seen_step: int = 0
+    miss_count: int = 0
+    # Promotion signals
+    self_consistency: float = 0.0
+    geometry_consistency: float = 0.0
+    conflict_count: int = 0
+    # Accumulated fusion state (mirrors MemoryObjectNode but lightweight)
+    descriptor: str = ""
+    geometry_key: str = ""
+    detection_count: int = 0
+    confidence_sum: float = 0.0
+    mask_area_sum: float = 0.0
+    class_counts: dict[str, int] = field(default_factory=dict)
+    clip_feature: tuple[float, ...] = ()
+    text_feature: tuple[float, ...] = ()
+    bbox_min: tuple[float, ...] = ()
+    bbox_max: tuple[float, ...] = ()
+    centroid: tuple[float, ...] = ()
+    continuity_key_recent: str = ""
+    appearance_key_recent: str = ""
+    avg_support_size: float = 0.0
+    avg_depth_scale: float = 1.0
+    avg_geometry_support: float = 0.0
+    # Rejection metadata
+    rejection_reason: str = ""
+    absorbed_into_id: str = ""
+
+
 @dataclass
 class ObservationSupport:
     proposal_id: str
@@ -175,6 +224,11 @@ class MemoryObjectNode:
     clip_feature: tuple[float, ...] = ()
     text_feature: tuple[float, ...] = ()
     class_counts: dict[str, int] = field(default_factory=dict)
+    # Phase 丙: stable memory prototypes (EMA-updated, high-confidence only)
+    stable_clip_feature: tuple[float, ...] = ()
+    stable_text_feature: tuple[float, ...] = ()
+    stable_write_count: int = 0
+    last_stable_write_margin: float = 0.0
 
     def register_support(self, provenance: EvidenceProvenance) -> None:
         self.evidence_provenance_tail.append(provenance.value)
@@ -233,6 +287,20 @@ class PipelineConfig:
     cand_ann_top_k: int = 8
     # Phase 乙: per-candidate source tracking for monitoring
     cand_track_sources: bool = False
+    # Phase 丙: tentative fragment + promotion gate
+    enable_tentative_fragments: bool = False
+    promotion_min_hits: int = 3
+    promotion_min_sc: float = 0.70
+    promotion_min_gc: float = 0.60
+    promotion_max_conflict_rate: float = 0.10
+    promotion_max_label_entropy: float = 1.0
+    promotion_min_top_label_share: float = 0.60
+    tentative_candidate_priority_boost: float = 0.15
+    # Phase 丙: working / stable memory
+    enable_stable_memory: bool = False
+    stable_write_margin: float = 0.25
+    stable_ema_alpha: float = 0.05
+    working_memory_len: int = 8
     layer2_history_identity_threshold: float = 0.7
     history_point_overlap_distance: float = 0.12
     history_overlap_max_points: int = 48

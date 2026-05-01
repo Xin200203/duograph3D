@@ -69,8 +69,10 @@ def main():
     parser.add_argument("--observation-json", default=None,
                         help="Path to GSA observation JSON (optional; synthetic if omitted)")
     parser.add_argument("--config-preset", default="default",
-                        choices=("default", "conceptgraphs_parity"),
+                        choices=("default", "conceptgraphs_parity", "phase_beta"),
                         help="PipelineConfig preset")
+    parser.add_argument("--enable-phase-beta", action="store_true",
+                        help="Enable all Phase 乙 features")
     args = parser.parse_args()
 
     scene_root = Path(args.replica_root) / args.scene
@@ -93,6 +95,25 @@ def main():
             association_threshold=1.7,
             enable_object_consolidation=True,
             object_merge_interval=20,
+        )
+    elif args.config_preset == "phase_beta" or args.enable_phase_beta:
+        config = PipelineConfig(
+            emit_association_diagnostics=True,
+            association_diagnostics_top_k=3,
+            candidate_budget=5,
+            candidate_retrieval_budget=32,
+            candidate_retrieval_channel_budget=8,
+            association_threshold=1.7,
+            enable_object_consolidation=True,
+            object_merge_interval=20,
+            # Phase 乙 features
+            l1_neg_edge_enable=True,
+            l1_preserve_label_distribution=True,
+            cand_include_adj_key=True,
+            cand_include_ann=True,
+            cand_track_sources=True,
+            cand_adj_radius=1,
+            cand_ann_top_k=8,
         )
     else:
         config = PipelineConfig(

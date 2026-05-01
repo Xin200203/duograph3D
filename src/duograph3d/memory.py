@@ -6,12 +6,14 @@ import math
 from .contracts import (
     CurrentObjectHypothesis,
     EvidenceItem,
+    FragmentStatus,
     HistoryCandidate,
     MemoryObjectNode,
     MemoryRelationEdge,
     ObjectObservationPayload,
     ObjectStatus,
     PipelineConfig,
+    TentativeFragment,
 )
 
 
@@ -23,6 +25,9 @@ class ObjectGraphMemory:
         self._next_id = 1
         # Phase 乙: geometry-key → node-id index for adj-key retrieval
         self._geometry_index: dict[str, list[str]] = {}
+        # Phase 丙: tentative fragments pending promotion
+        self.tentative_fragments: dict[str, TentativeFragment] = {}
+        self._next_tentative_id = 1
 
     def snapshot(self) -> dict[str, MemoryObjectNode]:
         return {
@@ -60,6 +65,166 @@ class ObjectGraphMemory:
         if geometry_key:
             self._geometry_index.setdefault(geometry_key, []).append(object_id)
         return node
+
+    # ---- Phase 丙: tentative fragment + promotion gate ----
+
+    def _next_fragment_id(self) -> str:
+        fid = f"tent-{self._next_tentative_id}"
+        self._next_tentative_id += 1
+        return fid
+
+    def create_tentative_fragment(
+        self, *, descriptor: str, geometry_key: str, step_id: int,
+        hypothesis: CurrentObjectHypothesis | None = None,
+    ) -> TentativeFragment:
+        fid = self._next_fragment_id()
+        fragment = TentativeFragment(
+            fragment_id=fid,
+            birth_step=step_id,
+            last_seen_step=step_id,
+            hits=1,
+            descriptor=descriptor,
+            geometry_key=geometry_key,
+        )
+        if hypothesis is not None:
+            payload = hypothesis.object_payload
+            if payload is not None:
+                fragment.detection_count = max(payload.detection_count, 1)
+                fragment.confidence_sum = hypothesis.confidence * fragment.detection_count
+                fragment.mask_area_sum = float(payload.mask_area or 0.0)
+                fragment.clip_feature = self._as_float_tuple(payload.clip_feature)
+                fragment.text_feature = self._as_float_tuple(payload.text_feature)
+                bbox_min, bbox_max = self._payload_bbox(payload)
+                fragment.bbox_min = bbox_min
+                fragment.bbox_max = bbox_max
+                fragment.centroid = self._payload_centroid(payload)
+                if payload.label:
+                    fragment.class_counts[payload.label] = fragment.class_counts.get(payload.label, 0) + fragment.detection_count
+            continuity_key = str(hypothesis.support_signals.get("continuity_key", ""))
+            appearance_key = str(hypothesis.support_signals.get("appearance_key", ""))
+            if continuity_key:
+                fragment.continuity_key_recent = continuity_key
+            if appearance_key:
+                fragment.appearance_key_recent = appearance_key
+            fragment.avg_support_size = float(hypothesis.support_signals.get("support_size", 0.0) or 0.0)
+            fragment.avg_depth_scale = float(hypothesis.support_signals.get("depth_scale", 1.0) or 1.0)
+            fragment.avg_geometry_support = float(hypothesis.support_signals.get("geometry_support", 0.0) or 0.0)
+        self.tentative_fragments[fid] = fragment
+        return fragment
+
+    def promote_to_confirmed(self, fragment: TentativeFragment, step_id: int) -> MemoryObjectNode:
+        node = self.create_node(
+            descriptor=fragment.descriptor,
+            geometry_key=fragment.geometry_key,
+            step_id=step_id,
+        )
+        # Transfer accumulated state
+        node.birth_step = fragment.birth_step
+        node.last_seen_step = step_id
+        node.detection_count = max(fragment.detection_count, 1)
+        node.confidence_sum = fragment.confidence_sum
+        node.mask_area_sum = fragment.mask_area_sum
+        node.class_counts = dict(fragment.class_counts)
+        if fragment.clip_feature:
+            node.clip_feature = self._normalize_feature(fragment.clip_feature)
+        if fragment.text_feature:
+            node.text_feature = self._normalize_feature(fragment.text_feature)
+        node.bbox_min = fragment.bbox_min
+        node.bbox_max = fragment.bbox_max
+        node.centroid = fragment.centroid
+        node.continuity_key_recent = fragment.continuity_key_recent
+        node.appearance_key_recent = fragment.appearance_key_recent
+        node.avg_support_size = fragment.avg_support_size
+        node.avg_depth_scale = fragment.avg_depth_scale
+        node.avg_geometry_support = fragment.avg_geometry_support
+        node.point_count = len(fragment.clip_feature)  # approximate
+        # Mark fragment as promoted
+        fragment.absorbed_into_id = node.object_id
+        return node
+
+    def promotion_gate(self, fragment: TentativeFragment) -> tuple[bool, str]:
+        """Check if a tentative fragment is ready to be promoted to confirmed.
+
+        Returns (should_promote, reason).
+        """
+        config = self.config
+        if fragment.hits < config.promotion_min_hits:
+            return False, "insufficient_hits"
+        if config.promotion_min_sc > 0 and fragment.self_consistency < config.promotion_min_sc:
+            return False, "low_self_consistency"
+        if config.promotion_min_gc > 0 and fragment.geometry_consistency < config.promotion_min_gc:
+            return False, "low_geometry_consistency"
+        # Check label entropy
+        if fragment.class_counts:
+            total = sum(fragment.class_counts.values())
+            if total > 0:
+                top_label, top_count = max(fragment.class_counts.items(), key=lambda x: x[1])
+                top_share = top_count / total
+                entropy = 0.0
+                for count in fragment.class_counts.values():
+                    p = count / total
+                    if p > 0:
+                        entropy -= p * math.log(p, 2)
+                if entropy > config.promotion_max_label_entropy and top_share < config.promotion_min_top_label_share:
+                    return False, "high_label_entropy"
+        # Check conflict rate
+        total_events = max(fragment.hits, 1)
+        conflict_rate = fragment.conflict_count / total_events
+        if conflict_rate > config.promotion_max_conflict_rate:
+            return False, "high_conflict_rate"
+        return True, ""
+
+    def retire_tentative_fragment(self, fragment: TentativeFragment, reason: str) -> None:
+        fragment.rejection_reason = reason
+
+    # ---- Phase 丙: working / stable memory ----
+
+    def stable_write_gate(
+        self,
+        *,
+        margin: float,
+        conflict_count: int,
+        has_identity: bool,
+    ) -> tuple[bool, str]:
+        """Gate for stable prototype updates.
+
+        Returns (should_write_stable, reason).
+        """
+        config = self.config
+        if not has_identity:
+            return False, "no_strong_identity"
+        if margin < config.stable_write_margin:
+            return False, "low_margin"
+        if conflict_count > 0:
+            return False, "has_conflicts"
+        return True, ""
+
+    def _update_stable_prototype(self, node: MemoryObjectNode, feature: tuple[float, ...], *, key: str) -> None:
+        """EMA-update stable prototype with low learning rate."""
+        alpha = self.config.stable_ema_alpha
+        if key == "clip":
+            current_stable = node.stable_clip_feature
+            if not current_stable:
+                node.stable_clip_feature = self._normalize_feature(feature)
+            elif len(current_stable) == len(feature):
+                node.stable_clip_feature = self._normalize_feature(
+                    tuple(
+                        round((1 - alpha) * sv + alpha * cv, 6)
+                        for sv, cv in zip(current_stable, feature)
+                    )
+                )
+            node.stable_write_count += 1
+        elif key == "text":
+            current_stable = node.stable_text_feature
+            if not current_stable:
+                node.stable_text_feature = self._normalize_feature(feature)
+            elif len(current_stable) == len(feature):
+                node.stable_text_feature = self._normalize_feature(
+                    tuple(
+                        round((1 - alpha) * sv + alpha * cv, 6)
+                        for sv, cv in zip(current_stable, feature)
+                    )
+                )
 
     def candidate_nodes(
         self,
