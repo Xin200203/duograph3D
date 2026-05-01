@@ -70,6 +70,10 @@ MIN_MEMORY_EXPORT_KEY_RATIO = 0.10
 MIN_MEMORY_EXPORT_POINT_RATIO = 0.05
 MEMORY_DENSE_MIN_ROOT_SHARE = 0.60
 MEMORY_DENSE_GEOMETRY_FALLBACK = True
+MEMORY_DENSE_SPLIT_BY_LABEL = True
+MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS = 1
+MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY = 0.5
+MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE = 0.9
 CLASS_AGNOSTIC_TOKEN = "item"
 EXPORT_SPLIT_BY_LABEL = False
 CG_DOWNSAMPLE_VOXEL_SIZE = 0.025
@@ -177,6 +181,13 @@ def label_entropy(counter: Counter) -> float:
     return round(entropy, 6)
 
 
+def label_top_share(counter: Counter) -> float:
+    total = sum(counter.values())
+    if total <= 0:
+        return 0.0
+    return round(counter.most_common(1)[0][1] / total, 6)
+
+
 def bbox_from_points(points: np.ndarray) -> np.ndarray:
     if points.size == 0:
         return np.zeros((8, 3), dtype=np.float32)
@@ -253,7 +264,8 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
     gsa_dir = REPLICA_ROOT / scene / "gsa_detections_none"
     poses = np.loadtxt(REPLICA_ROOT / scene / "traj.txt", dtype=np.float32).reshape(-1, 4, 4)
     text_anchor = class_agnostic_text_anchor(class_feats_np.shape[1]).astype(np.float64)
-    online_matching_text_feature = np.asarray((), dtype=np.float32)
+    # Phase 丁 fix: per-observation text feature now uses GSA text_feats directly.
+    # text_anchor (below) is still used for per-key bucket accumulation in key_data.
     key_data: dict[str, dict[str, object]] = {}
     frames: list[FrameInput] = []
     frame_debug = []
@@ -291,8 +303,10 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
         with gzip.open(det_path, "rb") as handle:
             det = pickle.load(handle)
         image_feats = normalize_np(det["image_feats"].astype(np.float32))
-        sims = image_feats @ class_feats_np.T
-        label_idx = sims.argmax(axis=1)
+        sims = image_feats @ class_feats_np.T  # kept for monitoring (clip_margin, top1)
+        # Phase 丁 fix: use GSA pre-computed class_id (matches CG behaviour, avoids re-computing argmax)
+        gsa_class_ids = det["class_id"]
+        gsa_classes = det["classes"]
         masks = np.asarray(det["mask"]).astype(bool)
         xyxy = np.asarray(det.get("xyxy", np.zeros((len(masks), 4), dtype=np.float32)))
         confidences = det.get("confidence", np.ones(len(masks), dtype=np.float32))
@@ -329,7 +343,7 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
             frame_masks = np.zeros((0,) + masks.shape[1:], dtype=bool) if masks.ndim == 3 else np.zeros((0, 0, 0), dtype=bool)
 
         for local_i, det_i in enumerate(pre_keep_indices):
-            class_i = int(label_idx[det_i])
+            class_i = int(gsa_class_ids[det_i])  # GSA pre-computed class_id
             mask = frame_masks[local_i]
             area = int(mask.sum())
             monitor["post_subtract_candidate_mask_pixels"].append(area)
@@ -351,7 +365,7 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                 monitor["low_clip_margin_count"] += 1
             if valid_ratio < LOW_VALID_DEPTH_RATIO:
                 monitor["low_valid_depth_count"] += 1
-            label = class_names[int(class_i)]
+            label = str(gsa_classes[class_i])  # GSA pre-computed class name
             key = quant_key(scene, label, centroid)
             raw_conf = float(confidences[det_i])
             conf = float(np.clip(raw_conf, 0.0, 1.0))
@@ -382,7 +396,7 @@ def prepare_scene(scene: str, class_names: list[str], class_feats_np: np.ndarray
                         colors=colors,
                         centroid=centroid,
                         clip_feature=image_feats[det_i],
-                        text_feature=online_matching_text_feature,
+                        text_feature=det["text_feats"][det_i].astype(np.float32),  # GSA pre-computed
                         mask_area=area,
                     ),
                 ))
@@ -679,6 +693,44 @@ def iter_key_export_items(
     return export_items
 
 
+def iter_memory_dense_export_items(
+    key_data: dict[str, dict[str, object]],
+) -> list[tuple[str, str, dict[str, object], str]]:
+    """Return dense geometry chunks for online-memory export.
+
+    Online memory root IDs remain the identity authority, but a root can become a
+    mixed semantic bucket after aggressive identity repair.  Splitting the dense
+    export by the original per-key label bucket prevents a large mixed root from
+    collapsing minority classes (for example pillow) into the majority label.
+    """
+
+    if not MEMORY_DENSE_SPLIT_BY_LABEL:
+        return iter_key_export_items(key_data)
+    export_items: list[tuple[str, str, dict[str, object], str]] = []
+    for key, data in sorted(key_data.items()):
+        label_buckets = data.get("label_buckets") or {}
+        if not label_buckets:
+            label = str(data["label_counts"].most_common(1)[0][0])
+            export_items.append((key, key, data, label))
+            continue
+        for label, label_data in sorted(label_buckets.items()):
+            if int(label_data.get("feature_count", 0) or 0) < MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS:
+                continue
+            export_items.append((key, f"{key}:label:{label}", label_data, str(label)))
+    return export_items
+
+
+def should_split_memory_dense_root(label_counts: Counter) -> bool:
+    if not MEMORY_DENSE_SPLIT_BY_LABEL:
+        return False
+    if len(label_counts) <= 1:
+        return False
+    return (
+        label_entropy(label_counts) >= MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY
+        and label_top_share(label_counts) <= MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE
+    )
+
+
 def estimate_key_point_budget(key_data: dict[str, dict[str, object]]) -> int:
     """Estimate dense geometry points available before ConceptGraphs postprocess."""
 
@@ -793,11 +845,13 @@ def build_memory_map_objects(result, label_to_index: dict[str, int], class_feats
         label = ObjectGraphMemory.dominant_semantic_label(node) or node.appearance_key_recent or node.descriptor_recent
         label_index = int(label_to_index.get(label, -1))
         text_ft = np.asarray(node.text_feature, dtype=np.float32)
+        # Phase 丁 fix: use class-agnostic text anchor as fallback (matching CG behaviour)
+        # instead of hard class_feats_np lookup.
+        # With GSA text_feats now flowing through online fusion, this fallback
+        # should rarely trigger; when it does, the item anchor preserves the
+        # class-agnostic property that CG relies on for overlap merge.
         if text_ft.shape != class_feats_np[0].shape:
-            if label_index >= 0:
-                text_ft = class_feats_np[label_index].astype(np.float32)
-            else:
-                text_ft = np.zeros_like(class_feats_np[0], dtype=np.float32)
+            text_ft = class_agnostic_text_anchor(class_feats_np.shape[1]).astype(np.float32)
         clip_ft = np.asarray(node.clip_feature, dtype=np.float32)
         if clip_ft.shape != text_ft.shape:
             clip_ft = text_ft
@@ -922,7 +976,24 @@ def build_memory_dense_map_objects(
     raw_assignment_status_counts: Counter[str] = Counter()
     root_share_values = []
     ambiguous_examples = []
-    export_items = iter_key_export_items(key_data)
+    export_items = iter_memory_dense_export_items(key_data)
+    root_label_counts: dict[str, Counter] = defaultdict(Counter)
+    for base_key, _export_key, data, _label in export_items:
+        root_id, _assignment_debug = dominant_memory_root_for_key(base_key, track_assignments, result.memory_nodes)
+        if not root_id:
+            continue
+        node = result.memory_nodes.get(root_id)
+        if node is None:
+            continue
+        skip_reason = ObjectGraphMemory.export_skip_reason(
+            node,
+            min_points=0,
+            min_detections=MIN_OBJECT_DETECTIONS,
+        )
+        if skip_reason:
+            continue
+        root_label_counts[root_id].update(data["label_counts"])
+    split_root_ids = {root_id for root_id, counts in root_label_counts.items() if should_split_memory_dense_root(counts)}
     for base_key, export_key, data, label in export_items:
         root_id, assignment_debug = dominant_memory_root_for_key(base_key, track_assignments, result.memory_nodes)
         status = str(assignment_debug["assignment_status"])
@@ -961,6 +1032,8 @@ def build_memory_dense_map_objects(
                 skipped.append(f"{export_key}:{skip_reason}")
                 continue
         bucket_id = f"geometry:{export_key}" if use_geometry_fallback else root_id
+        if not use_geometry_fallback and label and root_id in split_root_ids:
+            bucket_id = f"{root_id}:label:{label}"
         bucket = root_buckets.setdefault(
             bucket_id,
             {
@@ -979,6 +1052,7 @@ def build_memory_dense_map_objects(
                 "memory_root_ids": set(),
                 "source_types": Counter(),
                 "assignment_status_counts": Counter(),
+                "split_labels": Counter(),
             },
         )
         bucket["label_counts"].update(data["label_counts"])
@@ -997,9 +1071,13 @@ def build_memory_dense_map_objects(
             bucket["memory_root_ids"].add(root_id)
         bucket["source_types"]["geometry_fallback" if use_geometry_fallback else "memory_root"] += 1
         bucket["assignment_status_counts"][status] += 1
+        if label:
+            bucket["split_labels"][label] += int(data["feature_count"])
 
     objects = MapObjectList()
     export_debug = []
+    export_label_entropy = []
+    export_label_top_share = []
     for bucket_id, data in sorted(root_buckets.items()):
         pts_chunks = data["points"]
         col_chunks = data["colors"]
@@ -1026,6 +1104,10 @@ def build_memory_dense_map_objects(
         node = result.memory_nodes.get(primary_root_id) if primary_root_id else None
         label_counts = data["label_counts"]
         label = str(label_counts.most_common(1)[0][0]) if label_counts else (ObjectGraphMemory.dominant_semantic_label(node) if node else "")
+        entropy_value = label_entropy(label_counts)
+        top_share_value = label_top_share(label_counts)
+        export_label_entropy.append(entropy_value)
+        export_label_top_share.append(top_share_value)
         label_index = int(label_to_index.get(label, -1))
         count = max(int(data["feature_count"]), 1)
         clip_ft = normalize_np((data["clip_sum"] / count).reshape(1, -1))[0].astype(np.float32)
@@ -1061,6 +1143,10 @@ def build_memory_dense_map_objects(
             "export_keys": export_keys,
             "object_ids": memory_root_ids,
             "label": label,
+            "label_counts": dict(label_counts),
+            "label_entropy": entropy_value,
+            "top_label_share": top_share_value,
+            "split_labels": dict(data["split_labels"]),
             "num_detections": count,
             "point_count_before_postprocess": int(len(pts)),
             "point_count_after_key_denoise": int(len(pcd.points)),
@@ -1082,8 +1168,16 @@ def build_memory_dense_map_objects(
         "assignment_status_counts": dict(assignment_status_counts),
         "raw_assignment_status_counts": dict(raw_assignment_status_counts),
         "selected_root_share": numeric_summary(root_share_values),
+        "export_label_entropy": numeric_summary(export_label_entropy),
+        "export_top_label_share": numeric_summary(export_label_top_share),
         "memory_dense_min_root_share": MEMORY_DENSE_MIN_ROOT_SHARE,
         "memory_dense_geometry_fallback": MEMORY_DENSE_GEOMETRY_FALLBACK,
+        "memory_dense_split_by_label": MEMORY_DENSE_SPLIT_BY_LABEL,
+        "memory_dense_split_min_observations": MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS,
+        "memory_dense_split_min_root_label_entropy": MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY,
+        "memory_dense_split_max_root_top_share": MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE,
+        "memory_dense_split_root_count": len(split_root_ids),
+        "memory_dense_split_root_rate": round(len(split_root_ids) / max(len(root_label_counts), 1), 6),
         "ambiguous_assignment_examples": ambiguous_examples,
     }
     return objects, export_debug, skipped, diagnostics
@@ -1290,6 +1384,10 @@ def write_conceptgraphs_payload(
                 "min_memory_point_ratio": MIN_MEMORY_EXPORT_POINT_RATIO,
                 "memory_dense_min_root_share": MEMORY_DENSE_MIN_ROOT_SHARE,
                 "memory_dense_geometry_fallback": MEMORY_DENSE_GEOMETRY_FALLBACK,
+                "memory_dense_split_by_label": MEMORY_DENSE_SPLIT_BY_LABEL,
+                "memory_dense_split_min_observations": MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS,
+                "memory_dense_split_min_root_label_entropy": MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY,
+                "memory_dense_split_max_root_top_share": MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE,
             },
             "max_points_per_obs": MAX_POINTS_PER_OBS,
             "max_points_per_object": MAX_POINTS_PER_OBJECT,
@@ -1304,6 +1402,9 @@ def write_conceptgraphs_payload(
             "conceptgraphs_engineering": {
                 "class_agnostic_identity_token": CLASS_AGNOSTIC_TOKEN,
                 "export_split_by_label": EXPORT_SPLIT_BY_LABEL,
+                "memory_dense_split_by_label": MEMORY_DENSE_SPLIT_BY_LABEL,
+                "memory_dense_split_min_root_label_entropy": MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY,
+                "memory_dense_split_max_root_top_share": MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE,
                 "mask_subtract_contained": True,
                 "downsample_voxel_size": CG_DOWNSAMPLE_VOXEL_SIZE,
                 "dbscan_remove_noise": True,
@@ -1465,6 +1566,8 @@ def write_markdown_report(summary: dict[str, object], path: Path) -> None:
 def main() -> None:
     global ROOT, PRED_EXP_NAME, MIN_OBJECT_DETECTIONS, EXPORT_SOURCE_STRATEGY
     global MIN_MEMORY_EXPORT_OBJECTS, MIN_MEMORY_EXPORT_KEY_RATIO, MIN_MEMORY_EXPORT_POINT_RATIO
+    global MEMORY_DENSE_SPLIT_BY_LABEL, MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS
+    global MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY, MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE
     parser = argparse.ArgumentParser()
     parser.add_argument("--scenes", nargs="*", default=list(REPLICA_SCENE_IDS))
     parser.add_argument("--skip-eval", action="store_true")
@@ -1484,6 +1587,10 @@ def main() -> None:
     parser.add_argument("--min-memory-export-objects", type=int, default=MIN_MEMORY_EXPORT_OBJECTS)
     parser.add_argument("--min-memory-export-key-ratio", type=float, default=MIN_MEMORY_EXPORT_KEY_RATIO)
     parser.add_argument("--min-memory-export-point-ratio", type=float, default=MIN_MEMORY_EXPORT_POINT_RATIO)
+    parser.add_argument("--memory-dense-split-by-label", type=int, choices=[0, 1], default=int(MEMORY_DENSE_SPLIT_BY_LABEL))
+    parser.add_argument("--memory-dense-split-min-observations", type=int, default=MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS)
+    parser.add_argument("--memory-dense-split-min-root-label-entropy", type=float, default=MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY)
+    parser.add_argument("--memory-dense-split-max-root-top-share", type=float, default=MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE)
     args = parser.parse_args()
     ROOT = args.root
     if args.pred_exp_name:
@@ -1494,6 +1601,10 @@ def main() -> None:
     MIN_MEMORY_EXPORT_OBJECTS = max(int(args.min_memory_export_objects), 0)
     MIN_MEMORY_EXPORT_KEY_RATIO = max(float(args.min_memory_export_key_ratio), 0.0)
     MIN_MEMORY_EXPORT_POINT_RATIO = max(float(args.min_memory_export_point_ratio), 0.0)
+    MEMORY_DENSE_SPLIT_BY_LABEL = bool(args.memory_dense_split_by_label)
+    MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS = max(int(args.memory_dense_split_min_observations), 1)
+    MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY = max(float(args.memory_dense_split_min_root_label_entropy), 0.0)
+    MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE = min(max(float(args.memory_dense_split_max_root_top_share), 0.0), 1.0)
     torch.set_num_threads(4)
     ROOT.mkdir(parents=True, exist_ok=True)
     (ROOT / "logs").mkdir(exist_ok=True)
@@ -1624,6 +1735,10 @@ def main() -> None:
             "min_object_detections": MIN_OBJECT_DETECTIONS,
             "class_agnostic_identity_token": CLASS_AGNOSTIC_TOKEN,
             "export_split_by_label": EXPORT_SPLIT_BY_LABEL,
+            "memory_dense_split_by_label": MEMORY_DENSE_SPLIT_BY_LABEL,
+            "memory_dense_split_min_observations": MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS,
+            "memory_dense_split_min_root_label_entropy": MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY,
+            "memory_dense_split_max_root_top_share": MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE,
             "max_points_per_obs": MAX_POINTS_PER_OBS,
             "max_points_per_object": MAX_POINTS_PER_OBJECT,
             "temporal_variant": TemporalVariant.NAIVE_FRAMEWISE.value,
