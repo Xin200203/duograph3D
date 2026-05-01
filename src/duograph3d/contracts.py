@@ -119,6 +119,14 @@ class CurrentObjectHypothesis:
     support_signals: dict[str, object] = field(default_factory=dict)
     history_candidates: tuple[HistoryCandidate, ...] = ()
     object_payload: ObjectObservationPayload | None = None
+    # Phase 乙: label distribution and per-label point buckets (from signed Layer1)
+    label_distribution: dict[str, float] = field(default_factory=dict)
+    label_buckets: dict[str, tuple[tuple[float, float, float], ...]] = field(default_factory=dict)
+    # Phase 乙: negative edges that were suppressed during repair
+    neg_edge_ids: tuple[str, ...] = ()
+    # Phase 乙: merge decision metadata
+    merge_reasons: tuple[str, ...] = ()
+    merge_score: float = 0.0
 
 
 @dataclass
@@ -192,6 +200,8 @@ class AssociationDecision:
 @dataclass
 class PipelineConfig:
     candidate_budget: int = 5
+    candidate_retrieval_budget: int = 12
+    candidate_retrieval_channel_budget: int = 5
     association_threshold: float = 1.7
     occluded_after_misses: int = 1
     dormant_after_misses: int = 2
@@ -209,21 +219,46 @@ class PipelineConfig:
     layer1_history_min_semantic_score: float = 0.55
     layer1_history_min_visual_score: float = 0.0
     layer1_history_min_size_score: float = 0.0
+    # Phase 乙: signed Layer1 — negative edges
+    l1_neg_edge_enable: bool = False
+    l1_pos_threshold: float = 0.75
+    l1_neg_threshold: float = 0.60
+    l1_sep3d_thresh: float = 0.18
+    l1_jsd_neg_thresh: float = 0.45
+    l1_preserve_label_distribution: bool = False
+    # Phase 乙: candidate retrieval v2
+    cand_include_adj_key: bool = False
+    cand_include_ann: bool = False
+    cand_adj_radius: int = 1
+    cand_ann_top_k: int = 8
+    # Phase 乙: per-candidate source tracking for monitoring
+    cand_track_sources: bool = False
     layer2_history_identity_threshold: float = 0.7
     history_point_overlap_distance: float = 0.12
     history_overlap_max_points: int = 48
-    history_point_overlap_affinity_weight: float = 0.0
-    layer2_enable_residual_absorption: bool = False
-    layer2_absorption_threshold: float = 1.68
-    layer2_absorption_min_point_overlap: float = 1.0
-    layer2_absorption_min_semantic_score: float = 1.0
+    history_point_overlap_affinity_weight: float = 0.25
+    history_point_overlap_min_semantic_score: float = 0.45
+    history_point_overlap_min_spatial_score: float = 0.3
+    history_point_overlap_requires_spatial_evidence: bool = True
+    layer2_enable_residual_absorption: bool = True
+    layer2_absorption_threshold: float = 1.75
+    layer2_absorption_min_point_overlap: float = 0.4
+    layer2_absorption_min_semantic_score: float = 0.55
     layer2_require_strong_identity: bool = True
     layer2_history_min_spatial_score: float = 0.45
     layer2_history_min_semantic_score: float = 0.55
     layer2_history_min_point_overlap: float = 0.15
+    layer2_point_overlap_weight: float = 0.45
+    layer2_point_overlap_score_threshold: float = 0.15
+    layer2_point_overlap_identity_threshold: float = 0.35
+    layer2_point_overlap_identity_min_spatial: float = 0.35
+    layer2_point_overlap_identity_min_semantic: float = 0.55
+    layer2_point_overlap_identity_min_visual: float = 0.7
+    layer2_point_overlap_identity_requires_spatial_evidence: bool = True
     layer2_relation_bonus_weight: float = 0.25
     layer2_relation_bonus_cap: float = 0.35
     layer2_relation_bonus_min_semantic_score: float = 0.55
+    layer2_relation_bonus_requires_identity: bool = True
     layer2_visual_similarity_weight: float = 0.35
     layer2_descriptor_match_weight: float = 0.55
     layer2_appearance_match_weight: float = 0.3
@@ -232,6 +267,15 @@ class PipelineConfig:
     object_merge_interval: int = 20
     object_merge_threshold: float = 0.88
     object_merge_spatial_threshold: float = 0.15
+    object_merge_point_overlap_weight: float = 0.12
+    object_merge_point_overlap_min_semantic_score: float = 0.55
+    object_merge_semantic_conflict_guard: bool = True
+    object_merge_semantic_conflict_min_score: float = 0.45
+    object_merge_semantic_conflict_visual_override: float = 0.88
+    object_merge_max_merged_label_entropy: float = 1.15
+    object_merge_min_merged_top_label_share: float = 0.55
+    object_merge_protect_small_label_share: float = 0.05
+    object_merge_protect_small_label_confidence: float = 0.65
     object_filter_min_detections: int = 1
 
 

@@ -121,6 +121,90 @@ class CurrentEvidenceGraphLayer:
             return 0.0
         return round(sum(normalized) / len(normalized) * 0.35, 4)
 
+    def _spatial_separation_score(self, left: EvidenceItem, right: EvidenceItem) -> float:
+        """Compute a 0-1 score where 1 = clearly separated in 3D (cannot-link)."""
+        # Use bbox-based separation if payloads have bbox info
+        left_has_bbox = left.object_payload is not None and len(left.object_payload.bbox_min) == 3
+        right_has_bbox = right.object_payload is not None and len(right.object_payload.bbox_min) == 3
+        if left_has_bbox and right_has_bbox:
+            left_min = tuple(float(left.object_payload.bbox_min[i]) for i in range(3))
+            left_max = tuple(float(left.object_payload.bbox_max[i]) for i in range(3))
+            right_min = tuple(float(right.object_payload.bbox_min[i]) for i in range(3))
+            right_max = tuple(float(right.object_payload.bbox_max[i]) for i in range(3))
+            # Check if bboxes are disjoint on any axis by more than threshold
+            sep = self.config.l1_sep3d_thresh
+            separated = False
+            for axis in range(3):
+                if left_max[axis] + sep < right_min[axis] or right_max[axis] + sep < left_max[axis]:
+                    separated = True
+                    break
+            if separated:
+                return 1.0
+            # Partial separation: check overlap ratio
+            intersection = 1.0
+            for axis in range(3):
+                low = max(left_min[axis], right_min[axis])
+                high = min(left_max[axis], right_max[axis])
+                intersection *= max(high - low, 0.0)
+            left_vol = max((left_max[0] - left_min[0]) * (left_max[1] - left_min[1]) * (left_max[2] - left_min[2]), 1e-9)
+            right_vol = max((right_max[0] - right_min[0]) * (right_max[1] - right_min[1]) * (right_max[2] - right_min[2]), 1e-9)
+            iou = intersection / min(left_vol, right_vol)
+            if iou < 0.05:
+                return 0.8
+            if iou < 0.15:
+                return 0.5
+            return 0.0
+        # Fallback: check if geometry keys are in different quantized cells
+        left_gk = left.geometry_key
+        right_gk = right.geometry_key
+        if left_gk and right_gk and left_gk != right_gk:
+            # Different voxel cells suggest possible separation
+            return 0.3
+        return 0.0
+
+    def _semantic_conflict_score(self, left: EvidenceItem, right: EvidenceItem) -> float:
+        """Compute a 0-1 score where 1 = clearly different semantics (cannot-link)."""
+        left_label = left.object_payload.label if left.object_payload else ""
+        right_label = right.object_payload.label if right.object_payload else ""
+        if not left_label or not right_label:
+            return 0.0
+        if left_label == right_label:
+            return 0.0
+        # Different labels → potential conflict; strength depends on confidence
+        left_conf = left.confidence
+        right_conf = right.confidence
+        if left_conf >= 0.9 and right_conf >= 0.9:
+            return 0.7
+        if left_conf >= 0.85 and right_conf >= 0.85:
+            return 0.5
+        return 0.3
+
+    @staticmethod
+    def _label_counts_to_distribution(label_counts: Counter) -> dict[str, float]:
+        """Convert Counter of labels to normalized probability distribution."""
+        total = sum(label_counts.values())
+        if total <= 0:
+            return {}
+        return {label: round(count / total, 4) for label, count in label_counts.items()}
+
+    def _negative_edge_score(self, left: EvidenceItem, right: EvidenceItem) -> tuple[float, list[str]]:
+        """Compute cannot-link evidence between two evidence items.
+
+        Returns (score, reasons) where score >= l1_neg_threshold suggests they
+        should NOT be merged into the same hypothesis.
+        """
+        score = 0.0
+        reasons: list[str] = []
+        sep_score = self._spatial_separation_score(left, right)
+        if sep_score > 0:
+            score += 0.45 * sep_score
+            reasons.append("spatial_separation")
+        sem_score = self._semantic_conflict_score(left, right)
+        if sem_score > 0:
+            score += 0.35 * sem_score
+            reasons.append("semantic_conflict")
+        return round(score, 4), reasons
+
     def _candidate_pair_indices(self, evidence_items: list[EvidenceItem]) -> set[tuple[int, int]]:
         buckets: dict[str, list[int]] = defaultdict(list)
         for index, item in enumerate(evidence_items):
@@ -276,14 +360,29 @@ class CurrentEvidenceGraphLayer:
     def repair(self, evidence_items: list[EvidenceItem]) -> list[CurrentObjectHypothesis]:
         if not evidence_items:
             return []
+        use_signed = self.config.l1_neg_edge_enable
+        pos_threshold = self.config.l1_pos_threshold if use_signed else self.config.layer1_merge_threshold
         adjacency: dict[int, set[int]] = {index: {index} for index in range(len(evidence_items))}
         edge_reasons: dict[tuple[int, int], list[str]] = {}
+        neg_edges: dict[int, set[int]] = {index: set() for index in range(len(evidence_items))}
         for left_index, right_index in self._candidate_pair_indices(evidence_items):
             score, reasons = self._edge_score(evidence_items[left_index], evidence_items[right_index])
-            if score >= self.config.layer1_merge_threshold:
+            if score >= pos_threshold:
                 adjacency[left_index].add(right_index)
                 adjacency[right_index].add(left_index)
                 edge_reasons[(left_index, right_index)] = reasons
+            if use_signed:
+                neg_score, neg_reasons = self._negative_edge_score(
+                    evidence_items[left_index], evidence_items[right_index]
+                )
+                if neg_score >= self.config.l1_neg_threshold:
+                    neg_edges[left_index].add(right_index)
+                    neg_edges[right_index].add(left_index)
+                    if neg_reasons:
+                        edge_reasons[(min(left_index, right_index), max(left_index, right_index))] = (
+                            edge_reasons.get((min(left_index, right_index), max(left_index, right_index)), [])
+                            + [f"neg:{r}" for r in neg_reasons]
+                        )
 
         visited: set[int] = set()
         components: list[list[EvidenceItem]] = []
@@ -293,6 +392,7 @@ class CurrentEvidenceGraphLayer:
                 continue
             stack = [start_index]
             component_indices: list[int] = []
+            component_neg_set: set[int] = set()
             reason_bucket: list[str] = []
             while stack:
                 current_index = stack.pop()
@@ -300,8 +400,11 @@ class CurrentEvidenceGraphLayer:
                     continue
                 visited.add(current_index)
                 component_indices.append(current_index)
+                component_neg_set.update(neg_edges.get(current_index, set()))
                 for neighbor_index in sorted(adjacency[current_index]):
                     if neighbor_index == current_index:
+                        continue
+                    if use_signed and neighbor_index in component_neg_set:
                         continue
                     reason_bucket.extend(edge_reasons.get((min(current_index, neighbor_index), max(current_index, neighbor_index)), []))
                     if neighbor_index not in visited:
@@ -353,6 +456,35 @@ class CurrentEvidenceGraphLayer:
                         "history_semantic_score": top_history.semantic_score,
                     }
                 )
+            # Phase 乙: label distribution preservation
+            label_distribution: dict[str, float] = {}
+            label_buckets: dict[str, tuple[tuple[float, float, float], ...]] = {}
+            if self.config.l1_preserve_label_distribution:
+                label_counter: Counter = Counter()
+                for item in items:
+                    if item.object_payload and item.object_payload.label:
+                        label_counter[item.object_payload.label] += 1
+                        label = item.object_payload.label
+                        if label not in label_buckets:
+                            label_buckets[label] = ()
+                        existing = list(label_buckets[label])
+                        for point in item.object_payload.points_sample:
+                            coords = self._as_float_tuple(point)
+                            if len(coords) == 3:
+                                existing.append((coords[0], coords[1], coords[2]))
+                        label_buckets[label] = tuple(existing)
+                label_distribution = self._label_counts_to_distribution(label_counter)
+            # Phase 乙: identify suppressed negative edges for this component
+            neg_edge_ids: list[str] = []
+            comp_indices_map = {item.evidence_id: i for i, item in enumerate(evidence_items)}
+            for idx_a in range(len(items)):
+                for idx_b in range(idx_a + 1, len(items)):
+                    orig_a = comp_indices_map.get(items[idx_a].evidence_id, -1)
+                    orig_b = comp_indices_map.get(items[idx_b].evidence_id, -1)
+                    if orig_a >= 0 and orig_b >= 0 and orig_b in neg_edges.get(orig_a, set()):
+                        neg_edge_ids.append(
+                            f"{items[idx_a].evidence_id}<->{items[idx_b].evidence_id}"
+                        )
             hypotheses.append(
                 CurrentObjectHypothesis(
                     hypothesis_id=f"hyp-{component_index}",
@@ -366,6 +498,14 @@ class CurrentEvidenceGraphLayer:
                     support_signals=support_signals,
                     history_candidates=history_candidates,
                     object_payload=self._merge_payloads(items),
+                    label_distribution=label_distribution,
+                    label_buckets=label_buckets,
+                    neg_edge_ids=tuple(neg_edge_ids),
+                    merge_reasons=tuple(repair_reasons),
+                    merge_score=round(
+                        sum(float(support_signals.get("repair_edge_count", 0.0)) for _ in [1]),
+                        4,
+                    ),
                 )
             )
         return hypotheses

@@ -21,6 +21,8 @@ class ObjectGraphMemory:
         self.nodes: dict[str, MemoryObjectNode] = {}
         self.relation_edges: dict[tuple[str, str], MemoryRelationEdge] = {}
         self._next_id = 1
+        # Phase 乙: geometry-key → node-id index for adj-key retrieval
+        self._geometry_index: dict[str, list[str]] = {}
 
     def snapshot(self) -> dict[str, MemoryObjectNode]:
         return {
@@ -54,6 +56,9 @@ class ObjectGraphMemory:
             last_seen_step=step_id,
         )
         self.nodes[object_id] = node
+        # Phase 乙: maintain geometry index
+        if geometry_key:
+            self._geometry_index.setdefault(geometry_key, []).append(object_id)
         return node
 
     def candidate_nodes(
@@ -104,6 +109,28 @@ class ObjectGraphMemory:
         for node in recent[:channel_budget]:
             add(node)
 
+        # Phase 乙: adj-key channel — nodes in adjacent voxel cells
+        if self.config.cand_include_adj_key and geometry_key:
+            adj_keys = self._adjacent_geometry_keys(geometry_key, radius=self.config.cand_adj_radius)
+            adj_candidates: list[MemoryObjectNode] = []
+            for adj_key in adj_keys:
+                for object_id in self._geometry_index.get(adj_key, []):
+                    node = self.nodes.get(object_id)
+                    if node is not None and node.status is not ObjectStatus.RETIRED and node.object_id not in selected:
+                        adj_candidates.append(node)
+            adj_candidates.sort(key=lambda node: (node.status != ObjectStatus.ACTIVE, node.miss_count, -node.last_seen_step, node.object_id))
+            for node in adj_candidates[:channel_budget]:
+                add(node)
+
+        # Phase 乙: ANN channel — nearest-neighbour over clip features
+        if self.config.cand_include_ann and hypothesis is not None and hypothesis.object_payload is not None:
+            query_feature = self._as_float_tuple(hypothesis.object_payload.clip_feature)
+            if query_feature:
+                ann_nodes = self._ann_search(query_feature, top_k=self.config.cand_ann_top_k)
+                for node in ann_nodes:
+                    if node.object_id not in selected:
+                        add(node)
+
         cheap_scores: list[tuple[float, float, float, float, float, float, MemoryObjectNode]] = []
         for node in eligible:
             spatial_score = self.hypothesis_spatial_score(hypothesis, node)
@@ -153,6 +180,68 @@ class ObjectGraphMemory:
             candidates = recent[:final_budget]
         candidates.sort(key=final_rank, reverse=True)
         return candidates[:final_budget]
+
+    @staticmethod
+    def _parse_geometry_key(geometry_key: str) -> tuple[str, int, int, int] | None:
+        """Parse a geometry key of the form ``scene:gsa:item:qx:qy:qz``.
+
+        Returns ``(scene, qx, qy, qz)`` or None if the key doesn't match the
+        expected pattern.
+        """
+        if not geometry_key:
+            return None
+        parts = geometry_key.rsplit(":", 3)
+        if len(parts) != 4:
+            return None
+        try:
+            qx, qy, qz = int(parts[1]), int(parts[2]), int(parts[3])
+        except (ValueError, TypeError):
+            return None
+        return parts[0], qx, qy, qz
+
+    @classmethod
+    def _adjacent_geometry_keys(cls, geometry_key: str, radius: int = 1) -> list[str]:
+        """Generate geometry keys for adjacent quantized cells.
+
+        For a 0.2m voxel, radius=1 generates 26 neighbor cells (3×3×3 − 1).
+        """
+        parsed = cls._parse_geometry_key(geometry_key)
+        if parsed is None:
+            return []
+        prefix, qx, qy, qz = parsed
+        keys: list[str] = []
+        for dx in range(-radius, radius + 1):
+            for dy in range(-radius, radius + 1):
+                for dz in range(-radius, radius + 1):
+                    if dx == 0 and dy == 0 and dz == 0:
+                        continue
+                    keys.append(f"{prefix}:{qx + dx}:{qy + dy}:{qz + dz}")
+        return keys
+
+    def _ann_search(
+        self,
+        query_feature: tuple[float, ...],
+        *,
+        top_k: int = 8,
+    ) -> list[MemoryObjectNode]:
+        """Brute-force ANN over CLIP features of non-retired nodes.
+
+        Uses cosine similarity via the existing ``_cosine`` + ``_similarity_from_cosine``
+        pipeline.  Returns nodes sorted by similarity (descending).
+        """
+        if not query_feature:
+            return []
+        scored: list[tuple[float, MemoryObjectNode]] = []
+        for node in self.nodes.values():
+            if node.status is ObjectStatus.RETIRED:
+                continue
+            if not node.clip_feature or len(node.clip_feature) != len(query_feature):
+                continue
+            sim = self._similarity_from_cosine(self._cosine(query_feature, node.clip_feature))
+            if sim > 0:
+                scored.append((sim, node))
+        scored.sort(key=lambda item: (item[0], item[1].object_id), reverse=True)
+        return [node for _, node in scored[:top_k]]
 
     @staticmethod
     def _object_id_sort_key(object_id: str) -> int:
