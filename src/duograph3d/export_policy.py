@@ -1,12 +1,29 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 MEMORY_EXPORT_SOURCE = "duograph3d_online_object_memory"
 MEMORY_DENSE_EXPORT_SOURCE = "duograph3d_online_memory_dense_geometry"
 GEOMETRY_EXPORT_SOURCE = "duograph3d_geometry_key_coverage"
-VALID_EXPORT_SOURCE_STRATEGIES = {"auto", "geometry", "memory", "memory-dense", "memory_dense"}
+LABEL_BUCKET_EXPORT_SOURCE = "duograph3d_label_bucket_split"
+VALID_EXPORT_SOURCE_STRATEGIES = {"auto", "geometry", "memory", "memory-dense", "memory_dense", "carrier_v2"}
+VALID_CARRIER_TYPES = {"memory", "memory-dense", "label-bucket", "geometry-fallback"}
+
+
+@dataclass(frozen=True)
+class CarrierCandidate:
+    """Phase 丁: a candidate export carrier for one entity."""
+    carrier_id: str
+    carrier_type: str  # "memory" | "memory-dense" | "label-bucket" | "geometry-fallback"
+    entity_id: str
+    label: str = ""
+    coverage_score: float = 0.0
+    purity_score: float = 0.0
+    semantic_confidence: float = 0.0
+    geometry_quality: float = 0.0
+    duplicate_risk: float = 0.0
+    point_count: int = 0
 
 
 @dataclass(frozen=True)
@@ -86,3 +103,148 @@ def choose_export_source(
 
     diagnostics.update({"selected_source": GEOMETRY_EXPORT_SOURCE, "fallback_reason": reason})
     return diagnostics
+
+
+# ---- Phase 丁: carrier selection v2 ----
+
+
+def score_carrier(
+    candidate: CarrierCandidate,
+    *,
+    w_cov: float = 0.30,
+    w_purity: float = 0.25,
+    w_sem: float = 0.20,
+    w_geo: float = 0.15,
+    w_dup: float = 0.10,
+) -> float:
+    """Score a carrier candidate across five dimensions.
+
+    Higher is better.  All weights should sum to 1.0.
+    """
+    return round(
+        w_cov * candidate.coverage_score
+        + w_purity * candidate.purity_score
+        + w_sem * candidate.semantic_confidence
+        + w_geo * candidate.geometry_quality
+        - w_dup * candidate.duplicate_risk,
+        4,
+    )
+
+
+def build_carrier_candidates(
+    *,
+    entity_id: str,
+    label: str = "",
+    point_count: int = 0,
+    semantic_confidence: float = 0.0,
+    has_memory_node: bool = False,
+    has_dense_geometry: bool = False,
+    duplicate_risk: float = 0.0,
+) -> list[CarrierCandidate]:
+    """Build all valid carrier candidates for one entity.
+
+    Returns at most one candidate per carrier type.
+    """
+    candidates: list[CarrierCandidate] = []
+
+    # Memory carrier
+    if has_memory_node:
+        candidates.append(CarrierCandidate(
+            carrier_id=f"{entity_id}:memory",
+            carrier_type="memory",
+            entity_id=entity_id,
+            label=label,
+            coverage_score=0.6,
+            purity_score=0.9,
+            semantic_confidence=semantic_confidence,
+            geometry_quality=0.6,
+            duplicate_risk=duplicate_risk,
+            point_count=point_count,
+        ))
+
+    # Memory-dense carrier
+    if has_memory_node and has_dense_geometry:
+        candidates.append(CarrierCandidate(
+            carrier_id=f"{entity_id}:memory-dense",
+            carrier_type="memory-dense",
+            entity_id=entity_id,
+            label=label,
+            coverage_score=0.85,
+            purity_score=0.75,
+            semantic_confidence=semantic_confidence,
+            geometry_quality=0.85,
+            duplicate_risk=duplicate_risk * 0.8,
+            point_count=point_count,
+        ))
+
+    # Label-bucket split carrier
+    if label:
+        candidates.append(CarrierCandidate(
+            carrier_id=f"{entity_id}:label-{label}",
+            carrier_type="label-bucket",
+            entity_id=entity_id,
+            label=label,
+            coverage_score=0.5,
+            purity_score=0.95,
+            semantic_confidence=0.95,
+            geometry_quality=0.5,
+            duplicate_risk=0.05,
+            point_count=point_count,
+        ))
+
+    # Geometry-fallback carrier (always available)
+    candidates.append(CarrierCandidate(
+        carrier_id=f"{entity_id}:geometry",
+        carrier_type="geometry-fallback",
+        entity_id=entity_id,
+        label=label,
+        coverage_score=1.0,
+        purity_score=0.3,
+        semantic_confidence=0.1,
+        geometry_quality=1.0,
+        duplicate_risk=0.0,
+        point_count=point_count,
+    ))
+
+    return candidates
+
+
+def select_primary_carrier(
+    candidates: list[CarrierCandidate],
+    *,
+    w_cov: float = 0.30,
+    w_purity: float = 0.25,
+    w_sem: float = 0.20,
+    w_geo: float = 0.15,
+    w_dup: float = 0.10,
+) -> CarrierCandidate | None:
+    """Select the best carrier from a list of candidates."""
+    if not candidates:
+        return None
+    scored = [
+        (score_carrier(c, w_cov=w_cov, w_purity=w_purity, w_sem=w_sem, w_geo=w_geo, w_dup=w_dup), c)
+        for c in candidates
+    ]
+    scored.sort(key=lambda x: (x[0], x[1].carrier_id), reverse=True)
+    return scored[0][1] if scored else None
+
+
+def estimate_oracle_gap(
+    chosen: CarrierCandidate,
+    candidates: list[CarrierCandidate],
+    *,
+    w_cov: float = 0.30,
+    w_purity: float = 0.25,
+    w_sem: float = 0.20,
+    w_geo: float = 0.15,
+    w_dup: float = 0.10,
+) -> float:
+    """Compute the quality gap between the chosen carrier and the oracle (best possible)."""
+    if not candidates:
+        return 0.0
+    chosen_score = score_carrier(chosen, w_cov=w_cov, w_purity=w_purity, w_sem=w_sem, w_geo=w_geo, w_dup=w_dup)
+    oracle_score = max(
+        score_carrier(c, w_cov=w_cov, w_purity=w_purity, w_sem=w_sem, w_geo=w_geo, w_dup=w_dup)
+        for c in candidates
+    )
+    return round(max(oracle_score - chosen_score, 0.0), 4)

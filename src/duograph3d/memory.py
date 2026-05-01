@@ -1286,9 +1286,160 @@ class ObjectGraphMemory:
                 node.centroid = self._centroid_from_points(node.sampled_points)
         return {"objects_capped": changed}
 
+    # ---- Phase 丁: equivalence partition (UF + conflict pruning) ----
+
+    def _generate_merge_candidate_pairs(
+        self, active_nodes: list[MemoryObjectNode], step_id: int
+    ) -> list[tuple[int, int, float, dict[str, object]]]:
+        """Generate scored candidate pairs for equivalence partition.
+
+        Returns list of (idx_a, idx_b, score, components) sorted by score desc.
+        """
+        edges: list[tuple[int, int, float, dict[str, object]]] = []
+        max_dt = self.config.pair_max_dt
+        topk = self.config.pair_topk
+
+        for i, left in enumerate(active_nodes):
+            # Only consider nodes within birth_step window
+            candidates = []
+            for j, right in enumerate(active_nodes):
+                if j <= i:
+                    continue
+                if abs(left.birth_step - right.birth_step) > max_dt:
+                    continue
+                score, components = self.object_affinity(left, right)
+                if score >= self.config.edge_neg_thresh:
+                    candidates.append((j, score, components))
+            # Keep top-k per node for efficiency
+            candidates.sort(key=lambda x: x[1], reverse=True)
+            for j, score, components in candidates[:topk]:
+                edges.append((i, j, score, components))
+
+        edges.sort(key=lambda x: x[2], reverse=True)
+        return edges
+
+    def _union_find_with_conflicts(
+        self,
+        n: int,
+        pos_edges: list[tuple[int, int, float]],
+        neg_edges: set[tuple[int, int]],
+    ) -> dict[int, int]:
+        """Union-find respecting cannot-link constraints.
+
+        Returns mapping from node index to component root.
+        """
+        parent = list(range(n))
+
+        def find(x: int) -> int:
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(a: int, b: int) -> bool:
+            ra, rb = find(a), find(b)
+            if ra == rb:
+                return False
+            parent[ra] = rb
+            return True
+
+        def component_members(root: int) -> set[int]:
+            return {i for i in range(n) if find(i) == root}
+
+        for i, j, _score in pos_edges:
+            ri, rj = find(i), find(j)
+            if ri == rj:
+                continue
+            # Check: is there any negative edge between the two components?
+            members_i = component_members(ri)
+            members_j = component_members(rj)
+            conflict = False
+            for mi in members_i:
+                for mj in members_j:
+                    if (mi, mj) in neg_edges or (mj, mi) in neg_edges:
+                        conflict = True
+                        break
+                if conflict:
+                    break
+            if not conflict:
+                union(i, j)
+
+        # Return component assignments
+        return {i: find(i) for i in range(n)}
+
+    def merge_duplicate_objects_v2(self, step_id: int = 0) -> list[dict[str, object]]:
+        """Equivalence partition via scored edges + UF with conflict pruning.
+
+        Replaces pairwise greedy merge with global signed-graph partition.
+        """
+        merges: list[dict[str, object]] = []
+        active_nodes = [node for node in self.nodes.values() if node.status is not ObjectStatus.RETIRED]
+        if len(active_nodes) < 2:
+            return merges
+
+        # Index nodes for the partition
+        node_indices = {node.object_id: i for i, node in enumerate(active_nodes)}
+        n = len(active_nodes)
+
+        # Generate scored edges
+        edges = self._generate_merge_candidate_pairs(active_nodes, step_id)
+
+        # Build signed graphs
+        pos_thresh = self.config.edge_pos_thresh
+        neg_thresh = self.config.edge_neg_thresh
+        pos_edges: list[tuple[int, int, float]] = []
+        neg_edges: set[tuple[int, int]] = set()
+
+        for i, j, score, components in edges:
+            if score >= pos_thresh and not components.get("semantic_conflict"):
+                pos_edges.append((i, j, score))
+            elif score <= neg_thresh:
+                neg_edges.add((i, j))
+
+        # Union-find with conflict pruning
+        partition = self._union_find_with_conflicts(n, pos_edges, neg_edges)
+
+        # Execute merges: all nodes in same component merge to the first node
+        component_roots: dict[int, list[int]] = {}
+        for idx, root in partition.items():
+            component_roots.setdefault(root, []).append(idx)
+
+        merge_log: list[dict[str, object]] = []
+        for root_idx, member_indices in component_roots.items():
+            if len(member_indices) < 2:
+                continue
+            # Merge all into the first (oldest birth_step) node
+            sorted_members = sorted(member_indices, key=lambda idx: (active_nodes[idx].birth_step, active_nodes[idx].object_id))
+            target_node = active_nodes[sorted_members[0]]
+            for member_idx in sorted_members[1:]:
+                source_node = active_nodes[member_idx]
+                if source_node.status is ObjectStatus.RETIRED or target_node.status is ObjectStatus.RETIRED:
+                    continue
+                # Recompute affinity for the merge log
+                score, components = self.object_affinity(target_node, source_node)
+                if components.get("semantic_conflict"):
+                    continue
+                self.merge_nodes(target_node, source_node)
+                merge_log.append({
+                    "target_object_id": target_node.object_id,
+                    "source_object_id": source_node.object_id,
+                    "score": score,
+                    "components": components,
+                    "partition_method": "uf_conflict_pruning",
+                    "component_size": len(member_indices),
+                })
+
+        return merge_log
+
     def consolidate_objects(self) -> dict[str, object]:
         denoise_summary = self.denoise_objects()
-        merges = self.merge_duplicate_objects() if self.config.enable_object_consolidation else []
+        if self.config.enable_object_consolidation:
+            if self.config.entity_graph_enable:
+                merges = self.merge_duplicate_objects_v2()
+            else:
+                merges = self.merge_duplicate_objects()
+        else:
+            merges = []
         filtered = self.filter_low_quality_objects() if self.config.enable_object_consolidation else []
         return {
             "denoise": denoise_summary,

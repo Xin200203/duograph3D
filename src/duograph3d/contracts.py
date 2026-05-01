@@ -301,6 +301,20 @@ class PipelineConfig:
     stable_write_margin: float = 0.25
     stable_ema_alpha: float = 0.05
     working_memory_len: int = 8
+    # Phase 丁: equivalence partition (UF + conflict pruning)
+    entity_graph_enable: bool = False
+    edge_pos_thresh: float = 0.95
+    edge_neg_thresh: float = 0.05
+    pair_topk: int = 10
+    pair_max_dt: int = 120
+    exact_component_max: int = 20
+    # Phase 丁: carrier selection
+    carrier_selection_enable: bool = False
+    carrier_w_cov: float = 0.30
+    carrier_w_purity: float = 0.25
+    carrier_w_sem: float = 0.20
+    carrier_w_geo: float = 0.15
+    carrier_w_dup: float = 0.10
     layer2_history_identity_threshold: float = 0.7
     history_point_overlap_distance: float = 0.12
     history_overlap_max_points: int = 48
