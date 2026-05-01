@@ -10,6 +10,11 @@ from .data import (
 )
 from .rivals import run_all_branches
 from .remote_config import RemoteExperimentPaths
+from .experiment_logger import ExperimentRunMetadata, config_to_snapshot, export_event_stream_jsonl, load_event_stream
+from .candidate_metrics import build_candidate_recall_table, CandidateRecallSummary
+from .memory_purity import build_memory_purity_table, MemoryPuritySummary
+from .carrier_metrics import build_carrier_table, CarrierOracleSummary
+from .shadow_metrics import generate_shadow_report, compare_shadow_reports
 
 __all__ = [
     "DuoGraph3DPipeline",

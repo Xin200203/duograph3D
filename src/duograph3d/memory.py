@@ -62,6 +62,7 @@ class ObjectGraphMemory:
         candidate_budget: int,
         *,
         history_object_ids: tuple[str, ...] = (),
+        hypothesis: CurrentObjectHypothesis | None = None,
     ) -> list[MemoryObjectNode]:
         history_set = set(history_object_ids)
         eligible = [
@@ -74,8 +75,94 @@ class ObjectGraphMemory:
                 or node.status in {ObjectStatus.ACTIVE, ObjectStatus.OCCLUDED, ObjectStatus.DORMANT}
             )
         ]
-        eligible.sort(key=lambda node: (node.object_id not in history_set, node.status != ObjectStatus.ACTIVE, node.miss_count, -node.last_seen_step))
-        return eligible[:candidate_budget]
+        if hypothesis is None:
+            eligible.sort(key=lambda node: (node.object_id not in history_set, node.status != ObjectStatus.ACTIVE, node.miss_count, -node.last_seen_step, node.object_id))
+            return eligible[: max(candidate_budget, 1)]
+
+        channel_budget = max(self.config.candidate_retrieval_channel_budget, 1)
+        final_budget = max(candidate_budget, self.config.candidate_retrieval_budget, 1)
+        selected: dict[str, MemoryObjectNode] = {}
+
+        def add(node: MemoryObjectNode) -> None:
+            if node.status is not ObjectStatus.RETIRED:
+                selected.setdefault(node.object_id, node)
+
+        for object_id in history_object_ids:
+            node = self.nodes.get(object_id)
+            if node is not None:
+                add(node)
+
+        exact_geometry = [node for node in eligible if geometry_key and node.geometry_key == geometry_key]
+        exact_geometry.sort(key=lambda node: (node.status != ObjectStatus.ACTIVE, node.miss_count, -node.last_seen_step, node.object_id))
+        for node in exact_geometry[:channel_budget]:
+            add(node)
+
+        recent = sorted(
+            eligible,
+            key=lambda node: (node.status != ObjectStatus.ACTIVE, node.miss_count, -node.last_seen_step, node.object_id),
+        )
+        for node in recent[:channel_budget]:
+            add(node)
+
+        cheap_scores: list[tuple[float, float, float, float, float, float, MemoryObjectNode]] = []
+        for node in eligible:
+            spatial_score = self.hypothesis_spatial_score(hypothesis, node)
+            point_overlap_score = self.hypothesis_point_overlap_score(hypothesis, node)
+            visual_score = self.hypothesis_visual_score(hypothesis, node)
+            semantic_score = self.hypothesis_semantic_score(hypothesis, node)
+            recency_score = self._node_recency_score(node)
+            retrieval_score = round(
+                0.42 * spatial_score
+                + 0.18 * visual_score
+                + 0.17 * semantic_score
+                + 0.13 * recency_score
+                + 0.10 * point_overlap_score,
+                4,
+            )
+            cheap_scores.append((retrieval_score, spatial_score, point_overlap_score, visual_score, semantic_score, recency_score, node))
+
+        for bucket_index in (0, 1, 2, 3, 4):
+            ranked = sorted(cheap_scores, key=lambda item: (item[bucket_index], item[-1].object_id), reverse=True)
+            for *_, node in ranked[:channel_budget]:
+                add(node)
+
+        _id_key = self._object_id_sort_key
+
+        def final_rank(node: MemoryObjectNode) -> tuple[float, ...]:
+            spatial_score = self.hypothesis_spatial_score(hypothesis, node)
+            point_overlap_score = self.hypothesis_point_overlap_score(hypothesis, node)
+            visual_score = self.hypothesis_visual_score(hypothesis, node)
+            semantic_score = self.hypothesis_semantic_score(hypothesis, node)
+            recency_score = self._node_recency_score(node)
+            return (
+                1.0 if node.object_id in history_set else 0.0,
+                1.0 if geometry_key and node.geometry_key == geometry_key else 0.0,
+                point_overlap_score,
+                spatial_score,
+                visual_score,
+                semantic_score,
+                recency_score,
+                1.0 if node.status is ObjectStatus.ACTIVE else 0.0,
+                -float(node.miss_count),
+                float(node.last_seen_step),
+                _id_key(node.object_id),
+            )
+
+        candidates = list(selected.values())
+        if not candidates:
+            candidates = recent[:final_budget]
+        candidates.sort(key=final_rank, reverse=True)
+        return candidates[:final_budget]
+
+    @staticmethod
+    def _object_id_sort_key(object_id: str) -> int:
+        """Extract the numeric suffix from ``obj-{N}`` for deterministic tie-breaking."""
+        if object_id.startswith("obj-"):
+            try:
+                return int(object_id[4:])
+            except ValueError:
+                pass
+        return hash(object_id)  # fallback, rare
 
     @staticmethod
     def _as_float_tuple(values: object, *, limit: int | None = None) -> tuple[float, ...]:
@@ -377,6 +464,20 @@ class ObjectGraphMemory:
     def hypothesis_point_overlap_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
         return self.payload_point_overlap_score(hypothesis.object_payload, node)
 
+    def hypothesis_spatial_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
+        score = 0.0
+        if hypothesis.geometry_key and hypothesis.geometry_key == node.geometry_key:
+            score = max(score, 1.0)
+        continuity_key = str(hypothesis.support_signals.get("continuity_key") or "")
+        if continuity_key and continuity_key == node.continuity_key_recent:
+            score = max(score, 0.9)
+        payload_min, payload_max = self._payload_bbox(hypothesis.object_payload)
+        bbox_score = self._bbox_overlap_score(payload_min, payload_max, node.bbox_min, node.bbox_max)
+        score = max(score, bbox_score)
+        centroid_score = self._centroid_distance_score(self._payload_centroid(hypothesis.object_payload), node.centroid)
+        score = max(score, centroid_score * 0.75)
+        return round(score, 4)
+
     def hypothesis_visual_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
         if hypothesis.object_payload is None:
             return 0.0
@@ -500,11 +601,21 @@ class ObjectGraphMemory:
                 4,
             )
             if self.config.history_point_overlap_affinity_weight > 0:
+                semantic_ok = semantic_score >= self.config.history_point_overlap_min_semantic_score
+                spatial_ok = spatial_score >= self.config.history_point_overlap_min_spatial_score
+                visual_ok = visual_score >= self.config.layer2_point_overlap_identity_min_visual
                 gated_overlap = (
                     point_overlap_score
                     if (
-                        semantic_score >= self.config.layer2_absorption_min_semantic_score
-                        and spatial_score >= self.config.layer1_history_min_spatial_score
+                        point_overlap_score >= self.config.layer2_history_min_point_overlap
+                        and (semantic_ok or visual_ok)
+                        and (
+                            spatial_ok
+                            or (
+                                point_overlap_score >= self.config.layer2_point_overlap_identity_threshold
+                                and not self.config.history_point_overlap_requires_spatial_evidence
+                            )
+                        )
                     )
                     else 0.0
                 )
@@ -527,7 +638,7 @@ class ObjectGraphMemory:
                         },
                     )
                 )
-        raw_candidates.sort(key=lambda item_score: item_score[0], reverse=True)
+        raw_candidates.sort(key=lambda item_score: (item_score[0], item_score[1]), reverse=True)
         candidates: list[HistoryCandidate] = []
         for index, (affinity, object_id, components) in enumerate(raw_candidates[:top_k]):
             next_affinity = raw_candidates[index + 1][0] if index + 1 < len(raw_candidates) else 0.0
@@ -664,7 +775,88 @@ class ObjectGraphMemory:
             return round(vote_score, 4)
         return round(max(text_score, 0.75 * text_score + 0.25 * vote_score), 4)
 
-    def object_affinity(self, left: MemoryObjectNode, right: MemoryObjectNode) -> tuple[float, dict[str, float]]:
+    @staticmethod
+    def _class_distribution_summary(counts: dict[str, int]) -> dict[str, float | str | int]:
+        total = sum(max(int(count), 0) for count in counts.values())
+        if total <= 0:
+            return {"total": 0, "top_label": "", "top_share": 0.0, "entropy": 0.0}
+        top_label, top_count = max(counts.items(), key=lambda item: (int(item[1]), str(item[0])))
+        entropy = 0.0
+        for count in counts.values():
+            p = max(int(count), 0) / total
+            if p > 0:
+                entropy -= p * math.log(p, 2)
+        return {
+            "total": total,
+            "top_label": str(top_label),
+            "top_share": round(top_count / total, 4),
+            "entropy": round(entropy, 4),
+        }
+
+    def _object_semantic_conflict(
+        self,
+        left: MemoryObjectNode,
+        right: MemoryObjectNode,
+        *,
+        semantic_score: float,
+        visual_score: float,
+    ) -> tuple[bool, dict[str, float | str | int | bool]]:
+        if not self.config.object_merge_semantic_conflict_guard:
+            return False, {"semantic_conflict": False}
+        if not left.class_counts or not right.class_counts:
+            return False, {"semantic_conflict": False}
+        if visual_score >= self.config.object_merge_semantic_conflict_visual_override and semantic_score >= self.config.object_merge_semantic_conflict_min_score:
+            return False, {"semantic_conflict": False, "semantic_conflict_visual_override": True}
+
+        left_summary = self._class_distribution_summary(left.class_counts)
+        right_summary = self._class_distribution_summary(right.class_counts)
+        merged_counts: dict[str, int] = dict(left.class_counts)
+        for label, count in right.class_counts.items():
+            merged_counts[label] = merged_counts.get(label, 0) + count
+        merged_summary = self._class_distribution_summary(merged_counts)
+        left_top = str(left_summary.get("top_label", ""))
+        right_top = str(right_summary.get("top_label", ""))
+        left_total = int(left_summary.get("total", 0) or 0)
+        right_total = int(right_summary.get("total", 0) or 0)
+        merged_total = max(int(merged_summary.get("total", 0) or 0), 1)
+        common_labels = set(left.class_counts).intersection(right.class_counts)
+        common_overlap = sum(min(left.class_counts[label], right.class_counts[label]) for label in common_labels)
+        common_share = common_overlap / max(min(left_total, right_total), 1)
+        smaller_top_share = float(right_summary.get("top_share", 0.0) if right_total <= left_total else left_summary.get("top_share", 0.0))
+        smaller_total_share = min(left_total, right_total) / merged_total
+        dominant_label_conflict = (
+            bool(left_top and right_top and left_top != right_top)
+            and semantic_score < self.config.object_merge_semantic_conflict_min_score
+        )
+        mixed_root_conflict = (
+            float(merged_summary.get("entropy", 0.0) or 0.0) > self.config.object_merge_max_merged_label_entropy
+            and float(merged_summary.get("top_share", 0.0) or 0.0) < self.config.object_merge_min_merged_top_label_share
+            and common_share < 0.5
+        )
+        protected_small_label_conflict = (
+            bool(left_top and right_top and left_top != right_top)
+            and smaller_total_share >= self.config.object_merge_protect_small_label_share
+            and smaller_top_share >= self.config.object_merge_protect_small_label_confidence
+            and semantic_score < self.config.object_merge_semantic_conflict_min_score
+        )
+        conflict = dominant_label_conflict or mixed_root_conflict or protected_small_label_conflict
+        return conflict, {
+            "semantic_conflict": conflict,
+            "left_top_label": left_top,
+            "right_top_label": right_top,
+            "merged_top_label": str(merged_summary.get("top_label", "")),
+            "left_top_share": float(left_summary.get("top_share", 0.0) or 0.0),
+            "right_top_share": float(right_summary.get("top_share", 0.0) or 0.0),
+            "merged_top_share": float(merged_summary.get("top_share", 0.0) or 0.0),
+            "merged_label_entropy": float(merged_summary.get("entropy", 0.0) or 0.0),
+            "semantic_common_share": round(common_share, 4),
+            "smaller_label_share": round(smaller_total_share, 4),
+            "semantic_conflict_dominant_label": dominant_label_conflict,
+            "semantic_conflict_mixed_root": mixed_root_conflict,
+            "semantic_conflict_protected_small_label": protected_small_label_conflict,
+        }
+
+    def object_affinity(self, left: MemoryObjectNode, right: MemoryObjectNode) -> tuple[float, dict[str, object]]:
         semantic_score = self._object_semantic_score(left, right)
         spatial_score = self._bbox_overlap_score(left.bbox_min, left.bbox_max, right.bbox_min, right.bbox_max)
         spatial_score = max(spatial_score, self._centroid_distance_score(left.centroid, right.centroid) * 0.75)
@@ -682,16 +874,19 @@ class ObjectGraphMemory:
                 max_points=self.config.history_overlap_max_points,
             ),
         )
-        if (
-            self.config.history_point_overlap_affinity_weight > 0
-            and semantic_score >= self.config.layer2_absorption_min_semantic_score
-        ):
+        if semantic_score >= self.config.object_merge_point_overlap_min_semantic_score:
             spatial_score = max(spatial_score, point_overlap_score)
         if left.geometry_key and left.geometry_key == right.geometry_key:
             spatial_score = max(spatial_score, 1.0)
         if left.continuity_key_recent and left.continuity_key_recent == right.continuity_key_recent:
             spatial_score = max(spatial_score, 0.9)
         visual_score = self._similarity_from_cosine(self._cosine(left.clip_feature, right.clip_feature))
+        semantic_conflict, semantic_conflict_components = self._object_semantic_conflict(
+            left,
+            right,
+            semantic_score=semantic_score,
+            visual_score=visual_score,
+        )
         size_score = round(
             (
                 self._compatibility(left.avg_support_size, right.avg_support_size, max_delta=0.2)
@@ -701,14 +896,23 @@ class ObjectGraphMemory:
             / 3.0,
             4,
         )
-        score = round(0.50 * spatial_score + 0.25 * visual_score + 0.20 * semantic_score + 0.05 * size_score, 4)
-        return score, {
+        point_overlap_weight = max(self.config.object_merge_point_overlap_weight, 0.0)
+        base_score = round(0.50 * spatial_score + 0.25 * visual_score + 0.20 * semantic_score + 0.05 * size_score, 4)
+        score = round(
+            min(base_score + point_overlap_weight * point_overlap_score, 1.0),
+            4,
+        )
+        components = {
             "spatial": round(spatial_score, 4),
             "point_overlap": round(point_overlap_score, 4),
             "visual": round(visual_score, 4),
             "semantic": round(semantic_score, 4),
             "size": round(size_score, 4),
         }
+        components.update(semantic_conflict_components)  # type: ignore[arg-type]
+        if semantic_conflict:
+            score = min(score, round(max(self.config.object_merge_threshold - 0.01, 0.0), 4))
+        return score, components
 
     def merge_nodes(self, target: MemoryObjectNode, source: MemoryObjectNode) -> None:
         previous_count = max(target.detection_count, 0)
@@ -760,6 +964,8 @@ class ObjectGraphMemory:
                 if score < self.config.object_merge_threshold:
                     continue
                 if components["spatial"] < self.config.object_merge_spatial_threshold:
+                    continue
+                if components.get("semantic_conflict"):
                     continue
                 self.merge_nodes(left, right)
                 merges.append(
