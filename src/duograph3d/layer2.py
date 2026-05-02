@@ -545,22 +545,22 @@ class CurrentToMemoryAssociationLayer:
                     best_has_identity = has_identity
 
             # CG-style simplified scoring override:
-            # Use spatial + visual only, no identity gate, simpler threshold.
+            # Uses true CG formula: spatial_weight*bbox_IOU + visual_weight*CLIP_cosine.
+            # No boolean "same voxel" bonus, no identity gate.
             if self.config.layer2_simplified_scoring:
                 best_id_cg = None
                 best_score_cg = -1.0
                 for candidate in candidates:
-                    spatial_cg = memory.hypothesis_spatial_score(hypothesis, candidate)
-                    visual_cg = memory.hypothesis_visual_score(hypothesis, candidate)
-                    score_cg = round(spatial_cg + visual_cg, 4)
+                    score_cg, sp, vs = memory.hypothesis_cg_aggregate_score(
+                        hypothesis, candidate,
+                        spatial_weight=1.5, visual_weight=0.5,
+                    )
                     if score_cg > best_score_cg:
                         best_score_cg = score_cg
                         best_id_cg = candidate.object_id
                 best_id = best_id_cg
                 best_score = best_score_cg
                 best_has_identity = True  # CG has no identity gate
-                # Use a lower threshold for CG-style scoring (0-2 range)
-                # Re-map: CG uses sim_threshold which is on 0-2 scale
 
             candidate_scores.sort(key=lambda item: float(item["score"]), reverse=True)
             diagnostic_top_candidates = candidate_scores[: max(self.config.association_diagnostics_top_k, 0)]

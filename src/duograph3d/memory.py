@@ -773,6 +773,40 @@ class ObjectGraphMemory:
         score = max(score, centroid_score * 0.75)
         return round(score, 4)
 
+    def hypothesis_cg_spatial_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
+        """CG-style continuous spatial similarity: point overlap + centroid distance.
+
+        Uses point overlap fraction (nearest-neighbour within distance threshold)
+        as the primary spatial signal — more robust than bbox IOU for partial
+        single-frame observations.  Matches CG's spatial scoring approach.
+        """
+        # Point overlap fraction (0-1): what fraction of hypothesis points
+        # are close to any node point?
+        point_overlap = self.hypothesis_point_overlap_score(hypothesis, node)
+        # Centroid distance (0-1, 1 = same position)
+        centroid_sim = self._centroid_distance_score(
+            self._payload_centroid(hypothesis.object_payload), node.centroid
+        )
+        # Weighted combination: point overlap is the primary signal
+        spatial = round(0.6 * point_overlap + 0.4 * centroid_sim, 4)
+        return spatial
+
+    def hypothesis_cg_aggregate_score(
+        self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode,
+        *, spatial_weight: float = 1.0, visual_weight: float = 0.5,
+    ) -> tuple[float, float, float]:
+        """CG-style aggregate: w_s * spatial + w_v * visual.
+
+        Matches CG's aggregate_similarities:
+          agg = (1+phys_bias)*spatial + (1-phys_bias)*visual
+
+        Returns (aggregate, spatial, visual).
+        """
+        spatial = self.hypothesis_cg_spatial_score(hypothesis, node)
+        visual = self.hypothesis_visual_score(hypothesis, node)
+        agg = round(spatial_weight * spatial + visual_weight * visual, 4)
+        return agg, spatial, visual
+
     def hypothesis_visual_score(self, hypothesis: CurrentObjectHypothesis, node: MemoryObjectNode) -> float:
         if hypothesis.object_payload is None:
             return 0.0
