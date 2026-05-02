@@ -544,23 +544,22 @@ class CurrentToMemoryAssociationLayer:
                     best_id = candidate.object_id
                     best_has_identity = has_identity
 
-            # CG-style simplified scoring override:
-            # Uses true CG formula: spatial_weight*bbox_IOU + visual_weight*CLIP_cosine.
-            # No boolean "same voxel" bonus, no identity gate.
+            # Simplified scoring: spatial + visual, no identity gate.
+            # Uses hypothesis_spatial_score which combines geometry_key, bbox overlap,
+            # and centroid distance — more robust than pure point overlap for sparse data.
             if self.config.layer2_simplified_scoring:
-                best_id_cg = None
-                best_score_cg = -1.0
+                best_id_simple = None
+                best_score_simple = -1.0
                 for candidate in candidates:
-                    score_cg, sp, vs = memory.hypothesis_cg_aggregate_score(
-                        hypothesis, candidate,
-                        spatial_weight=1.5, visual_weight=0.5,
-                    )
-                    if score_cg > best_score_cg:
-                        best_score_cg = score_cg
-                        best_id_cg = candidate.object_id
-                best_id = best_id_cg
-                best_score = best_score_cg
-                best_has_identity = True  # CG has no identity gate
+                    spatial_s = memory.hypothesis_spatial_score(hypothesis, candidate)
+                    visual_s = memory.hypothesis_visual_score(hypothesis, candidate)
+                    score_s = round(spatial_s + visual_s, 4)
+                    if score_s > best_score_simple:
+                        best_score_simple = score_s
+                        best_id_simple = candidate.object_id
+                best_id = best_id_simple
+                best_score = best_score_simple
+                best_has_identity = True
 
             candidate_scores.sort(key=lambda item: float(item["score"]), reverse=True)
             diagnostic_top_candidates = candidate_scores[: max(self.config.association_diagnostics_top_k, 0)]

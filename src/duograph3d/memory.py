@@ -245,7 +245,16 @@ class ObjectGraphMemory:
                 or node.status in {ObjectStatus.ACTIVE, ObjectStatus.OCCLUDED, ObjectStatus.DORMANT}
             )
         ]
-        if hypothesis is None:
+        # Use simple sort+truncate (original behavior) unless Phase features need
+        # multi-channel retrieval.  The multi-channel path uses different candidate
+        # ordering that can regress baseline performance.
+        use_multi_channel = (
+            hypothesis is not None
+            and (self.config.cand_include_adj_key
+                 or self.config.cand_include_ann
+                 or self.config.enable_tentative_fragments)
+        )
+        if not use_multi_channel:
             eligible.sort(key=lambda node: (node.object_id not in history_set, node.status != ObjectStatus.ACTIVE, node.miss_count, -node.last_seen_step, node.object_id))
             return eligible[: max(candidate_budget, 1)]
 
