@@ -98,6 +98,18 @@ class DuoGraph3DPipeline:
             for fid, frag in memory.tentative_fragments.items():
                 if frag.absorbed_into_id or frag.hits < 1:
                     continue
+                # Build a minimal point set from fragment centroid so export doesn't crash.
+                # Tentative fragments accumulate features but not raw 3D points;
+                # we use the centroid to create a tiny bounding box for export.
+                if len(frag.centroid) == 3:
+                    cx, cy, cz = frag.centroid[0], frag.centroid[1], frag.centroid[2]
+                    eps = 0.01
+                    pseudo_points = tuple(
+                        (cx + dx * eps, cy + dy * eps, cz + dz * eps)
+                        for dx, dy, dz in [(1,1,1),(-1,1,1),(1,-1,1),(1,1,-1),(-1,-1,1),(-1,1,-1),(1,-1,-1),(-1,-1,-1)]
+                    )
+                else:
+                    pseudo_points = tuple((float(i)*0.01, 0.0, 0.0) for i in range(8))
                 pseudo = MemoryObjectNode(
                     object_id=fid,
                     descriptor_fused=frag.descriptor,
@@ -113,14 +125,16 @@ class DuoGraph3DPipeline:
                     class_counts=dict(frag.class_counts),
                     clip_feature=frag.clip_feature,
                     text_feature=frag.text_feature,
-                    bbox_min=frag.bbox_min,
-                    bbox_max=frag.bbox_max,
+                    bbox_min=frag.bbox_min if len(frag.bbox_min) == 3 else tuple(c - eps for c in (cx, cy, cz)),
+                    bbox_max=frag.bbox_max if len(frag.bbox_max) == 3 else tuple(c + eps for c in (cx, cy, cz)),
                     centroid=frag.centroid,
                     continuity_key_recent=frag.continuity_key_recent,
                     appearance_key_recent=frag.appearance_key_recent,
                     avg_support_size=frag.avg_support_size,
                     avg_depth_scale=frag.avg_depth_scale,
                     avg_geometry_support=frag.avg_geometry_support,
+                    sampled_points=pseudo_points,
+                    sampled_colors=tuple((0.5, 0.5, 0.5) for _ in range(8)),
                 )
                 nodes_snapshot[fid] = pseudo
         result = SequenceRunResult(
