@@ -274,6 +274,47 @@ class ObjectGraphMemory:
         for node in recent[:channel_budget]:
             add(node)
 
+        # Phase 丙 fix: include tentative fragments as lower-priority candidates.
+        # Without this, tentative fragments are invisible to Layer2 association,
+        # causing a death spiral: few confirmed nodes → few matches → more tentatives
+        # → tentatives can't accumulate hits → never promote → even fewer confirmed.
+        if self.config.enable_tentative_fragments:
+            tentative_candidates = []
+            for fid, frag in self.tentative_fragments.items():
+                if frag.absorbed_into_id:
+                    continue
+                if frag.miss_count > self.config.dormant_after_misses:
+                    continue
+                # Build a lightweight pseudo-node for candidate retrieval
+                pseudo = MemoryObjectNode(
+                    object_id=fid,
+                    descriptor_fused=frag.descriptor,
+                    descriptor_recent=frag.descriptor,
+                    geometry_key=frag.geometry_key,
+                    status=ObjectStatus.ACTIVE,
+                    birth_step=frag.birth_step,
+                    last_seen_step=frag.last_seen_step,
+                    miss_count=frag.miss_count,
+                    continuity_key_recent=frag.continuity_key_recent,
+                    appearance_key_recent=frag.appearance_key_recent,
+                    avg_support_size=frag.avg_support_size,
+                    avg_depth_scale=frag.avg_depth_scale,
+                    avg_geometry_support=frag.avg_geometry_support,
+                    detection_count=frag.detection_count,
+                    clip_feature=frag.clip_feature,
+                    text_feature=frag.text_feature,
+                    bbox_min=frag.bbox_min,
+                    bbox_max=frag.bbox_max,
+                    centroid=frag.centroid,
+                )
+                tentative_candidates.append((frag.hits, pseudo))
+            # Sort by hits desc (more hits = higher priority), then by recency
+            tentative_candidates.sort(key=lambda x: (-x[0], -x[1].last_seen_step))
+            # Add at most channel_budget tentative candidates
+            for _, pseudo in tentative_candidates[:channel_budget]:
+                if pseudo.object_id not in selected:
+                    selected[pseudo.object_id] = pseudo
+
         # Phase 乙: adj-key channel — nodes in adjacent voxel cells
         if self.config.cand_include_adj_key and geometry_key:
             adj_keys = self._adjacent_geometry_keys(geometry_key, radius=self.config.cand_adj_radius)

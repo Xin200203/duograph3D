@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 
-from .contracts import FrameInput, PipelineConfig, SequenceRunResult, TemporalVariant
+from .contracts import FrameInput, MemoryObjectNode, ObjectStatus, PipelineConfig, SequenceRunResult, TemporalVariant
 from .events import BRANCH_DUOGRAPH3D, EventLogger
 from .evidence import EvidenceBuilder
 from .layer1 import CurrentEvidenceGraphLayer
@@ -90,10 +90,43 @@ class DuoGraph3DPipeline:
                     owner_component="memory",
                     **consolidation,
                 )
+        nodes_snapshot = {key: replace(value) for key, value in memory.nodes.items()}
+        # Phase 丙 fix: export tentative fragments alongside confirmed nodes.
+        # Tentative fragments with >= 1 hit carry useful geometry/semantic state
+        # even if they haven't reached the promotion threshold.
+        if self.config.enable_tentative_fragments:
+            for fid, frag in memory.tentative_fragments.items():
+                if frag.absorbed_into_id or frag.hits < 1:
+                    continue
+                pseudo = MemoryObjectNode(
+                    object_id=fid,
+                    descriptor_fused=frag.descriptor,
+                    descriptor_recent=frag.descriptor,
+                    geometry_key=frag.geometry_key,
+                    status=ObjectStatus.ACTIVE,
+                    birth_step=frag.birth_step,
+                    last_seen_step=frag.last_seen_step,
+                    miss_count=frag.miss_count,
+                    detection_count=frag.detection_count,
+                    confidence_sum=frag.confidence_sum,
+                    mask_area_sum=frag.mask_area_sum,
+                    class_counts=dict(frag.class_counts),
+                    clip_feature=frag.clip_feature,
+                    text_feature=frag.text_feature,
+                    bbox_min=frag.bbox_min,
+                    bbox_max=frag.bbox_max,
+                    centroid=frag.centroid,
+                    continuity_key_recent=frag.continuity_key_recent,
+                    appearance_key_recent=frag.appearance_key_recent,
+                    avg_support_size=frag.avg_support_size,
+                    avg_depth_scale=frag.avg_depth_scale,
+                    avg_geometry_support=frag.avg_geometry_support,
+                )
+                nodes_snapshot[fid] = pseudo
         result = SequenceRunResult(
             branch_id=branch_id,
             sequence_id=sequence_id,
-            memory_nodes={key: replace(value) for key, value in memory.nodes.items()},
+            memory_nodes=nodes_snapshot,
             event_count=len(logger.records),
             decisions=all_decisions,
             relation_edges=memory.relation_snapshot(),

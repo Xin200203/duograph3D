@@ -573,6 +573,50 @@ class CurrentToMemoryAssociationLayer:
                 and (best_has_identity or not self.config.layer2_require_strong_identity)
             )
             if should_associate:
+                # Phase 丙 fix: handle association to tentative fragments
+                if best_id.startswith("tent-") and best_id in memory.tentative_fragments:
+                    frag = memory.tentative_fragments[best_id]
+                    frag.last_seen_step = step_id
+                    frag.miss_count = 0
+                    frag.hits += 1
+                    frag.self_consistency = round(
+                        (frag.self_consistency * (frag.hits - 1) + hypothesis.confidence) / max(frag.hits, 1), 4
+                    )
+                    current_geom = self._float_signal(hypothesis, "geometry_support", 0.0)
+                    frag.geometry_consistency = round(
+                        (frag.geometry_consistency * (frag.hits - 1) + current_geom) / max(frag.hits, 1), 4
+                    )
+                    if hypothesis.ambiguity_flags:
+                        frag.conflict_count += 1
+                    if hypothesis.object_payload is not None:
+                        frag.detection_count += max(hypothesis.object_payload.detection_count, 1)
+                        frag.confidence_sum += hypothesis.confidence
+                        frag.mask_area_sum += float(hypothesis.object_payload.mask_area or 0.0)
+                        if hypothesis.object_payload.label:
+                            lbl = hypothesis.object_payload.label
+                            frag.class_counts[lbl] = frag.class_counts.get(lbl, 0) + 1
+                        cur_clip = memory._as_float_tuple(hypothesis.object_payload.clip_feature)
+                        if cur_clip and frag.clip_feature:
+                            frag.clip_feature = memory._blend_feature(
+                                frag.clip_feature, cur_clip, frag.detection_count - 1, 1, normalize=True,
+                            )
+                    logger.log(
+                        sequence_id=sequence_id, step_id=step_id, branch_id=branch_id,
+                        event_type="tentative_fragment_associated",
+                        owner_component="layer-2",
+                        fragment_id=best_id, hypothesis_id=hypothesis.hypothesis_id,
+                        hits=frag.hits,
+                    )
+                    decisions.append(
+                        AssociationDecision(
+                            hypothesis_id=hypothesis.hypothesis_id,
+                            action="tentative_assoc",
+                            object_id=best_id, score=best_score,
+                            reason="associated_with_tentative",
+                            track_hint=hypothesis.track_hint,
+                        )
+                    )
+                    continue
                 node = memory.nodes[best_id]
                 action = "associate"
                 if node.status in {ObjectStatus.OCCLUDED, ObjectStatus.DORMANT}:
