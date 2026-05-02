@@ -58,25 +58,69 @@ class CurrentEvidenceGraphLayer:
             return 0.0, []
         return round(self.config.layer1_history_shared_boost * best_score, 4), ["shared_history_object"]
 
+    def _clip_visual_similarity(self, left: EvidenceItem, right: EvidenceItem) -> float:
+        """Compute CLIP cosine similarity between two evidence items' payload features."""
+        left_feat = ()
+        right_feat = ()
+        if left.object_payload is not None:
+            left_feat = self._as_float_tuple(left.object_payload.clip_feature)
+        if right.object_payload is not None:
+            right_feat = self._as_float_tuple(right.object_payload.clip_feature)
+        if not left_feat or not right_feat or len(left_feat) != len(right_feat):
+            return 0.0
+        norm_l = math.sqrt(sum(v * v for v in left_feat))
+        norm_r = math.sqrt(sum(v * v for v in right_feat))
+        if norm_l <= 0 or norm_r <= 0:
+            return 0.0
+        cosine = sum(lv * rv for lv, rv in zip(left_feat, right_feat)) / (norm_l * norm_r)
+        return round(max(0.0, (cosine + 1.0) / 2.0), 4)
+
     def _edge_score(self, left: EvidenceItem, right: EvidenceItem) -> tuple[float, list[str]]:
+        """Compute merge affinity between two evidence items.
+
+        Simplified from CG-style reasoning: same voxel alone does NOT force a merge.
+        Visual similarity (CLIP cosine) must corroborate spatial proximity.
+        """
         score = 0.0
         reasons: list[str] = []
-        if left.repair_group_id and left.repair_group_id == right.repair_group_id:
-            score += 0.75
-            reasons.append("shared_repair_group")
+
+        # --- Spatial signals (moderate weight, not auto-merge) ---
+        # geometry_key match: same 0.2m voxel → spatial proximity
+        if left.geometry_key == right.geometry_key:
+            score += 0.40
+            reasons.append("geometry_key_match")
+
+        # continuity_key: track-level identity (runner sets this = geometry_key,
+        # so weaker weight to avoid double-counting the same signal)
         left_continuity = self._str_support(left, "continuity_key")
         right_continuity = self._str_support(right, "continuity_key")
         if left_continuity and left_continuity == right_continuity:
-            score += 0.7
+            score += 0.25
             reasons.append("continuity_match")
+
+        # --- Visual / appearance signals ---
+        # CLIP visual similarity: key check — do they LOOK like the same thing?
+        clip_sim = self._clip_visual_similarity(left, right)
+        if clip_sim >= 0.70:
+            score += 0.40
+            reasons.append(f"clip_visual({clip_sim:.2f})")
+        elif clip_sim >= 0.55:
+            score += 0.20
+            reasons.append(f"clip_visual_weak({clip_sim:.2f})")
+
+        # appearance_key: semantic label (weak, noisy per-frame)
         left_appearance = self._str_support(left, "appearance_key")
         right_appearance = self._str_support(right, "appearance_key")
         if left_appearance and left_appearance == right_appearance:
-            score += 0.35
+            score += 0.15
             reasons.append("appearance_match")
+
+        # descriptor: class-agnostic token (always matches, negligible weight)
         if left.descriptor == right.descriptor:
-            score += 0.2
+            score += 0.05
             reasons.append("descriptor_match")
+
+        # --- Geometry profile consistency ---
         geometry_profile_score = self._geometry_profile_consistency(
             support_size=self._float_support(left, "support_size", 0.0),
             depth_scale=self._float_support(left, "depth_scale", 1.0),
@@ -88,14 +132,14 @@ class CurrentEvidenceGraphLayer:
         if geometry_profile_score > 0:
             score += geometry_profile_score
             reasons.append("geometry_profile_consistent")
-        if left.geometry_key == right.geometry_key:
-            score += 0.45
-            reasons.append("geometry_key_match")
+
+        # --- Shared history ---
         history_score, history_reasons = self._shared_history_boost(left, right)
         if history_score > 0:
             score += history_score
             reasons.extend(history_reasons)
-        return score, reasons
+
+        return round(score, 4), reasons
 
     @staticmethod
     def _geometry_profile_consistency(

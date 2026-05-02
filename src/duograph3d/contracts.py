@@ -327,6 +327,9 @@ class PipelineConfig:
     layer2_absorption_min_point_overlap: float = 0.4
     layer2_absorption_min_semantic_score: float = 0.55
     layer2_require_strong_identity: bool = True
+    # Layer2 CG-style simplified scoring: spatial + visual only, no identity gate,
+    # no candidate budget pruning.  When enabled, overrides many Layer2 knobs.
+    layer2_simplified_scoring: bool = False
     layer2_history_min_spatial_score: float = 0.45
     layer2_history_min_semantic_score: float = 0.55
     layer2_history_min_point_overlap: float = 0.15
