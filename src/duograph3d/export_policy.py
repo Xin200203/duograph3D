@@ -67,13 +67,17 @@ def choose_export_source(
     policy: ExportCoveragePolicy | None = None,
     consolidation_dense_max_ratio: float = 0.175,
     consolidation_memory_count: int | None = None,
+    consolidation_key_count: int | None = None,
 ) -> dict[str, object]:
     """Choose memory vs geometry export with explicit coverage diagnostics.
 
-    ``consolidation_memory_count`` is the RAW memory-graph node count used by
-    the consolidation-auto ratio; export-eligible object counts shrink with
-    skip filters and would silently shift scenes across the routing threshold
-    (room0: 78 raw nodes = 0.179 → geometry, but ~70 eligible = dense).
+    ``consolidation_memory_count`` / ``consolidation_key_count`` are the RAW
+    memory-graph node count and RAW geometry-key count used by the
+    consolidation-auto ratio.  The export-facing counts drift both ways —
+    eligible memory objects shrink with skip filters and key export items
+    inflate with split policies (room0: 78 raw nodes / 436 raw keys = 0.179 →
+    geometry, but 24 eligible / 1514 items = 0.016 → dense) — so the routing
+    must use the raw graph granularities the rule was calibrated on.
     """
 
     policy = policy or ExportCoveragePolicy()
@@ -102,8 +106,14 @@ def choose_export_source(
             if consolidation_memory_count is not None
             else int(memory_object_count)
         )
-        consolidation_ratio = _ratio(consolidation_count, key_object_count)
+        consolidation_keys = (
+            int(consolidation_key_count)
+            if consolidation_key_count is not None
+            else int(key_object_count)
+        )
+        consolidation_ratio = _ratio(consolidation_count, consolidation_keys)
         diagnostics["consolidation_memory_count"] = consolidation_count
+        diagnostics["consolidation_key_count"] = consolidation_keys
         diagnostics["consolidation_ratio"] = consolidation_ratio
         # Substrate routing by consolidation depth: when online memory
         # consolidates far below the geometry-key granularity (few nodes per

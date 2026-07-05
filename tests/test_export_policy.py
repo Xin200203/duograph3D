@@ -53,12 +53,13 @@ class ExportPolicyTests(unittest.TestCase):
         # when the export-eligible count (70) would cross the dense threshold.
         decision = choose_export_source(
             strategy="consolidation-auto",
-            memory_object_count=70,
-            key_object_count=436,
+            memory_object_count=24,
+            key_object_count=1514,
             memory_point_count=10000,
             key_point_budget=100000,
             consolidation_dense_max_ratio=0.175,
             consolidation_memory_count=78,
+            consolidation_key_count=436,
         )
         self.assertEqual(decision["selected_source"], GEOMETRY_EXPORT_SOURCE)
         self.assertAlmostEqual(decision["consolidation_ratio"], 78 / 436, places=6)
