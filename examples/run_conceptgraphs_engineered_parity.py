@@ -106,6 +106,13 @@ EXPORT_SOURCE_STRATEGY = "auto"
 EXPORT_CONSOLIDATION_DENSE_MAX_RATIO = float(
     os.environ.get("DUOGRAPH_EXPORT_CONSOLIDATION_DENSE_MAX_RATIO", "0.175")
 )
+# Mechanism scope: the label gate and scale-prior repairs require multi-view
+# object-level declared evidence, which only the consolidated (memory-dense)
+# substrate provides; raw geometry-key buckets carry boundary-noise label
+# mixes that make both mechanisms misfire (office0 geometry arm: 148 vetoes +
+# 15 junk declared relabels).  `consolidated-only` disables both on
+# geometry-routed exports; `all-substrates` keeps legacy behavior.
+MECHANISMS_SCOPE = os.environ.get("DUOGRAPH_MECHANISMS_SCOPE", "all-substrates")
 MIN_MEMORY_EXPORT_OBJECTS = 100
 MIN_MEMORY_EXPORT_KEY_RATIO = 0.10
 MIN_MEMORY_EXPORT_POINT_RATIO = 0.05
@@ -2120,13 +2127,19 @@ def merge_objects_with_label_gate(cfg, objects: MapObjectList) -> tuple[MapObjec
     return MapObjectList(new_objects), gate_probe
 
 
-def postprocess_map_objects(cfg, initial_objects: MapObjectList) -> tuple[MapObjectList, dict[str, object]]:
+def postprocess_map_objects(
+    cfg,
+    initial_objects: MapObjectList,
+    *,
+    gate_enabled: bool | None = None,
+) -> tuple[MapObjectList, dict[str, object]]:
     pre_postprocess_count = len(initial_objects)
     objects = denoise_objects(cfg, initial_objects)
     post_denoise_count = len(objects)
     objects = filter_objects(cfg, objects)
     post_filter_count = len(objects)
-    if CG_MERGE_LABEL_GATE:
+    use_gate = bool(CG_MERGE_LABEL_GATE) if gate_enabled is None else bool(gate_enabled)
+    if use_gate:
         objects, label_gate_probe = merge_objects_with_label_gate(cfg, objects)
     else:
         objects = merge_objects(cfg, objects)
@@ -2584,6 +2597,7 @@ def apply_geometry_repairs(
     *,
     class_feats_np: np.ndarray,
     label_to_index: dict[str, int],
+    scale_prior_mode_override: str | None = None,
 ) -> tuple[MapObjectList, dict[str, object]]:
     """Apply export-only geometry repairs learned from office3 diagnostics.
 
@@ -2594,7 +2608,10 @@ def apply_geometry_repairs(
 
     carve_rules = active_geometry_carve_rules()
     large_label_rules = active_large_label_relabel_rules()
-    scale_prior_mode = str(GEOMETRY_REPAIR_SCALE_PRIOR_MODE or "off").lower().replace("_", "-")
+    scale_prior_source = (
+        scale_prior_mode_override if scale_prior_mode_override is not None else GEOMETRY_REPAIR_SCALE_PRIOR_MODE
+    )
+    scale_prior_mode = str(scale_prior_source or "off").lower().replace("_", "-")
     enabled = (
         GEOMETRY_REPAIR_VENT_TO_SOFA_DELTA >= 0.0
         or bool(carve_rules)
@@ -3062,6 +3079,11 @@ def write_conceptgraphs_payload(
         consolidation_dense_max_ratio=EXPORT_CONSOLIDATION_DENSE_MAX_RATIO,
     )
     export_source = str(export_selection["selected_source"])
+    mechanisms_scoped_off = (
+        str(MECHANISMS_SCOPE).lower().replace("_", "-") == "consolidated-only"
+        and export_source == GEOMETRY_EXPORT_SOURCE
+    )
+    scoped_gate_enabled = False if mechanisms_scoped_off else None
     multires_diagnostics = {"enabled": False}
     coarse_postprocess_counts: dict[str, int] = {}
     fine_postprocess_counts: dict[str, int] = {}
@@ -3087,7 +3109,9 @@ def write_conceptgraphs_payload(
     )
     label_gate_probe: dict[str, object] = {"enabled": False}
     if export_source == GEOMETRY_EXPORT_SOURCE and MULTIRES_EXPORT_ENABLED:
-        coarse_objects, coarse_postprocess_counts = postprocess_map_objects(cfg, initial_objects)
+        coarse_objects, coarse_postprocess_counts = postprocess_map_objects(
+            cfg, initial_objects, gate_enabled=scoped_gate_enabled
+        )
         label_gate_probe = coarse_postprocess_counts.get("label_gate_probe", {"enabled": False})
         if MULTIRES_FINE_SPLIT_BY_LABEL:
             fine_items = iter_label_bucket_export_items(
@@ -3110,7 +3134,9 @@ def write_conceptgraphs_payload(
             export_items=fine_items,
             carrier="fine_geometry",
         )
-        fine_objects, fine_postprocess_counts = postprocess_map_objects(cfg, fine_initial_objects)
+        fine_objects, fine_postprocess_counts = postprocess_map_objects(
+            cfg, fine_initial_objects, gate_enabled=scoped_gate_enabled
+        )
         objects, multires_diagnostics = apply_multires_replacement(
             coarse_objects,
             fine_objects,
@@ -3123,7 +3149,9 @@ def write_conceptgraphs_payload(
         export_debug = export_debug + fine_export_debug
         skipped_keys = skipped_keys + fine_skipped_keys
     else:
-        objects, postprocess_counts = postprocess_map_objects(cfg, initial_objects)
+        objects, postprocess_counts = postprocess_map_objects(
+            cfg, initial_objects, gate_enabled=scoped_gate_enabled
+        )
         post_denoise_count = int(postprocess_counts["post_denoise_object_count"])
         post_filter_count = int(postprocess_counts["post_filter_object_count"])
         post_merge_count = int(postprocess_counts["post_merge_object_count"])
@@ -3133,6 +3161,7 @@ def write_conceptgraphs_payload(
         cfg,
         class_feats_np=class_feats_np,
         label_to_index=label_to_index,
+        scale_prior_mode_override="off" if mechanisms_scoped_off else None,
     )
     post_merge_count = len(objects)
     serializable_objects = objects.to_serializable()
@@ -3173,6 +3202,11 @@ def write_conceptgraphs_payload(
         },
         "geometry_repair_probe": geometry_repair_diagnostics,
         "cg_merge_label_gate_probe": label_gate_probe,
+        "mechanisms_scope": {
+            "scope": MECHANISMS_SCOPE,
+            "scoped_off_for_this_scene": mechanisms_scoped_off,
+            "export_source": export_source,
+        },
         "initial_key_object_count": pre_postprocess_count,
         "post_denoise_object_count": post_denoise_count,
         "post_filter_object_count": post_filter_count,
@@ -3248,6 +3282,7 @@ def write_conceptgraphs_payload(
             "min_object_detections": MIN_OBJECT_DETECTIONS,
             "export_source_strategy": EXPORT_SOURCE_STRATEGY,
             "export_consolidation_dense_max_ratio": EXPORT_CONSOLIDATION_DENSE_MAX_RATIO,
+            "mechanisms_scope": MECHANISMS_SCOPE,
             "text_feature_mode": TEXT_FEATURE_MODE,
             "clip_feature_mode": CLIP_FEATURE_MODE,
             "clip_feature_blend_alpha": CLIP_FEATURE_BLEND_ALPHA,
@@ -3461,7 +3496,7 @@ def write_markdown_report(summary: dict[str, object], path: Path) -> None:
 
 def main() -> None:
     global ROOT, PRED_EXP_NAME, MIN_OBJECT_DETECTIONS, EXPORT_SOURCE_STRATEGY
-    global EXPORT_CONSOLIDATION_DENSE_MAX_RATIO
+    global EXPORT_CONSOLIDATION_DENSE_MAX_RATIO, MECHANISMS_SCOPE
     global TEXT_FEATURE_MODE, CLIP_FEATURE_MODE, CLIP_FEATURE_BLEND_ALPHA
     global EXPORT_CLIP_MIN_MARGIN
     global ADAPTIVE_CLIP_SINK_LABELS, ADAPTIVE_CLIP_MIN_HIGH_MARGIN_COUNT
@@ -3536,6 +3571,16 @@ def main() -> None:
         "--export-consolidation-dense-max-ratio",
         type=float,
         default=EXPORT_CONSOLIDATION_DENSE_MAX_RATIO,
+    )
+    parser.add_argument(
+        "--mechanisms-scope",
+        choices=["all-substrates", "consolidated-only"],
+        default=MECHANISMS_SCOPE,
+        help=(
+            "`consolidated-only` disables the label gate and scale-prior repairs on geometry-routed "
+            "exports: those mechanisms need multi-view object-level declared evidence, which raw "
+            "geometry-key buckets (boundary-noise label mixes) do not provide."
+        ),
     )
     parser.add_argument("--min-memory-export-objects", type=int, default=MIN_MEMORY_EXPORT_OBJECTS)
     parser.add_argument("--min-memory-export-key-ratio", type=float, default=MIN_MEMORY_EXPORT_KEY_RATIO)
@@ -3809,6 +3854,7 @@ def main() -> None:
         MIN_OBJECT_DETECTIONS = max(int(args.min_object_detections), 1)
     EXPORT_SOURCE_STRATEGY = args.export_source
     EXPORT_CONSOLIDATION_DENSE_MAX_RATIO = min(max(float(args.export_consolidation_dense_max_ratio), 0.0), 1.0)
+    MECHANISMS_SCOPE = str(args.mechanisms_scope)
     MIN_MEMORY_EXPORT_OBJECTS = max(int(args.min_memory_export_objects), 0)
     MIN_MEMORY_EXPORT_KEY_RATIO = max(float(args.min_memory_export_key_ratio), 0.0)
     MIN_MEMORY_EXPORT_POINT_RATIO = max(float(args.min_memory_export_point_ratio), 0.0)
