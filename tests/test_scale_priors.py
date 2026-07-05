@@ -67,15 +67,36 @@ class SelectScalePriorTargetTests(unittest.TestCase):
         self.assertEqual(decision["abstain_reason"], "target_share_below_minimum")
 
     def test_well_supported_source_keeps_authority(self):
-        # room0 guard: a true large cushion declares cushion consistently
+        # room0 guard: a true large cushion declares cushion consistently and
+        # the violation is marginal (1.3 vs prior 1.0 = 1.3x < hard ratio)
         decision = select_scale_prior_target(
             {"cushion": 9, "sofa": 3},
             1.3,
             source_label="cushion",
             max_source_share=0.5,
+            severity_ratio=1.3,
+            hard_violation_ratio=2.0,
         )
         self.assertEqual(decision["target"], "")
         self.assertEqual(decision["abstain_reason"], "source_well_supported")
+        self.assertFalse(decision["hard_violation"])
+
+    def test_hard_violation_overrides_consensus_guard(self):
+        # office1 case: 70/70 detections declare tissue-paper on a 1.4m carrier
+        # (3.1x prior) — systematic detector bias must not keep authority.
+        decision = select_scale_prior_target(
+            {"tissue-paper": 70},
+            1.399,
+            source_label="tissue-paper",
+            max_source_share=0.60,
+            severity_ratio=3.1,
+            hard_violation_ratio=2.0,
+        )
+        self.assertTrue(decision["hard_violation"])
+        # consensus guard skipped; declared offers no alternative so selection
+        # abstains with no-compatible-target (caller falls back to CLIP re-readout)
+        self.assertEqual(decision["target"], "")
+        self.assertEqual(decision["abstain_reason"], "no_scale_compatible_declared_target")
 
     def test_no_declared_evidence_abstains(self):
         decision = select_scale_prior_target({}, 1.5, source_label="bin")

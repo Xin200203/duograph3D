@@ -94,6 +94,7 @@ def scale_prior_violation(
         return diagnostics
     limit = float(prior) * float(tolerance)
     diagnostics["limit"] = round(limit, 6)
+    diagnostics["severity_ratio"] = round(float(max_extent) / float(prior), 6) if prior else None
     if float(max_extent) > limit:
         diagnostics["violation"] = True
         diagnostics["reason"] = "extent_exceeds_prior"
@@ -111,6 +112,8 @@ def select_scale_prior_target(
     max_source_share: float = 1.0,
     source_label: str = "",
     excluded_labels: frozenset[str] | set[str] = frozenset(),
+    severity_ratio: float | None = None,
+    hard_violation_ratio: float = 2.0,
 ) -> dict[str, object]:
     """Choose a replacement label from the object's own multi-view evidence.
 
@@ -122,6 +125,14 @@ def select_scale_prior_target(
     (``source_share > max_source_share`` — consistent multi-view semantics keep
     authority even when the extent looks unusual; this is the room0
     cushion-carrier guard).
+
+    The consensus guard has a physical-impossibility override: when the extent
+    exceeds ``hard_violation_ratio`` times the source prior, unanimous readout
+    is systematic detector bias, not evidence (the office1 case: 70/70
+    detections say tissue-paper on a 1.4m carrier, 3.1x the prior).  Hard
+    violations skip the guard; the caller may then also fall back to a
+    physically-constrained CLIP re-readout when the declared distribution
+    offers no alternative.
     """
     priors = DEFAULT_MAX_EXTENT_PRIORS if priors is None else priors
     counts: dict[str, int] = {}
@@ -136,17 +147,19 @@ def select_scale_prior_target(
         counts[str(label)] = count
         total += count
     source_share = (counts.get(str(source_label), 0) / total) if total else 0.0
+    hard_violation = severity_ratio is not None and float(severity_ratio) > float(hard_violation_ratio)
     diagnostics: dict[str, object] = {
         "target": "",
         "target_share": 0.0,
         "source_share": round(source_share, 6),
         "candidates": [],
         "abstain_reason": "",
+        "hard_violation": hard_violation,
     }
     if total == 0:
         diagnostics["abstain_reason"] = "no_declared_evidence"
         return diagnostics
-    if source_share > max_source_share:
+    if source_share > max_source_share and not hard_violation:
         diagnostics["abstain_reason"] = "source_well_supported"
         return diagnostics
     ranked: list[tuple[float, str]] = []

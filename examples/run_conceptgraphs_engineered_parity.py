@@ -190,6 +190,14 @@ GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE = float(
 GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE = float(
     os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE", "0.60")
 )
+# Physical-impossibility override: past this multiple of the source prior,
+# unanimous multi-view readout is treated as systematic detector bias (the
+# office1 1.4m "tissue-paper" at 3.1x prior) — the consensus guard is skipped
+# and, when the declared distribution offers no alternative, the target falls
+# back to the top CLIP label among physically-compatible classes.
+GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO = float(
+    os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO", "2.0")
+)
 STRUCTURAL_EXPORT_LABELS = frozenset({"other", "floor", "wall", "ceiling", "door", "window"})
 CG_DOWNSAMPLE_VOXEL_SIZE = 0.025
 CG_DBSCAN_EPS = 0.1
@@ -2660,7 +2668,34 @@ def apply_geometry_repairs(
                 max_source_share=GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE,
                 source_label=pred_label,
                 excluded_labels=STRUCTURAL_EXPORT_LABELS,
+                severity_ratio=violation.get("severity_ratio"),
+                hard_violation_ratio=GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO,
             )
+            if not selection["target"] and selection.get("hard_violation"):
+                # Declared evidence offers no physically-compatible alternative
+                # (office1: 70/70 declared tissue-paper) — re-read the object's
+                # own CLIP scores restricted to labels whose prior accommodates
+                # the extent.  "The most probable label that is physically
+                # possible."
+                compatible: list[tuple[float, str]] = []
+                for label, index in label_to_index.items():
+                    if label == pred_label or label in STRUCTURAL_EXPORT_LABELS:
+                        continue
+                    prior = DEFAULT_MAX_EXTENT_PRIORS.get(label)
+                    if prior is None or max_extent > float(prior):
+                        continue
+                    if 0 <= index < len(scores):
+                        compatible.append((float(scores[index]), label))
+                compatible.sort(reverse=True)
+                if compatible:
+                    selection = dict(selection)
+                    selection["target"] = compatible[0][1]
+                    selection["target_share"] = 0.0
+                    selection["target_source"] = "clip-compatible-fallback"
+                    selection["fallback_top_scores"] = [
+                        {"label": label, "score": round(score, 6)} for score, label in compatible[:5]
+                    ]
+                    selection["abstain_reason"] = ""
             point_count = object_point_count(obj)
             if len(sp_examples) < 30:
                 sp_examples.append({
@@ -2668,10 +2703,14 @@ def apply_geometry_repairs(
                     "pred_label": pred_label,
                     "max_extent": round(max_extent, 6),
                     "prior_max_extent": violation.get("prior_max_extent"),
+                    "severity_ratio": violation.get("severity_ratio"),
+                    "hard_violation": selection.get("hard_violation"),
                     "point_count": point_count,
                     "declared_label_counts": dict(declared_counter),
                     "selected_target": selection["target"],
                     "target_share": selection["target_share"],
+                    "target_source": selection.get("target_source", "declared" if selection["target"] else ""),
+                    "fallback_top_scores": selection.get("fallback_top_scores", []),
                     "source_share": selection["source_share"],
                     "abstain_reason": selection["abstain_reason"],
                     "candidates": selection["candidates"],
@@ -2694,6 +2733,7 @@ def apply_geometry_repairs(
             "tolerance": GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE,
             "min_target_share": GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE,
             "max_source_share": GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE,
+            "hard_violation_ratio": GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO,
             "objects_checked": sp_checked,
             "violations_by_label": dict(sp_violations_by_label),
             "relabel_counts": dict(sp_relabel_counts),
@@ -3421,6 +3461,7 @@ def main() -> None:
     global GEOMETRY_REPAIR_KEEP_MODE, GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT
     global GEOMETRY_REPAIR_SCALE_PRIOR_MODE, GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE
     global GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE, GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE
+    global GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO
     global VOXEL_SIZE, MIN_MASK_PIXELS, MASK_CONF_THRESHOLD, MAX_BBOX_AREA_RATIO, MIN_VALID_DEPTH_POINTS
     global DROP_POST_SUBTRACT_TINY
     global CG_DOWNSAMPLE_VOXEL_SIZE, CG_DBSCAN_EPS, CG_DBSCAN_MIN_POINTS
@@ -3621,6 +3662,16 @@ def main() -> None:
     parser.add_argument("--geometry-repair-scale-prior-tolerance", type=float, default=GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE)
     parser.add_argument("--geometry-repair-scale-prior-min-target-share", type=float, default=GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE)
     parser.add_argument("--geometry-repair-scale-prior-max-source-share", type=float, default=GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE)
+    parser.add_argument(
+        "--geometry-repair-scale-prior-hard-ratio",
+        type=float,
+        default=GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO,
+        help=(
+            "Past this multiple of the source prior, unanimous readout is treated as systematic "
+            "detector bias: the consensus guard is skipped and the target may fall back to the "
+            "top CLIP label among physically-compatible classes."
+        ),
+    )
     parser.add_argument("--memory-dense-split-by-label", type=int, choices=[0, 1], default=int(MEMORY_DENSE_SPLIT_BY_LABEL))
     parser.add_argument("--memory-dense-split-min-observations", type=int, default=MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS)
     parser.add_argument("--memory-dense-split-min-root-label-entropy", type=float, default=MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY)
@@ -3756,6 +3807,7 @@ def main() -> None:
     GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE = max(float(args.geometry_repair_scale_prior_tolerance), 0.1)
     GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE = min(max(float(args.geometry_repair_scale_prior_min_target_share), 0.0), 1.0)
     GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE = min(max(float(args.geometry_repair_scale_prior_max_source_share), 0.0), 1.0)
+    GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO = max(float(args.geometry_repair_scale_prior_hard_ratio), 1.0)
     MEMORY_DENSE_SPLIT_BY_LABEL = bool(args.memory_dense_split_by_label)
     MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS = max(int(args.memory_dense_split_min_observations), 1)
     MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY = max(float(args.memory_dense_split_min_root_label_entropy), 0.0)
@@ -3985,6 +4037,7 @@ def main() -> None:
                 "geometry_repair_scale_prior_tolerance": GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE,
                 "geometry_repair_scale_prior_min_target_share": GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE,
                 "geometry_repair_scale_prior_max_source_share": GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE,
+                "geometry_repair_scale_prior_hard_ratio": GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO,
                 "memory_dense_split_by_label": MEMORY_DENSE_SPLIT_BY_LABEL,
             "memory_dense_split_min_observations": MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS,
             "memory_dense_split_min_root_label_entropy": MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY,
