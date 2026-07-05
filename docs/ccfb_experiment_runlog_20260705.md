@@ -284,6 +284,29 @@ Overnight queue: 184 = v4_main full → wo_gate full; 76 = wo_sp full →
 forced_geo full.  PA2 floor curve final: office1 2→+8.171 / 8→+6.938 /
 24→+6.939 (plateau).
 
+## The consolidation ratio is a voxel artifact (2026-07-06 ~02:00, final negative result)
+
+Three call-site fixes (raw memory count, raw key count, prepare-time key
+count) all landed and were each verified by runtime diagnostics — and room0
+still routed dense.  Ground truth: **E70's geometry-substrate scenes ran a
+coarser prep entirely** (`voxel_size 0.5` → room0 436 keys, plus
+min_object_detections 8, max_points_per_obs 640) while its dense scenes used
+voxel 0.2.  Under unified prep (0.2 everywhere) the per-scene ratios interleave
+completely (dense-good .047/.072/.134 vs geo-good .052/.063/.065/.080/.083):
+the "perfect separation" was the prep-granularity difference, not a
+consolidation signal.  consolidation-auto is dead as calibrated; the E70
+composite rests on FIVE per-scene hand choices (prep granularity, substrate,
+phase, merge threshold, keep set), and any post-hoc routing signal is
+prep-dependent (circular).
+
+Lead decision: stop the single-config unification chase.  Paper claims settle
+on (1) the mechanism tier — causal, exact-recovery-validated carrier-authority
+mechanisms on the consolidated substrate with forensic guard derivations and
+pre-registered safety; (2) the honest system tier — single-config full-Replica
+remains open (documented negative-result chain), E70 oracle as ceiling, the
+8×2 substrate matrix as the sensitivity quantification.  v4g's rows are kept
+as forced-dense (newest code) and dense+legacy ablation rows.
+
 ## Next actions (morning)
 
 1. Read v4_main official all-row (target ≥ +2.0, no scene negative);
