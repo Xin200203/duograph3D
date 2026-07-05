@@ -255,11 +255,41 @@ Full E70 source map from the A1 mirror:
    Validation pending on the current-code 8×2 matrix (PC2 rooms on 76 + PC3
    geometry arm on 184).
 
-## Next actions
+## v4.1: substrate-conditional mechanism scope (2026-07-06 night)
 
-1. Assemble the 8×2 dense/geometry matrix under current code (PC2 + PC3 + v1).
-2. If the consolidation-ratio rule picks the winning arm per scene → unified
-   v4 = ratio-routed substrate + beta + gate(floor per PA2)+mutual +
-   declared-only sp → full 8-scene run + ablations.
-3. Fallback if the rule fails on the current-code matrix: two-substrate
-   results table + mechanism-causality story (still strong, but Tier-2).
+Geometry-arm rows exposed the last structural fact: on raw geometry-key
+exports BOTH mechanisms misfire (office0-geo: 148 vetoes + 15 declared-backed
+junk relabels, −3.73) because **key-bucket declared distributions are boundary
+noise, not multi-view object evidence** — the mechanisms' evidence premise
+only holds on consolidated (memory-dense) substrates.  Hence
+`--mechanisms-scope consolidated-only`: gate + scale-prior act on dense-routed
+scenes; geometry-routed scenes pass through as the coverage fallback.
+Substrate-conditional, zero scene names.
+
+Routing validation (current-code matrix, dense arm = v1, geometry arm = PC2/PC3):
+
+| scene | ratio | route | dense | geometry | routing verdict |
+| --- | ---: | --- | ---: | ---: | --- |
+| room1 | .047 | dense | **+6.29** | +1.79 | ✓ picks winner |
+| office1 | .072 | dense | **+4.02** | −1.06 | ✓ |
+| office2 | .134 | dense | **+5.72** | −5.88 | ✓ |
+| office0 | .307 | geo | +3.18 | −3.73* | ✗ miss (~1-2 mIoU cost under v4.1 passthrough) |
+| room0/room2/office3/office4 | ≥.179 | geo | −1.6/−10.2/−0.7/−27.8 | passthrough | ✓ direction (dense arm catastrophic) |
+
+*office0-geo number includes the misfiring mechanisms; v4.1 passthrough will be
+higher.  office0 is the single-threshold rule's residual and is documented, not
+patched (moving its ratio boundary would re-route office4 into catastrophe).
+
+Overnight queue: 184 = v4_main full → wo_gate full; 76 = wo_sp full →
+forced_geo full.  PA2 floor curve final: office1 2→+8.171 / 8→+6.938 /
+24→+6.939 (plateau).
+
+## Next actions (morning)
+
+1. Read v4_main official all-row (target ≥ +2.0, no scene negative);
+   assemble T1 main + T2 ablation tables from the four overnight rows + v1
+   (forced-dense) + E70 (oracle composite).
+2. Decide multires-in-geometry-arm (v4.2) if geometry scenes undershoot E70's
+   multires-geometry levels materially.
+3. Then: threshold sensitivity (ratio 0.14-0.20, floor 2/8/24), story rewrite,
+   P1 items (ScanNet OOD via 73, AP evaluator, baseline rows).
