@@ -3048,6 +3048,7 @@ def write_conceptgraphs_payload(
     branch_summary: dict,
     label_to_index: dict[str, int],
     class_feats_np: np.ndarray,
+    prepare_key_count: int | None = None,
 ):
     t0 = time.time()
     pcd_dir = REPLICA_ROOT / scene / "pcd_saves"
@@ -3078,7 +3079,9 @@ def write_conceptgraphs_payload(
         policy=export_policy,
         consolidation_dense_max_ratio=EXPORT_CONSOLIDATION_DENSE_MAX_RATIO,
         consolidation_memory_count=len(result.memory_nodes),
-        consolidation_key_count=len(key_data),
+        # The routing ratio is calibrated on the PREPARE-time key granularity;
+        # key_data is expanded by split policies before export (room0: 436 -> 1514).
+        consolidation_key_count=prepare_key_count if prepare_key_count is not None else len(key_data),
     )
     export_source = str(export_selection["selected_source"])
     mechanisms_scoped_off = (
@@ -4013,6 +4016,7 @@ def main() -> None:
             branch_summary,
             label_to_index,
             class_feats_np,
+            prepare_key_count=int(prep.get("key_count", 0)) or None,
         )
         manifests.append(manifest)
         scene_debug = {
