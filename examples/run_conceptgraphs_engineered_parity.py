@@ -4062,6 +4062,7 @@ def main() -> None:
                 "geometry_repair_scale_prior_min_target_share": GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE,
                 "geometry_repair_scale_prior_max_source_share": GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE,
                 "geometry_repair_scale_prior_hard_ratio": GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO,
+                "geometry_repair_scale_prior_clip_fallback": GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK,
                 "memory_dense_split_by_label": MEMORY_DENSE_SPLIT_BY_LABEL,
             "memory_dense_split_min_observations": MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS,
             "memory_dense_split_min_root_label_entropy": MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY,

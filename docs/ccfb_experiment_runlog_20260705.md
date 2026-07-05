@@ -169,12 +169,34 @@ Forensics chain (all from object-level probes, no GT):
    no-repair (+8.185) — office2's jump over E70 is the beta phase; the gate's
    causal ground is office1-type carrier preservation.
 
+## PB2 office1 negative result — CLIP fallback rejected (2026-07-06)
+
+PB2 o1 (floor 24 + hard-ratio + clip-fallback) = **−2.071**: all 7 hard
+violations fired the fallback with compatible-CLIP scores ~0.25 and ~0.01
+margins — noise-ranking relabels (camera→picture, switch→comforter, ...), and
+the tissue carrier itself went to **comforter** (cloth ranked 3rd).
+
+Honest conclusion: the E70 `tissue→cloth` target encodes knowledge that no
+GT-free evidence stream on that object carries — declared says tissue (70/70,
+systematically wrong), CLIP re-readout says comforter.  Lead decision:
+
+1. `--geometry-repair-scale-prior-clip-fallback` default **0** (diagnostics
+   only); scale-prior targets come from declared evidence only.
+2. The unified method claims carrier preservation + safe authority control
+   (positive everywhere, zero scene knowledge, auditable abstention — office4's
+   6 vent violations all correctly abstained, pre-registered).  It does NOT
+   claim the office1 repair delta; **E70 remains the with-scene-knowledge
+   oracle upper bound**, and the gap between unified and E70 on office1 is the
+   honest "price of no scene knowledge" — a paperable negative boundary.
+3. B2's realistic role: rare declared-backed repairs + auditable abstention;
+   the office2-style gains come from M1 (carrier preservation) + beta phase.
+
 ## Next actions
 
 1. PA2 floor sweep on 76 (running) → pick evidence floor from dev scenes.
-2. PB2 spot-check on 184 when apply run ends: office1 (hard-ratio fires),
-   room0/room2 (mutual+floor rescue), office2+carve (carve isolation).
+2. PB2 remaining rows run with fallback-off code (room0/room2/office4 = pure
+   gate-guard validation; o2carve = carve isolation).
 3. Unified v2 full Replica with calibrated floor → the main-table candidate;
    then ablation matrix + sensitivity sweep + held-out scene accounting
-   (dev evidence: office1/office2 + room0/room2 diagnostics; untouched:
-   room1, office0, office3, office4).
+   (dev evidence: office1/office2 + room0/room2/office4 diagnostics; untouched:
+   room1, office0, office3).
