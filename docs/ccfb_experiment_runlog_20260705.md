@@ -307,6 +307,28 @@ remains open (documented negative-result chain), E70 oracle as ceiling, the
 8×2 substrate matrix as the sensitivity quantification.  v4g's rows are kept
 as forced-dense (newest code) and dense+legacy ablation rows.
 
+## Overnight rows sealed (2026-07-06 03:20)
+
+Full-Replica single-config landscape (official all-row ΔmIoU):
+
+| config | all ΔmIoU |
+| --- | ---: |
+| E70 oracle (5-layer scene-local composite) | **+3.041** |
+| v1 dense+gate floor2 (no mutual, old sp) | −3.716 |
+| forced_dense, final mechanisms (v4g main) | −4.412 |
+| wo_sp (dense + gate + mutual) | −4.451 |
+| dense_legacy (dense + CG merge + sp) | −6.082 |
+| forced_geo (geometry + misfiring mechanisms) | −4.644 |
+
+Per-scene mechanism value on the consolidated substrate remains the positive
+core: office1 +8.171 (gate causal, E70-exact), office2 +8.185/+8.211,
+room1 +6.29, office0 +3.18; gate net contribution on dense room0 +2.2 /
+office0 +2.9 / room1 +0.5.  gamma-axis office2 floor rows: {2,8,24} →
+{+2.96, +2.96, +3.18}, no relabels.  wo_gate office2 forensics: under
+auto-keep the merged carrier's readout is not "bin" — the E70 bin case is
+only visible under its narrow hand keep-set, confirming the mis-readout
+expression depends on the evaluator-facing source set.
+
 ## Next actions (morning)
 
 1. Read v4_main official all-row (target ≥ +2.0, no scene negative);
