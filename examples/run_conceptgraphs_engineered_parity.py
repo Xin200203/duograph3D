@@ -205,6 +205,14 @@ CG_MERGE_TEXT_SIM_THRESH = 0.8
 CG_MERGE_LABEL_GATE = int(os.environ.get("DUOGRAPH_CG_MERGE_LABEL_GATE", "0"))
 CG_MERGE_LABEL_GATE_MIN_SHARE = float(os.environ.get("DUOGRAPH_CG_MERGE_LABEL_GATE_MIN_SHARE", "0.60"))
 CG_MERGE_LABEL_GATE_MIN_OBS = int(os.environ.get("DUOGRAPH_CG_MERGE_LABEL_GATE_MIN_OBS", "2"))
+# Mutual-containment guard: when BOTH containment directions exceed this
+# threshold the two point sets spatially coincide — one observation stream split
+# by readout noise, not two objects — so the pair always follows CG merging and
+# the label veto is skipped.  Distinct carriers show one-directional containment
+# (small object against a larger absorber).  Set negative to disable.
+CG_MERGE_LABEL_GATE_MUTUAL_THRESH = float(
+    os.environ.get("DUOGRAPH_CG_MERGE_LABEL_GATE_MUTUAL_THRESH", "0.7")
+)
 L2_OCCLUDED_AFTER_MISSES = int(os.environ.get("DUOGRAPH_L2_OCCLUDED_AFTER_MISSES", "1"))
 L2_DORMANT_AFTER_MISSES = int(os.environ.get("DUOGRAPH_L2_DORMANT_AFTER_MISSES", "2"))
 L2_RETIRE_AFTER_MISSES = int(os.environ.get("DUOGRAPH_L2_RETIRE_AFTER_MISSES", "4"))
@@ -2037,12 +2045,21 @@ def merge_objects_with_label_gate(cfg, objects: MapObjectList) -> tuple[MapObjec
         if visual_sim <= cfg.merge_visual_sim_thresh or text_sim <= cfg.merge_text_sim_thresh:
             continue
         gate_probe["legacy_merge_candidate_pairs"] = int(gate_probe["legacy_merge_candidate_pairs"]) + 1
+        reverse_ratio = float(overlap_matrix[j, i])
+        mutual_containment = (
+            CG_MERGE_LABEL_GATE_MUTUAL_THRESH >= 0.0
+            and reverse_ratio > CG_MERGE_LABEL_GATE_MUTUAL_THRESH
+        )
         veto_info = label_cluster_veto(
             dict(object_declared_label_counts(objects[i])),
             dict(object_declared_label_counts(objects[j])),
             min_top_share=CG_MERGE_LABEL_GATE_MIN_SHARE,
             min_observations=CG_MERGE_LABEL_GATE_MIN_OBS,
         )
+        if mutual_containment and veto_info["veto"]:
+            veto_info = dict(veto_info)
+            veto_info["veto"] = False
+            veto_info["reason"] = "mutual_containment"
         if veto_info["veto"]:
             gate_probe["vetoed_pairs"] = int(gate_probe["vetoed_pairs"]) + 1
             veto_label_pairs[f"{veto_info['left_top']}|{veto_info['right_top']}"] += 1
@@ -3409,6 +3426,7 @@ def main() -> None:
     global CG_DOWNSAMPLE_VOXEL_SIZE, CG_DBSCAN_EPS, CG_DBSCAN_MIN_POINTS
     global CG_MERGE_OVERLAP_THRESH, CG_MERGE_VISUAL_SIM_THRESH, CG_MERGE_TEXT_SIM_THRESH
     global CG_MERGE_LABEL_GATE, CG_MERGE_LABEL_GATE_MIN_SHARE, CG_MERGE_LABEL_GATE_MIN_OBS
+    global CG_MERGE_LABEL_GATE_MUTUAL_THRESH
     global MIN_MEMORY_EXPORT_OBJECTS, MIN_MEMORY_EXPORT_KEY_RATIO, MIN_MEMORY_EXPORT_POINT_RATIO
     global MEMORY_DENSE_SPLIT_BY_LABEL, MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS
     global MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY, MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE
@@ -3626,6 +3644,16 @@ def main() -> None:
     )
     parser.add_argument("--cg-merge-label-gate-min-share", type=float, default=CG_MERGE_LABEL_GATE_MIN_SHARE)
     parser.add_argument("--cg-merge-label-gate-min-obs", type=int, default=CG_MERGE_LABEL_GATE_MIN_OBS)
+    parser.add_argument(
+        "--cg-merge-label-gate-mutual-thresh",
+        type=float,
+        default=CG_MERGE_LABEL_GATE_MUTUAL_THRESH,
+        help=(
+            "Skip the label veto when both containment directions exceed this threshold: "
+            "spatially coincident point sets are one observation stream split by readout "
+            "noise, not independent evidence. Negative disables the guard."
+        ),
+    )
     parser.add_argument("--l2-occluded-after-misses", type=int, default=L2_OCCLUDED_AFTER_MISSES)
     parser.add_argument("--l2-dormant-after-misses", type=int, default=L2_DORMANT_AFTER_MISSES)
     parser.add_argument("--l2-retire-after-misses", type=int, default=L2_RETIRE_AFTER_MISSES)
@@ -3741,6 +3769,7 @@ def main() -> None:
     CG_MERGE_LABEL_GATE = int(args.cg_merge_label_gate)
     CG_MERGE_LABEL_GATE_MIN_SHARE = min(max(float(args.cg_merge_label_gate_min_share), 0.0), 1.0)
     CG_MERGE_LABEL_GATE_MIN_OBS = max(int(args.cg_merge_label_gate_min_obs), 1)
+    CG_MERGE_LABEL_GATE_MUTUAL_THRESH = min(float(args.cg_merge_label_gate_mutual_thresh), 1.0)
     L2_OCCLUDED_AFTER_MISSES = max(int(args.l2_occluded_after_misses), 1)
     L2_DORMANT_AFTER_MISSES = max(int(args.l2_dormant_after_misses), L2_OCCLUDED_AFTER_MISSES)
     L2_RETIRE_AFTER_MISSES = max(int(args.l2_retire_after_misses), L2_DORMANT_AFTER_MISSES + 1)
@@ -3986,6 +4015,7 @@ def main() -> None:
                 "merge_label_gate": CG_MERGE_LABEL_GATE,
                 "merge_label_gate_min_share": CG_MERGE_LABEL_GATE_MIN_SHARE,
                 "merge_label_gate_min_obs": CG_MERGE_LABEL_GATE_MIN_OBS,
+                "merge_label_gate_mutual_thresh": CG_MERGE_LABEL_GATE_MUTUAL_THRESH,
             },
         },
         "setting_audit": {
