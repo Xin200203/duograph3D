@@ -55,8 +55,44 @@ Decision: **signal-only multi-hypothesis selector (方案 C) is rejected as prim
 3. `--phase` beta vs gamma → single-phase probe both directions.
 4. office2 `carve_rules cushion:sofa:0.04` → keep/drop decision after 1-3 land.
 
+## P-A1 probe results (label-cluster merge gate)
+
+Roots: 184 `ccfb_pa1_label_gate_probe_20260705_pa1{,b,c}`, 76 `..._pa1`.
+
+Round 1 (`pa1`) exposed a structural gap: `vetoed=0` everywhere because export
+objects carried `class_name=[single aggregated label]` — no multi-view evidence
+reached the merge stage.  Fix: every export object now carries
+`declared_label_counts` (true per-key/per-node distributions; stored as
+[label,count] pairs because CG's `merge_obj2_into_obj1` concatenates lists and
+crashes on dicts).  Control rows confirmed gate-off ≡ legacy exactly.
+
+Round 2 (`pa1b`, real distributions) — **方案 A decisive result**:
+
+| variant | scene | ΔmIoU | relabels | objects | gate cand/merged/vetoed |
+| --- | --- | ---: | --- | ---: | --- |
+| o1_gate_m07 | office1 | **+8.171477** | tissue-paper→cloth:1 | 30 | 7/0/**7** |
+| o1_nogate_m07 | office1 | +2.786518 | {} | 23 | legacy control |
+| o2_gate_m07 (old code) | office2 | **+6.254106** | bin→table:1 | 32 | 24/20/0 |
+
+One merge config (`overlap 0.7 + label gate`) now satisfies both scenes —
+office1 E70 recovered exactly WITHOUT `merge_overlap_thresh=1.0`.  The decisive
+vetoed pair is `cloth|picture` (cloth carrier, 164 declared obs, visual_sim
+0.94 above CG's threshold, was being absorbed into a picture object with 567
+obs; the carrier's wrong tissue-paper CLIP readout then stays visible for the
+repair stage to fix).  Also notable: `text_sim=1.0` on every pair — CG's
+text-sim merge threshold is vacuous under the class-agnostic token mode, so the
+discrete declared-label veto supplies exactly the evidence dimension CG's
+continuous-feature thresholds cannot.
+
+Pending: `pa1c` reruns office2 (gamma + beta) on the new code to confirm the
+veto does not break office2's same-label fragment merging with real
+distributions.
+
 ## Next actions
 
-1. Implement 方案 A: `label_cluster_veto` pure function in `src/duograph3d/export_policy.py` (unit-tested locally), gated merge path + diagnostics in the runner (`--cg-merge-label-gate`, default off/legacy), source-text test extensions.
-2. Launch P-A1 probe on 184 (6 variants, office1/office2): gate unification + phase unification matrix.
-3. If P-A1 passes → keep-set auto-derivation (knob 2), then full Replica + LOSO.
+1. PA1c office2 verification on new code (running).
+2. P-B1 log-only scale-prior probe on office1/office2/office4/room0 with the
+   unified config (`run_ccfb_pb1_scale_prior_probe_20260705.sh`) — read the
+   violation/selection/abstain table, not the gap.
+3. If PB1 reads clean → unified full Replica (`run_ccfb_unified_full_20260705.sh`,
+   sp-mode apply), then LOSO hardening.
