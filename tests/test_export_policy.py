@@ -48,6 +48,39 @@ class ExportPolicyTests(unittest.TestCase):
             "forced_memory_dense",
         )
 
+    def test_consolidation_auto_routes_by_ratio(self):
+        # office1-like: 46 memory objects over 635 keys = 0.072 -> dense
+        dense = choose_export_source(
+            strategy="consolidation-auto",
+            memory_object_count=46,
+            key_object_count=635,
+            memory_point_count=10000,
+            key_point_budget=100000,
+            consolidation_dense_max_ratio=0.175,
+        )
+        self.assertEqual(dense["selected_source"], MEMORY_DENSE_EXPORT_SOURCE)
+        self.assertEqual(dense["fallback_reason"], "consolidation_ratio_dense")
+        # office4-like: 135 memory objects over 490 keys = 0.276 -> geometry
+        geo = choose_export_source(
+            strategy="consolidation-auto",
+            memory_object_count=135,
+            key_object_count=490,
+            memory_point_count=10000,
+            key_point_budget=100000,
+            consolidation_dense_max_ratio=0.175,
+        )
+        self.assertEqual(geo["selected_source"], GEOMETRY_EXPORT_SOURCE)
+        self.assertEqual(geo["fallback_reason"], "consolidation_ratio_geometry")
+        # empty memory always falls to geometry
+        empty = choose_export_source(
+            strategy="consolidation-auto",
+            memory_object_count=0,
+            key_object_count=500,
+            memory_point_count=0,
+            key_point_budget=100000,
+        )
+        self.assertEqual(empty["selected_source"], GEOMETRY_EXPORT_SOURCE)
+
     def test_invalid_strategy_is_rejected(self):
         with self.assertRaises(ValueError):
             choose_export_source(

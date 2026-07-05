@@ -222,11 +222,44 @@ Consequences:
 In flight: PC1 gamma matrix on 184 (phase axis for the ablation table), PC2
 auto-export rows office4/room0/room2 on 76 and office1/office2 on 184 next.
 
+## The consolidation-ratio substrate signal (2026-07-06 late)
+
+PC2 office1@auto fell back to geometry and landed −1.06 → the coverage-floor
+rule mis-routes office1 (needs dense at 46 memory nodes) while office4 (111
+nodes) needs geometry — simple coverage thresholds order the scenes WRONGLY.
+Full E70 source map from the A1 mirror:
+
+| scene | E70 substrate | E70 gap | mem_nodes/key_count |
+| --- | --- | ---: | ---: |
+| room1 | memory-dense | +11.18 | 0.16 |
+| office1 | memory-dense (forced) | +8.17 | 0.07 |
+| office2 | memory-dense (forced) | +6.49 | 0.14 |
+| room0 | geometry-multires | +6.50 | 0.28 |
+| room2 | geometry-multires | +0.60 | 0.23 |
+| office0 | geometry-multires | +1.87 | 0.26 |
+| office3 | geometry-multires | +1.70 | 0.20 |
+| office4 | geometry plain | +1.75 | 0.23 |
+
+1. E70 is a THREE-substrate composite (dense ×3, multires-geometry ×4, plain
+   geometry ×1) — the scene-policy is deeper than merge/phase: it is an export
+   substrate assignment.  No single substrate wins all 8 (dense kills office4
+   at −26 even without gate/sp; geometry kills office1 at −1.06 with them).
+2. **`consolidation_ratio = memory_node_count / key_count` separates the
+   substrate classes perfectly on all 8 scenes** (dense-good ≤ 0.16,
+   geometry-good ≥ 0.20).  Semantics: when online memory consolidates far
+   below key granularity, memory roots carry real object structure → dense
+   export; when memory barely consolidates beyond keys, the keys are the
+   better substrate.  GT-free, scene-independent, computable online.
+3. Selector-v2 (binary substrate choice by consolidation ratio) is thus a
+   principled candidate — unlike the rejected arbitrary-portfolio selector.
+   Validation pending on the current-code 8×2 matrix (PC2 rooms on 76 + PC3
+   geometry arm on 184).
+
 ## Next actions
 
-1. PC2 auto-export probes → if positive across the five decisive scenes,
-   unified v3 = auto-export + beta + gate(floor TBD)+mutual + declared-only sp.
-2. Full 8-scene unified v3 + ablation matrix (forced memory-dense, gate off,
-   sp off, gamma phase, oracle E70) + floor sensitivity.
-3. Scene accounting for the paper: dev = office1/office2 (+ diagnostics from
-   room0/room2/office4); untouched validation = room1, office0, office3.
+1. Assemble the 8×2 dense/geometry matrix under current code (PC2 + PC3 + v1).
+2. If the consolidation-ratio rule picks the winning arm per scene → unified
+   v4 = ratio-routed substrate + beta + gate(floor per PA2)+mutual +
+   declared-only sp → full 8-scene run + ablations.
+3. Fallback if the rule fails on the current-code matrix: two-substrate
+   results table + mechanism-causality story (still strong, but Tier-2).

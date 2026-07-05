@@ -41,6 +41,8 @@ class ConceptGraphsPreprocessOrderTests(unittest.TestCase):
         self.assertIn("parse_large_label_relabel_rules", source)
         self.assertIn('"large_label_relabel_rules"', source)
         self.assertIn('"geometry_repair_probe"', source)
+        self.assertIn('"consolidation-auto"', source)
+        self.assertIn("--export-consolidation-dense-max-ratio", source)
         self.assertIn("--geometry-repair-keep-mode", source)
         self.assertIn("--geometry-repair-keep-auto-min-count", source)
         self.assertIn("--geometry-repair-scale-prior-mode", source)

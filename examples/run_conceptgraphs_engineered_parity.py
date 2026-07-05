@@ -101,6 +101,11 @@ MIN_VALID_DEPTH_POINTS = 16
 MIN_OBJECT_DETECTIONS = 2
 DROP_POST_SUBTRACT_TINY = False
 EXPORT_SOURCE_STRATEGY = "auto"
+# consolidation-auto substrate routing threshold: memory/key ratio below this
+# selects the dense export (see duograph3d.export_policy.choose_export_source).
+EXPORT_CONSOLIDATION_DENSE_MAX_RATIO = float(
+    os.environ.get("DUOGRAPH_EXPORT_CONSOLIDATION_DENSE_MAX_RATIO", "0.175")
+)
 MIN_MEMORY_EXPORT_OBJECTS = 100
 MIN_MEMORY_EXPORT_KEY_RATIO = 0.10
 MIN_MEMORY_EXPORT_POINT_RATIO = 0.05
@@ -3054,6 +3059,7 @@ def write_conceptgraphs_payload(
         memory_point_count=point_count_from_export_debug(selection_debug),
         key_point_budget=estimate_key_point_budget(key_data),
         policy=export_policy,
+        consolidation_dense_max_ratio=EXPORT_CONSOLIDATION_DENSE_MAX_RATIO,
     )
     export_source = str(export_selection["selected_source"])
     multires_diagnostics = {"enabled": False}
@@ -3241,6 +3247,7 @@ def write_conceptgraphs_payload(
             "drop_post_subtract_tiny": DROP_POST_SUBTRACT_TINY,
             "min_object_detections": MIN_OBJECT_DETECTIONS,
             "export_source_strategy": EXPORT_SOURCE_STRATEGY,
+            "export_consolidation_dense_max_ratio": EXPORT_CONSOLIDATION_DENSE_MAX_RATIO,
             "text_feature_mode": TEXT_FEATURE_MODE,
             "clip_feature_mode": CLIP_FEATURE_MODE,
             "clip_feature_blend_alpha": CLIP_FEATURE_BLEND_ALPHA,
@@ -3454,6 +3461,7 @@ def write_markdown_report(summary: dict[str, object], path: Path) -> None:
 
 def main() -> None:
     global ROOT, PRED_EXP_NAME, MIN_OBJECT_DETECTIONS, EXPORT_SOURCE_STRATEGY
+    global EXPORT_CONSOLIDATION_DENSE_MAX_RATIO
     global TEXT_FEATURE_MODE, CLIP_FEATURE_MODE, CLIP_FEATURE_BLEND_ALPHA
     global EXPORT_CLIP_MIN_MARGIN
     global ADAPTIVE_CLIP_SINK_LABELS, ADAPTIVE_CLIP_MIN_HIGH_MARGIN_COUNT
@@ -3514,13 +3522,20 @@ def main() -> None:
     parser.add_argument("--min-object-detections", type=int, default=None)
     parser.add_argument(
         "--export-source",
-        choices=["auto", "geometry", "memory", "memory-dense"],
+        choices=["auto", "consolidation-auto", "geometry", "memory", "memory-dense"],
         default=EXPORT_SOURCE_STRATEGY,
         help=(
             "Object source for official ConceptGraphs-format export. "
             "`auto` keeps mIoU coverage by falling back to geometry keys when online memory is too sparse; "
+            "`consolidation-auto` routes the substrate by memory/key consolidation ratio (dense when memory "
+            "consolidates far below key granularity, geometry otherwise); "
             "`memory-dense` groups dense key geometry by online-memory root IDs."
         ),
+    )
+    parser.add_argument(
+        "--export-consolidation-dense-max-ratio",
+        type=float,
+        default=EXPORT_CONSOLIDATION_DENSE_MAX_RATIO,
     )
     parser.add_argument("--min-memory-export-objects", type=int, default=MIN_MEMORY_EXPORT_OBJECTS)
     parser.add_argument("--min-memory-export-key-ratio", type=float, default=MIN_MEMORY_EXPORT_KEY_RATIO)
@@ -3793,6 +3808,7 @@ def main() -> None:
     if args.min_object_detections is not None:
         MIN_OBJECT_DETECTIONS = max(int(args.min_object_detections), 1)
     EXPORT_SOURCE_STRATEGY = args.export_source
+    EXPORT_CONSOLIDATION_DENSE_MAX_RATIO = min(max(float(args.export_consolidation_dense_max_ratio), 0.0), 1.0)
     MIN_MEMORY_EXPORT_OBJECTS = max(int(args.min_memory_export_objects), 0)
     MIN_MEMORY_EXPORT_KEY_RATIO = max(float(args.min_memory_export_key_ratio), 0.0)
     MIN_MEMORY_EXPORT_POINT_RATIO = max(float(args.min_memory_export_point_ratio), 0.0)

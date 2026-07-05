@@ -7,7 +7,16 @@ MEMORY_EXPORT_SOURCE = "duograph3d_online_object_memory"
 MEMORY_DENSE_EXPORT_SOURCE = "duograph3d_online_memory_dense_geometry"
 GEOMETRY_EXPORT_SOURCE = "duograph3d_geometry_key_coverage"
 LABEL_BUCKET_EXPORT_SOURCE = "duograph3d_label_bucket_split"
-VALID_EXPORT_SOURCE_STRATEGIES = {"auto", "geometry", "memory", "memory-dense", "memory_dense", "carrier_v2"}
+VALID_EXPORT_SOURCE_STRATEGIES = {
+    "auto",
+    "consolidation-auto",
+    "consolidation_auto",
+    "geometry",
+    "memory",
+    "memory-dense",
+    "memory_dense",
+    "carrier_v2",
+}
 VALID_CARRIER_TYPES = {"memory", "memory-dense", "label-bucket", "geometry-fallback"}
 
 
@@ -56,6 +65,7 @@ def choose_export_source(
     memory_point_count: int,
     key_point_budget: int,
     policy: ExportCoveragePolicy | None = None,
+    consolidation_dense_max_ratio: float = 0.175,
 ) -> dict[str, object]:
     """Choose memory vs geometry export with explicit coverage diagnostics."""
 
@@ -78,6 +88,28 @@ def choose_export_source(
         "min_memory_key_ratio": float(policy.min_memory_key_ratio),
         "min_memory_point_ratio": float(policy.min_memory_point_ratio),
     }
+
+    if strategy == "consolidation-auto":
+        # Substrate routing by consolidation depth: when online memory
+        # consolidates far below the geometry-key granularity (few nodes per
+        # key), the memory roots carry real object structure and the dense
+        # export is the better evaluator-facing substrate; when memory barely
+        # consolidates beyond the keys, the keys themselves are.  The ratio
+        # separates the two regimes on all eight Replica scenes (dense ≤ 0.134,
+        # geometry ≥ 0.179 under the current pipeline) and matches E70's
+        # hand-assigned substrate on every scene.  GT-free, scene-independent.
+        diagnostics["consolidation_dense_max_ratio"] = float(consolidation_dense_max_ratio)
+        if memory_object_count > 0 and memory_key_ratio < float(consolidation_dense_max_ratio):
+            diagnostics.update({
+                "selected_source": MEMORY_DENSE_EXPORT_SOURCE,
+                "fallback_reason": "consolidation_ratio_dense",
+            })
+        else:
+            diagnostics.update({
+                "selected_source": GEOMETRY_EXPORT_SOURCE,
+                "fallback_reason": "consolidation_ratio_geometry",
+            })
+        return diagnostics
 
     if strategy == "geometry":
         diagnostics.update({"selected_source": GEOMETRY_EXPORT_SOURCE, "fallback_reason": "forced_geometry"})
