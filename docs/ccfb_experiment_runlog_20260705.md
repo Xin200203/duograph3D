@@ -191,12 +191,42 @@ systematically wrong), CLIP re-readout says comforter.  Lead decision:
 3. B2's realistic role: rare declared-backed repairs + auditable abstention;
    the office2-style gains come from M1 (carrier preservation) + beta phase.
 
+## The export-source discovery (2026-07-06, third reversal of the night)
+
+PB2 clean rows kept failing (office4 −36.2 with the gate nearly inert, room2
+still negative), which falsified "the gate is the office4 culprit."  E70
+forensics from the local A1 mirror then found the real substrate difference:
+
+> **E70's non-target scenes exported via the coverage-gated GEOMETRY fallback**
+> (`duograph3d_geometry_key_coverage`, office4 = 191 objects, fallback reason
+> `memory_object_count_below_coverage_floor`), while only office1/office2 were
+> forced memory-dense.  Every unified run so far forced memory-dense on all
+> scenes — the collapses were export-substrate mismatches, not gate failures.
+
+Consequences:
+
+1. The unified config must use `--export-source auto` — the coverage-gated
+   policy already in `export_policy.py` (global constants, zero scene names).
+   E70's per-scene export split emerges naturally from the coverage floor.
+2. E70's forcing of memory-dense on office1/office2 was itself scene knowledge.
+   Under auto, office1 (46 memory nodes < 100 floor) likely falls back to
+   geometry export; whether the gate+scale-prior gains survive on the geometry
+   substrate is the decisive open question → PC2 office1/office2 rows.
+3. PA2 floor curve (office1, hand rule, memory-dense): floor 2 = +8.171,
+   floor 8 = +6.938 — the floor trades office1 gain for other-scene safety;
+   under auto-export this tradeoff must be re-measured.
+4. office2@beta has two healthy operating points (all-veto +8.19 / all-merge
+   +8.21 with repair) and a worst-of-both middle (floor24 = +2.41) — evidence
+   that partial merging is the dangerous regime, relevant to floor choice.
+
+In flight: PC1 gamma matrix on 184 (phase axis for the ablation table), PC2
+auto-export rows office4/room0/room2 on 76 and office1/office2 on 184 next.
+
 ## Next actions
 
-1. PA2 floor sweep on 76 (running) → pick evidence floor from dev scenes.
-2. PB2 remaining rows run with fallback-off code (room0/room2/office4 = pure
-   gate-guard validation; o2carve = carve isolation).
-3. Unified v2 full Replica with calibrated floor → the main-table candidate;
-   then ablation matrix + sensitivity sweep + held-out scene accounting
-   (dev evidence: office1/office2 + room0/room2/office4 diagnostics; untouched:
-   room1, office0, office3).
+1. PC2 auto-export probes → if positive across the five decisive scenes,
+   unified v3 = auto-export + beta + gate(floor TBD)+mutual + declared-only sp.
+2. Full 8-scene unified v3 + ablation matrix (forced memory-dense, gate off,
+   sp off, gamma phase, oracle E70) + floor sensitivity.
+3. Scene accounting for the paper: dev = office1/office2 (+ diagnostics from
+   room0/room2/office4); untouched validation = room1, office0, office3.
