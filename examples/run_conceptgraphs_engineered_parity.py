@@ -3077,6 +3077,7 @@ def write_conceptgraphs_payload(
         key_point_budget=estimate_key_point_budget(key_data),
         policy=export_policy,
         consolidation_dense_max_ratio=EXPORT_CONSOLIDATION_DENSE_MAX_RATIO,
+        consolidation_memory_count=len(result.memory_nodes),
     )
     export_source = str(export_selection["selected_source"])
     mechanisms_scoped_off = (

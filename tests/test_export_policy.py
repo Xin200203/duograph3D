@@ -48,6 +48,21 @@ class ExportPolicyTests(unittest.TestCase):
             "forced_memory_dense",
         )
 
+    def test_consolidation_auto_uses_raw_memory_count_when_provided(self):
+        # room0 regression: 78 raw nodes / 436 keys = 0.179 -> geometry, even
+        # when the export-eligible count (70) would cross the dense threshold.
+        decision = choose_export_source(
+            strategy="consolidation-auto",
+            memory_object_count=70,
+            key_object_count=436,
+            memory_point_count=10000,
+            key_point_budget=100000,
+            consolidation_dense_max_ratio=0.175,
+            consolidation_memory_count=78,
+        )
+        self.assertEqual(decision["selected_source"], GEOMETRY_EXPORT_SOURCE)
+        self.assertAlmostEqual(decision["consolidation_ratio"], 78 / 436, places=6)
+
     def test_consolidation_auto_routes_by_ratio(self):
         # office1-like: 46 memory objects over 635 keys = 0.072 -> dense
         dense = choose_export_source(

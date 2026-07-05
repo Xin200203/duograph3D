@@ -66,8 +66,15 @@ def choose_export_source(
     key_point_budget: int,
     policy: ExportCoveragePolicy | None = None,
     consolidation_dense_max_ratio: float = 0.175,
+    consolidation_memory_count: int | None = None,
 ) -> dict[str, object]:
-    """Choose memory vs geometry export with explicit coverage diagnostics."""
+    """Choose memory vs geometry export with explicit coverage diagnostics.
+
+    ``consolidation_memory_count`` is the RAW memory-graph node count used by
+    the consolidation-auto ratio; export-eligible object counts shrink with
+    skip filters and would silently shift scenes across the routing threshold
+    (room0: 78 raw nodes = 0.179 → geometry, but ~70 eligible = dense).
+    """
 
     policy = policy or ExportCoveragePolicy()
     strategy = str(strategy or "auto").lower().replace("_", "-")
@@ -90,6 +97,14 @@ def choose_export_source(
     }
 
     if strategy == "consolidation-auto":
+        consolidation_count = (
+            int(consolidation_memory_count)
+            if consolidation_memory_count is not None
+            else int(memory_object_count)
+        )
+        consolidation_ratio = _ratio(consolidation_count, key_object_count)
+        diagnostics["consolidation_memory_count"] = consolidation_count
+        diagnostics["consolidation_ratio"] = consolidation_ratio
         # Substrate routing by consolidation depth: when online memory
         # consolidates far below the geometry-key granularity (few nodes per
         # key), the memory roots carry real object structure and the dense
@@ -99,7 +114,7 @@ def choose_export_source(
         # geometry ≥ 0.179 under the current pipeline) and matches E70's
         # hand-assigned substrate on every scene.  GT-free, scene-independent.
         diagnostics["consolidation_dense_max_ratio"] = float(consolidation_dense_max_ratio)
-        if memory_object_count > 0 and memory_key_ratio < float(consolidation_dense_max_ratio):
+        if consolidation_count > 0 and consolidation_ratio < float(consolidation_dense_max_ratio):
             diagnostics.update({
                 "selected_source": MEMORY_DENSE_EXPORT_SOURCE,
                 "fallback_reason": "consolidation_ratio_dense",
