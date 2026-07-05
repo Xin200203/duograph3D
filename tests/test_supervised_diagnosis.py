@@ -25,6 +25,20 @@ class SupervisedDiagnosisTests(unittest.TestCase):
         self.assertEqual(rows[1]["recall"], 0.9)
         self.assertEqual(rows[1]["precision"], 0.818182)
 
+    def test_per_class_metrics_keep_index_matches_official_filtered_matrix(self) -> None:
+        matrix = [
+            [8, 2, 90],
+            [1, 9, 80],
+            [70, 60, 100],
+        ]
+        rows = per_class_metrics_from_confusion(matrix, ["chair", "table", "floor"], keep_index=[0, 1])
+        self.assertEqual(rows[0]["gt_points"], 10)
+        self.assertEqual(rows[0]["pred_points"], 9)
+        self.assertEqual(rows[0]["precision"], 0.888889)
+        self.assertEqual(rows[1]["gt_points"], 10)
+        self.assertEqual(rows[1]["pred_points"], 11)
+        self.assertEqual(rows[1]["precision"], 0.818182)
+
     def test_top_confusions_excludes_diagonal(self) -> None:
         matrix = [
             [8, 2, 0],

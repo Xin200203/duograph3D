@@ -510,6 +510,50 @@ def class_from_target_id(target_id: str) -> str:
     return parts[0] if parts else target_id
 
 
+def resolve_object_root(object_id: str, nodes: dict[str, object]) -> str:
+    """Map a raw online object id to its final object-merge root."""
+
+    current = object_id
+    seen: set[str] = set()
+    while current and current not in seen:
+        seen.add(current)
+        node = nodes.get(current)
+        merge_target = str(getattr(node, "merge_target_id", "") or "") if node is not None else ""
+        if not merge_target:
+            break
+        current = merge_target
+    return current or object_id
+
+
+def classify_raw_switch_cause(previous_object: str, decision, candidate_diag: dict[str, object]) -> str:
+    """Classify the online cause before final object-merge canonicalization."""
+
+    top_candidates = candidate_diag.get("top_candidates") or []
+    previous_candidate = None
+    if isinstance(top_candidates, list):
+        for candidate in top_candidates:
+            if isinstance(candidate, dict) and str(candidate.get("object_id", "")) == previous_object:
+                previous_candidate = candidate
+                break
+    if decision.action == "birth":
+        if not top_candidates:
+            return "duplicate_birth_no_candidate_diagnostic"
+        if previous_candidate is None:
+            return "duplicate_birth_candidate_missing_previous"
+        if not bool(previous_candidate.get("has_strong_identity", False)):
+            return "duplicate_birth_previous_candidate_no_strong_identity"
+        try:
+            previous_score = float(previous_candidate.get("score", 0.0) or 0.0)
+        except (TypeError, ValueError):
+            previous_score = 0.0
+        if previous_score < float(candidate_diag.get("threshold", 0.0) or 0.0):
+            return "duplicate_birth_previous_candidate_below_threshold"
+        return "duplicate_birth_other"
+    if previous_candidate is None:
+        return "false_association_candidate_missing_previous"
+    return "false_association_wrong_object"
+
+
 def confusion_records(counter: Counter[tuple[str, str]], limit: int = 12) -> list[dict[str, object]]:
     return [
         {"pred": pred, "gt": gt, "count": int(count)}
@@ -675,6 +719,7 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
     hyp_records = []
 
     target_objects: dict[str, set[str]] = defaultdict(set)
+    target_object_history: dict[str, list[str]] = defaultdict(list)
     target_last_object: dict[str, str] = {}
     object_targets: dict[str, set[str]] = defaultdict(set)
     l2 = Counter()
@@ -686,6 +731,7 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
     l2_semantic_confusions: Counter[tuple[str, str]] = Counter()
     l2_id_switch_events = 0
     l2_target_revisits = 0
+    raw_id_switch_records = []
     l2_decision_samples = []
     duplicate_birth_reason_counts = Counter()
     duplicate_birth_failure_family_counts = Counter()
@@ -751,6 +797,11 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
             (record.step_id, str(record.payload.get("hypothesis_id", ""))): record.payload
             for record in logger.records
             if record.event_type == "association_birth_diagnostic" and record.step_id == step_id
+        }
+        candidate_diagnostics = {
+            (record.step_id, str(record.payload.get("hypothesis_id", ""))): record.payload
+            for record in logger.records
+            if record.event_type == "association_candidate_diagnostic" and record.step_id == step_id
         }
         for hyp, decision, hyp_info in zip(hypotheses, decisions, hyp_records[-len(hypotheses):]):
             if not hyp_info.get("valid"):
@@ -822,7 +873,25 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
                     l2["false_residual_absorption"] += 1
             if prev_last is not None and object_id != prev_last:
                 l2_id_switch_events += 1
+                raw_switch_cause = classify_raw_switch_cause(
+                    prev_last,
+                    decision,
+                    candidate_diagnostics.get((step_id, hyp.hypothesis_id), {}),
+                )
+                raw_id_switch_records.append(
+                    {
+                        "step_id": step_id,
+                        "hypothesis_id": hyp.hypothesis_id,
+                        "target_id": target_id,
+                        "previous_object": prev_last,
+                        "object_id": object_id,
+                        "action": decision.action,
+                        "reason": decision.reason,
+                        "raw_cause": raw_switch_cause,
+                    }
+                )
             target_objects[target_id].add(object_id)
+            target_object_history[target_id].append(object_id)
             target_last_object[target_id] = object_id
             object_targets[object_id].add(target_id)
             if len(l2_decision_samples) < 50 and not correct:
@@ -847,6 +916,30 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
         relation_edges=memory.relation_snapshot(),
     )
     summary = summarize_run(result, logger)
+    canonical_target_objects: dict[str, set[str]] = defaultdict(set)
+    canonical_object_targets: dict[str, set[str]] = defaultdict(set)
+    canonical_id_switch_events = 0
+    canonical_target_revisits = 0
+    for target_id, object_history in target_object_history.items():
+        previous_root = None
+        for object_id in object_history:
+            root_id = resolve_object_root(object_id, result.memory_nodes)
+            canonical_target_objects[target_id].add(root_id)
+            canonical_object_targets[root_id].add(target_id)
+            if previous_root is not None:
+                canonical_target_revisits += 1
+                if root_id != previous_root:
+                    canonical_id_switch_events += 1
+            previous_root = root_id
+    raw_id_switch_cause_counts = Counter(str(record["raw_cause"]) for record in raw_id_switch_records)
+    canonical_id_switch_cause_counts: Counter[str] = Counter()
+    for record in raw_id_switch_records:
+        previous_root = resolve_object_root(str(record["previous_object"]), result.memory_nodes)
+        current_root = resolve_object_root(str(record["object_id"]), result.memory_nodes)
+        if previous_root == current_root:
+            canonical_id_switch_cause_counts["merge_repaired_raw_id_change"] += 1
+        else:
+            canonical_id_switch_cause_counts[str(record["raw_cause"])] += 1
     duplicate_birth_repaired = 0
     duplicate_birth_unrepaired = 0
     for record in duplicate_birth_records:
@@ -883,6 +976,7 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
     assoc_total = l2["correct_association"] + l2["false_association_before_birth"] + l2["false_association_wrong_object"]
     birth_total = l2["correct_birth"] + l2["duplicate_birth"]
     multi_target_objects = sum(1 for targets in object_targets.values() if len(targets) > 1)
+    canonical_multi_target_objects = sum(1 for targets in canonical_object_targets.values() if len(targets) > 1)
     layer2_targets = set(target_objects)
     stage_coverage = summarize_stage_coverage(
         init_unique_targets=len(init_eval_targets),
@@ -925,12 +1019,24 @@ def run_layer_monitors(scene: str, frames: list[FrameInput], obs_gt: dict[str, G
         "residual_absorption_accuracy": round(l2["correct_residual_absorption"] / max(l2["residual_absorption"], 1), 6),
         "id_switch_events": l2_id_switch_events,
         "id_switch_rate_per_revisit": round(l2_id_switch_events / max(l2_target_revisits, 1), 6),
+        "raw_id_switch_events": l2_id_switch_events,
+        "raw_id_switch_rate_per_revisit": round(l2_id_switch_events / max(l2_target_revisits, 1), 6),
+        "raw_id_switch_cause_counts": dict(raw_id_switch_cause_counts),
+        "canonical_id_switch_events_after_object_merge": canonical_id_switch_events,
+        "canonical_id_switch_rate_per_revisit_after_object_merge": round(canonical_id_switch_events / max(canonical_target_revisits, 1), 6),
+        "canonical_id_switch_cause_counts_after_object_merge": dict(canonical_id_switch_cause_counts),
         "fragmented_gt_target_count": sum(1 for objects in target_objects.values() if len(objects) > 1),
         "fragmented_gt_target_rate": round(sum(1 for objects in target_objects.values() if len(objects) > 1) / max(len(target_objects), 1), 6),
         "gt_target_fragmentation": sum(max(len(objects) - 1, 0) for objects in target_objects.values()),
+        "canonical_fragmented_gt_target_count_after_object_merge": sum(1 for objects in canonical_target_objects.values() if len(objects) > 1),
+        "canonical_fragmented_gt_target_rate_after_object_merge": round(sum(1 for objects in canonical_target_objects.values() if len(objects) > 1) / max(len(canonical_target_objects), 1), 6),
+        "canonical_gt_target_fragmentation_after_object_merge": sum(max(len(objects) - 1, 0) for objects in canonical_target_objects.values()),
         "multi_target_memory_object_count": multi_target_objects,
         "multi_target_memory_object_rate": round(multi_target_objects / max(len(object_targets), 1), 6),
+        "canonical_multi_target_memory_object_count_after_object_merge": canonical_multi_target_objects,
+        "canonical_multi_target_memory_object_rate_after_object_merge": round(canonical_multi_target_objects / max(len(canonical_object_targets), 1), 6),
         "error_samples": l2_decision_samples,
+        "raw_id_switch_samples": raw_id_switch_records[:50],
         "duplicate_birth_samples": duplicate_birth_records[:50],
         "reason_counts": dict(Counter(decision.reason for decision in all_decisions)),
     }
@@ -948,8 +1054,16 @@ def object_probability_monitor(
     *,
     device: str,
     logit_scale: float,
+    object_path: Path | None = None,
 ) -> dict[str, object]:
-    paths = sorted((REPLICA_ROOT / scene / "pcd_saves").glob(f"full_pcd_{pred_exp_name}*.pkl.gz"), key=lambda p: p.stat().st_mtime)
+    if object_path is not None and object_path.exists():
+        paths = [object_path]
+    else:
+        exact = REPLICA_ROOT / scene / "pcd_saves" / f"full_pcd_{pred_exp_name}.pkl.gz"
+        if exact.exists():
+            paths = [exact]
+        else:
+            paths = sorted((REPLICA_ROOT / scene / "pcd_saves").glob(f"full_pcd_{pred_exp_name}*.pkl.gz"), key=lambda p: p.stat().st_mtime)
     if not paths:
         return {"available": False, "pred_exp_name": pred_exp_name}
     with gzip.open(paths[-1], "rb") as handle:
@@ -1100,7 +1214,7 @@ def write_duograph_payload(scene: str, result, logger, obs_meta: list[Observatio
             })
     pcd_dir = REPLICA_ROOT / scene / "pcd_saves"
     pcd_dir.mkdir(parents=True, exist_ok=True)
-    path = pcd_dir / f"full_pcd_{DUOGRAPH_PRED_EXP_NAME}.pkl.gz"
+    path = pcd_dir / f"full_pcd_{DUOGRAPH_PRED_EXP_NAME}_gt_monitor.pkl.gz"
     with gzip.open(path, "wb") as handle:
         pickle.dump({"objects": objects, "bg_objects": None}, handle)
     return {
@@ -1158,6 +1272,8 @@ def configure_profile(args) -> None:
         EXPORT_MIN_DETECTIONS = max(int(args.export_min_detections), 1)
     gate_args = {
         "association_threshold": args.association_threshold,
+        "candidate_retrieval_budget": args.candidate_retrieval_budget,
+        "candidate_retrieval_channel_budget": args.candidate_retrieval_channel_budget,
         "history_candidate_affinity_threshold": args.history_affinity_threshold,
         "history_candidate_margin_threshold": args.history_margin_threshold,
         "layer1_merge_threshold": args.layer1_merge_threshold,
@@ -1170,17 +1286,46 @@ def configure_profile(args) -> None:
         "history_point_overlap_distance": args.history_point_overlap_distance,
         "history_overlap_max_points": args.history_overlap_max_points,
         "history_point_overlap_affinity_weight": args.history_point_overlap_affinity_weight,
+        "history_point_overlap_min_semantic_score": args.history_point_overlap_min_semantic_score,
+        "history_point_overlap_min_spatial_score": args.history_point_overlap_min_spatial_score,
+        "history_point_overlap_requires_spatial_evidence": args.history_point_overlap_requires_spatial_evidence,
         "layer2_absorption_threshold": args.layer2_absorption_threshold,
         "layer2_absorption_min_point_overlap": args.layer2_absorption_min_point_overlap,
         "layer2_absorption_min_semantic_score": args.layer2_absorption_min_semantic_score,
+        "layer2_point_overlap_weight": args.layer2_point_overlap_weight,
+        "layer2_point_overlap_score_threshold": args.layer2_point_overlap_score_threshold,
+        "layer2_point_overlap_identity_threshold": args.layer2_point_overlap_identity_threshold,
+        "layer2_point_overlap_identity_min_spatial": args.layer2_point_overlap_identity_min_spatial,
+        "layer2_point_overlap_identity_min_semantic": args.layer2_point_overlap_identity_min_semantic,
+        "layer2_point_overlap_identity_min_visual": args.layer2_point_overlap_identity_min_visual,
+        "layer2_point_overlap_identity_requires_spatial_evidence": args.layer2_point_overlap_identity_requires_spatial_evidence,
+        "layer2_relation_bonus_cap": args.layer2_relation_bonus_cap,
+        "layer2_relation_bonus_requires_identity": args.layer2_relation_bonus_requires_identity,
         "layer2_visual_similarity_weight": args.layer2_visual_similarity_weight,
         "layer2_descriptor_match_weight": args.layer2_descriptor_match_weight,
         "layer2_appearance_match_weight": args.layer2_appearance_match_weight,
         "object_merge_threshold": args.object_merge_threshold,
         "object_merge_spatial_threshold": args.object_merge_spatial_threshold,
+        "object_merge_point_overlap_weight": args.object_merge_point_overlap_weight,
+        "object_merge_point_overlap_min_semantic_score": args.object_merge_point_overlap_min_semantic_score,
+        "object_merge_semantic_conflict_guard": args.object_merge_semantic_conflict_guard,
+        "object_merge_semantic_conflict_min_score": args.object_merge_semantic_conflict_min_score,
+        "object_merge_semantic_conflict_visual_override": args.object_merge_semantic_conflict_visual_override,
+        "object_merge_max_merged_label_entropy": args.object_merge_max_merged_label_entropy,
+        "object_merge_min_merged_top_label_share": args.object_merge_min_merged_top_label_share,
+        "object_merge_protect_small_label_share": args.object_merge_protect_small_label_share,
+        "object_merge_protect_small_label_confidence": args.object_merge_protect_small_label_confidence,
     }
     if args.layer2_enable_residual_absorption is not None:
         gate_args["layer2_enable_residual_absorption"] = bool(args.layer2_enable_residual_absorption)
+    if args.layer2_relation_bonus_requires_identity is not None:
+        gate_args["layer2_relation_bonus_requires_identity"] = bool(args.layer2_relation_bonus_requires_identity)
+    if args.history_point_overlap_requires_spatial_evidence is not None:
+        gate_args["history_point_overlap_requires_spatial_evidence"] = bool(args.history_point_overlap_requires_spatial_evidence)
+    if args.layer2_point_overlap_identity_requires_spatial_evidence is not None:
+        gate_args["layer2_point_overlap_identity_requires_spatial_evidence"] = bool(args.layer2_point_overlap_identity_requires_spatial_evidence)
+    if args.object_merge_semantic_conflict_guard is not None:
+        gate_args["object_merge_semantic_conflict_guard"] = bool(args.object_merge_semantic_conflict_guard)
     PIPELINE_GATE_OVERRIDES = {key: value for key, value in gate_args.items() if value is not None}
 
 
@@ -1194,6 +1339,8 @@ def main() -> None:
     parser.add_argument("--baseline-pred-exp-name", default=None)
     parser.add_argument("--export-min-detections", type=int, default=None)
     parser.add_argument("--association-threshold", type=float, default=None)
+    parser.add_argument("--candidate-retrieval-budget", type=int, default=None)
+    parser.add_argument("--candidate-retrieval-channel-budget", type=int, default=None)
     parser.add_argument("--history-affinity-threshold", type=float, default=None)
     parser.add_argument("--history-margin-threshold", type=float, default=None)
     parser.add_argument("--layer1-merge-threshold", type=float, default=None)
@@ -1206,15 +1353,36 @@ def main() -> None:
     parser.add_argument("--history-point-overlap-distance", type=float, default=None)
     parser.add_argument("--history-overlap-max-points", type=int, default=None)
     parser.add_argument("--history-point-overlap-affinity-weight", type=float, default=None)
+    parser.add_argument("--history-point-overlap-min-semantic-score", type=float, default=None)
+    parser.add_argument("--history-point-overlap-min-spatial-score", type=float, default=None)
+    parser.add_argument("--history-point-overlap-requires-spatial-evidence", type=int, choices=[0, 1], default=None)
     parser.add_argument("--layer2-absorption-threshold", type=float, default=None)
     parser.add_argument("--layer2-absorption-min-point-overlap", type=float, default=None)
     parser.add_argument("--layer2-absorption-min-semantic-score", type=float, default=None)
+    parser.add_argument("--layer2-point-overlap-weight", type=float, default=None)
+    parser.add_argument("--layer2-point-overlap-score-threshold", type=float, default=None)
+    parser.add_argument("--layer2-point-overlap-identity-threshold", type=float, default=None)
+    parser.add_argument("--layer2-point-overlap-identity-min-spatial", type=float, default=None)
+    parser.add_argument("--layer2-point-overlap-identity-min-semantic", type=float, default=None)
+    parser.add_argument("--layer2-point-overlap-identity-min-visual", type=float, default=None)
+    parser.add_argument("--layer2-point-overlap-identity-requires-spatial-evidence", type=int, choices=[0, 1], default=None)
+    parser.add_argument("--layer2-relation-bonus-cap", type=float, default=None)
+    parser.add_argument("--layer2-relation-bonus-requires-identity", type=int, choices=[0, 1], default=None)
     parser.add_argument("--layer2-visual-similarity-weight", type=float, default=None)
     parser.add_argument("--layer2-descriptor-match-weight", type=float, default=None)
     parser.add_argument("--layer2-appearance-match-weight", type=float, default=None)
     parser.add_argument("--layer2-enable-residual-absorption", type=int, choices=[0, 1], default=None)
     parser.add_argument("--object-merge-threshold", type=float, default=None)
     parser.add_argument("--object-merge-spatial-threshold", type=float, default=None)
+    parser.add_argument("--object-merge-point-overlap-weight", type=float, default=None)
+    parser.add_argument("--object-merge-point-overlap-min-semantic-score", type=float, default=None)
+    parser.add_argument("--object-merge-semantic-conflict-guard", type=int, choices=[0, 1], default=None)
+    parser.add_argument("--object-merge-semantic-conflict-min-score", type=float, default=None)
+    parser.add_argument("--object-merge-semantic-conflict-visual-override", type=float, default=None)
+    parser.add_argument("--object-merge-max-merged-label-entropy", type=float, default=None)
+    parser.add_argument("--object-merge-min-merged-top-label-share", type=float, default=None)
+    parser.add_argument("--object-merge-protect-small-label-share", type=float, default=None)
+    parser.add_argument("--object-merge-protect-small-label-confidence", type=float, default=None)
     args = parser.parse_args()
     configure_profile(args)
     ROOT.mkdir(parents=True, exist_ok=True)
@@ -1267,7 +1435,8 @@ def main() -> None:
         export_summary = {}
         if not args.skip_object_export:
             export_summary = write_duograph_payload(scene, result, logger, obs_meta, obs_gt, class_feats_np)
-        duograph_object_monitor = object_probability_monitor(scene, DUOGRAPH_PRED_EXP_NAME, class_feats_np, class_names, keep_indices, gt_xyz, gt_class, device=device, logit_scale=logit_scale)
+        duograph_object_path = Path(str(export_summary.get("path", ""))) if export_summary.get("path") else None
+        duograph_object_monitor = object_probability_monitor(scene, DUOGRAPH_PRED_EXP_NAME, class_feats_np, class_names, keep_indices, gt_xyz, gt_class, device=device, logit_scale=logit_scale, object_path=duograph_object_path)
         baseline_object_monitor = object_probability_monitor(scene, BASELINE_PRED_EXP_NAME, class_feats_np, class_names, keep_indices, gt_xyz, gt_class, device=device, logit_scale=logit_scale)
         scene_summary = {
             "scene": scene,
@@ -1307,7 +1476,10 @@ def main() -> None:
         "layer2_correct_association": sum(item["layer2"]["correct_association"] for item in scene_summaries),
         "layer2_duplicate_birth": sum(item["layer2"]["duplicate_birth"] for item in scene_summaries),
         "layer2_id_switch_events": sum(item["layer2"]["id_switch_events"] for item in scene_summaries),
+        "layer2_raw_id_switch_events": sum(item["layer2"]["raw_id_switch_events"] for item in scene_summaries),
+        "layer2_canonical_id_switch_events_after_object_merge": sum(item["layer2"]["canonical_id_switch_events_after_object_merge"] for item in scene_summaries),
         "layer2_gt_target_fragmentation": sum(item["layer2"]["gt_target_fragmentation"] for item in scene_summaries),
+        "layer2_canonical_gt_target_fragmentation_after_object_merge": sum(item["layer2"]["canonical_gt_target_fragmentation_after_object_merge"] for item in scene_summaries),
         "layer2_residual_absorption_count": sum(item["layer2"]["residual_absorption_count"] for item in scene_summaries),
         "layer2_correct_residual_absorption": sum(item["layer2"]["correct_residual_absorption"] for item in scene_summaries),
         "layer2_false_residual_absorption": sum(item["layer2"]["false_residual_absorption"] for item in scene_summaries),
@@ -1324,6 +1496,8 @@ def main() -> None:
     rollup["layer2_residual_absorption_accuracy"] = round(rollup["layer2_correct_residual_absorption"] / max(rollup["layer2_residual_absorption_count"], 1), 6)
     rollup["layer2_duplicate_birth_failure_family_counts"] = aggregate_counter(scene_summaries, ("layer2", "duplicate_birth_failure_family_counts"))
     rollup["layer2_duplicate_birth_reason_counts"] = aggregate_counter(scene_summaries, ("layer2", "duplicate_birth_reason_counts"))
+    rollup["layer2_raw_id_switch_cause_counts"] = aggregate_counter(scene_summaries, ("layer2", "raw_id_switch_cause_counts"))
+    rollup["layer2_canonical_id_switch_cause_counts_after_object_merge"] = aggregate_counter(scene_summaries, ("layer2", "canonical_id_switch_cause_counts_after_object_merge"))
     rollup["duograph_object_monitor"] = aggregate_object_monitor(scene_summaries, "duograph_object_monitor")
     rollup["conceptgraphs_baseline_object_monitor"] = aggregate_object_monitor(scene_summaries, "conceptgraphs_baseline_object_monitor")
 

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import replace
+import math
 
 from .contracts import FrameInput, MemoryObjectNode, ObjectStatus, PipelineConfig, SequenceRunResult, TemporalVariant
 from .events import BRANCH_DUOGRAPH3D, EventLogger
@@ -8,6 +10,26 @@ from .evidence import EvidenceBuilder
 from .layer1 import CurrentEvidenceGraphLayer
 from .layer2 import CurrentToMemoryAssociationLayer
 from .memory import ObjectGraphMemory
+
+
+def _distribution_entropy(distribution: dict[str, float]) -> float | None:
+    values = [float(value) for value in distribution.values() if float(value) > 0.0]
+    if not values:
+        return None
+    total = sum(values)
+    if total <= 0.0:
+        return None
+    return round(-sum((value / total) * math.log(value / total, 2) for value in values), 6)
+
+
+def _distribution_top_share(distribution: dict[str, float]) -> float | None:
+    values = [float(value) for value in distribution.values() if float(value) > 0.0]
+    if not values:
+        return None
+    total = sum(values)
+    if total <= 0.0:
+        return None
+    return round(max(values) / total, 6)
 
 
 class DuoGraph3DPipeline:
@@ -51,6 +73,11 @@ class DuoGraph3DPipeline:
                     )
             hypotheses = self.layer1.repair(evidence)
             for hypothesis in hypotheses:
+                label_distribution = dict(hypothesis.label_distribution)
+                component_geometry_keys = tuple(
+                    hypothesis.support_signals.get("component_geometry_keys") or ()
+                )
+                payload = hypothesis.object_payload
                 logger.log(
                     sequence_id=sequence_id,
                     step_id=step_id,
@@ -60,6 +87,61 @@ class DuoGraph3DPipeline:
                     hypothesis_id=hypothesis.hypothesis_id,
                     track_hint=hypothesis.track_hint,
                     ambiguity_flags=list(hypothesis.ambiguity_flags),
+                    evidence_count=len(hypothesis.evidence_ids),
+                    evidence_ids=list(hypothesis.evidence_ids),
+                    geometry_key=hypothesis.geometry_key,
+                    component_geometry_keys=list(component_geometry_keys),
+                    component_geometry_key_count=len(component_geometry_keys),
+                    merge_reasons=list(hypothesis.merge_reasons),
+                    neg_edge_count=len(hypothesis.neg_edge_ids),
+                    neg_edge_ids=list(hypothesis.neg_edge_ids),
+                    label_distribution=label_distribution,
+                    label_entropy=_distribution_entropy(label_distribution),
+                    label_top_share=_distribution_top_share(label_distribution),
+                    label_bucket_count=len(hypothesis.label_buckets),
+                    payload_label=payload.label if payload is not None else "",
+                    payload_detection_count=payload.detection_count if payload is not None else 0,
+                    payload_mask_area=payload.mask_area if payload is not None else 0.0,
+                )
+            if self.config.emit_association_diagnostics:
+                evidence_counts = [len(hypothesis.evidence_ids) for hypothesis in hypotheses]
+                geometry_key_counts = [
+                    len(tuple(hypothesis.support_signals.get("component_geometry_keys") or ()))
+                    for hypothesis in hypotheses
+                ]
+                merge_reason_counts: Counter[str] = Counter()
+                payload_label_counts: Counter[str] = Counter()
+                neg_edge_count = 0
+                for hypothesis in hypotheses:
+                    merge_reason_counts.update(str(reason) for reason in hypothesis.merge_reasons)
+                    neg_edge_count += len(hypothesis.neg_edge_ids)
+                    payload = hypothesis.object_payload
+                    if payload is not None and payload.label:
+                        payload_label_counts[payload.label] += 1
+                provenance_counts = Counter(item.provenance.value for item in evidence)
+                logger.log(
+                    sequence_id=sequence_id,
+                    step_id=step_id,
+                    branch_id=branch_id,
+                    event_type="layer1_frame_summary",
+                    owner_component="layer-1",
+                    frame_id=frame.frame_id,
+                    observation_count=len(frame.observations),
+                    evidence_count=len(evidence),
+                    evidence_provenance_counts=dict(provenance_counts),
+                    hypothesis_count=len(hypotheses),
+                    evidence_per_hypothesis_mean=round(sum(evidence_counts) / max(len(evidence_counts), 1), 4)
+                    if evidence_counts
+                    else 0.0,
+                    evidence_per_hypothesis_max=max(evidence_counts) if evidence_counts else 0,
+                    geometry_keys_per_hypothesis_mean=round(sum(geometry_key_counts) / max(len(geometry_key_counts), 1), 4)
+                    if geometry_key_counts
+                    else 0.0,
+                    geometry_keys_per_hypothesis_max=max(geometry_key_counts) if geometry_key_counts else 0,
+                    singleton_hypothesis_count=sum(1 for value in evidence_counts if value == 1),
+                    merge_reason_counts=dict(merge_reason_counts),
+                    neg_edge_count=neg_edge_count,
+                    top_payload_labels=payload_label_counts.most_common(10),
                 )
             all_decisions.extend(
                 self.layer2.update(

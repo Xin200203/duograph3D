@@ -152,7 +152,7 @@ class CurrentEvidenceGraphLayer:
             sep = self.config.l1_sep3d_thresh
             separated = False
             for axis in range(3):
-                if left_max[axis] + sep < right_min[axis] or right_max[axis] + sep < left_max[axis]:
+                if left_max[axis] + sep < right_min[axis] or right_max[axis] + sep < left_min[axis]:
                     separated = True
                     break
             if separated:

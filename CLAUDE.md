@@ -66,6 +66,25 @@ macOS (local dev)          GitHub                    10.177.69.184 (execution)
   - DuoGraph3D code (on remote): `/home/nebula/xxy/DuoGraph3D`
   - ConceptGraphs (CG parity ref): `/home/nebula/xxy/concept-graphs-main`
   - Artifacts: `/home/nebula/xxy/duograph3d_artifacts`
+  - GSA detections: `/home/nebula/xxy/dataset/Replica/{scene}/gsa_detections_none/` (400 frame*.pkl.gz per scene)
+
+### Remote server notes (from Phase 甲 experience)
+
+- **Python version**: remote runs Python 3.8.10. Code MUST be compatible with 3.8. Use `from __future__ import annotations` for all type hints. Avoid f-string nested double quotes (`f"{d['key']}"` breaks on 3.8). Avoid `str | Path` without `from __future__ import annotations`.
+- **DuoGraph3D on remote is NOT a git clone** — it's a plain directory. To sync code: use `rsync` from local (see example below), or push to GitHub then manually copy files. The directory must preserve its path `/home/nebula/xxy/DuoGraph3D` because example scripts hard-code this path in `sys.path.insert`.
+- **rsync new files to remote** (local→184):
+  ```bash
+  rsync -avz src/duograph3d/new_module.py \
+    10.177.69.184:/home/nebula/xxy/DuoGraph3D/src/duograph3d/
+  # IMPORTANT: use trailing slash on dest dir, or files may land in wrong directory
+  ```
+- **Run Phase 甲 shadow report** (on 184):
+  ```bash
+  cd /home/nebula/xxy/DuoGraph3D
+  PYTHONPATH=src python3 examples/run_baseline_shadow.py \
+    --scene room0 --temporal deva_style --output outputs/shadow_b0
+  ```
+- **GSA observation data**: Real GSA detections live in `{Replica}/{scene}/gsa_detections_none/frame*.pkl.gz`. The `run_conceptgraphs_engineered_parity.py` script loads these directly. For the shadow runner without GSA data, use `--observation-json` pointing to a pre-exported JSON, or it falls back to synthetic templates.
 
 ## Key conventions
 

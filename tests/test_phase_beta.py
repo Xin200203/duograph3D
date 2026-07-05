@@ -140,6 +140,27 @@ class SignedLayer1Tests(unittest.TestCase):
         # Same object should still merge (no negative edge triggers)
         self.assertEqual(len(hyps), 1)
 
+    def test_bbox_containment_is_not_spatial_separation(self):
+        config = PipelineConfig(l1_neg_edge_enable=True, l1_sep3d_thresh=0.18)
+        layer1 = CurrentEvidenceGraphLayer(config)
+        large = EvidenceItem(
+            evidence_id="large", descriptor="bed", geometry_key="g-0:0:0",
+            confidence=0.95, provenance=EvidenceProvenance.CURRENT,
+            object_payload=ObjectObservationPayload(
+                label="bed", centroid=(5.0, 5.0, 5.0),
+                bbox_min=(0.0, 0.0, 0.0), bbox_max=(10.0, 10.0, 10.0),
+            ),
+        )
+        contained = EvidenceItem(
+            evidence_id="contained", descriptor="pillow", geometry_key="g-0:0:0",
+            confidence=0.95, provenance=EvidenceProvenance.CURRENT,
+            object_payload=ObjectObservationPayload(
+                label="pillow", centroid=(0.5, 0.5, 0.5),
+                bbox_min=(0.0, 0.0, 0.0), bbox_max=(1.0, 1.0, 1.0),
+            ),
+        )
+        self.assertEqual(layer1._spatial_separation_score(large, contained), 0.0)
+
 
 class LabelDistributionTests(unittest.TestCase):
     def test_preserve_label_distribution(self):

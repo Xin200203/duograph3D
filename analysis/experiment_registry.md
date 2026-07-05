@@ -1,0 +1,4 @@
+
+| 2026-06-27 | duograph3d-e70-submission-readiness | E70 official ConceptGraphs-format full Replica composite | all +3.041 mIoU / +4.927 mF1 / +8.460 F | PASS for performance evaluator; conditionally ready for C-class submission after story rewrite + minimal hardening |
+| 20260627-1801 | duograph3d-ablation-integration | submission A1/A3 ablation integration | E70 +3.041/+4.927/+8.460 PASS; best transferable tissue-only +0.665/+2.755/+5.926 FAIL; unified shape +0.635/+2.685/+5.811 FAIL | global table-sink hypothesis invalid | run A2 memory/state ablation; stop naive/shape table-sink tuning | `analysis/flywheel_runs/20260627-1801-duograph3d-ablation-integration.md` |
+| 20260705T000000Z | duograph3d-ccfb-clean-ablation-20260705 | mixed | large_tissue-paper_to_cloth=1, ptgraphs_postprocess.merge_overlap_thresh=1.0, merge_overlap_thresh=1.0 | eval/metric | eval/metric | `analysis/flywheel_runs/20260705T000000Z-duograph3d-ccfb-clean-ablation-20260705.md` |

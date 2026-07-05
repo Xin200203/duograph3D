@@ -461,7 +461,7 @@ class PipelineTests(unittest.TestCase):
             ),
         ]
 
-        _result, logger = pipeline.run_sequence(
+        result, logger = pipeline.run_sequence(
             sequence_id="seq-diag",
             frames=frames,
             temporal_variant=TemporalVariant.NAIVE_FRAMEWISE,
@@ -469,6 +469,29 @@ class PipelineTests(unittest.TestCase):
 
         self.assertEqual(logger.count("association_candidate_diagnostic"), 2)
         self.assertEqual(logger.count("association_birth_diagnostic"), 1)
+        frame_summaries = logger.filter(event_type="association_frame_summary")
+        self.assertEqual(len(frame_summaries), 2)
+        layer1_summaries = logger.filter(event_type="layer1_frame_summary")
+        self.assertEqual(len(layer1_summaries), 2)
+        self.assertEqual(layer1_summaries[0].payload["observation_count"], 1)
+        self.assertEqual(layer1_summaries[0].payload["evidence_count"], 1)
+        self.assertEqual(layer1_summaries[0].payload["hypothesis_count"], 1)
+        self.assertEqual(layer1_summaries[0].payload["evidence_provenance_counts"], {"current": 1})
+        first_frame = frame_summaries[0].payload
+        self.assertEqual(first_frame["hypothesis_count"], 1)
+        self.assertEqual(first_frame["action_counts"], {"birth": 1})
+        self.assertEqual(first_frame["birth_reason_counts"], {"no_candidate": 1})
+        self.assertEqual(first_frame["candidate_total"], 0)
+        self.assertEqual(first_frame["zero_candidate_count"], 1)
+        self.assertEqual(first_frame["memory_node_count_before"], 0)
+        self.assertEqual(first_frame["memory_node_count_after"], 1)
+        second_frame = frame_summaries[1].payload
+        self.assertEqual(second_frame["hypothesis_count"], 1)
+        self.assertEqual(second_frame["action_counts"].get("associate"), 1)
+        self.assertEqual(second_frame["candidate_total"], 1)
+        self.assertEqual(second_frame["zero_candidate_count"], 0)
+        self.assertEqual(second_frame["memory_node_count_before"], 1)
+        self.assertEqual(second_frame["memory_node_count_after"], 1)
         first_birth = logger.filter(event_type="association_birth_diagnostic")[0]
         self.assertEqual(first_birth.payload["reason"], "no_candidate")
         candidate_records = [
@@ -482,6 +505,18 @@ class PipelineTests(unittest.TestCase):
         self.assertGreater(top_candidate["components"]["geometry_key"], 0.0)
         self.assertGreater(top_candidate["components"]["geometry_profile"], 0.0)
         self.assertIn("best_has_strong_identity", candidate_records[0].payload)
+        summary = summarize_run(result, logger)
+        frame_rollup = summary["association_frame_rollup"]
+        self.assertEqual(frame_rollup["frame_count"], 2)
+        self.assertEqual(frame_rollup["action_counts"], {"birth": 1, "associate": 1})
+        self.assertEqual(frame_rollup["candidate_total"], 1.0)
+        self.assertEqual(frame_rollup["zero_candidate_count_total"], 1)
+        self.assertEqual(summary["association_frame_summaries_sample"][0]["step_id"], 1)
+        layer1_rollup = summary["layer1_frame_rollup"]
+        self.assertEqual(layer1_rollup["frame_count"], 2)
+        self.assertEqual(layer1_rollup["observation_count_total"], 2)
+        self.assertEqual(layer1_rollup["hypothesis_count_total"], 2)
+        self.assertEqual(summary["layer1_frame_summaries_sample"][0]["step_id"], 1)
 
     def test_layer1_shared_history_object_boost_merges_fragments(self) -> None:
         shared_history = HistoryCandidate(
@@ -634,7 +669,12 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(top_candidate["components"]["history_candidate"], 0.0)
 
     def test_layer2_relation_bonus_is_capped_and_diagnostic(self) -> None:
-        config = PipelineConfig(emit_association_diagnostics=True, association_diagnostics_top_k=5, layer2_relation_bonus_cap=0.3)
+        config = PipelineConfig(
+            emit_association_diagnostics=True,
+            association_diagnostics_top_k=5,
+            layer2_relation_bonus_cap=0.3,
+            layer2_relation_bonus_requires_identity=False,
+        )
         memory = ObjectGraphMemory(config)
         anchor_a = memory.create_node(descriptor="anchor", geometry_key="g-anchor-a", step_id=1)
         anchor_b = memory.create_node(descriptor="anchor", geometry_key="g-anchor-b", step_id=1)
@@ -693,6 +733,122 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(related_candidate["relation_bonus"], 0.3)
         self.assertTrue(related_candidate["relation_bonus_allowed"])
 
+    def test_layer2_direct_point_overlap_can_supply_strong_identity(self) -> None:
+        config = PipelineConfig(emit_association_diagnostics=True)
+        memory = ObjectGraphMemory(config)
+        node = memory.create_node(descriptor="chair", geometry_key="g-old", step_id=1)
+        node.appearance_key_recent = "chair"
+        node.avg_support_size = 0.4
+        node.avg_depth_scale = 1.0
+        node.avg_geometry_support = 0.5
+        memory.fuse_hypothesis(
+            node,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-old",
+                descriptor="chair",
+                geometry_key="g-old",
+                confidence=0.9,
+                evidence_ids=("e-old",),
+                track_hint="old",
+                object_payload=ObjectObservationPayload(
+                    label="chair",
+                    points_sample=((0.0, 0.0, 0.0), (0.05, 0.0, 0.0), (0.0, 0.05, 0.0)),
+                    bbox_min=(0.0, 0.0, 0.0),
+                    bbox_max=(0.05, 0.05, 0.0),
+                    centroid=(0.02, 0.02, 0.0),
+                    detection_count=1,
+                ),
+            ),
+            step_id=1,
+        )
+        hypothesis = CurrentObjectHypothesis(
+            hypothesis_id="hyp-overlap",
+            descriptor="chair",
+            geometry_key="g-neighbour",
+            confidence=0.9,
+            evidence_ids=("e-overlap",),
+            track_hint="overlap-fragment",
+            support_signals={"appearance_key": "chair", "support_size": 0.4, "depth_scale": 1.0, "geometry_support": 0.5},
+            object_payload=ObjectObservationPayload(
+                label="chair",
+                points_sample=((0.01, 0.0, 0.0), (0.04, 0.0, 0.0), (0.0, 0.04, 0.0)),
+                bbox_min=(0.0, 0.0, 0.0),
+                bbox_max=(0.05, 0.05, 0.0),
+                centroid=(0.02, 0.01, 0.0),
+                detection_count=1,
+            ),
+        )
+        logger = EventLogger()
+
+        decisions = CurrentToMemoryAssociationLayer(config).update(
+            sequence_id="seq-direct-overlap",
+            step_id=2,
+            branch_id="duograph3d_full",
+            hypotheses=[hypothesis],
+            memory=memory,
+            logger=logger,
+        )
+
+        self.assertEqual(decisions[0].action, "associate")
+        self.assertEqual(decisions[0].object_id, node.object_id)
+        top_candidate = logger.filter(event_type="association_candidate_diagnostic")[0].payload["top_candidates"][0]
+        self.assertTrue(top_candidate["components"]["direct_point_overlap_identity_gate_passed"])
+        self.assertGreater(top_candidate["components"]["direct_point_overlap_score"], 0.0)
+
+    def test_layer2_point_overlap_does_not_self_validate_identity_without_spatial_evidence(self) -> None:
+        config = PipelineConfig(emit_association_diagnostics=True)
+        memory = ObjectGraphMemory(config)
+        node = memory.create_node(descriptor="chair", geometry_key="g-old", step_id=1)
+        node.appearance_key_recent = "chair"
+        memory.fuse_hypothesis(
+            node,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-old",
+                descriptor="chair",
+                geometry_key="g-old",
+                confidence=0.9,
+                evidence_ids=("e-old",),
+                track_hint="old",
+                object_payload=ObjectObservationPayload(
+                    label="chair",
+                    points_sample=((0.0, 0.0, 0.0), (0.05, 0.0, 0.0), (0.0, 0.05, 0.0)),
+                    centroid=(0.02, 0.02, 0.0),
+                    detection_count=1,
+                ),
+            ),
+            step_id=1,
+        )
+        hypothesis = CurrentObjectHypothesis(
+            hypothesis_id="hyp-overlap-only",
+            descriptor="chair",
+            geometry_key="g-neighbour",
+            confidence=0.9,
+            evidence_ids=("e-overlap-only",),
+            track_hint="overlap-only",
+            support_signals={"appearance_key": "chair"},
+            object_payload=ObjectObservationPayload(
+                label="chair",
+                points_sample=((0.01, 0.0, 0.0), (0.04, 0.0, 0.0), (0.0, 0.04, 0.0)),
+                centroid=(10.0, 10.0, 10.0),
+                detection_count=1,
+            ),
+        )
+        logger = EventLogger()
+
+        decisions = CurrentToMemoryAssociationLayer(config).update(
+            sequence_id="seq-direct-overlap-no-spatial",
+            step_id=2,
+            branch_id="duograph3d_full",
+            hypotheses=[hypothesis],
+            memory=memory,
+            logger=logger,
+        )
+
+        self.assertEqual(decisions[0].action, "birth")
+        top_candidate = logger.filter(event_type="association_candidate_diagnostic")[0].payload["top_candidates"][0]
+        self.assertGreaterEqual(top_candidate["components"]["direct_point_overlap"], config.layer2_point_overlap_identity_threshold)
+        self.assertFalse(top_candidate["components"]["direct_point_overlap_identity_gate_passed"])
+
     def test_history_candidate_uses_object_point_overlap(self) -> None:
         memory = ObjectGraphMemory(PipelineConfig(history_point_overlap_affinity_weight=0.2))
         node = memory.create_node(descriptor="chair", geometry_key="g-old", step_id=1)
@@ -738,7 +894,13 @@ class PipelineTests(unittest.TestCase):
         self.assertGreaterEqual(candidates[0].affinity, 0.7)
 
     def test_layer2_residual_absorbs_same_frame_point_fragment(self) -> None:
-        config = PipelineConfig(emit_association_diagnostics=True, layer2_enable_residual_absorption=True)
+        config = PipelineConfig(
+            emit_association_diagnostics=True,
+            layer2_enable_residual_absorption=True,
+            layer2_absorption_threshold=1.45,
+            layer2_point_overlap_score_threshold=1.1,
+            layer2_point_overlap_identity_threshold=1.1,
+        )
         memory = ObjectGraphMemory(config)
         node = memory.create_node(descriptor="chair", geometry_key="g-anchor", step_id=1)
         node.appearance_key_recent = "chair"
@@ -881,6 +1043,61 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(left.class_counts["chair"], 2)
         self.assertEqual(left.bbox_min, (0.0, 0.0, 0.0))
         self.assertEqual(left.bbox_max, (1.0, 1.0, 1.0))
+
+    def test_object_merge_guard_blocks_conflicting_small_object_absorption(self) -> None:
+        memory = ObjectGraphMemory(PipelineConfig(object_merge_threshold=0.6))
+        large = memory.create_node(descriptor="room:item", geometry_key="g-large", step_id=1)
+        small = memory.create_node(descriptor="room:item", geometry_key="g-small", step_id=2)
+        memory.fuse_hypothesis(
+            large,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-bed",
+                descriptor="room:item",
+                geometry_key="g-large",
+                confidence=0.9,
+                evidence_ids=("e-bed",),
+                track_hint="bed",
+                object_payload=ObjectObservationPayload(
+                    label="bed",
+                    points_sample=((0.0, 0.0, 0.0), (1.0, 1.0, 1.0)),
+                    bbox_min=(0.0, 0.0, 0.0),
+                    bbox_max=(1.0, 1.0, 1.0),
+                    centroid=(0.5, 0.5, 0.5),
+                    clip_feature=(1.0, 0.0),
+                    detection_count=10,
+                ),
+            ),
+            step_id=1,
+        )
+        memory.fuse_hypothesis(
+            small,
+            CurrentObjectHypothesis(
+                hypothesis_id="hyp-pillow",
+                descriptor="room:item",
+                geometry_key="g-small",
+                confidence=0.9,
+                evidence_ids=("e-pillow",),
+                track_hint="pillow",
+                object_payload=ObjectObservationPayload(
+                    label="pillow",
+                    points_sample=((0.2, 0.2, 0.2), (0.8, 0.8, 0.8)),
+                    bbox_min=(0.2, 0.2, 0.2),
+                    bbox_max=(0.8, 0.8, 0.8),
+                    centroid=(0.5, 0.5, 0.5),
+                    clip_feature=(0.0, 1.0),
+                    detection_count=1,
+                ),
+            ),
+            step_id=2,
+        )
+
+        score, components = memory.object_affinity(large, small)
+        merges = memory.merge_duplicate_objects()
+
+        self.assertLess(score, memory.config.object_merge_threshold)
+        self.assertTrue(components["semantic_conflict"])
+        self.assertEqual(merges, [])
+        self.assertEqual(small.status.value, "active")
 
     def test_memory_uses_conceptgraphs_style_feature_semantic_fusion(self) -> None:
         memory = ObjectGraphMemory()

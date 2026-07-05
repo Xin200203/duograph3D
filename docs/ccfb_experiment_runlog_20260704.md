@@ -1,0 +1,16 @@
+# DuoGraph3D CCF-B experiment runlog — 2026-07-04
+
+## Objective
+
+Continue as experiment lead until the paper has a defensible innovation claim and ablation package.  Current priority is to resolve the E70/current-runner gap before launching more broad full-Replica variants.
+
+## Evidence log
+
+- 2026-07-04: Created `docs/ccfb_innovation_ablation_plan_20260704.md` with three bounded ablations: E70 exact target-scene reproduction, safe shared carrier gate, and graph-memory source separation.
+- 2026-07-04: Launched remote 184 tmux `ccfb_e70_repro_probe_20260704`. Remote root: `/home/nebula/xxy/duograph3d_artifacts/ccfb_e70_repro_probe_20260704_e70_repro_probe`. Variants: office1 beta tissue/no-large and office2 bin/vent/bin-only/evidence/carrier probes.
+- 2026-07-04: `ccfb_e70_repro_probe_20260704` completed. Local mirror: `analysis/raw/ccfb_20260704/e70_repro_probe/variant_summary.tsv`. Current runner with `cg_merge_overlap_thresh=0.7` fails to reproduce E70 target mechanisms: office1 tissue/no-large are identical (`+2.7865` ΔmIoU, relabel `{}`), office2 bin-only/active/carrier variants do not trigger `bin→table`, and bin+vent triggers only `large_vent_to_table:4` with negative ΔmIoU. This makes broad tuning invalid until artifact/code-path drift is resolved.
+- 2026-07-04: Code-path/artifact audit found a concrete reproduction mismatch: archived E70 office1 used `conceptgraphs_postprocess.merge_overlap_thresh=1.0` and produced 30 export objects with `large_tissue-paper_to_cloth:1`; the current probe used `0.7`, produced 23 export objects, and no tissue relabel. Launched remote 184 tmux `ccfb_cgmerge1_probe_20260704` to test `--cg-merge-overlap-thresh 1.0` on office1/office2 leave-one-out rows. Analysis doc: `docs/ccfb_e70_repro_probe_analysis_20260704.md`.
+- 2026-07-04: `ccfb_cgmerge1_probe_20260704` completed. Restoring `--cg-merge-overlap-thresh 1.0` recovers office1 E70 exactly: `office1_cgmerge1_tissue` ΔmIoU `+8.171477` with `large_tissue-paper_to_cloth:1`; `office1_cgmerge1_no_large` drops to `+4.016209`. Office2 under global merge=1.0 over-splits to 50 objects and does not recover E70, so office2 failure is not the same path.
+- 2026-07-04: Synced monitorability patch to 184 after local verification. Added `--geometry-repair-large-label-source-mode`, `source_miss_counts`, and `shape_fail_counts`; local full unit suite passed (`152 tests OK`).
+- 2026-07-04: `ccfb_office2_keep_probe_20260704` completed. E70 narrow repair keep-label authority recovers office2: bin-only `+6.254106` ΔmIoU with `large_bin_to_table:1`; bin+vent `+6.491578` with `large_bin_to_table:1` and `large_vent_to_table:11`; no-large lower bound `+1.279091`. This proves `bin→table` is the office2 core and `vent→table` is a small/risky boundary.
+- 2026-07-04: `ccfb_clean_composite_ablation_20260704_clean_composite_ablation3` completed all-scene official composite ablations. Full current reproduction equals E70: all `+3.040857 mIoU / +4.926709 mF1 / +8.459598 F-mIoU`; `wo_office1_tissue` drops to all `+1.367659`; `wo_office2_large` drops to all `+2.014351`; `office2_binonly_no_vent` remains all `+3.000635`, only `-0.040222` mIoU below full. Summary doc: `docs/ccfb_clean_ablation_results_20260704.md`.

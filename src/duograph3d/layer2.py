@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections import Counter
+
 from .contracts import (
     AssociationDecision,
     CurrentObjectHypothesis,
@@ -446,6 +448,13 @@ class CurrentToMemoryAssociationLayer:
         decisions: list[AssociationDecision] = []
         matched_ids: set[str] = set()
         current_step_object_ids: list[str] = []
+        memory_node_count_before = len(memory.nodes)
+        relation_edge_count_before_frame = len(memory.relation_edges)
+        memory_status_counts_before = Counter(node.status.value for node in memory.nodes.values())
+        candidate_counts: list[int] = []
+        candidate_margin_values: list[float] = []
+        birth_reason_counts: Counter[str] = Counter()
+        birth_failure_family_counts: Counter[str] = Counter()
         for hypothesis in hypotheses:
             component_geometry_keys = self._component_geometry_keys(hypothesis)
             continuity_key = self._str_signal(hypothesis, "continuity_key")
@@ -467,6 +476,7 @@ class CurrentToMemoryAssociationLayer:
                     hypothesis=hypothesis,
                 )
             ]
+            candidate_counts.append(len(candidates))
             best_id = None
             best_score = -1.0
             best_has_identity = False
@@ -565,6 +575,8 @@ class CurrentToMemoryAssociationLayer:
             diagnostic_top_candidates = candidate_scores[: max(self.config.association_diagnostics_top_k, 0)]
             if self.config.emit_association_diagnostics:
                 second_score = float(candidate_scores[1]["score"]) if len(candidate_scores) > 1 else None
+                if second_score is not None:
+                    candidate_margin_values.append(round(best_score - second_score, 4))
                 logger.log(
                     sequence_id=sequence_id,
                     step_id=step_id,
@@ -839,6 +851,8 @@ class CurrentToMemoryAssociationLayer:
                 )
                 # Phase 丙: tentative fragment instead of direct confirmed birth
                 if self.config.enable_tentative_fragments:
+                    birth_reason_counts[birth_reason] += 1
+                    birth_failure_family_counts[birth_failure_family] += 1
                     fragment = memory.create_tentative_fragment(
                         descriptor=hypothesis.descriptor,
                         geometry_key=hypothesis.geometry_key,
@@ -876,6 +890,8 @@ class CurrentToMemoryAssociationLayer:
                     )
                 else:
                     # Original direct birth path
+                    birth_reason_counts[birth_reason] += 1
+                    birth_failure_family_counts[birth_failure_family] += 1
                     node = memory.create_node(
                         descriptor=hypothesis.descriptor,
                         geometry_key=hypothesis.geometry_key,
@@ -1058,5 +1074,43 @@ class CurrentToMemoryAssociationLayer:
                         miss_count=frag.miss_count,
                         reason=frag.rejection_reason or "miss_count_exceeded",
                     )
+
+        if self.config.emit_association_diagnostics:
+            action_counts = Counter(decision.action for decision in decisions)
+            reason_counts = Counter(decision.reason for decision in decisions if decision.reason)
+            memory_status_counts_after = Counter(node.status.value for node in memory.nodes.values())
+            candidate_total = sum(candidate_counts)
+            candidate_mean = round(candidate_total / max(len(candidate_counts), 1), 4) if candidate_counts else 0.0
+            logger.log(
+                sequence_id=sequence_id,
+                step_id=step_id,
+                branch_id=branch_id,
+                event_type="association_frame_summary",
+                owner_component="layer-2",
+                hypothesis_count=len(hypotheses),
+                decision_count=len(decisions),
+                action_counts=dict(action_counts),
+                reason_counts=dict(reason_counts),
+                matched_object_count=len(matched_ids),
+                current_step_object_count=len(set(current_step_object_ids)),
+                candidate_total=candidate_total,
+                candidate_mean=candidate_mean,
+                candidate_max=max(candidate_counts) if candidate_counts else 0,
+                zero_candidate_count=sum(1 for value in candidate_counts if value == 0),
+                candidate_margin_mean=round(sum(candidate_margin_values) / max(len(candidate_margin_values), 1), 4)
+                if candidate_margin_values
+                else None,
+                birth_reason_counts=dict(birth_reason_counts),
+                birth_failure_family_counts=dict(birth_failure_family_counts),
+                memory_node_count_before=memory_node_count_before,
+                memory_node_count_after=len(memory.nodes),
+                memory_node_count_delta=len(memory.nodes) - memory_node_count_before,
+                memory_status_counts_before=dict(memory_status_counts_before),
+                memory_status_counts_after=dict(memory_status_counts_after),
+                tentative_fragment_count=len(memory.tentative_fragments),
+                relation_edge_count_before=relation_edge_count_before_frame,
+                relation_edge_count_after=len(memory.relation_edges),
+                relation_edge_count_delta=len(memory.relation_edges) - relation_edge_count_before_frame,
+            )
 
         return decisions

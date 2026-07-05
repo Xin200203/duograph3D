@@ -53,14 +53,15 @@ def per_class_metrics_from_confusion(
     TP / column_sum, and IoU is TP / (row_sum + column_sum - TP).
     """
     matrix = to_matrix_lists(conf_matrix)
-    keep = list(range(len(matrix))) if keep_index is None else list(keep_index)
+    keep = list(range(len(matrix))) if keep_index is None else [int(i) for i in keep_index]
+    keep_set = set(keep)
     rows: list[dict[str, Any]] = []
     for idx in keep:
         if idx < 0 or idx >= len(matrix):
             continue
         tp = int(matrix[idx][idx])
-        gt_points = int(sum(matrix[idx]))
-        pred_points = int(sum(row[idx] for row in matrix))
+        gt_points = int(sum(matrix[idx][pred_idx] for pred_idx in keep_set if 0 <= pred_idx < len(matrix[idx])))
+        pred_points = int(sum(row[idx] for row_idx, row in enumerate(matrix) if row_idx in keep_set))
         union = gt_points + pred_points - tp
         rows.append(
             {

@@ -9,3 +9,9 @@ venv/
 .omx/
 outputs/
 outputs_external_target_local/
+
+# Large experiment mirrors and downloaded papers (kept local / on servers)
+analysis/raw/
+analysis/tmp/
+analysis/literature/**/pdfs/
+analysis/literature/**/texts/

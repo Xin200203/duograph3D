@@ -73,6 +73,10 @@ def main():
                         help="PipelineConfig preset")
     parser.add_argument("--enable-phase-beta", action="store_true",
                         help="Enable all Phase 乙 features")
+    parser.add_argument("--enable-phase-gamma", action="store_true",
+                        help="Enable all Phase 丙 features")
+    parser.add_argument("--enable-all-phases", action="store_true",
+                        help="Enable all Phase 甲+乙+丙 features")
     args = parser.parse_args()
 
     scene_root = Path(args.replica_root) / args.scene
@@ -114,6 +118,29 @@ def main():
             cand_track_sources=True,
             cand_adj_radius=1,
             cand_ann_top_k=8,
+        )
+    elif args.enable_phase_gamma or args.enable_all_phases:
+        config = PipelineConfig(
+            emit_association_diagnostics=True,
+            association_diagnostics_top_k=3,
+            candidate_budget=5,
+            candidate_retrieval_budget=32,
+            candidate_retrieval_channel_budget=8,
+            association_threshold=1.7,
+            enable_object_consolidation=True,
+            object_merge_interval=20,
+            # Phase 乙 features
+            l1_neg_edge_enable=True,
+            l1_preserve_label_distribution=True,
+            cand_include_adj_key=True,
+            cand_include_ann=True,
+            cand_track_sources=True,
+            cand_adj_radius=1,
+            cand_ann_top_k=8,
+            # Phase 丙 features
+            enable_tentative_fragments=True,
+            enable_stable_memory=True,
+            promotion_min_hits=3,
         )
     else:
         config = PipelineConfig(
