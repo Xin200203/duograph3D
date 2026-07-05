@@ -35,6 +35,11 @@ from duograph3d.export_policy import (
     choose_export_source,
     label_cluster_veto,
 )
+from duograph3d.scale_priors import (
+    DEFAULT_MAX_EXTENT_PRIORS,
+    scale_prior_violation,
+    select_scale_prior_target,
+)
 from duograph3d.experiment_logger import export_event_stream_jsonl
 from duograph3d.io_utils import write_json
 from duograph3d.memory import ObjectGraphMemory
@@ -160,6 +165,32 @@ GEOMETRY_REPAIR_LARGE_LABEL_MIN_OBSERVATIONS = int(
 GEOMETRY_REPAIR_LARGE_LABEL_MIN_SOURCE_SHARE = float(
     os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_LARGE_LABEL_MIN_SOURCE_SHARE", "0.0")
 )
+# 方案 B: scene-independent generalization of the hand-written label-pair rules.
+# keep-mode `declared-auto` derives the evaluator-facing repair source set from
+# the scene's own multi-view declared labels (GT-free) instead of a hand list.
+# scale-prior mode replaces `source:target:threshold` rules with per-label
+# physical max-extent priors (duograph3d.scale_priors, frozen commonsense table)
+# plus declared-evidence target selection; `log-only` records every violation
+# and selection without touching labels so priors/guards are set from
+# diagnostics, never from evaluation feedback.
+GEOMETRY_REPAIR_KEEP_MODE = os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_KEEP_MODE", "configured")
+GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT = int(
+    os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT", "3")
+)
+GEOMETRY_REPAIR_SCALE_PRIOR_MODE = os.environ.get(
+    "DUOGRAPH_GEOMETRY_REPAIR_SCALE_PRIOR_MODE",
+    "off",
+)
+GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE = float(
+    os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE", "1.0")
+)
+GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE = float(
+    os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE", "0.15")
+)
+GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE = float(
+    os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE", "0.60")
+)
+STRUCTURAL_EXPORT_LABELS = frozenset({"other", "floor", "wall", "ceiling", "door", "window"})
 CG_DOWNSAMPLE_VOXEL_SIZE = 0.025
 CG_DBSCAN_EPS = 0.1
 CG_DBSCAN_MIN_POINTS = 10
@@ -1486,6 +1517,7 @@ def build_initial_map_objects(
             "color_path": [],
             "class_name": [label],
             "class_id": [int(label_to_index.get(label, -1))],
+            "declared_label_counts": [[str(k), int(v)] for k, v in sorted((data.get("label_counts") or {}).items())],
             "num_detections": count,
             "conf": [conf],
             "n_points": [len(pcd.points)],
@@ -1569,6 +1601,7 @@ def build_memory_map_objects(result, label_to_index: dict[str, int], class_feats
             "color_path": [],
             "class_name": [label],
             "class_id": [label_index],
+            "declared_label_counts": [[str(k), int(v)] for k, v in sorted((node.class_counts or {}).items())],
             "num_detections": max(int(node.detection_count), 1),
             "conf": [float(node.confidence_sum / max(node.detection_count, 1)) if node.detection_count else 0.0],
             "n_points": [len(pcd.points)],
@@ -1834,6 +1867,7 @@ def build_memory_dense_map_objects(
             "color_path": [],
             "class_name": [label],
             "class_id": [label_index],
+            "declared_label_counts": [[str(k), int(v)] for k, v in sorted((data.get("label_counts") or {}).items())],
             "num_detections": count,
             "conf": [conf],
             "n_points": [len(pcd.points)],
@@ -1980,6 +2014,8 @@ def merge_objects_with_label_gate(cfg, objects: MapObjectList) -> tuple[MapObjec
         "vetoed_pairs": 0,
         "veto_label_pairs": {},
         "veto_examples": [],
+        "merged_examples": [],
+        "no_veto_reasons": {},
     }
     if cfg.merge_overlap_thresh <= 0 or len(objects) == 0:
         return objects, gate_probe
@@ -1992,6 +2028,7 @@ def merge_objects_with_label_gate(cfg, objects: MapObjectList) -> tuple[MapObjec
     overlap_ratio = overlap_ratio[sort]
     kept_objects = np.ones(len(objects), dtype=bool)
     veto_label_pairs: Counter[str] = Counter()
+    no_veto_reasons: Counter[str] = Counter()
     for i, j, ratio in zip(x, y, overlap_ratio):
         if ratio <= cfg.merge_overlap_thresh:
             break
@@ -2020,11 +2057,26 @@ def merge_objects_with_label_gate(cfg, objects: MapObjectList) -> tuple[MapObjec
                     )},
                 })
             continue
+        no_veto_reasons[str(veto_info["reason"])] += 1
+        if len(gate_probe["merged_examples"]) < 20:
+            gate_probe["merged_examples"].append({
+                "overlap_ratio": round(float(ratio), 4),
+                "visual_sim": round(visual_sim, 4),
+                "text_sim": round(text_sim, 4),
+                "no_veto_reason": veto_info["reason"],
+                **{k: veto_info[k] for k in (
+                    "left_top", "left_share", "left_observations",
+                    "right_top", "right_share", "right_observations",
+                )},
+            })
         if kept_objects[j]:
+            # declared_label_counts is a list of [label, count] pairs, so CG's
+            # list-concatenation merge accumulates the two distributions.
             objects[j] = merge_obj2_into_obj1(cfg, objects[j], objects[i], run_dbscan=True)
             kept_objects[i] = False
             gate_probe["merged_pairs"] = int(gate_probe["merged_pairs"]) + 1
     gate_probe["veto_label_pairs"] = dict(veto_label_pairs)
+    gate_probe["no_veto_reasons"] = dict(no_veto_reasons)
     new_objects = [obj for obj, keep in zip(objects, kept_objects) if keep]
     return MapObjectList(new_objects), gate_probe
 
@@ -2078,8 +2130,28 @@ def object_declared_labels(obj: dict[str, object]) -> set[str]:
 
 
 def object_declared_label_counts(obj: dict[str, object]) -> Counter[str]:
+    # Prefer the true multi-view declared distribution attached at export-object
+    # construction; `class_name` only carries the single aggregated readout label
+    # and cannot support share/observation evidence.
+    declared = obj.get("declared_label_counts")
+    if declared:
+        counter: Counter[str] = Counter()
+        # Stored as a list of [label, count] pairs so ConceptGraphs'
+        # merge_obj2_into_obj1 list-concatenation merges it losslessly
+        # (dict-valued fields would raise NotImplementedError there).
+        items = declared.items() if isinstance(declared, dict) else declared
+        for entry in items:
+            try:
+                label, count = entry
+                value = int(count)
+            except (TypeError, ValueError):
+                continue
+            if value > 0 and str(label):
+                counter[str(label)] += value
+        if counter:
+            return counter
     labels = obj.get("class_name", [])
-    counter: Counter[str] = Counter()
+    counter = Counter()
     if isinstance(labels, str):
         if labels:
             counter[str(labels)] += 1
@@ -2205,11 +2277,48 @@ def apply_multires_replacement(
     return combined, diagnostics
 
 
-def geometry_repair_keep_indices(label_to_index: dict[str, int]) -> list[int]:
+def derive_auto_keep_labels(objects: MapObjectList, min_count: int) -> tuple[set[str], dict[str, int]]:
+    """Scene-adaptive evaluator-facing source set from multi-view declared labels.
+
+    GT-free replacement for hand-written per-scene keep lists (the office2
+    16-label set): a label enters the repair source authority set when the
+    scene's own detections declared it at least `min_count` times.
+    """
+    scene_counts: Counter[str] = Counter()
+    for obj in objects:
+        for label, count in object_declared_label_counts(obj).items():
+            scene_counts[label] += count
+    auto = {
+        label
+        for label, count in scene_counts.items()
+        if count >= max(min_count, 1) and label not in STRUCTURAL_EXPORT_LABELS
+    }
+    return auto, dict(scene_counts)
+
+
+def geometry_repair_keep_indices(
+    label_to_index: dict[str, int],
+    objects: MapObjectList | None = None,
+) -> tuple[list[int], dict[str, object]]:
+    keep_mode = str(GEOMETRY_REPAIR_KEEP_MODE or "configured").lower().replace("_", "-")
+    keep_diag: dict[str, object] = {"keep_mode": keep_mode}
     configured = parse_label_set(GEOMETRY_REPAIR_KEEP_LABELS)
+    if keep_mode == "declared-auto" and objects is not None:
+        auto, scene_counts = derive_auto_keep_labels(objects, GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT)
+        keep_diag["auto_min_count"] = GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT
+        keep_diag["auto_label_count"] = len(auto)
+        keep_diag["auto_labels"] = sorted(auto)
+        keep_diag["scene_declared_totals"] = {
+            label: count for label, count in sorted(scene_counts.items(), key=lambda kv: -kv[1])[:40]
+        }
+        if auto:
+            configured = auto
+        else:
+            keep_diag["auto_fallback"] = "empty_auto_set_uses_broad_default"
     if not configured:
-        configured = set(label_to_index) - {"other", "floor", "wall", "ceiling", "door", "window"}
-    return sorted(label_to_index[label] for label in configured if label in label_to_index)
+        configured = set(label_to_index) - set(STRUCTURAL_EXPORT_LABELS)
+    indices = sorted(label_to_index[label] for label in configured if label in label_to_index)
+    return indices, keep_diag
 
 
 def object_repair_scores(
@@ -2446,11 +2555,17 @@ def apply_geometry_repairs(
 
     carve_rules = active_geometry_carve_rules()
     large_label_rules = active_large_label_relabel_rules()
-    enabled = GEOMETRY_REPAIR_VENT_TO_SOFA_DELTA >= 0.0 or bool(carve_rules) or bool(large_label_rules)
+    scale_prior_mode = str(GEOMETRY_REPAIR_SCALE_PRIOR_MODE or "off").lower().replace("_", "-")
+    enabled = (
+        GEOMETRY_REPAIR_VENT_TO_SOFA_DELTA >= 0.0
+        or bool(carve_rules)
+        or bool(large_label_rules)
+        or scale_prior_mode in {"log-only", "apply"}
+    )
     if not enabled:
         return objects, {"enabled": False}
 
-    keep_indices = geometry_repair_keep_indices(label_to_index)
+    keep_indices, keep_diag = geometry_repair_keep_indices(label_to_index, objects)
     index_to_label = {index: label for label, index in label_to_index.items()}
     relabel_counts: Counter[str] = Counter()
     relabel_points: Counter[str] = Counter()
@@ -2496,6 +2611,80 @@ def apply_geometry_repairs(
                     "declared_labels": sorted(object_declared_labels(obj)),
                 })
             force_object_label_feature(obj, "sofa", label_to_index=label_to_index, class_feats_np=class_feats_np)
+
+    scale_prior_probe: dict[str, object] = {"mode": scale_prior_mode}
+    if scale_prior_mode in {"log-only", "apply"}:
+        sp_violations_by_label: Counter[str] = Counter()
+        sp_relabel_counts: Counter[str] = Counter()
+        sp_relabel_points: Counter[str] = Counter()
+        sp_abstain_reasons: Counter[str] = Counter()
+        sp_examples: list[dict[str, object]] = []
+        sp_checked = 0
+        for obj_index, obj in enumerate(objects):
+            pred_label, scores = object_repair_pred_label(obj, class_feats_np, keep_indices, index_to_label)
+            extents = object_bbox_extents(obj)
+            max_extent = float(np.max(extents))
+            sp_checked += 1
+            violation = scale_prior_violation(
+                pred_label,
+                max_extent,
+                priors=DEFAULT_MAX_EXTENT_PRIORS,
+                tolerance=GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE,
+            )
+            if not violation["violation"]:
+                continue
+            sp_violations_by_label[pred_label or "<empty>"] += 1
+            declared_counter = object_declared_label_counts(obj)
+            selection = select_scale_prior_target(
+                dict(declared_counter),
+                max_extent,
+                priors=DEFAULT_MAX_EXTENT_PRIORS,
+                min_target_share=GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE,
+                max_source_share=GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE,
+                source_label=pred_label,
+                excluded_labels=STRUCTURAL_EXPORT_LABELS,
+            )
+            point_count = object_point_count(obj)
+            if len(sp_examples) < 30:
+                sp_examples.append({
+                    "object_index": obj_index,
+                    "pred_label": pred_label,
+                    "max_extent": round(max_extent, 6),
+                    "prior_max_extent": violation.get("prior_max_extent"),
+                    "point_count": point_count,
+                    "declared_label_counts": dict(declared_counter),
+                    "selected_target": selection["target"],
+                    "target_share": selection["target_share"],
+                    "source_share": selection["source_share"],
+                    "abstain_reason": selection["abstain_reason"],
+                    "candidates": selection["candidates"],
+                })
+            if selection["target"]:
+                repair_key = f"scale_{pred_label}_to_{selection['target']}"
+                sp_relabel_counts[repair_key] += 1
+                sp_relabel_points[repair_key] += point_count
+                if scale_prior_mode == "apply":
+                    force_object_label_feature(
+                        obj,
+                        str(selection["target"]),
+                        label_to_index=label_to_index,
+                        class_feats_np=class_feats_np,
+                    )
+            else:
+                sp_abstain_reasons[str(selection["abstain_reason"]) or "unknown"] += 1
+        scale_prior_probe = {
+            "mode": scale_prior_mode,
+            "tolerance": GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE,
+            "min_target_share": GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE,
+            "max_source_share": GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE,
+            "objects_checked": sp_checked,
+            "violations_by_label": dict(sp_violations_by_label),
+            "relabel_counts": dict(sp_relabel_counts),
+            "relabel_points": dict(sp_relabel_points),
+            "abstain_reasons": dict(sp_abstain_reasons),
+            "examples": sp_examples,
+            "applied": scale_prior_mode == "apply",
+        }
 
     for source_label, target_label, min_extent, max_z_extent in large_label_rules:
         if source_label not in label_to_index or target_label not in label_to_index:
@@ -2705,6 +2894,8 @@ def apply_geometry_repairs(
     diagnostics = {
         "enabled": True,
         "keep_labels": [index_to_label[index] for index in keep_indices],
+        "keep_mode_diagnostics": keep_diag,
+        "scale_prior_probe": scale_prior_probe,
         "vent_to_sofa_delta": GEOMETRY_REPAIR_VENT_TO_SOFA_DELTA,
         "cushion_shrink_radius": GEOMETRY_REPAIR_CUSHION_SHRINK_RADIUS,
         "carve_rules": [
@@ -3210,6 +3401,9 @@ def main() -> None:
     global GEOMETRY_REPAIR_LARGE_LABEL_REQUIRE_TARGET_DECLARED
     global GEOMETRY_REPAIR_LARGE_LABEL_MAX_POINT_RATE, GEOMETRY_REPAIR_LARGE_LABEL_MIN_OBSERVATIONS
     global GEOMETRY_REPAIR_LARGE_LABEL_MIN_SOURCE_SHARE
+    global GEOMETRY_REPAIR_KEEP_MODE, GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT
+    global GEOMETRY_REPAIR_SCALE_PRIOR_MODE, GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE
+    global GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE, GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE
     global VOXEL_SIZE, MIN_MASK_PIXELS, MASK_CONF_THRESHOLD, MAX_BBOX_AREA_RATIO, MIN_VALID_DEPTH_POINTS
     global DROP_POST_SUBTRACT_TINY
     global CG_DOWNSAMPLE_VOXEL_SIZE, CG_DBSCAN_EPS, CG_DBSCAN_MIN_POINTS
@@ -3385,6 +3579,30 @@ def main() -> None:
         default=GEOMETRY_REPAIR_LARGE_LABEL_MIN_SOURCE_SHARE,
         help="carrier-v2 only: minimum declared source-label share required before applying a large-label repair.",
     )
+    parser.add_argument(
+        "--geometry-repair-keep-mode",
+        choices=["configured", "declared-auto"],
+        default=GEOMETRY_REPAIR_KEEP_MODE,
+        help=(
+            "How the evaluator-facing repair source authority set is built: `configured` uses "
+            "--geometry-repair-keep-labels (or the broad default), `declared-auto` derives it "
+            "GT-free from the scene's own multi-view declared labels."
+        ),
+    )
+    parser.add_argument("--geometry-repair-keep-auto-min-count", type=int, default=GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT)
+    parser.add_argument(
+        "--geometry-repair-scale-prior-mode",
+        choices=["off", "log-only", "apply"],
+        default=GEOMETRY_REPAIR_SCALE_PRIOR_MODE,
+        help=(
+            "Scale-prior semantic-authority check: `log-only` records extent-vs-prior violations "
+            "and declared-target selections without changing labels; `apply` performs the sparse "
+            "relabels.  Priors are the frozen commonsense table in duograph3d.scale_priors."
+        ),
+    )
+    parser.add_argument("--geometry-repair-scale-prior-tolerance", type=float, default=GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE)
+    parser.add_argument("--geometry-repair-scale-prior-min-target-share", type=float, default=GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE)
+    parser.add_argument("--geometry-repair-scale-prior-max-source-share", type=float, default=GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE)
     parser.add_argument("--memory-dense-split-by-label", type=int, choices=[0, 1], default=int(MEMORY_DENSE_SPLIT_BY_LABEL))
     parser.add_argument("--memory-dense-split-min-observations", type=int, default=MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS)
     parser.add_argument("--memory-dense-split-min-root-label-entropy", type=float, default=MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY)
@@ -3504,6 +3722,12 @@ def main() -> None:
     GEOMETRY_REPAIR_LARGE_LABEL_MAX_POINT_RATE = float(args.geometry_repair_large_label_max_point_rate)
     GEOMETRY_REPAIR_LARGE_LABEL_MIN_OBSERVATIONS = max(int(args.geometry_repair_large_label_min_observations), 0)
     GEOMETRY_REPAIR_LARGE_LABEL_MIN_SOURCE_SHARE = min(max(float(args.geometry_repair_large_label_min_source_share), 0.0), 1.0)
+    GEOMETRY_REPAIR_KEEP_MODE = str(args.geometry_repair_keep_mode)
+    GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT = max(int(args.geometry_repair_keep_auto_min_count), 1)
+    GEOMETRY_REPAIR_SCALE_PRIOR_MODE = str(args.geometry_repair_scale_prior_mode)
+    GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE = max(float(args.geometry_repair_scale_prior_tolerance), 0.1)
+    GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE = min(max(float(args.geometry_repair_scale_prior_min_target_share), 0.0), 1.0)
+    GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE = min(max(float(args.geometry_repair_scale_prior_max_source_share), 0.0), 1.0)
     MEMORY_DENSE_SPLIT_BY_LABEL = bool(args.memory_dense_split_by_label)
     MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS = max(int(args.memory_dense_split_min_observations), 1)
     MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY = max(float(args.memory_dense_split_min_root_label_entropy), 0.0)
@@ -3726,6 +3950,12 @@ def main() -> None:
                 "geometry_repair_large_label_max_point_rate": GEOMETRY_REPAIR_LARGE_LABEL_MAX_POINT_RATE,
                 "geometry_repair_large_label_min_observations": GEOMETRY_REPAIR_LARGE_LABEL_MIN_OBSERVATIONS,
                 "geometry_repair_large_label_min_source_share": GEOMETRY_REPAIR_LARGE_LABEL_MIN_SOURCE_SHARE,
+                "geometry_repair_keep_mode": GEOMETRY_REPAIR_KEEP_MODE,
+                "geometry_repair_keep_auto_min_count": GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT,
+                "geometry_repair_scale_prior_mode": GEOMETRY_REPAIR_SCALE_PRIOR_MODE,
+                "geometry_repair_scale_prior_tolerance": GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE,
+                "geometry_repair_scale_prior_min_target_share": GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE,
+                "geometry_repair_scale_prior_max_source_share": GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE,
                 "memory_dense_split_by_label": MEMORY_DENSE_SPLIT_BY_LABEL,
             "memory_dense_split_min_observations": MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS,
             "memory_dense_split_min_root_label_entropy": MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY,
