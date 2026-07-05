@@ -133,10 +133,48 @@ Unified config candidate: `--phase beta --cg-merge-overlap-thresh 0.7
 --geometry-repair-scale-prior-mode apply`, zero scene names, zero hand rules.
 Dev-scene evidence: office1 +8.171 (E70-exact), office2 +8.185 (new best).
 
+## Unified v1 full run readout + the two remaining mechanism gaps (2026-07-06)
+
+Per-scene ΔmIoU (unified v1 = gate floor 2, no mutual guard, no hard-ratio):
+room0 −1.59, room1 +6.29, room2 −10.22, office0 +3.18, office1 +4.02,
+office2 +5.72, office3 −0.73, office4 pending.  v1 becomes the
+"no-evidence-floor / no-impossibility-override" ablation row.
+
+Forensics chain (all from object-level probes, no GT):
+
+1. **room0/room2 collapse = over-vetoing.**  room0: 19/20 vetoes have min-side
+   2-7 declared obs (noise).  room2: bimodal — 6 noise vetoes plus 11 high-obs
+   vetoes that are **mutually contained pairs** (comforter|chair 0.86/0.83 both
+   directions; cushion|chair 0.998/0.815): spatially coincident point sets =
+   one observation stream split by readout noise.  office1's correct vetoes are
+   all one-directional (cloth ⊂ picture 0.71).  → two guards: evidence floor
+   (`--cg-merge-label-gate-min-obs`, PA2 sweep) + mutual-containment skip
+   (`--cg-merge-label-gate-mutual-thresh`, default 0.7).
+
+2. **office1 landed exactly on the no-repair value (+4.016)**: the gate
+   preserved the carrier but scale-prior abstained via `source_well_supported`
+   — the carrier's 70/70 detections unanimously declare tissue-paper on a
+   1.399m extent (3.1× prior).  Consensus ≠ correctness under systematic
+   detector bias.  Discriminator vs room0's true large cushions (1.04-1.3×):
+   **violation severity**.  → hard-ratio override (default 2×) + CLIP re-readout
+   restricted to physically-compatible labels when declared offers no
+   alternative ("the most probable label that is physically possible").
+
+3. **office2 probe-vs-unified delta (+8.19 → +5.72) attributed to the
+   cushion:sofa carve rule** (gate behavior identical 124/13/108, sp fired
+   nothing in both).  Carve contribution isolated in PB2; decision pending on
+   generalize-or-scope-out.
+
+4. **Attribution control**: office2@beta+legacy+repair (+8.211) ≈ beta+gate
+   no-repair (+8.185) — office2's jump over E70 is the beta phase; the gate's
+   causal ground is office1-type carrier preservation.
+
 ## Next actions
 
-1. Unified full Replica APPLY on 184 (`ccfb_unified_full_20260706_apply`, running)
-   + LOG-ONLY control on 76 after its queue drains.
-2. PA2 min-obs sensitivity sweep (dev scenes) for the ablation table.
-3. If full ≥ +2.0 all-ΔmIoU with no negative scene → LOSO/sensitivity hardening,
-   then ablation matrix (w/o gate, w/o scale-prior, w/o auto-keep, oracle E70).
+1. PA2 floor sweep on 76 (running) → pick evidence floor from dev scenes.
+2. PB2 spot-check on 184 when apply run ends: office1 (hard-ratio fires),
+   room0/room2 (mutual+floor rescue), office2+carve (carve isolation).
+3. Unified v2 full Replica with calibrated floor → the main-table candidate;
+   then ablation matrix + sensitivity sweep + held-out scene accounting
+   (dev evidence: office1/office2 + room0/room2 diagnostics; untouched:
+   room1, office0, office3, office4).

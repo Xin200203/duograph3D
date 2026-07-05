@@ -198,6 +198,15 @@ GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE = float(
 GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO = float(
     os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO", "2.0")
 )
+# The CLIP-compatible re-readout fallback is OFF by default: PB2 showed the
+# compatible-label CLIP ranking on hard-violating carriers is noise-level
+# (scores ~0.25, margins ~0.01) and fired 7/7 junk relabels on office1,
+# including tissue-paper->comforter on the carrier whose true class is cloth.
+# Scale-prior targets must come from declared multi-view evidence unless this
+# is explicitly enabled for diagnostics.
+GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK = int(
+    os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK", "0")
+)
 STRUCTURAL_EXPORT_LABELS = frozenset({"other", "floor", "wall", "ceiling", "door", "window"})
 CG_DOWNSAMPLE_VOXEL_SIZE = 0.025
 CG_DBSCAN_EPS = 0.1
@@ -2671,7 +2680,11 @@ def apply_geometry_repairs(
                 severity_ratio=violation.get("severity_ratio"),
                 hard_violation_ratio=GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO,
             )
-            if not selection["target"] and selection.get("hard_violation"):
+            if (
+                not selection["target"]
+                and selection.get("hard_violation")
+                and GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK
+            ):
                 # Declared evidence offers no physically-compatible alternative
                 # (office1: 70/70 declared tissue-paper) — re-read the object's
                 # own CLIP scores restricted to labels whose prior accommodates
@@ -3461,7 +3474,7 @@ def main() -> None:
     global GEOMETRY_REPAIR_KEEP_MODE, GEOMETRY_REPAIR_KEEP_AUTO_MIN_COUNT
     global GEOMETRY_REPAIR_SCALE_PRIOR_MODE, GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE
     global GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE, GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE
-    global GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO
+    global GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO, GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK
     global VOXEL_SIZE, MIN_MASK_PIXELS, MASK_CONF_THRESHOLD, MAX_BBOX_AREA_RATIO, MIN_VALID_DEPTH_POINTS
     global DROP_POST_SUBTRACT_TINY
     global CG_DOWNSAMPLE_VOXEL_SIZE, CG_DBSCAN_EPS, CG_DBSCAN_MIN_POINTS
@@ -3672,6 +3685,16 @@ def main() -> None:
             "top CLIP label among physically-compatible classes."
         ),
     )
+    parser.add_argument(
+        "--geometry-repair-scale-prior-clip-fallback",
+        type=int,
+        choices=[0, 1],
+        default=GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK,
+        help=(
+            "Diagnostics-only: allow hard violations with no declared alternative to relabel via "
+            "the physically-compatible CLIP ranking. Default off — that ranking measured as noise."
+        ),
+    )
     parser.add_argument("--memory-dense-split-by-label", type=int, choices=[0, 1], default=int(MEMORY_DENSE_SPLIT_BY_LABEL))
     parser.add_argument("--memory-dense-split-min-observations", type=int, default=MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS)
     parser.add_argument("--memory-dense-split-min-root-label-entropy", type=float, default=MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY)
@@ -3808,6 +3831,7 @@ def main() -> None:
     GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE = min(max(float(args.geometry_repair_scale_prior_min_target_share), 0.0), 1.0)
     GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE = min(max(float(args.geometry_repair_scale_prior_max_source_share), 0.0), 1.0)
     GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO = max(float(args.geometry_repair_scale_prior_hard_ratio), 1.0)
+    GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK = int(args.geometry_repair_scale_prior_clip_fallback)
     MEMORY_DENSE_SPLIT_BY_LABEL = bool(args.memory_dense_split_by_label)
     MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS = max(int(args.memory_dense_split_min_observations), 1)
     MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY = max(float(args.memory_dense_split_min_root_label_entropy), 0.0)
