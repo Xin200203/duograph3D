@@ -20,12 +20,21 @@ import torch
 import open_clip
 import open3d as o3d
 
-sys.path.insert(0, "/home/nebula/xxy/DuoGraph3D/src")
-sys.path.insert(0, "/home/nebula/xxy/concept-graphs-main")
+# Host-specific roots are env-overridable so the same runner works on 184 (default)
+# and mirrored setups such as 76 (/datadisk3/xxy/duograph3d).  Defaults preserve
+# the legacy 184 behavior exactly.
+sys.path.insert(0, os.environ.get("DUOGRAPH_SRC", "/home/nebula/xxy/DuoGraph3D/src"))
+sys.path.insert(0, os.environ.get("DUOGRAPH_CG_MAIN", "/home/nebula/xxy/concept-graphs-main"))
 
 from duograph3d.contracts import FrameInput, ObjectObservationPayload, Observation, ObservationSupport, PipelineConfig, TemporalVariant
 from duograph3d.events import BRANCH_DUOGRAPH3D
-from duograph3d.export_policy import GEOMETRY_EXPORT_SOURCE, MEMORY_DENSE_EXPORT_SOURCE, ExportCoveragePolicy, choose_export_source
+from duograph3d.export_policy import (
+    GEOMETRY_EXPORT_SOURCE,
+    MEMORY_DENSE_EXPORT_SOURCE,
+    ExportCoveragePolicy,
+    choose_export_source,
+    label_cluster_veto,
+)
 from duograph3d.experiment_logger import export_event_stream_jsonl
 from duograph3d.io_utils import write_json
 from duograph3d.memory import ObjectGraphMemory
@@ -35,14 +44,32 @@ from duograph3d.shadow_metrics import generate_shadow_report
 from conceptgraph.dataset.replica_constants import REPLICA_CLASSES, REPLICA_EXISTING_CLASSES, REPLICA_SCENE_IDS, REPLICA_SCENE_IDS_
 from conceptgraph.scripts.eval_replica_semseg import eval_replica
 from conceptgraph.slam.slam_classes import MapObjectList
-from conceptgraph.slam.utils import denoise_objects, filter_objects, get_bounding_box, merge_objects, process_pcd
+from conceptgraph.slam.utils import (
+    compute_overlap_matrix,
+    denoise_objects,
+    filter_objects,
+    get_bounding_box,
+    merge_obj2_into_obj1,
+    merge_objects,
+    process_pcd,
+)
+from conceptgraph.utils.general_utils import to_tensor
+import torch.nn.functional as F
 from conceptgraph.utils.ious import mask_subtract_contained
 from conceptgraph.utils.eval import compute_metrics
 
-ROOT = Path("/home/nebula/xxy/duograph3d_artifacts/duograph3d_conceptgraphs_engineered_20260426")
-REPLICA_ROOT = Path("/home/nebula/xxy/dataset/Replica")
-REPLICA_SEMANTIC_ROOT = Path("/home/nebula/xxy/dataset/Replica-semantic")
-BASELINE_CSV = Path("/home/nebula/xxy/duograph3d_artifacts/conceptgraphs_replica_official_20260423/replica_ex6_results.csv")
+ROOT = Path(os.environ.get(
+    "DUOGRAPH_ARTIFACT_ROOT",
+    "/home/nebula/xxy/duograph3d_artifacts/duograph3d_conceptgraphs_engineered_20260426",
+))
+REPLICA_ROOT = Path(os.environ.get("DUOGRAPH_REPLICA_ROOT", "/home/nebula/xxy/dataset/Replica"))
+REPLICA_SEMANTIC_ROOT = Path(os.environ.get(
+    "DUOGRAPH_REPLICA_SEMANTIC_ROOT", "/home/nebula/xxy/dataset/Replica-semantic"
+))
+BASELINE_CSV = Path(os.environ.get(
+    "DUOGRAPH_BASELINE_CSV",
+    "/home/nebula/xxy/duograph3d_artifacts/conceptgraphs_replica_official_20260423/replica_ex6_results.csv",
+))
 PRED_EXP_NAME = "duograph3d_gsa_engineered_monitor"
 FX = 600.0
 FY = 600.0
@@ -139,6 +166,14 @@ CG_DBSCAN_MIN_POINTS = 10
 CG_MERGE_OVERLAP_THRESH = 0.7
 CG_MERGE_VISUAL_SIM_THRESH = 0.8
 CG_MERGE_TEXT_SIM_THRESH = 0.8
+# Per-pair carrier-preservation gate for the CG-style postprocess merge.  Legacy
+# behavior keeps a single global overlap threshold (1.0 = merging fully off, the
+# E70 office1 policy; 0.7 = merging on, the office2 policy).  The label gate
+# replaces that scene-level binary: pairs that CG would merge are vetoed only
+# when both objects carry distinct, well-supported declared-label clusters.
+CG_MERGE_LABEL_GATE = int(os.environ.get("DUOGRAPH_CG_MERGE_LABEL_GATE", "0"))
+CG_MERGE_LABEL_GATE_MIN_SHARE = float(os.environ.get("DUOGRAPH_CG_MERGE_LABEL_GATE_MIN_SHARE", "0.60"))
+CG_MERGE_LABEL_GATE_MIN_OBS = int(os.environ.get("DUOGRAPH_CG_MERGE_LABEL_GATE_MIN_OBS", "2"))
 L2_OCCLUDED_AFTER_MISSES = int(os.environ.get("DUOGRAPH_L2_OCCLUDED_AFTER_MISSES", "1"))
 L2_DORMANT_AFTER_MISSES = int(os.environ.get("DUOGRAPH_L2_DORMANT_AFTER_MISSES", "2"))
 L2_RETIRE_AFTER_MISSES = int(os.environ.get("DUOGRAPH_L2_RETIRE_AFTER_MISSES", "4"))
@@ -1927,13 +1962,84 @@ def compute_shadow_undermerge(scene: str, key_data: dict[str, dict[str, object]]
     }
 
 
-def postprocess_map_objects(cfg, initial_objects: MapObjectList) -> tuple[MapObjectList, dict[str, int]]:
+def merge_objects_with_label_gate(cfg, objects: MapObjectList) -> tuple[MapObjectList, dict[str, object]]:
+    """ConceptGraphs merge_overlap_objects with a per-pair label-cluster veto.
+
+    Mirrors the legacy loop exactly (same pair ordering, same overlap/visual/text
+    thresholds, same kept-object bookkeeping) so any behavior difference is
+    attributable to the veto alone: pairs CG would merge are skipped only when
+    `label_cluster_veto` finds two distinct, well-supported declared-label
+    clusters.  Every veto is recorded for the export monitor.
+    """
+    gate_probe: dict[str, object] = {
+        "enabled": True,
+        "min_top_share": CG_MERGE_LABEL_GATE_MIN_SHARE,
+        "min_observations": CG_MERGE_LABEL_GATE_MIN_OBS,
+        "legacy_merge_candidate_pairs": 0,
+        "merged_pairs": 0,
+        "vetoed_pairs": 0,
+        "veto_label_pairs": {},
+        "veto_examples": [],
+    }
+    if cfg.merge_overlap_thresh <= 0 or len(objects) == 0:
+        return objects, gate_probe
+    overlap_matrix = compute_overlap_matrix(cfg, objects)
+    x, y = overlap_matrix.nonzero()
+    overlap_ratio = overlap_matrix[x, y]
+    sort = np.argsort(overlap_ratio)[::-1]
+    x = x[sort]
+    y = y[sort]
+    overlap_ratio = overlap_ratio[sort]
+    kept_objects = np.ones(len(objects), dtype=bool)
+    veto_label_pairs: Counter[str] = Counter()
+    for i, j, ratio in zip(x, y, overlap_ratio):
+        if ratio <= cfg.merge_overlap_thresh:
+            break
+        visual_sim = float(F.cosine_similarity(to_tensor(objects[i]["clip_ft"]), to_tensor(objects[j]["clip_ft"]), dim=0))
+        text_sim = float(F.cosine_similarity(to_tensor(objects[i]["text_ft"]), to_tensor(objects[j]["text_ft"]), dim=0))
+        if visual_sim <= cfg.merge_visual_sim_thresh or text_sim <= cfg.merge_text_sim_thresh:
+            continue
+        gate_probe["legacy_merge_candidate_pairs"] = int(gate_probe["legacy_merge_candidate_pairs"]) + 1
+        veto_info = label_cluster_veto(
+            dict(object_declared_label_counts(objects[i])),
+            dict(object_declared_label_counts(objects[j])),
+            min_top_share=CG_MERGE_LABEL_GATE_MIN_SHARE,
+            min_observations=CG_MERGE_LABEL_GATE_MIN_OBS,
+        )
+        if veto_info["veto"]:
+            gate_probe["vetoed_pairs"] = int(gate_probe["vetoed_pairs"]) + 1
+            veto_label_pairs[f"{veto_info['left_top']}|{veto_info['right_top']}"] += 1
+            if len(gate_probe["veto_examples"]) < 20:
+                gate_probe["veto_examples"].append({
+                    "overlap_ratio": round(float(ratio), 4),
+                    "visual_sim": round(visual_sim, 4),
+                    "text_sim": round(text_sim, 4),
+                    **{k: veto_info[k] for k in (
+                        "left_top", "left_share", "left_observations",
+                        "right_top", "right_share", "right_observations",
+                    )},
+                })
+            continue
+        if kept_objects[j]:
+            objects[j] = merge_obj2_into_obj1(cfg, objects[j], objects[i], run_dbscan=True)
+            kept_objects[i] = False
+            gate_probe["merged_pairs"] = int(gate_probe["merged_pairs"]) + 1
+    gate_probe["veto_label_pairs"] = dict(veto_label_pairs)
+    new_objects = [obj for obj, keep in zip(objects, kept_objects) if keep]
+    return MapObjectList(new_objects), gate_probe
+
+
+def postprocess_map_objects(cfg, initial_objects: MapObjectList) -> tuple[MapObjectList, dict[str, object]]:
     pre_postprocess_count = len(initial_objects)
     objects = denoise_objects(cfg, initial_objects)
     post_denoise_count = len(objects)
     objects = filter_objects(cfg, objects)
     post_filter_count = len(objects)
-    objects = merge_objects(cfg, objects)
+    if CG_MERGE_LABEL_GATE:
+        objects, label_gate_probe = merge_objects_with_label_gate(cfg, objects)
+    else:
+        objects = merge_objects(cfg, objects)
+        label_gate_probe = {"enabled": False}
     post_merge_count = len(objects)
     cap_object_points(objects, cfg)
     return objects, {
@@ -1941,6 +2047,7 @@ def postprocess_map_objects(cfg, initial_objects: MapObjectList) -> tuple[MapObj
         "post_denoise_object_count": post_denoise_count,
         "post_filter_object_count": post_filter_count,
         "post_merge_object_count": post_merge_count,
+        "label_gate_probe": label_gate_probe,
     }
 
 
@@ -2711,8 +2818,10 @@ def write_conceptgraphs_payload(
         f"(source={export_source}, reason={export_selection['fallback_reason']})",
         flush=True,
     )
+    label_gate_probe: dict[str, object] = {"enabled": False}
     if export_source == GEOMETRY_EXPORT_SOURCE and MULTIRES_EXPORT_ENABLED:
         coarse_objects, coarse_postprocess_counts = postprocess_map_objects(cfg, initial_objects)
+        label_gate_probe = coarse_postprocess_counts.get("label_gate_probe", {"enabled": False})
         if MULTIRES_FINE_SPLIT_BY_LABEL:
             fine_items = iter_label_bucket_export_items(
                 multires_key_data,
@@ -2751,6 +2860,7 @@ def write_conceptgraphs_payload(
         post_denoise_count = int(postprocess_counts["post_denoise_object_count"])
         post_filter_count = int(postprocess_counts["post_filter_object_count"])
         post_merge_count = int(postprocess_counts["post_merge_object_count"])
+        label_gate_probe = postprocess_counts.get("label_gate_probe", {"enabled": False})
     objects, geometry_repair_diagnostics = apply_geometry_repairs(
         objects,
         cfg,
@@ -2795,6 +2905,7 @@ def write_conceptgraphs_payload(
             "coarse_postprocess_counts": coarse_postprocess_counts,
         },
         "geometry_repair_probe": geometry_repair_diagnostics,
+        "cg_merge_label_gate_probe": label_gate_probe,
         "initial_key_object_count": pre_postprocess_count,
         "post_denoise_object_count": post_denoise_count,
         "post_filter_object_count": post_filter_count,
@@ -3103,6 +3214,7 @@ def main() -> None:
     global DROP_POST_SUBTRACT_TINY
     global CG_DOWNSAMPLE_VOXEL_SIZE, CG_DBSCAN_EPS, CG_DBSCAN_MIN_POINTS
     global CG_MERGE_OVERLAP_THRESH, CG_MERGE_VISUAL_SIM_THRESH, CG_MERGE_TEXT_SIM_THRESH
+    global CG_MERGE_LABEL_GATE, CG_MERGE_LABEL_GATE_MIN_SHARE, CG_MERGE_LABEL_GATE_MIN_OBS
     global MIN_MEMORY_EXPORT_OBJECTS, MIN_MEMORY_EXPORT_KEY_RATIO, MIN_MEMORY_EXPORT_POINT_RATIO
     global MEMORY_DENSE_SPLIT_BY_LABEL, MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS
     global MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY, MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE
@@ -3283,6 +3395,19 @@ def main() -> None:
     parser.add_argument("--cg-merge-overlap-thresh", type=float, default=CG_MERGE_OVERLAP_THRESH)
     parser.add_argument("--cg-merge-visual-sim-thresh", type=float, default=CG_MERGE_VISUAL_SIM_THRESH)
     parser.add_argument("--cg-merge-text-sim-thresh", type=float, default=CG_MERGE_TEXT_SIM_THRESH)
+    parser.add_argument(
+        "--cg-merge-label-gate",
+        type=int,
+        choices=[0, 1],
+        default=CG_MERGE_LABEL_GATE,
+        help=(
+            "Per-pair carrier-preservation veto inside the CG-style postprocess merge: "
+            "pairs CG would merge are skipped when both objects hold distinct, "
+            "well-supported declared-label clusters. 0 keeps legacy global-threshold merging."
+        ),
+    )
+    parser.add_argument("--cg-merge-label-gate-min-share", type=float, default=CG_MERGE_LABEL_GATE_MIN_SHARE)
+    parser.add_argument("--cg-merge-label-gate-min-obs", type=int, default=CG_MERGE_LABEL_GATE_MIN_OBS)
     parser.add_argument("--l2-occluded-after-misses", type=int, default=L2_OCCLUDED_AFTER_MISSES)
     parser.add_argument("--l2-dormant-after-misses", type=int, default=L2_DORMANT_AFTER_MISSES)
     parser.add_argument("--l2-retire-after-misses", type=int, default=L2_RETIRE_AFTER_MISSES)
@@ -3389,6 +3514,9 @@ def main() -> None:
     CG_MERGE_OVERLAP_THRESH = min(max(float(args.cg_merge_overlap_thresh), 0.0), 1.0)
     CG_MERGE_VISUAL_SIM_THRESH = min(max(float(args.cg_merge_visual_sim_thresh), -1.0), 1.0)
     CG_MERGE_TEXT_SIM_THRESH = min(max(float(args.cg_merge_text_sim_thresh), -1.0), 1.0)
+    CG_MERGE_LABEL_GATE = int(args.cg_merge_label_gate)
+    CG_MERGE_LABEL_GATE_MIN_SHARE = min(max(float(args.cg_merge_label_gate_min_share), 0.0), 1.0)
+    CG_MERGE_LABEL_GATE_MIN_OBS = max(int(args.cg_merge_label_gate_min_obs), 1)
     L2_OCCLUDED_AFTER_MISSES = max(int(args.l2_occluded_after_misses), 1)
     L2_DORMANT_AFTER_MISSES = max(int(args.l2_dormant_after_misses), L2_OCCLUDED_AFTER_MISSES)
     L2_RETIRE_AFTER_MISSES = max(int(args.l2_retire_after_misses), L2_DORMANT_AFTER_MISSES + 1)
@@ -3625,6 +3753,9 @@ def main() -> None:
                 "merge_overlap_thresh": CG_MERGE_OVERLAP_THRESH,
                 "merge_visual_sim_thresh": CG_MERGE_VISUAL_SIM_THRESH,
                 "merge_text_sim_thresh": CG_MERGE_TEXT_SIM_THRESH,
+                "merge_label_gate": CG_MERGE_LABEL_GATE,
+                "merge_label_gate_min_share": CG_MERGE_LABEL_GATE_MIN_SHARE,
+                "merge_label_gate_min_obs": CG_MERGE_LABEL_GATE_MIN_OBS,
             },
         },
         "setting_audit": {

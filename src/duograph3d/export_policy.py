@@ -105,6 +105,74 @@ def choose_export_source(
     return diagnostics
 
 
+def label_cluster_veto(
+    left_label_counts: dict[str, int],
+    right_label_counts: dict[str, int],
+    *,
+    min_top_share: float = 0.60,
+    min_observations: int = 2,
+) -> dict[str, object]:
+    """Decide whether merging two export objects would erase a distinct label cluster.
+
+    Per-pair carrier-preservation gate for ConceptGraphs-style postprocess merging:
+    when two spatially-overlapping objects each carry a well-supported but different
+    multi-view declared label, they hold independent semantic evidence and spatial
+    containment alone must not collapse them (the office1 tissue-paper carrier
+    failure).  When their declared labels agree, merging fragment duplicates stays
+    allowed (the office2 table-fragment case).
+
+    Pure and side-effect free; malformed counts never raise.  Returns a diagnostics
+    dict whose `veto` key is the decision.
+    """
+
+    def _top(counts: dict[str, int]) -> tuple[str, int, int]:
+        total = 0
+        best_label = ""
+        best_count = 0
+        for label, raw_count in (counts or {}).items():
+            try:
+                count = int(raw_count)
+            except (TypeError, ValueError):
+                continue
+            if count <= 0:
+                continue
+            total += count
+            if count > best_count or (count == best_count and str(label) < best_label):
+                best_label = str(label)
+                best_count = count
+        return best_label, best_count, total
+
+    left_top, left_count, left_total = _top(left_label_counts)
+    right_top, right_count, right_total = _top(right_label_counts)
+    left_share = round(left_count / left_total, 6) if left_total else 0.0
+    right_share = round(right_count / right_total, 6) if right_total else 0.0
+    diagnostics: dict[str, object] = {
+        "veto": False,
+        "reason": "",
+        "left_top": left_top,
+        "left_share": left_share,
+        "left_observations": left_total,
+        "right_top": right_top,
+        "right_share": right_share,
+        "right_observations": right_total,
+    }
+    if not left_top or not right_top:
+        diagnostics["reason"] = "empty_label_counts"
+        return diagnostics
+    if left_top == right_top:
+        diagnostics["reason"] = "same_top_label"
+        return diagnostics
+    if left_total < min_observations or right_total < min_observations:
+        diagnostics["reason"] = "insufficient_observations"
+        return diagnostics
+    if left_share < min_top_share or right_share < min_top_share:
+        diagnostics["reason"] = "insufficient_top_share"
+        return diagnostics
+    diagnostics["veto"] = True
+    diagnostics["reason"] = "distinct_label_clusters"
+    return diagnostics
+
+
 # ---- Phase 丁: carrier selection v2 ----
 
 

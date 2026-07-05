@@ -4,6 +4,7 @@ import argparse
 import csv
 import gzip
 import json
+import os
 import pickle
 import shutil
 import sys
@@ -13,9 +14,11 @@ import torch
 import open_clip
 
 # Keep this helper colocated with the engineered runner on the remote server.
-sys.path.insert(0, "/home/nebula/xxy/DuoGraph3D")
-sys.path.insert(0, "/home/nebula/xxy/DuoGraph3D/src")
-sys.path.insert(0, "/home/nebula/xxy/concept-graphs-main")
+# Env-overridable so the same script works on mirrored setups (76 etc.).
+_CODE_ROOT = os.environ.get("DUOGRAPH_CODE_ROOT", "/home/nebula/xxy/DuoGraph3D")
+sys.path.insert(0, _CODE_ROOT)
+sys.path.insert(0, os.path.join(_CODE_ROOT, "src"))
+sys.path.insert(0, os.environ.get("DUOGRAPH_CG_MAIN", "/home/nebula/xxy/concept-graphs-main"))
 
 from conceptgraph.dataset.replica_constants import REPLICA_CLASSES, REPLICA_EXISTING_CLASSES, REPLICA_SCENE_IDS, REPLICA_SCENE_IDS_
 from conceptgraph.scripts.eval_replica_semseg import eval_replica
