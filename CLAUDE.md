@@ -86,6 +86,15 @@ macOS (local dev)          GitHub                    10.177.69.184 (execution)
   ```
 - **GSA observation data**: Real GSA detections live in `{Replica}/{scene}/gsa_detections_none/frame*.pkl.gz`. The `run_conceptgraphs_engineered_parity.py` script loads these directly. For the shadow runner without GSA data, use `--observation-json` pointing to a pre-exported JSON, or it falls back to synthetic templates.
 
+### Experiment execution facts (updated 2026-07-06)
+
+- **184 canonical python for GPU runs**: `/home/nebula/miniconda3/envs/duograph-baselines-cu118/bin/python` (3.10.19). Bare `python3` on 184 has NO numpy — only use it for tiny JSON parsing.
+- **76 server is a verified parallel experiment machine**: setup at `/datadisk3/xxy/duograph3d/` (code mirror `DuoGraph3D/`, `dataset/Replica` + GSA + `Replica-semantic`, `artifacts/`, baseline CSV). Env: `source /datadisk1/xxy/miniconda3/bin/activate conceptgraph && source /datadisk3/xxy/duograph3d/duograph_env.sh` (exports `DUOGRAPH_*` path vars + `DUOGRAPH_PY/ART/CODE`). Use `CUDA_VISIBLE_DEVICES=4` (GPUs 0-3 and often 5-6 belong to other users). 76 has NO internet — HF models load from local cache only. Cross-machine metric agreement verified to <0.01 mIoU.
+- **Runner paths are env-overridable** (defaults = 184): `DUOGRAPH_SRC`, `DUOGRAPH_CG_MAIN`, `DUOGRAPH_ARTIFACT_ROOT`, `DUOGRAPH_REPLICA_ROOT`, `DUOGRAPH_REPLICA_SEMANTIC_ROOT`, `DUOGRAPH_BASELINE_CSV`; `evaluate_composite_policy.py` honors `DUOGRAPH_CODE_ROOT`/`DUOGRAPH_CG_MAIN`.
+- **Launcher pattern**: `run_ccfb_*.sh` scripts in repo root are env-parametrized for both machines; launch inside tmux, write `variant_summary.tsv` + `logs/queue.log` under an artifact root. Single-scene runs compare against the per-scene CG baseline row; the `all` row of a single-scene run is meaningless (it aggregates against the full-scene baseline).
+- **CG merge internals**: `merge_overlap_thresh=1.0` disables postprocess merging entirely (ratio ∈ [0,1], strict `>` comparison). `merge_obj2_into_obj1` concatenates list fields and raises `NotImplementedError` on dict fields — custom per-object fields must be lists (e.g. `declared_label_counts` is stored as `[label, count]` pairs).
+- **73 server** (`xxy@10.176.56.73:10246`): 8× RTX 3090 idle, no DuoGraph3D setup; reserve for ScanNet GSA detection generation. 73→184/76 SSH auth not configured yet.
+
 ## Key conventions
 
 - 4-space indentation, standard-library Python only, explicit type hints
