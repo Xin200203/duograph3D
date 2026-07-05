@@ -88,11 +88,55 @@ Pending: `pa1c` reruns office2 (gamma + beta) on the new code to confirm the
 veto does not break office2's same-label fragment merging with real
 distributions.
 
+## Pre-registered B2 prediction (written before PB1 ran)
+
+The office2 bin-carrier object record (pa1 o2_gate_m07 relabel example):
+`pred_label=bin, max_extent=1.564, z_extent=0.122, declared={table:2, tablet:1,
+tv-stand:1, switch:1, camera:1}, source_declared_share=0.0, target(table)
+share=0.333`.  Prediction: the scale-prior pass fires here with default guards —
+violation (1.564 > bin prior 0.9), source not multi-view supported (0.0 < 0.6),
+table is the only declared label whose prior accommodates 1.564m and its share
+0.333 ≥ 0.15.  The readout is a single-channel outlier against both the
+multi-view label evidence and the geometry — exactly the authority-revocation
+case the mechanism encodes.  office1 predicted analogous (declared cloth≈1.0).
+office4 vent / room0 cushion predicted to abstain.  PB1 tests all four.
+
+## PA1c results — the mechanism story deepens (2026-07-05 late)
+
+| variant | scene | ΔmIoU | relabels | objects | gate cand/merged/vetoed |
+| --- | --- | ---: | --- | ---: | --- |
+| o2_gate_m07 (new code, gamma) | office2 | +3.698 | {} | 48 | 23/2/21 |
+| o2_gate_m07_beta (new code) | office2 | **+8.185** | {} | 91 | 124/13/108 |
+
+Two findings:
+
+1. **office2@gamma with real distributions over-vetoes**: the same-table fragments
+   (declared tops table/tablet/tv-stand/switch, min-side 12-17 obs) are distinct-top
+   pairs under split-by-label export, so the veto blocks the fragment assembly the
+   bin→table repair needed.  The discriminating signal versus office1's correct
+   vetoes (cloth|picture at 164/567 obs) is **multi-view evidence volume** —
+   hence the evidence-floor dial `--cg-merge-label-gate-min-obs`
+   (`run_ccfb_pa2_minobs_sweep_20260705.sh` calibrates it on the two dev scenes).
+
+2. **office2@beta + gate = +8.185, a new office2 best, with NO repair fired.**
+   Mechanistic reading: the "bin" mis-readout was *manufactured by merging* —
+   feature averaging across fragments shifted the merged carrier's CLIP top-1 to
+   bin.  Preserve the fragments and the mis-readout never exists; the E70 repair
+   was compensating for merge-induced corruption.  Carrier preservation is the
+   cause; repair is the patch.  This inverts the paper's mechanism hierarchy:
+   the merge gate is primary, scale-prior repair handles the residual cases
+   (office1's cloth carrier whose readout is corrupted at the *detection* level,
+   not by merging).
+
+Unified config candidate: `--phase beta --cg-merge-overlap-thresh 0.7
+--cg-merge-label-gate 1 --geometry-repair-keep-mode declared-auto
+--geometry-repair-scale-prior-mode apply`, zero scene names, zero hand rules.
+Dev-scene evidence: office1 +8.171 (E70-exact), office2 +8.185 (new best).
+
 ## Next actions
 
-1. PA1c office2 verification on new code (running).
-2. P-B1 log-only scale-prior probe on office1/office2/office4/room0 with the
-   unified config (`run_ccfb_pb1_scale_prior_probe_20260705.sh`) — read the
-   violation/selection/abstain table, not the gap.
-3. If PB1 reads clean → unified full Replica (`run_ccfb_unified_full_20260705.sh`,
-   sp-mode apply), then LOSO hardening.
+1. Unified full Replica APPLY on 184 (`ccfb_unified_full_20260706_apply`, running)
+   + LOG-ONLY control on 76 after its queue drains.
+2. PA2 min-obs sensitivity sweep (dev scenes) for the ablation table.
+3. If full ≥ +2.0 all-ΔmIoU with no negative scene → LOSO/sensitivity hardening,
+   then ablation matrix (w/o gate, w/o scale-prior, w/o auto-keep, oracle E70).
