@@ -90,3 +90,39 @@ ScanNet **降级**：从"头条主表"降为"OOD 安全性/鲁棒性检查"。Sc
 
 不再追加 ScanNet 跑动去抢救头条——归因已清楚，更多跑动只会进一步刻画一个
 后处理差异，不会把它变成思想贡献。
+
+---
+
+# 附：CCF-B 冲刺的根因排查（2026-07-06 深夜，D1/D2）
+
+## D1 逐类损失分解（Replica dense 基底，final config vs CG）
+
+两种损失模式：
+- **模式 A（中小物体整类蒸发）**：office4 tv-screen 0.88→0、clock 0.77→0；
+  room2 switch 0.84→0、wall-plug 0.79→0.02；room0 book 0.22→0。
+- **模式 B（大家具退化）**：office4 table 0.93→0.22、bench 0.97→0.51；
+  room0 sofa 0.75→0.26；office3 clock/cushion/sofa。
+
+## D2 对象级尸检（office4/room2，diagnose_eval_object_assignments）
+
+**dense 基底三联病**，展品 office4 obj#43：
+1. **点稀疏**：2121 次检测的对象只导出 1382 点（`max_points_per_obs=160`、
+   `MAX_POINTS_PER_OBJECT=4096` 的全局采样预算）；GT tv-screen 105k 点（98.6%）
+   + clock 7.4k 点（100%）被最近点评测吸附到这个稀疏错误邻居 → 两类整体蒸发。
+   CG 每景 1-3M 点 vs 我们 ~100k——ScanNet 公平性核查发现的密度差在 Replica
+   上反向伤害我们自己。
+2. **桶混合**：obj#43 横跨 2.48m 的墙带混合桶；room2 GT table 34% 被吸进
+   indoor-plant 桶、22% 进 vent 桶（召回仅 43.8%）。
+3. **混合读出漂移**：obj#43 声明 monitor、eval CLIP 读出 vent（双错）；
+   obj#52 声明 stool、读出 table。
+
+## 点对点修复分派
+
+- **O2c（点稀疏，参数级修复，76 跑动中）**：点预算 160/4096 → 640/16384
+  （即 E70-geometry 的全局值），其余不变。
+- **O1（基底替代，184 跑动中）**：multires-geometry-everywhere
+  （E70-geometry 全局画像：gamma+voxel0.5+minDet8+640/16384+split+multires），
+  office1/office2 在此基底上的表现是从未测过的空白。
+- O2b（桶混合，Layer2/分裂参数）：待 O1/O2c 结果后决定是否需要。
+- 判读：两线赛马，取更强者为统一基底；若 O2c 使 dense 全场景转正，
+  机制层（门/sp）在其上的增量重新可辩护。
