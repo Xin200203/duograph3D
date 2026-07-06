@@ -136,6 +136,39 @@ office2-gamma floor {2,8,24} → {+2.96, +2.96, +3.18}。
 
 Artifacts: `ccfb_cg_authority_20260706`（184）。
 
+## T6 — ScanNet 机制迁移表（2026-07-06，8 个 val_50 场景，NYU40 协议）
+
+协议：`eval_scannet_semseg.py`（GT 网格顶点最近预测点指派，NYU40 文本库，
+排除 wall/floor/ceiling/door/window/person/other*）；CG 基线 = 官方 cfslam 参数
+在同一 staged 数据上重跑；in-loop = unified 配置（consolidation-auto + 门 + sp，
+NYU40 冻结先验，**零 ScanNet 专属调参**，先验提交先于首次评测）。
+
+| scene | 保留类数 | CG mIoU | in-loop mIoU | 路由 |
+| --- | ---: | ---: | ---: | --- |
+| scene0568_00 | 8 | 18.05 | **68.83** | dense |
+| scene0304_00 | 2 | 50.00 | 36.51 | dense |
+| scene0488_00 | 4 | 5.30 | **21.36** | geometry(直通) |
+| scene0412_00 | 3 | 41.96 | **63.79** | dense |
+| scene0217_00 | 5 | 29.72 | **74.17** | dense |
+| scene0019_00 | 3 | 21.92 | 0.00 | geometry(直通) |
+| scene0414_00 | 5 | 29.83 | 16.73 | geometry(直通) |
+| scene0575_00 | 3 | 58.10 | **100.00** | dense |
+| **all（聚合混淆）** | — | **15.32** | **34.86** | — |
+
+读法与诚实边界：
+1. 逐景极值（100/0）是 2-3 个保留类的小场景协议效应，两行同受影响；聚合行
+   （+19.5 mIoU）是稳健口径。
+2. **Replica 校准的 consolidation 路由零修改迁移**：5 dense / 3 geometry；
+   dense 路由景大幅取胜（+50.8/+44.4/+41.9/+21.8，例外 0304 −13.5），
+   geometry 路由景走机制关闭的薄弱直通导出而落后（设计使然，非机制误伤）。
+3. **机制安全性迁移（核心证据）**：门 113 候选 / 30 合并 / 62 否决正常运作；
+   **sp 26 个尺度违规 → 0 改标，26/26 审计弃权**（12 source_well_supported +
+   14 no_compatible_target）——冻结 NYU40 先验在 OOD 真实扫描上零误触发。
+4. 对象规模：ours 64-130/景 vs CG 515-2172/景（合并基底 vs 原始检测聚合）。
+
+Artifacts: `scannet_gsa_20260706{,b}`, `scannet_cfslam_20260706`,
+`scannet_inloop_full`, `scannet_eval_20260706`（184）。
+
 ## 场景记账（审稿人辩护用）
 
 - 开发景：office1、office2（机制发现与阈值校准）
