@@ -37,9 +37,13 @@ from duograph3d.export_policy import (
 )
 from duograph3d.scale_priors import (
     DEFAULT_MAX_EXTENT_PRIORS,
+    SCANNET_NYU40_MAX_EXTENT_PRIORS,
     scale_prior_violation,
     select_scale_prior_target,
 )
+
+# Active per-vocabulary frozen priors; swapped to the NYU40 table in scannet mode.
+ACTIVE_SCALE_PRIORS = DEFAULT_MAX_EXTENT_PRIORS
 from duograph3d.experiment_logger import export_event_stream_jsonl
 from duograph3d.io_utils import write_json
 from duograph3d.memory import ObjectGraphMemory
@@ -76,6 +80,21 @@ BASELINE_CSV = Path(os.environ.get(
     "/home/nebula/xxy/duograph3d_artifacts/conceptgraphs_replica_official_20260423/replica_ex6_results.csv",
 ))
 PRED_EXP_NAME = "duograph3d_gsa_engineered_monitor"
+# Dataset mode: `replica` (default, official protocol) or `scannet` (25k-export
+# staged scenes for the mechanism-transfer table).  ScanNet mode loads per-scene
+# intrinsics/poses, uses the NYU40 vocabulary + its frozen scale priors, and
+# always defers evaluation to examples/eval_scannet_semseg.py.
+DATASET_MODE = os.environ.get("DUOGRAPH_DATASET", "replica")
+SCANNET_STAGE_ROOT = Path(os.environ.get("DUOGRAPH_SCANNET_STAGE_ROOT", "/home/nebula/xxy/dataset/scannet_cg"))
+NYU40_CLASSES = [
+    "wall", "floor", "cabinet", "bed", "chair", "sofa", "table", "door",
+    "window", "bookshelf", "picture", "counter", "blinds", "desk", "shelves",
+    "curtain", "dresser", "pillow", "mirror", "floor mat", "clothes",
+    "ceiling", "books", "refridgerator", "television", "paper", "towel",
+    "shower curtain", "box", "whiteboard", "person", "night stand", "toilet",
+    "sink", "lamp", "bathtub", "bag", "otherstructure", "otherfurniture",
+    "otherprop",
+]
 FX = 600.0
 FY = 600.0
 CX = 599.5
@@ -676,8 +695,19 @@ def prepare_scene(
     frame_stride: int = 1,
 ):
     t0 = time.time()
-    gsa_dir = REPLICA_ROOT / scene / "gsa_detections_none"
-    poses = np.loadtxt(REPLICA_ROOT / scene / "traj.txt", dtype=np.float32).reshape(-1, 4, 4)
+    global FX, FY, CX, CY, DEPTH_SCALE
+    if DATASET_MODE == "scannet":
+        scene_root = SCANNET_STAGE_ROOT / scene
+        gsa_dir = scene_root / "gsa_detections_none"
+        intrinsic = np.loadtxt(scene_root / "intrinsic" / "intrinsic_color.txt", dtype=np.float32)
+        FX, FY = float(intrinsic[0, 0]), float(intrinsic[1, 1])
+        CX, CY = float(intrinsic[0, 2]), float(intrinsic[1, 2])
+        DEPTH_SCALE = 1000.0
+        poses = None
+    else:
+        scene_root = REPLICA_ROOT / scene
+        gsa_dir = scene_root / "gsa_detections_none"
+        poses = np.loadtxt(scene_root / "traj.txt", dtype=np.float32).reshape(-1, 4, 4)
     # Per-observation text feature is aligned to the selected evaluation label.
     key_data: dict[str, dict[str, object]] = {}
     multires_key_data: dict[str, dict[str, object]] = {}
@@ -708,17 +738,31 @@ def prepare_scene(
         "label_counts": Counter(),
         "label_source_counts": Counter(),
     }
-    det_paths = sorted(gsa_dir.glob("frame*.pkl.gz"))
+    if DATASET_MODE == "scannet":
+        det_paths = sorted(gsa_dir.glob("*.pkl.gz"), key=lambda p: int(p.name.split(".")[0]))
+    else:
+        det_paths = sorted(gsa_dir.glob("frame*.pkl.gz"))
     det_paths = det_paths[:: max(int(frame_stride), 1)]
     if frame_limit is not None:
         det_paths = det_paths[: max(int(frame_limit), 0)]
     for det_path in det_paths:
         frame_stem = det_path.name.split(".")[0]
-        frame_idx = int(frame_stem[len("frame"):])
         observations: list[Observation] = []
-        depth = np.asarray(Image.open(REPLICA_ROOT / scene / "results" / f"depth{frame_idx:06d}.png"), dtype=np.float32) / DEPTH_SCALE
-        rgb_image = np.asarray(Image.open(REPLICA_ROOT / scene / "results" / f"frame{frame_idx:06d}.jpg").convert("RGB"), dtype=np.float32) / 255.0
-        pose = poses[frame_idx]
+        if DATASET_MODE == "scannet":
+            frame_idx = int(frame_stem)
+            depth = np.asarray(Image.open(scene_root / "depth" / f"{frame_stem}.png"), dtype=np.float32) / DEPTH_SCALE
+            rgb_image = np.asarray(Image.open(scene_root / "color" / f"{frame_stem}.jpg").convert("RGB"), dtype=np.float32) / 255.0
+            pose = np.loadtxt(scene_root / "pose" / f"{frame_stem}.txt", dtype=np.float32)
+            if not np.isfinite(pose).all():
+                continue
+            if depth.shape[:2] != rgb_image.shape[:2]:
+                # 25k export ships color and depth at the same 640x480 size; guard anyway.
+                continue
+        else:
+            frame_idx = int(frame_stem[len("frame"):])
+            depth = np.asarray(Image.open(REPLICA_ROOT / scene / "results" / f"depth{frame_idx:06d}.png"), dtype=np.float32) / DEPTH_SCALE
+            rgb_image = np.asarray(Image.open(REPLICA_ROOT / scene / "results" / f"frame{frame_idx:06d}.jpg").convert("RGB"), dtype=np.float32) / 255.0
+            pose = poses[frame_idx]
         with gzip.open(det_path, "rb") as handle:
             det = pickle.load(handle)
         image_feats = normalize_np(det["image_feats"].astype(np.float32))
@@ -2684,7 +2728,7 @@ def apply_geometry_repairs(
             violation = scale_prior_violation(
                 pred_label,
                 max_extent,
-                priors=DEFAULT_MAX_EXTENT_PRIORS,
+                priors=ACTIVE_SCALE_PRIORS,
                 tolerance=GEOMETRY_REPAIR_SCALE_PRIOR_TOLERANCE,
             )
             if not violation["violation"]:
@@ -2694,7 +2738,7 @@ def apply_geometry_repairs(
             selection = select_scale_prior_target(
                 dict(declared_counter),
                 max_extent,
-                priors=DEFAULT_MAX_EXTENT_PRIORS,
+                priors=ACTIVE_SCALE_PRIORS,
                 min_target_share=GEOMETRY_REPAIR_SCALE_PRIOR_MIN_TARGET_SHARE,
                 max_source_share=GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE,
                 source_label=pred_label,
@@ -2716,7 +2760,7 @@ def apply_geometry_repairs(
                 for label, index in label_to_index.items():
                     if label == pred_label or label in STRUCTURAL_EXPORT_LABELS:
                         continue
-                    prior = DEFAULT_MAX_EXTENT_PRIORS.get(label)
+                    prior = ACTIVE_SCALE_PRIORS.get(label)
                     if prior is None or max_extent > float(prior):
                         continue
                     if 0 <= index < len(scores):
@@ -3051,7 +3095,8 @@ def write_conceptgraphs_payload(
     prepare_key_count: int | None = None,
 ):
     t0 = time.time()
-    pcd_dir = REPLICA_ROOT / scene / "pcd_saves"
+    dataset_root = SCANNET_STAGE_ROOT if DATASET_MODE == "scannet" else REPLICA_ROOT
+    pcd_dir = dataset_root / scene / "pcd_saves"
     pcd_dir.mkdir(parents=True, exist_ok=True)
     cfg = conceptgraphs_postprocess_cfg()
 
@@ -3502,6 +3547,7 @@ def write_markdown_report(summary: dict[str, object], path: Path) -> None:
 def main() -> None:
     global ROOT, PRED_EXP_NAME, MIN_OBJECT_DETECTIONS, EXPORT_SOURCE_STRATEGY
     global EXPORT_CONSOLIDATION_DENSE_MAX_RATIO, MECHANISMS_SCOPE
+    global DATASET_MODE, ACTIVE_SCALE_PRIORS, STRUCTURAL_EXPORT_LABELS
     global TEXT_FEATURE_MODE, CLIP_FEATURE_MODE, CLIP_FEATURE_BLEND_ALPHA
     global EXPORT_CLIP_MIN_MARGIN
     global ADAPTIVE_CLIP_SINK_LABELS, ADAPTIVE_CLIP_MIN_HIGH_MARGIN_COUNT
@@ -3536,6 +3582,12 @@ def main() -> None:
     global L2_RELATION_BONUS_WEIGHT, L2_RELATION_BONUS_CAP
     parser = argparse.ArgumentParser()
     parser.add_argument("--scenes", nargs="*", default=list(REPLICA_SCENE_IDS))
+    parser.add_argument(
+        "--dataset",
+        choices=["replica", "scannet"],
+        default=DATASET_MODE,
+        help="scannet mode: staged 25k-export scenes, NYU40 vocabulary + frozen priors, external eval only.",
+    )
     parser.add_argument("--skip-eval", action="store_true")
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--pred-exp-name", default=None)
@@ -3941,6 +3993,15 @@ def main() -> None:
     os.environ["DUOGRAPH_ADAPTIVE_CLIP_MIN_HIGH_MARGIN_RATE"] = str(ADAPTIVE_CLIP_MIN_HIGH_MARGIN_RATE)
     os.environ["DUOGRAPH_ADAPTIVE_CLIP_MIN_ENTROPY"] = str(ADAPTIVE_CLIP_MIN_ENTROPY)
     os.environ["DUOGRAPH_PHASE"] = args.phase
+    DATASET_MODE = str(args.dataset)
+    if DATASET_MODE == "scannet":
+        # ScanNet mode: NYU40 frozen priors, NYU40 structural set, external eval.
+        ACTIVE_SCALE_PRIORS = SCANNET_NYU40_MAX_EXTENT_PRIORS
+        STRUCTURAL_EXPORT_LABELS = frozenset({
+            "wall", "floor", "ceiling", "door", "window",
+            "person", "otherstructure", "otherfurniture", "otherprop",
+        })
+        args.skip_eval = True
     torch.set_num_threads(4)
     ROOT.mkdir(parents=True, exist_ok=True)
     (ROOT / "logs").mkdir(exist_ok=True)
@@ -3948,9 +4009,13 @@ def main() -> None:
     class_all2existing = torch.ones(len(REPLICA_CLASSES)).long() * -1
     for i, c in enumerate(REPLICA_EXISTING_CLASSES):
         class_all2existing[c] = i
-    class_names = [REPLICA_CLASSES[i] for i in REPLICA_EXISTING_CLASSES]
+    if DATASET_MODE == "scannet":
+        class_names = list(NYU40_CLASSES)
+        exclude_class = []
+    else:
+        class_names = [REPLICA_CLASSES[i] for i in REPLICA_EXISTING_CLASSES]
+        exclude_class = [class_names.index(c) for c in ["other", "floor", "wall", "ceiling", "door", "window"]]
     label_to_index = {label: index for index, label in enumerate(class_names)}
-    exclude_class = [class_names.index(c) for c in ["other", "floor", "wall", "ceiling", "door", "window"]]
 
     print("Loading CLIP text encoder", flush=True)
     clip_model, _, _ = open_clip.create_model_and_transforms("ViT-H-14", "laion2b_s32b_b79k")
@@ -4066,8 +4131,12 @@ def main() -> None:
         with gzip.open(ROOT / "duograph_monitored_conf_matrices.pkl.gz", "wb") as handle:
             pickle.dump(conf_matrices, handle)
 
-    baseline_rows = load_baseline_rows()
-    gap_rows = add_gap_rows(per_scene_rows, baseline_rows)
+    if DATASET_MODE == "scannet":
+        baseline_rows = {}
+        gap_rows = []
+    else:
+        baseline_rows = load_baseline_rows()
+        gap_rows = add_gap_rows(per_scene_rows, baseline_rows)
     if gap_rows:
         with (ROOT / "duograph_monitored_gap_vs_conceptgraphs.csv").open("w", newline="") as handle:
             fields = list(gap_rows[0].keys())
