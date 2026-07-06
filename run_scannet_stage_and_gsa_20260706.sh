@@ -56,10 +56,12 @@ PYEOF
 }
 
 cd "$CG_ROOT/conceptgraph"
-# Two CG checkouts exist on 184; force package resolution to concept-graphs-main
-# (the official runs did this via env.sh) or imports hit the other tree's
-# newer-API vis module.
-export PYTHONPATH="$CG_ROOT${PYTHONPATH:+:$PYTHONPATH}"
+# The official Replica GSA environment (GSA_PATH, Grounded-Segment-Anything
+# paths, import stubs, concept-graphs-main package resolution) is codified in
+# the official run contract's env.sh — reuse it verbatim.
+set +u
+source /home/nebula/xxy/duograph3d_artifacts/conceptgraphs_replica_official_20260423/env.sh
+set -u
 : > "$OUT/gsa_status.tsv"
 for scene in $SCENES; do
   echo "[$(date -Is)] SCANNET_GSA_START $scene" | tee -a "$OUT/logs/driver.log"
