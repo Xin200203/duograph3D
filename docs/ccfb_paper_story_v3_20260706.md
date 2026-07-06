@@ -46,6 +46,19 @@ OVI-MAP/ESAM/Details Matter 等邻居的核心差异——它们优化精度，�
 - 路由信号的系统性否决（覆盖阈值排序反向、consolidation 比值为体素伪影）——
   "scene-independent substrate selection" 被确立为该设置下的开放问题。
 
+## 1.5 在环性论证（2026-07-06 CG-substrate 实验后新增，升格为主线论证）
+
+把机制事后施加到 CG 官方图上（真实声明分布重建、对齐 0.9999）：门零候选
+（CG 在线合并已消耗全部合并决策）、sp 退化为噪声（all −0.46）。与内联应用
+（office1 +8.17 / office2 +8.19）对照，得到论文的中心命题：
+
+> **Semantic authority control is only effective at decision time.**
+> 破坏性合并发生在建图环内；证据（独立的声明簇、未污染的读出）随合并销毁，
+> 事后不可恢复。因此权威控制必须内嵌于在线建图循环——这正是双层图记忆
+> 存在的理由（Layer1/Layer2 维护决策时刻所需的证据状态）。
+
+该实验同时是协议有效性检查（legacy 行 −0.08 ≈ 官方平位）。
+
 ## 2. 与 SOTA 的关系（照 6/28 审查更新）
 
 - 不声称 OV-3DIS SOTA、不声称 AP、不声称统一方法超过 CG 全场景；
