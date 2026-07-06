@@ -162,6 +162,49 @@ def choose_export_source(
     return diagnostics
 
 
+def spatial_connected_components(centroids: list, eps: float) -> list[list[int]]:
+    """Single-linkage connected components over 3D centroids.
+
+    Used to split consolidated export buckets whose member keys are not
+    spatially coherent (the office4 wall-strip mega-bucket: one memory root
+    spanning tv-screen + clock + wall regions).  A carrier whose evidence is
+    not spatially connected should not be exported as one semantic entity.
+
+    Pure, standard-library; O(n^2) pair scan with union-find — bucket key
+    counts are at most a few thousand.
+    """
+    n = len(centroids)
+    if n == 0:
+        return []
+    parent = list(range(n))
+
+    def find(a: int) -> int:
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    def union(a: int, b: int) -> None:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[rb] = ra
+
+    eps_sq = float(eps) * float(eps)
+    pts = [(float(c[0]), float(c[1]), float(c[2])) for c in centroids]
+    for i in range(n):
+        xi, yi, zi = pts[i]
+        for j in range(i + 1, n):
+            dx = xi - pts[j][0]
+            dy = yi - pts[j][1]
+            dz = zi - pts[j][2]
+            if dx * dx + dy * dy + dz * dz <= eps_sq:
+                union(i, j)
+    groups: dict[int, list[int]] = {}
+    for i in range(n):
+        groups.setdefault(find(i), []).append(i)
+    return sorted(groups.values(), key=lambda g: (-len(g), g[0]))
+
+
 def label_cluster_veto(
     left_label_counts: dict[str, int],
     right_label_counts: dict[str, int],

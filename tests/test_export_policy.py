@@ -7,7 +7,29 @@ from duograph3d.export_policy import (
     ExportCoveragePolicy,
     choose_export_source,
     label_cluster_veto,
+    spatial_connected_components,
 )
+
+
+class SpatialConnectedComponentsTests(unittest.TestCase):
+    def test_wall_strip_splits_into_separated_regions(self):
+        # office4 archetype: tv area and clock area on one wall, 1.5m apart,
+        # each a chain of adjacent 0.2m keys.
+        tv = [(0.0, 0.0, 0.0), (0.2, 0.0, 0.0), (0.4, 0.0, 0.0)]
+        clock = [(2.0, 0.0, 0.0), (2.2, 0.0, 0.0)]
+        comps = spatial_connected_components(tv + clock, eps=0.35)
+        self.assertEqual(len(comps), 2)
+        self.assertEqual(sorted(len(c) for c in comps), [2, 3])
+
+    def test_chain_within_eps_stays_one_component(self):
+        chain = [(i * 0.3, 0.0, 0.0) for i in range(10)]
+        comps = spatial_connected_components(chain, eps=0.35)
+        self.assertEqual(len(comps), 1)
+        self.assertEqual(len(comps[0]), 10)
+
+    def test_empty_and_singleton(self):
+        self.assertEqual(spatial_connected_components([], eps=0.5), [])
+        self.assertEqual(spatial_connected_components([(1.0, 2.0, 3.0)], eps=0.5), [[0]])
 
 
 class ExportPolicyTests(unittest.TestCase):

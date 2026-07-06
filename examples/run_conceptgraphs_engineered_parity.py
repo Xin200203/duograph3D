@@ -34,6 +34,7 @@ from duograph3d.export_policy import (
     ExportCoveragePolicy,
     choose_export_source,
     label_cluster_veto,
+    spatial_connected_components,
 )
 from duograph3d.scale_priors import (
     DEFAULT_MAX_EXTENT_PRIORS,
@@ -239,6 +240,12 @@ GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK = int(
     os.environ.get("DUOGRAPH_GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK", "0")
 )
 STRUCTURAL_EXPORT_LABELS = frozenset({"other", "floor", "wall", "ceiling", "door", "window"})
+# O2b: split memory-dense buckets whose member keys are not spatially coherent
+# (the office4 wall-strip mega-bucket disease).  Each spatial component is
+# re-accumulated from its own keys, so features and labels are recomputed per
+# component.  Default off (legacy behavior).
+MEMORY_DENSE_SPATIAL_SPLIT = int(os.environ.get("DUOGRAPH_MEMORY_DENSE_SPATIAL_SPLIT", "0"))
+MEMORY_DENSE_SPATIAL_SPLIT_EPS = float(os.environ.get("DUOGRAPH_MEMORY_DENSE_SPATIAL_SPLIT_EPS", "0.35"))
 CG_DOWNSAMPLE_VOXEL_SIZE = 0.025
 CG_DBSCAN_EPS = 0.1
 CG_DBSCAN_MIN_POINTS = 10
@@ -1788,6 +1795,7 @@ def build_memory_dense_map_objects(
 
     cfg = conceptgraphs_postprocess_cfg()
     root_buckets: dict[str, dict[str, object]] = {}
+    bucket_members: dict[str, list] = {}
     skipped: list[str] = []
     assignment_status_counts: Counter[str] = Counter()
     raw_assignment_status_counts: Counter[str] = Counter()
@@ -1851,49 +1859,77 @@ def build_memory_dense_map_objects(
         bucket_id = f"geometry:{export_key}" if use_geometry_fallback else root_id
         if not use_geometry_fallback and label and root_id in split_root_ids:
             bucket_id = f"{root_id}:label:{label}"
-        bucket = root_buckets.setdefault(
-            bucket_id,
-            {
-                "label_counts": Counter(),
-                "clip_sum": np.zeros_like(np.asarray(data["clip_sum"], dtype=np.float64), dtype=np.float64),
-                "export_clip_sum": np.zeros_like(np.asarray(data["clip_sum"], dtype=np.float64), dtype=np.float64),
-                "export_clip_count": 0,
-                "text_sum": np.zeros_like(np.asarray(data["text_sum"], dtype=np.float64), dtype=np.float64),
-                "feature_count": 0,
-                "points": [],
-                "colors": [],
-                "mask_pixels": 0,
-                "confidence_sum": 0.0,
-                "valid_depth_ratio_sum": 0.0,
-                "clip_margin_sum": 0.0,
-                "geometry_keys": set(),
-                "export_keys": [],
-                "memory_root_ids": set(),
-                "source_types": Counter(),
-                "assignment_status_counts": Counter(),
-                "split_labels": Counter(),
-            },
+        bucket_members.setdefault(bucket_id, []).append(
+            (base_key, export_key, data, label, root_id, use_geometry_fallback, status)
         )
-        bucket["label_counts"].update(data["label_counts"])
-        bucket["clip_sum"] += np.asarray(data["clip_sum"], dtype=np.float64)
-        bucket["export_clip_sum"] += np.asarray(data.get("export_clip_sum", np.zeros_like(data["clip_sum"])), dtype=np.float64)
-        bucket["export_clip_count"] += int(data.get("export_clip_count", 0) or 0)
-        bucket["text_sum"] += np.asarray(data["text_sum"], dtype=np.float64)
-        bucket["feature_count"] += int(data["feature_count"])
-        bucket["points"].extend(data["points"])
-        bucket["colors"].extend(data["colors"])
-        bucket["mask_pixels"] += int(data["mask_pixels"])
-        bucket["confidence_sum"] += float(data["confidence_sum"])
-        bucket["valid_depth_ratio_sum"] += float(data["valid_depth_ratio_sum"])
-        bucket["clip_margin_sum"] += float(data["clip_margin_sum"])
-        bucket["geometry_keys"].add(base_key)
-        bucket["export_keys"].append(export_key)
-        if root_id:
-            bucket["memory_root_ids"].add(root_id)
-        bucket["source_types"]["geometry_fallback" if use_geometry_fallback else "memory_root"] += 1
-        bucket["assignment_status_counts"][status] += 1
-        if label:
-            bucket["split_labels"][label] += int(data["feature_count"])
+
+    # O2b spatial coherence split: keys assigned to one bucket that are not
+    # spatially connected become separate buckets, each re-accumulated from its
+    # own keys (features/labels recomputed per component).
+    spatial_split_stats = {"enabled": bool(MEMORY_DENSE_SPATIAL_SPLIT), "buckets_split": 0, "components_created": 0}
+    final_members: dict[str, list] = {}
+    for bucket_id, members in bucket_members.items():
+        if not MEMORY_DENSE_SPATIAL_SPLIT or len(members) < 2:
+            final_members[bucket_id] = members
+            continue
+        centroids = []
+        for _base_key, _export_key, data, *_rest in members:
+            pts = np.concatenate([np.asarray(p, dtype=np.float32) for p in data["points"]], axis=0) if data["points"] else np.zeros((1, 3), dtype=np.float32)
+            centroids.append(pts.mean(axis=0))
+        components = spatial_connected_components(centroids, MEMORY_DENSE_SPATIAL_SPLIT_EPS)
+        if len(components) <= 1:
+            final_members[bucket_id] = members
+            continue
+        spatial_split_stats["buckets_split"] += 1
+        spatial_split_stats["components_created"] += len(components)
+        for comp_i, comp in enumerate(components):
+            final_members[f"{bucket_id}:sp{comp_i}"] = [members[i] for i in comp]
+
+    for bucket_id, members in final_members.items():
+        for base_key, export_key, data, label, root_id, use_geometry_fallback, status in members:
+            bucket = root_buckets.setdefault(
+                bucket_id,
+                {
+                    "label_counts": Counter(),
+                    "clip_sum": np.zeros_like(np.asarray(data["clip_sum"], dtype=np.float64), dtype=np.float64),
+                    "export_clip_sum": np.zeros_like(np.asarray(data["clip_sum"], dtype=np.float64), dtype=np.float64),
+                    "export_clip_count": 0,
+                    "text_sum": np.zeros_like(np.asarray(data["text_sum"], dtype=np.float64), dtype=np.float64),
+                    "feature_count": 0,
+                    "points": [],
+                    "colors": [],
+                    "mask_pixels": 0,
+                    "confidence_sum": 0.0,
+                    "valid_depth_ratio_sum": 0.0,
+                    "clip_margin_sum": 0.0,
+                    "geometry_keys": set(),
+                    "export_keys": [],
+                    "memory_root_ids": set(),
+                    "source_types": Counter(),
+                    "assignment_status_counts": Counter(),
+                    "split_labels": Counter(),
+                },
+            )
+            bucket["label_counts"].update(data["label_counts"])
+            bucket["clip_sum"] += np.asarray(data["clip_sum"], dtype=np.float64)
+            bucket["export_clip_sum"] += np.asarray(data.get("export_clip_sum", np.zeros_like(data["clip_sum"])), dtype=np.float64)
+            bucket["export_clip_count"] += int(data.get("export_clip_count", 0) or 0)
+            bucket["text_sum"] += np.asarray(data["text_sum"], dtype=np.float64)
+            bucket["feature_count"] += int(data["feature_count"])
+            bucket["points"].extend(data["points"])
+            bucket["colors"].extend(data["colors"])
+            bucket["mask_pixels"] += int(data["mask_pixels"])
+            bucket["confidence_sum"] += float(data["confidence_sum"])
+            bucket["valid_depth_ratio_sum"] += float(data["valid_depth_ratio_sum"])
+            bucket["clip_margin_sum"] += float(data["clip_margin_sum"])
+            bucket["geometry_keys"].add(base_key)
+            bucket["export_keys"].append(export_key)
+            if root_id:
+                bucket["memory_root_ids"].add(root_id)
+            bucket["source_types"]["geometry_fallback" if use_geometry_fallback else "memory_root"] += 1
+            bucket["assignment_status_counts"][status] += 1
+            if label:
+                bucket["split_labels"][label] += int(data["feature_count"])
 
     objects = MapObjectList()
     export_debug = []
@@ -2009,6 +2045,8 @@ def build_memory_dense_map_objects(
         "memory_dense_split_max_root_top_share": MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE,
         "memory_dense_split_root_count": len(split_root_ids),
         "memory_dense_split_root_rate": round(len(split_root_ids) / max(len(root_label_counts), 1), 6),
+        "memory_dense_spatial_split": spatial_split_stats,
+        "memory_dense_spatial_split_eps": MEMORY_DENSE_SPATIAL_SPLIT_EPS,
         "ambiguous_assignment_examples": ambiguous_examples,
     }
     return objects, export_debug, skipped, diagnostics
@@ -3576,6 +3614,7 @@ def main() -> None:
     global CG_MERGE_LABEL_GATE, CG_MERGE_LABEL_GATE_MIN_SHARE, CG_MERGE_LABEL_GATE_MIN_OBS
     global CG_MERGE_LABEL_GATE_MUTUAL_THRESH
     global MIN_MEMORY_EXPORT_OBJECTS, MIN_MEMORY_EXPORT_KEY_RATIO, MIN_MEMORY_EXPORT_POINT_RATIO
+    global MEMORY_DENSE_SPATIAL_SPLIT, MEMORY_DENSE_SPATIAL_SPLIT_EPS
     global MEMORY_DENSE_SPLIT_BY_LABEL, MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS
     global MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY, MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE
     global L2_OCCLUDED_AFTER_MISSES, L2_DORMANT_AFTER_MISSES, L2_RETIRE_AFTER_MISSES
@@ -3812,6 +3851,19 @@ def main() -> None:
             "the physically-compatible CLIP ranking. Default off — that ranking measured as noise."
         ),
     )
+    parser.add_argument(
+        "--memory-dense-spatial-split",
+        type=int,
+        choices=[0, 1],
+        default=MEMORY_DENSE_SPATIAL_SPLIT,
+        help=(
+            "Split memory-dense buckets whose member keys are not spatially connected "
+            "(single-linkage components over key centroids); each component re-accumulates "
+            "its own features and labels. A carrier whose evidence is not spatially coherent "
+            "should not be one semantic entity."
+        ),
+    )
+    parser.add_argument("--memory-dense-spatial-split-eps", type=float, default=MEMORY_DENSE_SPATIAL_SPLIT_EPS)
     parser.add_argument("--memory-dense-split-by-label", type=int, choices=[0, 1], default=int(MEMORY_DENSE_SPLIT_BY_LABEL))
     parser.add_argument("--memory-dense-split-min-observations", type=int, default=MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS)
     parser.add_argument("--memory-dense-split-min-root-label-entropy", type=float, default=MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY)
@@ -3951,6 +4003,8 @@ def main() -> None:
     GEOMETRY_REPAIR_SCALE_PRIOR_MAX_SOURCE_SHARE = min(max(float(args.geometry_repair_scale_prior_max_source_share), 0.0), 1.0)
     GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO = max(float(args.geometry_repair_scale_prior_hard_ratio), 1.0)
     GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK = int(args.geometry_repair_scale_prior_clip_fallback)
+    MEMORY_DENSE_SPATIAL_SPLIT = int(args.memory_dense_spatial_split)
+    MEMORY_DENSE_SPATIAL_SPLIT_EPS = max(float(args.memory_dense_spatial_split_eps), 0.05)
     MEMORY_DENSE_SPLIT_BY_LABEL = bool(args.memory_dense_split_by_label)
     MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS = max(int(args.memory_dense_split_min_observations), 1)
     MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY = max(float(args.memory_dense_split_min_root_label_entropy), 0.0)
@@ -4201,6 +4255,8 @@ def main() -> None:
                 "geometry_repair_scale_prior_hard_ratio": GEOMETRY_REPAIR_SCALE_PRIOR_HARD_RATIO,
                 "geometry_repair_scale_prior_clip_fallback": GEOMETRY_REPAIR_SCALE_PRIOR_CLIP_FALLBACK,
                 "memory_dense_split_by_label": MEMORY_DENSE_SPLIT_BY_LABEL,
+            "memory_dense_spatial_split": MEMORY_DENSE_SPATIAL_SPLIT,
+            "memory_dense_spatial_split_eps": MEMORY_DENSE_SPATIAL_SPLIT_EPS,
             "memory_dense_split_min_observations": MEMORY_DENSE_SPLIT_MIN_OBSERVATIONS,
             "memory_dense_split_min_root_label_entropy": MEMORY_DENSE_SPLIT_MIN_ROOT_LABEL_ENTROPY,
             "memory_dense_split_max_root_top_share": MEMORY_DENSE_SPLIT_MAX_ROOT_TOP_SHARE,
