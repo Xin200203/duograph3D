@@ -141,16 +141,20 @@ def main() -> None:
         pred_lbl = np.concatenate([
             np.full((len(p),), obj_labels[i], dtype=np.int64) for i, p in enumerate(obj_points)
         ])
+        finite = np.isfinite(pred_pts).all(axis=1)
+        pred_pts, pred_lbl = pred_pts[finite], pred_lbl[finite]
+        if not len(pred_pts):
+            print(f"{scene}: all predicted points non-finite, skipping", flush=True)
+            continue
         keep_mask = (gt_labels > 0) & ~np.isin(gt_labels, list(excluded_ids))
-        gt_xyz = torch.from_numpy(coords[keep_mask]).to(args.device)
+        gt_xyz = coords[keep_mask]
         gt_lab = gt_labels[keep_mask]
-        pred_xyz = torch.from_numpy(pred_pts).to(args.device)
-        assigned = np.empty((len(gt_xyz),), dtype=np.int64)
-        chunk = 20000
-        with torch.no_grad():
-            for start in range(0, len(gt_xyz), chunk):
-                d = torch.cdist(gt_xyz[start:start + chunk], pred_xyz)
-                assigned[start:start + chunk] = d.argmin(dim=1).cpu().numpy()
+        # Millions of predicted points: KD-tree nearest neighbor instead of a
+        # materialized distance matrix (cdist OOMs at ~180 GiB here).
+        from scipy.spatial import cKDTree
+
+        tree = cKDTree(pred_pts)
+        _, assigned = tree.query(gt_xyz, k=1, workers=-1)
         pred_for_gt = pred_lbl[assigned]
         conf = torch.zeros((n_cls, n_cls), dtype=torch.long)
         for g, p in zip(gt_lab, pred_for_gt):
