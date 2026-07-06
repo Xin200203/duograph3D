@@ -329,12 +329,22 @@ auto-keep the merged carrier's readout is not "bin" — the E70 bin case is
 only visible under its narrow hand keep-set, confirming the mis-readout
 expression depends on the evaluator-facing source set.
 
-## Next actions (morning)
+## Morning assembly complete (2026-07-06)
 
-1. Read v4_main official all-row (target ≥ +2.0, no scene negative);
-   assemble T1 main + T2 ablation tables from the four overnight rows + v1
-   (forced-dense) + E70 (oracle composite).
-2. Decide multires-in-geometry-arm (v4.2) if geometry scenes undershoot E70's
-   multires-geometry levels materially.
-3. Then: threshold sensitivity (ratio 0.14-0.20, floor 2/8/24), story rewrite,
-   P1 items (ScanNet OOD via 73, AP evaluator, baseline rows).
+- Tables T1 (mechanism causality on the consolidated substrate), T2 (full-scene
+  single-config ablations + E70 oracle), T3 (audit counts + pre-registration),
+  T4 (12-row negative-boundary table with per-row object-level evidence) —
+  `docs/ccfb_tables_20260706.md`.
+- Paper story v3 (mechanism tier + failure-attribution framework + honest
+  compositionality open problem; supersedes v2) —
+  `docs/ccfb_paper_story_v3_20260706.md`, including the reviewer Q&A plan and
+  the dev/diagnostic/validation scene accounting.
+
+## Next (P1, pre-submission)
+
+1. ScanNet OOD sanity (73's 8× RTX 3090: GSA detection generation → mechanism
+   fire/abstain behavior on OOD consolidated substrates).
+2. Replica instance AP evaluator (supplementary protocol bridge).
+3. CG-Detector baseline row + OVI-MAP/OnlineAnySeg/ESAM protocol-bridge table.
+4. Manuscript rewrite from story v3 (replace the 4/23 draft mainline).
+5. Remaining sensitivity sweeps (mutual thresh, top-share, tolerance).
