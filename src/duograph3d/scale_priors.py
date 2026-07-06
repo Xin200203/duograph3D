@@ -67,6 +67,45 @@ DEFAULT_MAX_EXTENT_PRIORS: dict[str, float] = {
 }
 
 
+# ScanNet (NYU40) vocabulary priors — generated with the identical protocol
+# (LLM commonsense from class names alone) and FROZEN on 2026-07-06, before the
+# first ScanNet evaluation of this project ran.  Structural / person / other-*
+# classes are excluded from repair by the structural set and carry no prior.
+SCANNET_NYU40_MAX_EXTENT_PRIORS: dict[str, float] = {
+    "cabinet": 2.4,
+    "bed": 2.6,
+    "chair": 1.3,
+    "sofa": 3.2,
+    "table": 3.0,
+    "bookshelf": 2.6,
+    "picture": 1.6,
+    "counter": 3.0,
+    "blinds": 3.0,
+    "desk": 2.6,
+    "shelves": 2.6,
+    "curtain": 3.0,
+    "dresser": 2.0,
+    "pillow": 1.0,
+    "mirror": 2.0,
+    "floor mat": 2.5,
+    "clothes": 1.8,
+    "books": 0.6,
+    "refridgerator": 2.0,
+    "television": 1.8,
+    "paper": 0.6,
+    "towel": 1.2,
+    "shower curtain": 2.2,
+    "box": 1.2,
+    "whiteboard": 2.5,
+    "night stand": 1.0,
+    "toilet": 0.9,
+    "sink": 1.0,
+    "lamp": 1.8,
+    "bathtub": 1.9,
+    "bag": 0.8,
+}
+
+
 def scale_prior_violation(
     pred_label: str,
     max_extent: float,

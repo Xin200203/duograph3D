@@ -2,6 +2,7 @@ import unittest
 
 from duograph3d.scale_priors import (
     DEFAULT_MAX_EXTENT_PRIORS,
+    SCANNET_NYU40_MAX_EXTENT_PRIORS,
     scale_prior_violation,
     select_scale_prior_target,
 )
@@ -106,6 +107,15 @@ class SelectScalePriorTargetTests(unittest.TestCase):
     def test_priors_table_covers_known_mechanism_labels(self):
         for label in ("tissue-paper", "cloth", "bin", "table", "vent", "cushion", "sofa"):
             self.assertIn(label, DEFAULT_MAX_EXTENT_PRIORS)
+
+    def test_scannet_priors_frozen_and_scoped(self):
+        # Structural / person / other-* classes carry no prior (never repaired).
+        for label in ("wall", "floor", "ceiling", "door", "window", "person",
+                      "otherstructure", "otherfurniture", "otherprop"):
+            self.assertNotIn(label, SCANNET_NYU40_MAX_EXTENT_PRIORS)
+        for label in ("chair", "table", "pillow", "paper", "box", "television"):
+            self.assertIn(label, SCANNET_NYU40_MAX_EXTENT_PRIORS)
+        self.assertTrue(all(0.3 <= v <= 4.0 for v in SCANNET_NYU40_MAX_EXTENT_PRIORS.values()))
 
 
 if __name__ == "__main__":
