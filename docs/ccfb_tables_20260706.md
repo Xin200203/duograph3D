@@ -178,6 +178,18 @@ NYU40 冻结先验，**零 ScanNet 专属调参**，先验提交先于首次评�
 Artifacts: `scannet_gsa_20260706{,b}`, `scannet_cfslam_20260706`,
 `scannet_inloop_full`, `scannet_eval_20260706`（184）。
 
+## T7 — Runtime（回应 online 主张）
+
+最终配置 Replica 全行（184 · 单张 RTX 4090，400 帧/景）：
+
+| 口径 | 数值 |
+| --- | --- |
+| 管线均值（在线记忆+机制+导出+后处理，不含预计算 GSA 检测*） | **117.4 s/景 = 293 ms/帧 ≈ 3.4 FPS** |
+| 逐景范围 | 73.6–147.2 s |
+| 含官方评测 | 110–193 s/景 |
+
+*与 ConceptGraphs 同口径：GSA（SAM+CLIP）检测为共享预计算输入。
+
 ## 场景记账（审稿人辩护用）
 
 - 开发景：office1、office2（机制发现与阈值校准）
