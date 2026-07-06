@@ -136,6 +136,15 @@ office2-gamma floor {2,8,24} → {+2.96, +2.96, +3.18}。
 
 Artifacts: `ccfb_cg_authority_20260706`（184）。
 
+## T2 补注（2026-07-06 晚）：最终配置的 Replica 全行
+
+修复路由口径后重跑的最终配置（= T6 同款）Replica 全行 = **all −4.412**，与
+forced-dense 行完全一致——因为统一 prep 下 Replica 八景的 consolidation 比值
+全部压缩到 dense 侧（T4#9 的体素伪影结论的直接推论：router 在 Replica 上无
+信号）。这不是缺失实验，而是 T4#9 的闭环验证。**router 的判别力在真实扫描上
+存在（ScanNet 5/3 分派、dense 景大胜）、在统一 prep 的合成 Replica 上不存在**
+——该不对称如实写入正文与 T4。
+
 ## T6 — ScanNet 机制迁移表（2026-07-06，8 个 val_50 场景，NYU40 协议）
 
 协议：`eval_scannet_semseg.py`（GT 网格顶点最近预测点指派，NYU40 文本库，
