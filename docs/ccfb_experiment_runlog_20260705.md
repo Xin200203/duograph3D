@@ -340,6 +340,31 @@ expression depends on the evaluator-facing source set.
   `docs/ccfb_paper_story_v3_20260706.md`, including the reviewer Q&A plan and
   the dev/diagnostic/validation scene accounting.
 
+## 2026-07-06 daytime — T5 + ScanNet bring-up
+
+- **T5 (post-hoc infeasibility)**: CG's own maps + mechanisms → legacy −0.083
+  (protocol parity), gate 0/0/0 candidates on all 8 scenes, sp noise −0.461
+  at alignment 0.9999.  Central thesis established: authority control is only
+  effective at decision time.  Artifacts `ccfb_cg_authority_20260706`.
+- **ScanNet transfer pipeline fully assembled in one day**: 8 val_50 scenes
+  staged (25k-export layout + scaled intrinsics), GSA detections 8/8
+  (SAM+CLIP, `scannet_gsa_20260706{,b}`), CG-baseline cfslam maps 8/8
+  (official parameters, `scannet_cfslam_20260706`), NYU40 evaluator
+  (`examples/eval_scannet_semseg.py`, dual-path GT: labels.ply or
+  segs+aggregation+tsv reconstruction), runner `--dataset scannet` mode
+  (per-scene intrinsics, per-frame finite-guarded poses, NYU40 vocabulary +
+  frozen priors + NYU40 structural set).  NYU40 priors committed BEFORE any
+  ScanNet evaluation (pre-registration).
+- **Env incident**: `pip install plyfile` mid-queue pulled numpy 2.x and broke
+  cv2 ABI for 4 GSA scenes; rolled back to 1.26.4, retried clean.  Rule
+  recorded: no unpinned installs into shared envs while queues run.
+- CG paper Table II extracted for baseline context (mAcc/F-mIoU protocol,
+  noted as distinct from the repo evaluator): ConceptFusion 24.16/31.31,
+  CF+SAM 31.53/38.70, CG 40.63/35.95, CG-D 38.72/35.82.
+- HOV-SG protocol verification: web access unavailable in this session
+  (WebSearch/WebFetch blocked) — manual item.
+- In flight: ScanNet CG-baseline eval + in-loop mechanism smoke (scene0568_00).
+
 ## Next (P1, pre-submission)
 
 1. ScanNet OOD sanity (73's 8× RTX 3090: GSA detection generation → mechanism
